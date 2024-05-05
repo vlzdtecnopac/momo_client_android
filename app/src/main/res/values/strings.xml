@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MomoCoffeClient</string>
+    <string name="momo_coffe">Momo Coffe</string>
+    <string name="lang_content_description">Languaje</string>
+</resources>
