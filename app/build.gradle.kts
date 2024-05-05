@@ -26,7 +26,9 @@ android {
         }
         defaultConfig {
             buildConfigField("String", "API_BASE_URL", "\"https://tasks-planner-api.herokuapp.com/\"")
+
         }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -34,6 +36,7 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "API_BASE_URL", "\"https://tasks-planner-api.herokuapp.com/\"")
+
         }
 
     }
@@ -53,9 +56,11 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/*.kotlin_module"
         }
     }
 }
+
 
 dependencies {
     implementation("com.github.MahboubehSeyedpour:jetpack-loading:1.1.0")
@@ -87,4 +92,17 @@ dependencies {
 
     // ViewModel Compose
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    // Core always needed
+    implementation("com.zettle.sdk:core:2.11.1")
+
+    // For Card Reader Payments
+    implementation("com.zettle.sdk.feature.cardreader:ui:2.11.1")
+
+    // For QRC Payments, choose PayPal or Venmo depending on the Market.
+    implementation("com.zettle.sdk.feature.qrc:core:2.11.1")
+    implementation("com.zettle.sdk.feature.qrc:paypal-ui:2.11.1")
+    implementation("com.zettle.sdk.feature.qrc:venmo-ui:2.11.1")
+
+    // For Manual card entry Payments.
+    implementation("com.zettle.sdk.feature.manualcardentry:ui:2.11.1")
 }
