@@ -23,45 +23,38 @@ import com.zettle.sdk.feature.qrc.venmo.VenmoQrcFeature
 
 class MainActivity : ComponentActivity() {
     private val viewModel: LoginViewModel by viewModels()
-    private var started: Boolean = false
-        private set
 
-    private var isDevMode: Boolean = false
-        private set
-
-
-    fun initZettleSDK(devMode: Boolean) {
-        if(started) return
-        started = true
-        isDevMode = devMode
-
+    fun initZettleSDK() {
         val clientId = getString(R.string.client_id)
         val scheme = getString(R.string.redirect_url_scheme)
         val host = getString(R.string.redirect_url_host)
         val redirectUrl = "$scheme://$host"
 
         val config = config(applicationContext) {
-            isDevMode = devMode
+            isDevMode = false
             auth {
                 this.clientId = clientId
                 this.redirectUrl = redirectUrl
             }
-            logging {
-                allowWhileRoaming = false
-            }
-            addFeature(CardReaderFeature)
-            addFeature(PayPalQrcFeature)
-            addFeature(VenmoQrcFeature)
-            addFeature(ManualCardEntryFeature)
+            addFeature(CardReaderFeature.Configuration)
+            addFeature(PayPalQrcFeature.Configuration)
+            addFeature(VenmoQrcFeature.Configuration)
+            addFeature(ManualCardEntryFeature.Configuration)
         }
-        ZettleSDK.configure(config)
-        //ZettleSDK.start()
+        val sdk = ZettleSDK.configure(config)
+
+        // Attach the SDKs lifecycle observer to your lifecycle. It allows the SDK to
+        // manage bluetooth connection in a more graceful way
         ProcessLifecycleOwner.get().lifecycle.addObserver(ZettleSDKLifecycle())
+
+        // Alternatively, start the SDK manually, but remember to also stop it manually through sdk.stop() or ZettleSDK.instance?.stop()
+        sdk.start()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        initZettleSDK()
         if (isTablet()) {
             setContent {
                 MomoCoffeClientTheme {

@@ -1,5 +1,6 @@
 package com.momocoffe.mx.ui.login
 
+import android.app.Activity
 import com.momocoffe.mx.ui.theme.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -16,12 +17,14 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
-
+import androidx.compose.ui.platform.LocalContext
 import com.momocoffe.mx.ui.login.components.EmailOutTextField
 import com.momocoffe.mx.ui.login.components.ButtonField
 import com.momocoffe.mx.ui.login.components.PasswordOutTextField
 import com.momocoffe.mx.R
-import com.momocoffe.mx.navigation.Destination
+
+import com.zettle.sdk.ZettleSDK
+import com.zettle.sdk.core.auth.User
 
 
 @Composable
@@ -30,7 +33,7 @@ fun Login(navController: NavHostController) {
     var password by rememberSaveable { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
     val isValidate by derivedStateOf { email.isNotBlank() && password.isNotBlank() }
-
+    val context = LocalContext.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -104,7 +107,12 @@ fun Login(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(25.dp))
                     ButtonField(
                         onclick = {
-                            navController.navigate(Destination.Wellcome.route)
+                            val activity = context as? Activity
+                            activity?.let {
+                                ZettleSDK.instance?.login(it)
+                            }
+
+                            //navController.navigate(Destination.Wellcome.route)
                         },
                         enabled = true
                     )
