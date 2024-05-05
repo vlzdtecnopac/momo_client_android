@@ -22,6 +22,7 @@ import com.momocoffe.mx.ui.login.components.EmailOutTextField
 import com.momocoffe.mx.ui.login.components.ButtonField
 import com.momocoffe.mx.ui.login.components.PasswordOutTextField
 import com.momocoffe.mx.R
+import com.momocoffe.mx.navigation.Destination
 
 import com.zettle.sdk.ZettleSDK
 import com.zettle.sdk.core.auth.User
@@ -107,12 +108,11 @@ fun Login(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(25.dp))
                     ButtonField(
                         onclick = {
-                            val activity = context as? Activity
-                            activity?.let {
+                            //val activity = context as? Activity
+                            /*activity?.let {
                                 ZettleSDK.instance?.login(it)
-                            }
-
-                            //navController.navigate(Destination.Wellcome.route)
+                            }*/
+                            navController.navigate(Destination.Wellcome.route)
                         },
                         enabled = true
                     )
