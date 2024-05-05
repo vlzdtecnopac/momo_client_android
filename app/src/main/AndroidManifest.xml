@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MomoCoffeClient"
+        tools:replace="android:fullBackupContent"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
@@ -19,8 +20,23 @@
             android:theme="@style/Theme.MomoCoffeClient">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.izettle.android.auth.OAuthActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity="@string/oauth_activity_task_affinity"
+            android:exported="true">
+            <intent-filter>
+                <data
+                    android:host="@string/redirect_url_host"
+                    android:scheme="@string/redirect_url_scheme" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
     </application>

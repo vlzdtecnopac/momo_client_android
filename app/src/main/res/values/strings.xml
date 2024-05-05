@@ -2,4 +2,12 @@
     <string name="app_name">MomoCoffeClient</string>
     <string name="momo_coffe">Momo Coffe</string>
     <string name="lang_content_description">Languaje</string>
+
+    <!-- Value from build type: debug -->
+    <string name="client_id" translatable="false">dd664d80-6962-45de-81fd-0cd3550ead0c</string>
+    <!-- Value from build type: debug -->
+    <string name="redirect_url_host" translatable="false">zettlelogin</string>
+    <!-- Value from build type: debug -->
+    <string name="redirect_url_scheme" translatable="false">awesomeapp</string>
+
 </resources>

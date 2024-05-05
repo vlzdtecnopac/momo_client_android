@@ -105,4 +105,5 @@ dependencies {
 
     // For Manual card entry Payments.
     implementation("com.zettle.sdk.feature.manualcardentry:ui:2.11.1")
+    implementation("androidx.lifecycle:lifecycle-process:2.5.1")
 }
