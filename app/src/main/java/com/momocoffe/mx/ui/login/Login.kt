@@ -34,7 +34,7 @@ fun Login(navController: NavHostController) {
     var password by rememberSaveable { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
     val isValidate by derivedStateOf { email.isNotBlank() && password.isNotBlank() }
-    val context = LocalContext.current
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
