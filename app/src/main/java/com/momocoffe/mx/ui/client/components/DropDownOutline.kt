@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.momocoffe.mx.R
 import com.momocoffe.mx.ui.theme.BlueDark
@@ -38,14 +37,14 @@ import com.momocoffe.mx.ui.theme.BlueDark
 fun DropDownOutline() {
     var selectedIndex by rememberSaveable { mutableStateOf(0) }
     var expanded by rememberSaveable { mutableStateOf(false) }
-    val items = listOf("A", "B", "C", "D", "E", "F")
+    val items = listOf("+55", "+57")
 
     val selectModifierCard =
         Modifier
             .fillMaxWidth()
-            .height(52.dp)
+            .height(55.dp)
             .clickable(onClick = { expanded = true })
-            .padding(start = 20.dp, end = 20.dp)
+            .padding(start = 20.dp)
             .background(BlueDark)
             .border(
                 width = 1.1.dp,
