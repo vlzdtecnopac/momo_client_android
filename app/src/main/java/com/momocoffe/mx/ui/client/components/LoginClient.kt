@@ -3,7 +3,6 @@ package com.momocoffe.mx.ui.client.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,19 +23,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import com.momocoffe.mx.R
+import com.momocoffe.mx.navigation.Destination
 import com.momocoffe.mx.ui.theme.BlueDark
 import com.momocoffe.mx.ui.theme.redhatFamily
 import com.momocoffe.mx.ui.theme.stacionFamily
 
 @Composable
-fun LoginClient() {
+fun LoginClient(navController: NavController) {
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -114,7 +114,9 @@ fun LoginClient() {
                         horizontalAlignment = Alignment.End
                     ) {
 
-                        ButtonBack(onclick = {})
+                        ButtonBack(onclick = {
+                            navController.navigate(Destination.Client.route)
+                        })
                     }
                 }
             }

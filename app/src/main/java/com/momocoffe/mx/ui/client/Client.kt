@@ -11,25 +11,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import androidx.navigation.NavController
 import com.momocoffe.mx.ui.theme.BlueDark
 import com.momocoffe.mx.R
+import com.momocoffe.mx.navigation.Destination
 import com.momocoffe.mx.ui.client.components.ButtonOutLine
 import com.momocoffe.mx.ui.client.components.LoginClient
 import com.momocoffe.mx.ui.client.components.RegisterClient
 import com.momocoffe.mx.ui.theme.*
 
-@Preview(widthDp = 1440, heightDp = 780)
 @Composable
-fun Client(){
+fun Client(navController: NavController){
     var isModalLogin by remember { mutableStateOf(false) }
     var isModalRegister by remember { mutableStateOf(false) }
     if (isModalLogin) {
-        LoginClient()
+        LoginClient(navController)
     }
     if(isModalRegister){
-        RegisterClient()
+        RegisterClient(navController)
     }
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -89,7 +89,9 @@ fun Client(){
                 isModalRegister = true
             })
             Spacer(modifier = Modifier.height(16.dp))
-            ButtonOutLine(text = "Ordenar sin registrar", icon = R.drawable.user_octagon, onclick = {})
+            ButtonOutLine(text = "Ordenar sin registrar", icon = R.drawable.user_octagon, onclick = {
+                navController.navigate(Destination.Products.route)
+            })
 
         }
     }

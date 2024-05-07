@@ -14,15 +14,16 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.*
+import androidx.navigation.NavController
 import com.momocoffe.mx.ui.theme.*
 import com.momocoffe.mx.R
+import com.momocoffe.mx.navigation.Destination
 
 
 @Composable
-fun RegisterClient() {
+fun RegisterClient(navController: NavController) {
     val focusManager = LocalFocusManager.current
     var firstName by rememberSaveable { mutableStateOf(value = "") }
     var email by rememberSaveable { mutableStateOf(value = "") }
@@ -167,7 +168,9 @@ fun RegisterClient() {
                                 modifier = Modifier
                                     .weight(0.5f)
                             ) {
-                                ButtonBack(onclick = {})
+                                ButtonBack(onclick = {
+                                    navController.navigate(Destination.Client.route)
+                                })
                             }
                             Box(
                                 modifier = Modifier

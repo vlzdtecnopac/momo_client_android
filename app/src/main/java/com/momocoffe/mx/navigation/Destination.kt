@@ -5,6 +5,7 @@ sealed  class Destination(val route: String) {
     object Wellcome: Destination(route = "wellcome")
     object OrderHere: Destination(route = "orderhere")
     object Client: Destination(route = "client")
+    object Products: Destination(route = "products")
 
     companion object {
         fun getStartDestination() = Login.route
