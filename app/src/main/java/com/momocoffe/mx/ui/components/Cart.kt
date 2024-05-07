@@ -46,23 +46,24 @@ fun Cart() {
         }, icon = R.drawable.cart_icon)
 
         if (showPopup) {
-            PopupBox() {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.3f)
-                            .fillMaxHeight()
-                            .background(Color.White)
-                            .align(Alignment.TopEnd),
-                    ) {
-                        Text("Working Sidebar")
-                    }
+            PopupBox( onClickOutside = { showPopup = false }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.3f)
+                        .fillMaxHeight()
+                        .background(Color.White)
+                        .align(Alignment.TopEnd)
+                        .zIndex(40F),
+                ) {
+                    ContentCart()
+                }
             }
         }
     }
 }
 
 @Composable
-fun PopupBox( content: @Composable () -> Unit) {
+fun PopupBox(onClickOutside: () -> Unit, content: @Composable () -> Unit) {
     // full screen background
     Dialog(
         onDismissRequest = {},
@@ -76,7 +77,7 @@ fun PopupBox( content: @Composable () -> Unit) {
                 .background(BlueDarkTransparent)
                 .zIndex(10F),
         ) {
-                content()
+            content()
         }
     }
 }
