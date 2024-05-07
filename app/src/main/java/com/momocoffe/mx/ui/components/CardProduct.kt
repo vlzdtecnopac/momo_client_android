@@ -44,9 +44,9 @@ fun CardProduct() {
             contentDescription = stringResource(R.string.momo_coffe),
             contentScale = ContentScale.FillWidth,
             modifier = Modifier.clip(shape = RoundedCornerShape(
-                topStart = 12.dp,
-                topEnd = 12.dp
-            ))
+                topStart = 14.dp,
+                topEnd = 14.dp
+            )).fillMaxWidth()
         )
         Box(
             modifier =  Modifier.background(BlueDark).fillMaxWidth().padding(top= 10.dp, bottom = 10.dp),

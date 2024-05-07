@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,7 +23,7 @@ import com.momocoffe.mx.ui.components.Category
 import com.momocoffe.mx.ui.theme.BlueDark
 import com.momocoffe.mx.ui.theme.BlueLight
 
-@Preview(widthDp = 790, heightDp = 540, showBackground = true )
+@Preview(widthDp = 1440, heightDp = 540, showBackground = true )
 @Composable
 fun Products(){
     val list = (1..10).map { it.toString() }
@@ -48,9 +47,9 @@ fun Products(){
         }
 
         Spacer(modifier = Modifier.height(10.dp))
-        Box(modifier = Modifier.fillMaxWidth(0.8f)) {
+        Box(modifier = Modifier.fillMaxWidth(0.9f)) {
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(228.dp),
+            columns = GridCells.Adaptive(200.dp),
             content = {
                 items(list.size) { index ->
                   CardProduct()
