@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.momocoffe.mx"
+    namespace = "com.momocoffe.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.momocoffe.mx"
+        applicationId = "com.momocoffe.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
