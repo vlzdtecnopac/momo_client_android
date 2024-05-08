@@ -33,6 +33,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.momocoffe.mx.R
 import com.momocoffe.mx.ui.theme.BlueDark
 import com.momocoffe.mx.ui.theme.OrangeDark
@@ -40,7 +42,8 @@ import com.momocoffe.mx.ui.theme.redhatFamily
 import com.momocoffe.mx.ui.theme.stacionFamily
 
 @Composable
-fun Header() {
+fun Header(navController: NavController) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -56,7 +59,9 @@ fun Header() {
             shape = RoundedCornerShape(10.dp),
             border = BorderStroke(width = 0.dp, color = Color.Transparent),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-            onClick = { /*TODO*/ },
+            onClick = {
+                navController.popBackStack()
+            },
             elevation = ButtonDefaults.elevation(0.dp)
         ) {
             Row(

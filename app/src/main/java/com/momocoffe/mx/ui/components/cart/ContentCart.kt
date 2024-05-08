@@ -20,7 +20,7 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.gson.Gson
@@ -35,7 +35,7 @@ import com.momocoffe.mx.ui.theme.stacionFamily
 data class Coffee(val name: String, val price: Int)
 
 @Composable
-fun ContentCart(onClickOutside: () -> Unit, navController: NavHostController) {
+fun ContentCart(onClickOutside: () -> Unit, navController: NavController) {
     val list = ((0..100).map { it.toString() })
 
     Column(
@@ -223,7 +223,7 @@ fun ProductCart() {
 
 
 @Composable
-fun TotalPayment(navController: NavHostController){
+fun TotalPayment(navController: NavController){
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally

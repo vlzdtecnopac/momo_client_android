@@ -31,11 +31,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.momocoffe.mx.ui.theme.BlueDarkTransparent
 
 @Composable
-fun Cart(navController: NavHostController) {
+fun Cart(navController: NavController) {
     var showPopup by rememberSaveable {
         mutableStateOf(false)
     }

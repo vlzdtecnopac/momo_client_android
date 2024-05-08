@@ -10,12 +10,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.momocoffe.mx.ui.components.cart.Cart
 import com.momocoffe.mx.ui.theme.stacionFamily
 
 @Composable
-fun Category(navController: NavHostController){
+fun Category(navController: NavController){
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {

@@ -38,7 +38,7 @@ fun Products(navController: NavHostController){
                 .fillMaxWidth()
                 .background(BlueDark),
             horizontalAlignment = Alignment.CenterHorizontally){
-            Header()
+            Header(navController)
             Category(navController)
             Spacer(modifier = Modifier.height(8.dp))
         }
