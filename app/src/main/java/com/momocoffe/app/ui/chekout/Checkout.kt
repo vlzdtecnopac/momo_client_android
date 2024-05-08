@@ -211,13 +211,15 @@ fun Checkout() {
                                     "${coffee.name}",
                                     modifier = Modifier.weight(0.6f),
                                     fontFamily = redhatFamily,
-                                    fontSize = 12.sp
+                                    fontSize = 14.sp,
+                                    color = Color.White
                                 )
                                 Text(
                                     "${coffee.price}",
                                     modifier = Modifier.weight(0.4f),
                                     fontFamily = redhatFamily,
-                                    fontSize = 12.sp
+                                    fontSize = 16.sp,
+                                    color = Color.White
                                 )
                             }
                         }
@@ -236,9 +238,9 @@ fun Checkout() {
                         )
                     ) {
                         Text(
-                            text = "Agregar",
+                            text = "Pagar",
                             fontSize = 16.sp,
-                            color = BlueDark,
+                            color = Color.White,
                             fontFamily = redhatFamily,
                         )
                     }
