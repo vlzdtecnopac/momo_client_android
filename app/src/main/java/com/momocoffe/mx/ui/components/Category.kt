@@ -10,11 +10,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import androidx.navigation.NavHostController
 import com.momocoffe.mx.ui.components.cart.Cart
 import com.momocoffe.mx.ui.theme.stacionFamily
 
 @Composable
-fun Category(){
+fun Category(navController: NavHostController){
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -34,7 +35,7 @@ fun Category(){
             Spacer(modifier = Modifier.width(5.dp))
             BtnOutlineCategory(text = "Nuestra Tienda", onclick = {})
             Spacer(modifier = Modifier.width(10.dp))
-            Cart()
+            Cart(navController)
         }
 }
 

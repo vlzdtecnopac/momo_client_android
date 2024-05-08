@@ -17,15 +17,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.momocoffe.mx.R
 import com.momocoffe.mx.ui.components.cart.CardProduct
 import com.momocoffe.mx.ui.components.Category
 import com.momocoffe.mx.ui.theme.BlueDark
 import com.momocoffe.mx.ui.theme.BlueLight
 
-@Preview(widthDp = 1440, heightDp = 540, showBackground = true )
 @Composable
-fun Products(){
+fun Products(navController: NavHostController){
     val list = (1..100).map { it.toString() }
 
     Column(modifier = Modifier
@@ -42,7 +42,7 @@ fun Products(){
                 modifier = Modifier.width(135.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Category()
+            Category(navController)
             Spacer(modifier = Modifier.height(8.dp))
         }
 
@@ -52,7 +52,7 @@ fun Products(){
             columns = GridCells.Adaptive(200.dp),
             content = {
                 items(list.size) { index ->
-                  CardProduct()
+                  CardProduct(navController)
                 }
             }
         )

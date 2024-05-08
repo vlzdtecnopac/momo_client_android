@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.momocoffe.mx.R
@@ -30,7 +31,7 @@ import com.momocoffe.mx.ui.theme.redhatFamily
 import com.momocoffe.mx.ui.theme.stacionFamily
 
 @Composable
-fun CardProduct() {
+fun CardProduct(navController: NavController) {
     Column(
         modifier = Modifier.padding(5.dp)
     ){

@@ -37,7 +37,7 @@ fun NavigationScreen(viewModel: LoginViewModel) {
         }
 
         composable(route = Destination.Products.route) {
-            Products()
+            Products(navController = navController)
         }
     }
 }

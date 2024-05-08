@@ -31,10 +31,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavHostController
 import com.momocoffe.mx.ui.theme.BlueDarkTransparent
 
 @Composable
-fun Cart() {
+fun Cart(navController: NavHostController) {
     var showPopup by rememberSaveable {
         mutableStateOf(false)
     }
@@ -55,7 +56,7 @@ fun Cart() {
                         .align(Alignment.TopEnd)
                         .zIndex(40F),
                 ) {
-                    ContentCart(onClickOutside = { showPopup = false })
+                    ContentCart(onClickOutside = { showPopup = false }, navController)
                 }
             }
         }
