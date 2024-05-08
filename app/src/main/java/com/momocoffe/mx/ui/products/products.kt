@@ -26,7 +26,7 @@ import com.momocoffe.mx.ui.theme.BlueLight
 @Preview(widthDp = 1440, heightDp = 540, showBackground = true )
 @Composable
 fun Products(){
-    val list = (1..10).map { it.toString() }
+    val list = (1..100).map { it.toString() }
 
     Column(modifier = Modifier
         .background(BlueLight),

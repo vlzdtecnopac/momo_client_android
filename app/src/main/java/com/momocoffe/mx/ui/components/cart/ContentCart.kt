@@ -33,12 +33,9 @@ import com.momocoffe.mx.ui.theme.stacionFamily
 
 data class Coffee(val name: String, val price: Int)
 
-@Preview(widthDp = 330, heightDp = 700, showBackground = true)
 @Composable
-fun ContentCart() {
-    val list = listOf(
-        "A", "B", "C", "D"
-    ) + ((0..100).map { it.toString() })
+fun ContentCart(onClickOutside: () -> Unit) {
+    val list = ((0..100).map { it.toString() })
 
     Column(
         verticalArrangement = Arrangement.SpaceBetween
@@ -85,7 +82,8 @@ fun ContentCart() {
                             shape = RoundedCornerShape(50.dp)
                         )
                         .padding(4.dp),
-                    onClick = {}) {
+                    onClick = onClickOutside
+                    ) {
                     Icon(
                         Icons.Rounded.Close,
                         contentDescription = stringResource(id = R.string.momo_coffe),
@@ -231,16 +229,18 @@ fun TotalPayment(){
     ){
         Row(modifier = Modifier.fillMaxWidth(0.95f).background(GrayLight).padding(10.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Start
             ){
-            Text("Subtotal (1 producto)", fontSize = 18.sp, fontFamily = redhatFamily)
+            Text("Subtotal (1 producto)", fontSize = 16.sp, fontFamily = redhatFamily)
             Spacer(modifier = Modifier.width(8.dp))
             Text("\$ 67.00", fontSize = 18.sp,  fontFamily = stacionFamily)
         }
         Spacer(modifier = Modifier.width(10.dp))
         Button(
+            modifier = Modifier.fillMaxWidth(0.9f),
+            colors = ButtonDefaults.buttonColors(backgroundColor = OrangeDark),
             onClick = { /*TODO*/ }) {
-            Text("Continuar al pago")
+            Text("Continuar al pago", color = Color.White, fontFamily = stacionFamily)
         }
     }
 

@@ -55,7 +55,7 @@ fun Cart() {
                         .align(Alignment.TopEnd)
                         .zIndex(40F),
                 ) {
-                    ContentCart()
+                    ContentCart(onClickOutside = { showPopup = false })
                 }
             }
         }
