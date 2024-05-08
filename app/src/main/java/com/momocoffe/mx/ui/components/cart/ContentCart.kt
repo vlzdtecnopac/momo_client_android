@@ -25,6 +25,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.gson.Gson
 import com.momocoffe.mx.R
+import com.momocoffe.mx.navigation.Destination
 import com.momocoffe.mx.ui.theme.BlueDark
 import com.momocoffe.mx.ui.theme.GrayLight
 import com.momocoffe.mx.ui.theme.OrangeDark
@@ -239,7 +240,9 @@ fun TotalPayment(navController: NavHostController){
         Button(
             modifier = Modifier.fillMaxWidth(0.9f),
             colors = ButtonDefaults.buttonColors(backgroundColor = OrangeDark),
-            onClick = { /*TODO*/ }) {
+            onClick = {
+                navController.navigate(Destination.Checkout.route)
+            }) {
             Text("Continuar al pago", color = Color.White, fontFamily = stacionFamily)
         }
     }

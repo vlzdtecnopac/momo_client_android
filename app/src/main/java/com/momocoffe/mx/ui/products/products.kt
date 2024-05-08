@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import com.momocoffe.mx.R
 import com.momocoffe.mx.ui.components.cart.CardProduct
 import com.momocoffe.mx.ui.components.Category
+import com.momocoffe.mx.ui.components.Header
 import com.momocoffe.mx.ui.theme.BlueDark
 import com.momocoffe.mx.ui.theme.BlueLight
 
@@ -33,15 +34,11 @@ fun Products(navController: NavHostController){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().background(BlueDark),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(BlueDark),
             horizontalAlignment = Alignment.CenterHorizontally){
-            Spacer(modifier = Modifier.height(8.dp))
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = stringResource(id = R.string.momo_coffe),
-                modifier = Modifier.width(135.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            Header()
             Category(navController)
             Spacer(modifier = Modifier.height(8.dp))
         }

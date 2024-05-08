@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.momocoffe.mx.ui.chekout.Checkout
 import com.momocoffe.mx.ui.client.Client
 import com.momocoffe.mx.ui.orderhere.OrderHere
 import com.momocoffe.mx.ui.login.Login
@@ -38,6 +39,10 @@ fun NavigationScreen(viewModel: LoginViewModel) {
 
         composable(route = Destination.Products.route) {
             Products(navController = navController)
+        }
+
+        composable(route = Destination.Checkout.route) {
+            Checkout()
         }
     }
 }
