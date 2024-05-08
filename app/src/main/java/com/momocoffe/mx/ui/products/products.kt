@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.momocoffe.mx.R
-import com.momocoffe.mx.ui.components.CardProduct
+import com.momocoffe.mx.ui.components.cart.CardProduct
 import com.momocoffe.mx.ui.components.Category
 import com.momocoffe.mx.ui.theme.BlueDark
 import com.momocoffe.mx.ui.theme.BlueLight

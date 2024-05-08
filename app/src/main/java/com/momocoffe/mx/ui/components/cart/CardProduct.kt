@@ -1,4 +1,4 @@
-package com.momocoffe.mx.ui.components
+package com.momocoffe.mx.ui.components.cart
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

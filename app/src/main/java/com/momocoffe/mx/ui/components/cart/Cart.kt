@@ -1,4 +1,4 @@
-package com.momocoffe.mx.ui.components
+package com.momocoffe.mx.ui.components.cart
 import androidx.compose.ui.window.Dialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -55,7 +55,7 @@ fun Cart() {
                         .align(Alignment.TopEnd)
                         .zIndex(40F),
                 ) {
-                    ContentCart(onClickOutside = { showPopup = false })
+                    ContentCart()
                 }
             }
         }
