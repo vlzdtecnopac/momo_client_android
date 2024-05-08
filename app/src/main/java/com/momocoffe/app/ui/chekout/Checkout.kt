@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.Icon
@@ -45,10 +44,9 @@ import com.momocoffe.app.R
 import com.momocoffe.app.ui.chekout.components.OutlineTextField
 import com.momocoffe.app.ui.components.cart.Coffee
 import com.momocoffe.app.ui.theme.OrangeDark
-import com.momocoffe.app.ui.theme.OrangeDarkLight
 import com.momocoffe.app.ui.theme.stacionFamily
 
-data class Coffee(val name: String, val price: Int)
+data class CoffeeCart(val name: String, val price: Int)
 
 @Preview(widthDp = 790, heightDp = 740)
 @Composable
@@ -66,7 +64,7 @@ fun Checkout() {
         ]
     """.trimIndent()
 
-    val table_list = Gson().fromJson(json, Array<Coffee>::class.java)
+    val table_list = Gson().fromJson(json, Array<CoffeeCart>::class.java)
 
 
     Column(
@@ -211,7 +209,7 @@ fun Checkout() {
                                     "${coffee.name}",
                                     modifier = Modifier.weight(0.6f),
                                     fontFamily = redhatFamily,
-                                    fontSize = 14.sp,
+                                    fontSize = 12.sp,
                                     color = Color.White
                                 )
                                 Text(
@@ -262,7 +260,7 @@ fun ProductCartChekout() {
         ]
     """.trimIndent()
 
-    val coffees = Gson().fromJson(json, Array<Coffee>::class.java)
+    val coffees = Gson().fromJson(json, Array<CoffeeCart>::class.java)
 
     Card {
         Column {
