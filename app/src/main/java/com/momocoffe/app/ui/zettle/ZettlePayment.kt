@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
-import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
@@ -40,10 +39,11 @@ import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.ui.theme.stacionFamily
 import com.zettle.sdk.ZettleSDK
 import com.zettle.sdk.core.auth.User
-
+import com.momocoffe.app.R
 @Composable
 fun ZettlePayment(navController: NavHostController){
     val context = LocalContext.current;
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

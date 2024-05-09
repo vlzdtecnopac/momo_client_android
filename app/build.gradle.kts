@@ -111,7 +111,5 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.6.0")
 
     // Socket IO
-    implementation("io.socket:socket.io-client:2.0.0") {
-        exclude( "org.json", "json")
-    }
+    implementation("io.socket:socket.io-client:2.0.0")
 }

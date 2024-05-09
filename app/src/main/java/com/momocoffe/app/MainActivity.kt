@@ -2,7 +2,6 @@ package com.momocoffe.app
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -12,7 +11,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.momocoffe.app.navigation.NavigationScreen
-import com.momocoffe.app.network.repository.SocketHandler
 import com.momocoffe.app.ui.theme.MomoCoffeClientTheme
 import com.momocoffe.app.viewmodel.LoginViewModel
 import com.zettle.sdk.ZettleSDK
@@ -25,11 +23,6 @@ import com.zettle.sdk.feature.qrc.venmo.VenmoQrcFeature
 
 class MainActivity : ComponentActivity() {
     private val viewModel: LoginViewModel by viewModels()
-
-    fun initSocketIO(){
-        SocketHandler.setSocket()
-        SocketHandler.establishConnection()
-    }
 
     fun initZettleSDK() {
         val clientId = getString(R.string.client_id)
@@ -61,7 +54,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-        initSocketIO()
         initZettleSDK()
         if (isTablet()) {
             setContent {
