@@ -81,6 +81,7 @@ fun ZettlePayment(navController: NavHostController){
                 fontSize = 16.sp,
                 color = Color.White,
                 fontFamily = redhatFamily,
+                fontWeight = FontWeight(700)
             )
         }
         Spacer(modifier = Modifier.height(5.dp))

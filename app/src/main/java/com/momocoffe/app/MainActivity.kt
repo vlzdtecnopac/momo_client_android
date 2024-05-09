@@ -61,8 +61,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-        initZettleSDK()
         initSocketIO()
+        initZettleSDK()
         if (isTablet()) {
             setContent {
                 MomoCoffeClientTheme {
@@ -77,7 +77,19 @@ class MainActivity : ComponentActivity() {
                 }
             }
         } else {
-            finish()
+            setContent {
+                MomoCoffeClientTheme {
+                    // A surface container using the 'background' color from the theme
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+
+                        NavigationScreen(viewModel = viewModel)
+                    }
+                }
+            }
+            //finish()
         }
     }
     private fun isTablet(): Boolean {
