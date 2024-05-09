@@ -4,10 +4,10 @@
     <string name="lang_content_description">Languaje</string>
 
     <!-- Value from build type: debug -->
-    <string name="client_id" translatable="false">dd664d80-6962-45de-81fd-0cd3550ead0c</string>
+    <string name="client_id" translatable="false">5bedd597-b670-4054-834f-e5116bda5252</string>
     <!-- Value from build type: debug -->
     <string name="redirect_url_host" translatable="false">zettlelogin</string>
     <!-- Value from build type: debug -->
-    <string name="redirect_url_scheme" translatable="false">awesomeapp</string>
+    <string name="redirect_url_scheme" translatable="false">momoapp</string>
 
 </resources>

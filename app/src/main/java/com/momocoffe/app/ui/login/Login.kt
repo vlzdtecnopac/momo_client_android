@@ -1,11 +1,13 @@
 package com.momocoffe.app.ui.login
 
+import android.app.Activity
+
 import com.momocoffe.app.ui.theme.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
-import androidx.compose.runtime.*
+
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material3.Text
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -20,11 +22,12 @@ import com.momocoffe.app.ui.login.components.EmailOutTextField
 import com.momocoffe.app.ui.login.components.ButtonField
 import com.momocoffe.app.ui.login.components.PasswordOutTextField
 import com.momocoffe.app.R
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.momocoffe.app.navigation.Destination
-
-import com.zettle.sdk.ZettleSDK
-import com.zettle.sdk.core.auth.User
-
 
 @Composable
 fun Login(navController: NavHostController) {
@@ -37,7 +40,6 @@ fun Login(navController: NavHostController) {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -82,7 +84,6 @@ fun Login(navController: NavHostController) {
                 fontWeight = FontWeight.Normal
             )
             Spacer(modifier = Modifier.height(20.dp))
-
             Box(modifier = Modifier
                 .align(Alignment.CenterHorizontally) // Center the inner box
                 .width(480.dp)  ) {
@@ -106,10 +107,6 @@ fun Login(navController: NavHostController) {
                     Spacer(modifier = Modifier.height(25.dp))
                     ButtonField(
                         onclick = {
-                            //val activity = context as? Activity
-                            /*activity?.let {
-                                ZettleSDK.instance?.login(it)
-                            }*/
                             navController.navigate(Destination.Wellcome.route)
                         },
                         enabled = true
@@ -122,3 +119,5 @@ fun Login(navController: NavHostController) {
 
 
 }
+
+

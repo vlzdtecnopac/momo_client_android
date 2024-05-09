@@ -10,6 +10,7 @@ import com.momocoffe.app.ui.orderhere.OrderHere
 import com.momocoffe.app.ui.login.Login
 import com.momocoffe.app.ui.products.Products
 import com.momocoffe.app.ui.wellcome.WellCome
+import com.momocoffe.app.ui.zettle.ZettlePayment
 import com.momocoffe.app.viewmodel.LoginViewModel
 
 @Composable
@@ -42,7 +43,11 @@ fun NavigationScreen(viewModel: LoginViewModel) {
         }
 
         composable(route = Destination.Checkout.route) {
-            Checkout()
+            Checkout(navController = navController)
+        }
+
+        composable(route = Destination.Zettle.route) {
+            ZettlePayment(navController = navController)
         }
     }
 }

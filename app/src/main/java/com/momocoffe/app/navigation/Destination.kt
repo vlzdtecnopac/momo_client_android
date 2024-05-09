@@ -7,8 +7,9 @@ sealed  class Destination(val route: String) {
     object Client: Destination(route = "client")
     object Products: Destination(route = "products")
     object Checkout: Destination(route = "checkout")
+    object Zettle: Destination(route = "zettle")
 
     companion object {
-        fun getStartDestination() = Login.route
+        fun getStartDestination() = Zettle.route
     }
 }

@@ -31,6 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -42,25 +43,22 @@ import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.chekout.components.OutlineTextField
-import com.momocoffe.app.ui.components.cart.Coffee
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.stacionFamily
 
 data class CoffeeCart(val name: String, val price: Int)
 
-@Preview(widthDp = 790, heightDp = 740)
 @Composable
-fun Checkout() {
+fun Checkout(navController: NavHostController) {
     var textState by rememberSaveable { mutableStateOf(value = "") }
-    val navController = rememberNavController()
     val list = ((0..10).map { it.toString() })
     val focusManager = LocalFocusManager.current
 
-
     val json = """
         [
-            {"name": "Extra de café", "price": 10},
-            {"name": "Another Coffee", "price": 15}
+            {"name": "Subtotal  (2 productos)", "price": 10},
+            {"name": "Propina", "price": 15},
+            {"name": "Cupón", "price": 15}
         ]
     """.trimIndent()
 
@@ -145,7 +143,7 @@ fun Checkout() {
                     .padding(10.dp)
             ) {
                 LazyColumn(modifier = Modifier.fillMaxHeight()) {
-                    items(items = list, itemContent = { item ->  ProductCartChekout()})
+                    items(items = list, itemContent = { item -> ProductCartChekout() })
                 }
 
             }
@@ -162,7 +160,7 @@ fun Checkout() {
 
                 Column(
                     modifier = Modifier.fillMaxWidth()
-                ){
+                ) {
                     OutlineTextField(
                         label = "Agregar Cupón",
                         placeholder = "Agregar Cupón",
@@ -231,7 +229,7 @@ fun Checkout() {
                         shape = RoundedCornerShape(4.dp),
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = OrangeDark,
-                            disabledBackgroundColor = OrangeDark ,
+                            disabledBackgroundColor = OrangeDark,
                             disabledContentColor = BlueLight
                         )
                     ) {
@@ -363,59 +361,58 @@ fun ProductCartChekout() {
 fun ContentPropinas() {
     val list = (1..4).map { it.toString() }
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(0.dp),
-            content = {
-                items(list.size) { index ->
-                    Card(
-                        backgroundColor =  Color.Transparent,
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .fillMaxWidth(),
-                    ) {
-                        Button(
-                            elevation = ButtonDefaults.elevation(0.dp),
-                            modifier = Modifier.fillMaxWidth(0.5f),
-                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
-                            shape = RoundedCornerShape(5.dp),
-                            border = BorderStroke(width = 0.dp, color = BlueLight),
-                            colors = ButtonDefaults.buttonColors(backgroundColor = BlueLight),
-                            onClick = { /*TODO*/ }) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(0.dp),
+        content = {
+            items(list.size) { index ->
+                Card(
+                    backgroundColor = Color.Transparent,
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxWidth(),
+                ) {
+                    Button(
+                        elevation = ButtonDefaults.elevation(0.dp),
+                        modifier = Modifier.fillMaxWidth(0.5f),
+                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                        shape = RoundedCornerShape(5.dp),
+                        border = BorderStroke(width = 0.dp, color = BlueLight),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = BlueLight),
+                        onClick = { /*TODO*/ }) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                "0%",
+                                color = BlueDark,
+                                fontFamily = stacionFamily,
+                                fontSize = 18.sp
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Box(modifier = Modifier.weight(0.5f)) {
                                 Text(
-                                    "0%",
+                                    "Hoy no quiero dejar propina",
                                     color = BlueDark,
                                     fontFamily = stacionFamily,
-                                    fontSize = 18.sp
-                                )
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Box(modifier = Modifier.weight(0.5f)){
-                                    Text(
-                                        "Hoy no quiero dejar propina",
-                                        color = BlueDark,
-                                        fontFamily = stacionFamily,
-                                        fontSize = 10.sp,
-                                        lineHeight = 12.sp
-                                    )
-                                }
-
-                                Icon(
-                                    painterResource(id = R.drawable.dollar_circle_icon),
-                                    contentDescription = stringResource(id = R.string.momo_coffe),
-                                    tint = BlueDark,
-                                    modifier = Modifier.size(width = 18.dp, height = 18.dp)
+                                    fontSize = 10.sp,
+                                    lineHeight = 12.sp
                                 )
                             }
+
+                            Icon(
+                                painterResource(id = R.drawable.dollar_circle_icon),
+                                contentDescription = stringResource(id = R.string.momo_coffe),
+                                tint = BlueDark,
+                                modifier = Modifier.size(width = 18.dp, height = 18.dp)
+                            )
                         }
                     }
-
                 }
-            }
-        )
 
+            }
+        }
+    )
 
 
 }

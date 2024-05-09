@@ -69,7 +69,19 @@ class MainActivity : ComponentActivity() {
                 }
             }
         } else {
-            finish() // Close the app
+            setContent {
+                MomoCoffeClientTheme {
+                    // A surface container using the 'background' color from the theme
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+
+                        NavigationScreen(viewModel = viewModel)
+                    }
+                }
+            }
+            //finish() // Close the app
         }
     }
     private fun isTablet(): Boolean {
