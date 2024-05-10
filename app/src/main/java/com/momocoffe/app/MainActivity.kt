@@ -24,7 +24,6 @@ import com.zettle.sdk.feature.qrc.venmo.VenmoQrcFeature
 
 class MainActivity : ComponentActivity() {
     private val viewModel: LoginViewModel by viewModels()
-
     fun initZettleSDK() {
         val clientId = getString(R.string.client_id)
         val scheme = getString(R.string.redirect_url_scheme)

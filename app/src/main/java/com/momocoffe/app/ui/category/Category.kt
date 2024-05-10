@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
@@ -26,12 +27,25 @@ import com.momocoffe.app.R
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
-
+data class ListItem(val iconResId: Int, val name: String)
 @Preview(widthDp = 1440, heightDp = 875, showBackground = true)
 @Composable
 fun Category(){
     val list = (1..8).map { it.toString() }
     val navController = rememberNavController();
+
+    val jsonList = listOf(
+        ListItem(R.drawable.coffee_mug_icon, "Café"),
+        ListItem(R.drawable.tea_mug_icon, "Té"),
+        ListItem(R.drawable.coffee_tea_icon, "Café con Té"),
+        ListItem(R.drawable.specials_momo_icon, "Especiales MoMo"),
+        ListItem(R.drawable.combos_icon, "Combos"),
+        ListItem(R.drawable.alimentos_icon, "Alimentos"),
+        ListItem(R.drawable.coffee_mug_icon, "Otras Bebidas"),
+        ListItem(R.drawable.coffee_mug_icon, "Nuestra Tienda"),
+    )
+
+
     Column(){
         Column(
             modifier = Modifier
@@ -44,17 +58,17 @@ fun Category(){
         }
         LazyVerticalGrid(
             modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(vertical = 50.dp, horizontal = 80.dp),
-            columns = GridCells.Adaptive(310.dp),
+            contentPadding = PaddingValues(vertical = 40.dp, horizontal = 60.dp),
+            columns = GridCells.Fixed(4),
             content = {
-                items(list.size) {
+                items(jsonList) {  item ->
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(14.dp))
-                            .padding(10.dp)) {
+                            .padding(5.dp)) {
                         BtnOutlineCategory(
-                            icon= R.drawable.coffee_mug_icon,
-                            text = "Café",
+                            icon= item.iconResId,
+                            text = item.name,
                             onclick = {}
                         )
                     }

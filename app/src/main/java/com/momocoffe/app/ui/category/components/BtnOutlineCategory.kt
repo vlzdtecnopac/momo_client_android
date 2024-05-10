@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,10 +40,11 @@ fun BtnOutlineCategory(
     icon: Int,
     text: String
 ){
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(260.dp)
+            .height(180.dp)
             .clip(RoundedCornerShape(14.dp))
             .background(BlueDark)
             .border(
@@ -57,9 +59,9 @@ fun BtnOutlineCategory(
             painterResource(id = icon),
             contentDescription = stringResource(id = R.string.momo_coffe),
             tint = Color.White,
-            modifier = Modifier.size(width = 70.dp, height = 70.dp)
+            modifier = Modifier.size(width = 50.dp, height = 50.dp)
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text, color = Color.White, fontSize = 26.sp, fontFamily = redhatFamily )
+        Text(text, color = Color.White, fontSize = 22.sp, fontFamily = redhatFamily, fontWeight = FontWeight(700) )
     }
 }
