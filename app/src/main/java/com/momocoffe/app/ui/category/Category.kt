@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
+import com.momocoffe.app.R
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
@@ -51,7 +52,11 @@ fun Category(){
                         modifier = Modifier
                             .clip(RoundedCornerShape(14.dp))
                             .padding(10.dp)) {
-                        BtnOutlineCategory()
+                        BtnOutlineCategory(
+                            icon= R.drawable.coffee_mug_icon,
+                            text = "Café",
+                            onclick = {}
+                        )
                     }
                 }
             }

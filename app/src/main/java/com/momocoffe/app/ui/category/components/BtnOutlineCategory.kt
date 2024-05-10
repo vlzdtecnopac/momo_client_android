@@ -2,6 +2,7 @@ package com.momocoffe.app.ui.category.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -32,10 +33,11 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.redhatFamily
 
 
-@Preview()
 @Composable
 fun BtnOutlineCategory(
-
+    onclick: () -> Unit,
+    icon: Int,
+    text: String
 ){
     Column(
         modifier = Modifier
@@ -47,17 +49,17 @@ fun BtnOutlineCategory(
             width = 1.2.dp,
             color = Color.White,
             shape = RoundedCornerShape(14.dp)
-        ).padding(horizontal = 20.dp, vertical = 10.dp),
+        ).padding(horizontal = 20.dp, vertical = 10.dp).clickable { onclick() },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Icon(
-            painterResource(id = R.drawable.coffee_mug_icon),
+            painterResource(id = icon),
             contentDescription = stringResource(id = R.string.momo_coffe),
             tint = Color.White,
             modifier = Modifier.size(width = 70.dp, height = 70.dp)
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Text("Café", color = Color.White, fontSize = 26.sp, fontFamily = redhatFamily )
+        Text(text, color = Color.White, fontSize = 26.sp, fontFamily = redhatFamily )
     }
 }
