@@ -105,6 +105,11 @@ dependencies {
 
     // For Manual card entry Payments.
     implementation("com.zettle.sdk.feature.manualcardentry:ui:2.11.1")
+
+    // Lifecycle Components
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
     implementation("androidx.lifecycle:lifecycle-process:2.5.1")
 
     // Coil Package image y Image
