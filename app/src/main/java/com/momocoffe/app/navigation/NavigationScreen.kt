@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.momocoffe.app.ui.category.Category
 import com.momocoffe.app.ui.chekout.Checkout
 import com.momocoffe.app.ui.client.Client
 import com.momocoffe.app.ui.orderhere.OrderHere
@@ -44,6 +45,10 @@ fun NavigationScreen(viewModel: LoginViewModel) {
 
         composable(route = Destination.Checkout.route) {
             Checkout(navController = navController)
+        }
+
+        composable(route = Destination.Category.route) {
+            Category()
         }
 
         composable(route = Destination.Zettle.route) {

@@ -1,9 +1,6 @@
 package com.momocoffe.app.ui.wellcome
 
-import android.os.Handler
-import android.os.Looper
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
@@ -14,19 +11,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.draw.*
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
-
-import com.momocoffe.app.R
-import com.momocoffe.app.ui.wellcome.component.CardOption
-
-
 import com.spr.jetpack_loading.components.indicators.BallBeatIndicator
+import com.momocoffe.app.ui.wellcome.component.CardOption
+import com.momocoffe.app.R
+
+
+
 import kotlinx.coroutines.delay
 
 

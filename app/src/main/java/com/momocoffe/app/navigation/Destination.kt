@@ -7,6 +7,7 @@ sealed  class Destination(val route: String) {
     object Client: Destination(route = "client")
     object Products: Destination(route = "products")
     object Checkout: Destination(route = "checkout")
+    object Category: Destination(route = "category")
     object Zettle: Destination(route = "zettle")
 
     companion object {

@@ -45,7 +45,7 @@ fun OrderHere(navController: NavController) {
             Spacer(modifier = Modifier.height(25.dp))
             ButtonField(
                 onclick = {
-                    navController.navigate(Destination.Client.route)
+                    navController.navigate(Destination.Category.route)
                 },
                 enabled = true
             )

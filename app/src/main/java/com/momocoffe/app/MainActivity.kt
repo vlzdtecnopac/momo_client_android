@@ -86,6 +86,14 @@ class MainActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.background
                     ) {
 
+                        LaunchedEffect(Unit) {
+                            // Initialize Zettle SDK
+                            initZettleSDK()
+                            // Set up and establish socket connection
+                            SocketHandler.setSocket()
+                            SocketHandler.establishConnection()
+                        }
+
                         NavigationScreen(viewModel = viewModel)
                     }
                 }
