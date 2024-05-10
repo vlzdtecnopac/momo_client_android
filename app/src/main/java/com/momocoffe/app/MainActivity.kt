@@ -2,6 +2,7 @@ package com.momocoffe.app
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -11,6 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.momocoffe.app.navigation.NavigationScreen
+
 import com.momocoffe.app.ui.theme.MomoCoffeClientTheme
 import com.momocoffe.app.viewmodel.LoginViewModel
 import com.zettle.sdk.ZettleSDK
@@ -20,9 +22,14 @@ import com.zettle.sdk.feature.cardreader.ui.CardReaderFeature
 import com.zettle.sdk.feature.manualcardentry.ui.ManualCardEntryFeature
 import com.zettle.sdk.feature.qrc.paypal.PayPalQrcFeature
 import com.zettle.sdk.feature.qrc.venmo.VenmoQrcFeature
+import io.socket.client.IO
+import io.socket.client.Socket
+import io.socket.emitter.Emitter
+import java.net.URISyntaxException
 
 class MainActivity : ComponentActivity() {
     private val viewModel: LoginViewModel by viewModels()
+    private lateinit var mSocket: Socket
 
     fun initZettleSDK() {
         val clientId = getString(R.string.client_id)
@@ -53,6 +60,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        SocketHandler.setSocket()
+        SocketHandler.establishConnection()
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
         initZettleSDK()
         if (isTablet()) {
