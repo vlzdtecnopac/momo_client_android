@@ -1,6 +1,6 @@
 package com.momocoffe.app.ui.category
 
-import androidx.compose.foundation.BorderStroke
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,17 +9,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
@@ -31,7 +28,7 @@ data class ListItem(val iconResId: Int, val name: String)
 @Preview(widthDp = 1440, heightDp = 875, showBackground = true)
 @Composable
 fun Category(){
-    val list = (1..8).map { it.toString() }
+
     val navController = rememberNavController();
 
     val jsonList = listOf(
@@ -41,12 +38,12 @@ fun Category(){
         ListItem(R.drawable.specials_momo_icon, "Especiales MoMo"),
         ListItem(R.drawable.combos_icon, "Combos"),
         ListItem(R.drawable.alimentos_icon, "Alimentos"),
-        ListItem(R.drawable.coffee_mug_icon, "Otras Bebidas"),
-        ListItem(R.drawable.coffee_mug_icon, "Nuestra Tienda"),
+        ListItem(R.drawable.other_drinks_icon, "Otras Bebidas"),
+        ListItem(R.drawable.our_store_icon, "Nuestra Tienda"),
     )
 
 
-    Column(){
+    Column{
         Column(
             modifier = Modifier
                 .fillMaxWidth()

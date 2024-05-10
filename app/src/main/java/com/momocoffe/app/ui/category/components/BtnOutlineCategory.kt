@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,6 +63,6 @@ fun BtnOutlineCategory(
             modifier = Modifier.size(width = 50.dp, height = 50.dp)
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text, color = Color.White, fontSize = 22.sp, fontFamily = redhatFamily, fontWeight = FontWeight(700) )
+        Text(text, color = Color.White, fontSize = 22.sp, fontFamily = redhatFamily, fontWeight = FontWeight(700), textAlign = TextAlign.Center )
     }
 }
