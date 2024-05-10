@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.momocoffe.app.navigation.NavigationScreen
@@ -53,10 +54,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        SocketHandler.setSocket()
-        SocketHandler.establishConnection()
+
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-        initZettleSDK()
+
         if (isTablet()) {
             setContent {
                 MomoCoffeClientTheme {
@@ -65,6 +65,13 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
+                        LaunchedEffect(Unit) {
+                            // Initialize Zettle SDK
+                            initZettleSDK()
+                            // Set up and establish socket connection
+                            SocketHandler.setSocket()
+                            SocketHandler.establishConnection()
+                        }
 
                         NavigationScreen(viewModel = viewModel)
                     }

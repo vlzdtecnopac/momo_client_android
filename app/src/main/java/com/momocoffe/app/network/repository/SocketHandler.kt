@@ -11,11 +11,8 @@ object SocketHandler {
     @Synchronized
     fun setSocket() {
         try {
-            val options = IO.Options().apply {
-                transports = arrayOf("websocket", "polling")
-            }
             // "http://10.0.2.2:3000" is the network your Android emulator must use to join the localhost network on your computer
-            mSocket = IO.socket("http://192.168.20.30:3000", options)
+            mSocket = IO.socket("http://192.168.20.30:3000")
             mSocket.on(Socket.EVENT_CONNECT, Emitter.Listener {
                 Log.d("Socket.IO", "Conectado")
                 // Aquí puedes enviar mensajes al servidor o realizar otras acciones al conectarte
