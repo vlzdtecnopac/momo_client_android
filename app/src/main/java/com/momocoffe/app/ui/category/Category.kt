@@ -2,6 +2,7 @@ package com.momocoffe.app.ui.category
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -43,7 +45,11 @@ fun Category(){
     )
 
 
-    Column{
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,8 +60,11 @@ fun Category(){
             Spacer(modifier = Modifier.height(8.dp))
         }
         LazyVerticalGrid(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(vertical = 40.dp, horizontal = 60.dp),
+            horizontalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Center,
+            modifier =Modifier
+                .widthIn(0.dp, 852.dp),
+            contentPadding = PaddingValues(vertical = 20.dp, horizontal = 30.dp),
             columns = GridCells.Fixed(4),
             content = {
                 items(jsonList) {  item ->
