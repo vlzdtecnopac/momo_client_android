@@ -25,8 +25,8 @@ import com.momocoffe.app.ui.theme.BlueDark
 fun ColAndHot() {
 
     val jsonList = listOf(
-        ListItem(R.drawable.coffee_mug_icon, "Caliente"),
-        ListItem(R.drawable.tea_mug_icon, "Frio"),
+        ListItem(R.drawable.hot_icon, "Caliente"),
+        ListItem(R.drawable.cold_icon, "Frio"),
     )
 
     Dialog(
