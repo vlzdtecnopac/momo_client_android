@@ -28,5 +28,5 @@ dependencyResolutionManagement {
 
 
 
-rootProject.name = "MomoCoffeClient"
+rootProject.name = "Momo Kiosko"
 include(":app")
