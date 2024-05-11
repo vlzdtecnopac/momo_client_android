@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.category.sections
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,48 +19,57 @@ import com.momocoffe.app.ui.category.ListItem
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.theme.BlueDark
 
+
 @Preview(widthDp = 1440, heightDp = 875, showBackground = true)
 @Composable
-fun ColAndHot(){
+fun ColAndHot() {
+
     val jsonList = listOf(
-        ListItem(R.drawable.coffee_mug_icon, "Frio"),
-        ListItem(R.drawable.tea_mug_icon, "Caliente"),
+        ListItem(R.drawable.coffee_mug_icon, "Caliente"),
+        ListItem(R.drawable.tea_mug_icon, "Frio"),
     )
 
-
-        Surface(
-            modifier = Modifier
-                .padding(0.dp)
-                .zIndex(88f),
-            color = BlueDark
+    Dialog(
+        onDismissRequest = {},
+        DialogProperties(
+            usePlatformDefaultWidth = false
+        )
+    ) {
+    Surface(
+        modifier = Modifier
+            .padding(0.dp)
+            .zIndex(88f),
+        color = BlueDark
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ){
-                LazyVerticalGrid(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalArrangement = Arrangement.Center,
-                    modifier =Modifier
-                        .widthIn(0.dp, 852.dp),
-                    contentPadding = PaddingValues(vertical = 20.dp, horizontal = 30.dp),
-                    columns = GridCells.Fixed(2),
-                    content = {
-                        items(jsonList) {item ->
-                            Box(modifier = Modifier
-                                    .clip(RoundedCornerShape(14.dp))
-                                    .padding(5.dp)) {
-                                BtnOutlineCategory(
-                                    icon= item.iconResId,
-                                    text = item.name,
-                                    onclick = {}
-                                )
-                            }
+            LazyVerticalGrid(
+                horizontalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .widthIn(0.dp, 600.dp),
+                contentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp),
+                columns = GridCells.Fixed(2),
+                content = {
+                    items(jsonList) { item ->
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(14.dp))
+                                .padding(20.dp)
+                        ) {
+                            BtnOutlineCategory(
+                                icon = item.iconResId,
+                                text = item.name,
+                                onclick = {}
+                            )
                         }
-                    })
-
-            }
+                    }
+                })
+        }
+        }
 
     }
 }
