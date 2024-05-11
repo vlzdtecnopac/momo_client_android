@@ -15,11 +15,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,16 +24,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
-import com.momocoffe.app.ui.theme.stacionFamily
-import com.zettle.sdk.ZettleSDK
-import com.zettle.sdk.core.auth.User
+
 import com.momocoffe.app.R
 @Composable
 fun ZettlePayment(navController: NavHostController){
@@ -55,16 +47,12 @@ fun ZettlePayment(navController: NavHostController){
             modifier = Modifier.width(190.dp)
         )
         Spacer(modifier = Modifier.height(10.dp))
-        AuthenticationStatusText()
         Spacer(modifier = Modifier.height(10.dp))
         Text("Antes de comenzar conectante con el sistema de pagos de Zettle.", color = Color.White, fontFamily = redhatFamily, fontSize = 18.sp)
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = {
-                val activity = context as? Activity
-                activity?.let {
-                    ZettleSDK.instance?.login(it)
-                }
+
             },
             modifier = Modifier
                 .fillMaxWidth(0.3f)
@@ -111,24 +99,3 @@ fun ZettlePayment(navController: NavHostController){
 
 }
 
-
-@Composable
-fun AuthenticationStatusText() {
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    var authStatus by rememberSaveable { mutableStateOf("Not authenticated") }
-
-    val authObserver: (User.AuthState) -> Unit = { state ->
-        authStatus = when (state) {
-            is User.AuthState.LoggedIn -> "User authenticated"
-            is User.AuthState.LoggedOut -> "No authenticated user"
-            else -> "Conectando.."
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        ZettleSDK.instance?.authState?.observe(lifecycleOwner, authObserver)
-    }
-    Spacer(modifier = Modifier.height(10.dp))
-    Text(text = authStatus, color = Color.White, fontFamily = stacionFamily, fontSize = 28.sp)
-}
