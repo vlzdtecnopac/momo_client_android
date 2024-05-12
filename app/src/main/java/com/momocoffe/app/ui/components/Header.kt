@@ -77,8 +77,10 @@ fun Header(navController: NavController) {
             contentDescription = stringResource(id = R.string.momo_coffe),
             modifier = Modifier.width(135.dp)
         )
-        Row {
-            Column {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Column{
                 Text(
                     "Bienvenido",
                     fontSize = 14.sp,
@@ -97,7 +99,7 @@ fun Header(navController: NavController) {
             Image(
                 painter = painterResource(R.drawable.header_icon_momo),
                 contentDescription = stringResource(id = R.string.momo_coffe),
-                modifier = Modifier.width(85.dp)
+                modifier = Modifier.width(45.dp)
             )
 
         }

@@ -2,6 +2,8 @@ package com.momocoffe.app.ui.login.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.*
 import androidx.compose.runtime.Composable
@@ -37,7 +39,8 @@ fun EmailOutTextField(
             Icon(
                 painter = painterResource(R.drawable.mail_icon),
                 contentDescription = stringResource(id = R.string.momo_coffe),
-                tint = Color.White
+                tint = Color.White,
+                modifier = Modifier.size(26.dp)
             )
         },
         trailingIcon = {
@@ -47,7 +50,8 @@ fun EmailOutTextField(
                 Icon(
                     imageVector = Icons.Filled.Clear,
                     contentDescription = stringResource(id = R.string.momo_coffe),
-                    tint = Color.White
+                    tint = Color.White,
+                    modifier = Modifier.size(26.dp)
                 )
             }
         },

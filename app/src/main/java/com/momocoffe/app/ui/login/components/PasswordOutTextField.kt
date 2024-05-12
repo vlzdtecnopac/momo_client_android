@@ -2,6 +2,7 @@ package com.momocoffe.app.ui.login.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActionScope
@@ -44,7 +45,8 @@ fun PasswordOutTextField(
             Icon(
                 painter = painterResource(R.drawable.lock_icon),
                 contentDescription = "Icon Clear",
-                tint = Color.White
+                tint = Color.White,
+                modifier = Modifier.size(26.dp)
             )
         },
         trailingIcon = {
@@ -64,7 +66,8 @@ fun PasswordOutTextField(
                 Icon(
                     icon,
                     contentDescription = "Visibility",
-                    tint = iconColor
+                    tint = iconColor,
+                    modifier = Modifier.size(26.dp)
                 )
             }
         },

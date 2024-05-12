@@ -17,8 +17,8 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.client.components.ButtonOutLine
-import com.momocoffe.app.ui.client.components.LoginClient
-import com.momocoffe.app.ui.client.components.RegisterClient
+import com.momocoffe.app.ui.client.section.LoginClient
+import com.momocoffe.app.ui.client.section.RegisterClient
 import com.momocoffe.app.ui.theme.*
 
 @Composable

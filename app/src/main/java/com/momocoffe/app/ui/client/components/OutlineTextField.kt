@@ -2,6 +2,7 @@ package com.momocoffe.app.ui.client.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
@@ -33,7 +34,7 @@ fun OutlineTextField(
     onValueChange: (String) -> Unit,
     onClickButton: () -> Unit,
     onNext: (KeyboardActionScope.() -> Unit)
-){
+) {
 
     OutlinedTextField(
         value = textValue,
@@ -47,7 +48,8 @@ fun OutlineTextField(
             Icon(
                 painter = painterResource(icon),
                 contentDescription = stringResource(id = R.string.momo_coffe),
-                tint = Color.White
+                tint = Color.White,
+                modifier = Modifier.size(26.dp)
             )
         },
         trailingIcon = {
@@ -57,7 +59,8 @@ fun OutlineTextField(
                 Icon(
                     imageVector = Icons.Filled.Clear,
                     contentDescription = stringResource(id = R.string.momo_coffe),
-                    tint = Color.White
+                    tint = Color.White,
+                    modifier = Modifier.size(26.dp)
                 )
             }
         },

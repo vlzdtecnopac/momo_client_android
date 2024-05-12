@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -68,9 +69,8 @@ fun ContentNotEffecty(navController : NavController) {
                 }
 
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(7f),
+                    modifier =Modifier
+                        .widthIn(0.dp, 852.dp),
                     verticalArrangement = Arrangement.Top
                 ){
 
@@ -95,7 +95,8 @@ fun ContentNotEffecty(navController : NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(5f)
-                            .padding(20.dp)
+                            .padding(20.dp),
+                        horizontalAlignment = Alignment.Start
                     ) {
                         Row{
                             ButtonLang(onclick= {}, text= "Español", icon = painterResource(id = R.drawable.mexico_flag))
@@ -107,7 +108,8 @@ fun ContentNotEffecty(navController : NavController) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(7f)
-                            .padding(2.dp)
+                            .padding(2.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         ButtonField(
                             onclick = {

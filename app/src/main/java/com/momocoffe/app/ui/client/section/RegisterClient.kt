@@ -1,4 +1,4 @@
-package com.momocoffe.app.ui.client.components
+package com.momocoffe.app.ui.client.section
 
 
 import androidx.compose.foundation.*
@@ -20,6 +20,10 @@ import androidx.navigation.NavController
 import com.momocoffe.app.ui.theme.*
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.ui.client.components.ButtonBack
+import com.momocoffe.app.ui.client.components.ButtonContinue
+import com.momocoffe.app.ui.client.components.DropDownOutline
+import com.momocoffe.app.ui.client.components.OutlineTextField
 
 
 @Composable

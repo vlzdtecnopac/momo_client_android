@@ -1,4 +1,4 @@
-package com.momocoffe.app.ui.client.components
+package com.momocoffe.app.ui.client.section
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,6 +31,8 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.ui.client.components.ButtonBack
+import com.momocoffe.app.ui.client.components.ButtonOutLine
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.ui.theme.stacionFamily
