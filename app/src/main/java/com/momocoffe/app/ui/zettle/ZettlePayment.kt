@@ -53,11 +53,10 @@ fun ZettlePayment(navController: NavHostController){
         )
         Spacer(modifier = Modifier.height(10.dp))
         Spacer(modifier = Modifier.height(10.dp))
-        Text("Antes de comenzar conectante con el sistema de pagos de Zettle.", color = Color.White, fontFamily = redhatFamily, fontSize = 18.sp)
+        Text("Antes de comenzar comnprueba el estado del sistema de pagos con Zettle.", color = Color.White, fontFamily = redhatFamily, fontSize = 18.sp)
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = {
-                val pm: PackageManager = packageManager
                 try {
                     val intent = Intent()
                     intent.component = ComponentName("com.momocoffe.izettlemomo", "com.momocoffe.izettlemomo.MainActivity")
@@ -78,7 +77,7 @@ fun ZettlePayment(navController: NavHostController){
             )
         ) {
             Text(
-                text = "Ingresar",
+                text = "Comprobar",
                 fontSize = 16.sp,
                 color = Color.White,
                 fontFamily = redhatFamily,
