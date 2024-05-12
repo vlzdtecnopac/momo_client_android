@@ -60,6 +60,8 @@ fun ZettlePayment(navController: NavHostController){
                 try {
                     val intent = Intent()
                     intent.component = ComponentName("com.momocoffe.izettlemomo", "com.momocoffe.izettlemomo.MainActivity")
+                    intent.putExtra("parametro1", "New Invoice")
+                    intent.putExtra("parametro2", 300)
                     context.startActivity(intent)
                 } catch (e: Exception) {
                     Log.e("TAG", "Error al abrir la aplicación", e)
