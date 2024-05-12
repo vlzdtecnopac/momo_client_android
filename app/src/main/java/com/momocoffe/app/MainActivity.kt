@@ -1,5 +1,6 @@
 package com.momocoffe.app
 
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,9 +14,18 @@ import androidx.compose.ui.Modifier
 import com.momocoffe.app.navigation.NavigationScreen
 import com.momocoffe.app.ui.theme.MomoCoffeClientTheme
 import com.momocoffe.app.viewmodel.LoginViewModel
+import com.momocoffe.app.viewmodel.RegionInternational
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     private val viewModel: LoginViewModel by viewModels()
+
+    override fun attachBaseContext(newBase: Context?) {
+        val localeToSwitchTo = Locale("en")
+        val localeUpdatedContext =
+            newBase?.let { RegionInternational.updateLocale(it, localeToSwitchTo) }
+        super.attachBaseContext(localeUpdatedContext)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

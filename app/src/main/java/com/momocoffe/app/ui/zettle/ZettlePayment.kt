@@ -39,7 +39,6 @@ import com.momocoffe.app.R
 @Composable
 fun ZettlePayment(navController: NavHostController){
     val context = LocalContext.current
-    val packageManager = context.packageManager
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -79,7 +78,7 @@ fun ZettlePayment(navController: NavHostController){
             )
         ) {
             Text(
-                text = "Comprobar",
+                text = stringResource(id = R.string.check_zettle),
                 fontSize = 16.sp,
                 color = Color.White,
                 fontFamily = redhatFamily,

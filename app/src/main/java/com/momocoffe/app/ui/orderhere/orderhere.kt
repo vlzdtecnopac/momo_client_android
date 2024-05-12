@@ -1,6 +1,7 @@
 package com.momocoffe.app.ui.orderhere
 
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,10 +11,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.momocoffe.app.MainActivity
 import com.momocoffe.app.ui.orderhere.components.ButtonField
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.orderhere.components.ButtonLang
@@ -21,9 +24,12 @@ import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.orderhere.components.ButtonEffecty
 import com.momocoffe.app.ui.orderhere.components.ContentNotEffecty
+import com.momocoffe.app.viewmodel.RegionInternational
+import java.util.Locale
 
 @Composable
 fun OrderHere(navController: NavController) {
+    val context = LocalContext.current
     var isModalVisible by remember { mutableStateOf(false) }
     if (isModalVisible) {
         ContentNotEffecty(navController)
@@ -44,6 +50,7 @@ fun OrderHere(navController: NavController) {
             )
             Spacer(modifier = Modifier.height(25.dp))
             ButtonField(
+                text = stringResource(id = R.string.orderhere),
                 onclick = {
                     navController.navigate(Destination.Category.route)
                 },
@@ -62,9 +69,21 @@ fun OrderHere(navController: NavController) {
                     .padding(20.dp)
             ) {
                Row{
-                   ButtonLang(onclick= {}, text= "Español", icon = painterResource(id = R.drawable.mexico_flag))
+                   ButtonLang(onclick= {
+                       val localeToSwitchTo = Locale("es")
+                       RegionInternational.updateLocale(context, localeToSwitchTo)
+                       val intent = Intent(context, MainActivity::class.java)
+                       intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                       context.startActivity(intent)
+                   }, text= "Español", icon = painterResource(id = R.drawable.mexico_flag))
                    Spacer(modifier = Modifier.width(15.dp))
-                   ButtonLang(onclick= {}, text="Ingles", icon = painterResource(id = R.drawable.usa_flag))
+                   ButtonLang(onclick= {
+                       val localeToSwitchTo = Locale("en")
+                       RegionInternational.updateLocale(context, localeToSwitchTo)
+                       val intent = Intent(context, MainActivity::class.java)
+                       intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                       context.startActivity(intent)
+                   }, text="Ingles", icon = painterResource(id = R.drawable.usa_flag))
                }
             }
             Column(
