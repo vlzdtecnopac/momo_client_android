@@ -1,6 +1,10 @@
 package com.momocoffe.app.ui.zettle
 
-import android.app.Activity
+
+import android.content.ComponentName
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +38,8 @@ import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.R
 @Composable
 fun ZettlePayment(navController: NavHostController){
-    val context = LocalContext.current;
+    val context = LocalContext.current
+    val packageManager = context.packageManager
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -52,6 +57,14 @@ fun ZettlePayment(navController: NavHostController){
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = {
+                val pm: PackageManager = packageManager
+                try {
+                    val intent = Intent()
+                    intent.component = ComponentName("com.momocoffe.izettlemomo", "com.momocoffe.izettlemomo.MainActivity")
+                    context.startActivity(intent)
+                } catch (e: Exception) {
+                    Log.e("TAG", "Error al abrir la aplicación", e)
+                }
 
             },
             modifier = Modifier
