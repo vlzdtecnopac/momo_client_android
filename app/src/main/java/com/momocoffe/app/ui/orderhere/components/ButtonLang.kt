@@ -3,6 +3,7 @@ package com.momocoffe.app.ui.orderhere.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -38,7 +39,9 @@ fun ButtonLang(
             shape = RoundedCornerShape(14.dp)
         ).padding(8.dp)
 
-    Box(modifier = modifierCard){
+    Box(modifier = modifierCard.clickable {
+        onclick()
+    }){
         Column (
             modifier =  Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,

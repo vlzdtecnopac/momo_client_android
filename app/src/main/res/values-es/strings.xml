@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Momo Kiosko</string>
+    <string name="momo_coffe">Momo Coffe</string>
+    <string name="lang_content_description">Lenguaje</string>
+    <string name="check_zettle">Comprobar</string>
+    <string name="orderhere">Ordena Aquí</string>
+</resources>

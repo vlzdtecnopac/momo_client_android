@@ -2,4 +2,6 @@
     <string name="app_name">Momo Kiosko</string>
     <string name="momo_coffe">Momo Coffe</string>
     <string name="lang_content_description">Languaje</string>
+    <string name="check_zettle">Check</string>
+    <string name="orderhere">Order here</string>
 </resources>

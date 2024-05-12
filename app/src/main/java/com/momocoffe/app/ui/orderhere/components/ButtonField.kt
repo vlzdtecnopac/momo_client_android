@@ -17,7 +17,8 @@ import com.momocoffe.app.ui.theme.stacionFamily
 @Composable
 fun ButtonField(
     onclick: () -> Unit,
-    enabled: Boolean
+    enabled: Boolean,
+    text: String
 ){
     Button(
         onClick = onclick,
@@ -31,7 +32,7 @@ fun ButtonField(
         )
     ) {
         Text(
-            text = "Ordena Aquí",
+            text = text,
             fontSize = 22.sp,
             color = Color.White,
             fontFamily = redhatFamily,

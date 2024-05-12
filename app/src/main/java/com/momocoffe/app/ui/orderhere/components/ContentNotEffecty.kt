@@ -112,6 +112,7 @@ fun ContentNotEffecty(navController : NavController) {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         ButtonField(
+                            text = stringResource(id = R.string.orderhere),
                             onclick = {
                                 navController.navigate(Destination.Client.route)
                             },
