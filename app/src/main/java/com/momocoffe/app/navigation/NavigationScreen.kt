@@ -48,7 +48,7 @@ fun NavigationScreen(viewModel: LoginViewModel) {
         }
 
         composable(route = Destination.Category.route) {
-            Category()
+            Category(navController = navController)
         }
 
         composable(route = Destination.Zettle.route) {

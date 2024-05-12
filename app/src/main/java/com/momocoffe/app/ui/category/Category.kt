@@ -11,17 +11,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.R
 data class ListItem(val iconResId: Int, val name: String)
-@Preview(widthDp = 1440, heightDp = 875, showBackground = true)
-@Composable
-fun Category(){
 
-    val navController = rememberNavController();
+@Composable
+fun Category(navController: NavController){
 
     val jsonList = listOf(
         ListItem(R.drawable.coffee_mug_icon, "Café"),
@@ -33,7 +32,6 @@ fun Category(){
         ListItem(R.drawable.other_drinks_icon, "Otras Bebidas"),
         ListItem(R.drawable.our_store_icon, "Nuestra Tienda"),
     )
-
 
     Column(
         modifier = Modifier
