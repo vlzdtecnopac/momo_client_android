@@ -101,7 +101,7 @@ fun ZettlePayment(navController: NavHostController){
             )
         ) {
             Text(
-                text = "No Deseo",
+                text = stringResource(id = R.string.not_want),
                 fontSize = 16.sp,
                 color = BlueDark,
                 fontFamily = redhatFamily,

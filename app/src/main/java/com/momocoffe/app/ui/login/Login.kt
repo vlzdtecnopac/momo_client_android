@@ -1,13 +1,10 @@
 package com.momocoffe.app.ui.login
 
-import android.app.Activity
-
 import com.momocoffe.app.ui.theme.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.*
 import androidx.compose.ui.unit.*
-
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material3.Text
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -22,11 +19,7 @@ import com.momocoffe.app.ui.login.components.EmailOutTextField
 import com.momocoffe.app.ui.login.components.ButtonField
 import com.momocoffe.app.ui.login.components.PasswordOutTextField
 import com.momocoffe.app.R
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import com.momocoffe.app.navigation.Destination
 
 @Composable
@@ -69,7 +62,7 @@ fun Login(navController: NavHostController) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                "Iniciar sesión en Kiosko",
+                stringResource(id = R.string.start_session_kiosko),
                 color = Color.White,
                 fontSize = 30.sp,
                 fontFamily = redhatFamily,
@@ -77,7 +70,7 @@ fun Login(navController: NavHostController) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                "Digita tu correo electrónico y contraseña",
+                stringResource(id = R.string.enter_gmail_password),
                 color = Color.White,
                 fontSize = 20.sp,
                 fontFamily = stacionFamily,

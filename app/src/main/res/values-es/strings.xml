@@ -14,4 +14,7 @@
         * Agilizamos nuestras operaciones para que recibas tu café en pocos minutos.\n
         * Reducimos los riesgos asociados con robos en el local y entre nuestros clientes.\n
         Nos comprometemos a proporcionar una experiencia de compra eficiente, segura y moderna. Para consultas, contáctanos sin dudarlo.</string>
+    <string name="not_want">No deseo</string>
+    <string name="start_session_kiosko">Iniciar sesión en Kiosko</string>
+    <string name="enter_gmail_password">Digita tu correo electrónico y contraseña</string>
 </resources>

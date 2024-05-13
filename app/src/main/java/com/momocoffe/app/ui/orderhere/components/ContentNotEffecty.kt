@@ -127,7 +127,9 @@ fun ContentNotEffecty(navController : NavController) {
                             .weight(5f)
                             .padding(20.dp)
                     ) {
-                        ButtonBack(onclick = {
+                        ButtonBack(
+                            text = stringResource(id = R.string.txt_back),
+                            onclick = {
                             navController.navigate(Destination.OrderHere.route)
                         })
                     }

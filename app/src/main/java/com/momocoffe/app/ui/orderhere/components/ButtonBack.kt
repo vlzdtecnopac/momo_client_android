@@ -33,6 +33,7 @@ import com.momocoffe.app.R
 @Composable
 fun ButtonBack(
     onclick: () -> Unit,
+    text: String
 ){
 
     val modifierCard = Modifier
@@ -56,7 +57,7 @@ fun ButtonBack(
         )
         Spacer(modifier = Modifier.width(10.dp))
         Text(
-            "Regresar",
+            text,
             color = Color.White,
             fontSize = 18.sp,
             fontFamily = stacionFamily,
