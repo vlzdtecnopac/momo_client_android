@@ -14,9 +14,8 @@ import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.orderhere.components.ButtonEffecty
 import com.momocoffe.app.ui.orderhere.components.ContentNotEffecty
 import com.momocoffe.app.ui.theme.BlueDark
-import com.momocoffe.app.R
 import com.momocoffe.app.viewmodel.RegionInternational
-
+import com.momocoffe.app.R
 
 @Composable
 fun OrderHere(navController: NavController) {

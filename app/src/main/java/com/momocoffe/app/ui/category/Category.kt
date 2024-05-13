@@ -51,7 +51,7 @@ fun Category(navController: NavController){
             horizontalArrangement = Arrangement.Center,
             verticalArrangement = Arrangement.Center,
             modifier =Modifier
-                .widthIn(0.dp, 852.dp),
+                .widthIn(0.dp, 900.dp),
             contentPadding = PaddingValues(vertical = 20.dp, horizontal = 30.dp),
             columns = GridCells.Fixed(4),
             content = {

@@ -68,7 +68,12 @@ fun Header(navController: NavController) {
                     modifier = Modifier.size(width = 18.dp, height = 18.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Regresar", color = Color.White, fontFamily = redhatFamily, fontSize = 18.sp)
+                Text(
+                    stringResource(id = R.string.txt_back),
+                    color = Color.White,
+                    fontFamily = redhatFamily,
+                    fontSize = 18.sp
+                )
             }
 
         }
@@ -79,10 +84,10 @@ fun Header(navController: NavController) {
         )
         Row(
             verticalAlignment = Alignment.CenterVertically
-        ){
-            Column{
+        ) {
+            Column {
                 Text(
-                    "Bienvenido",
+                    stringResource(id = R.string.wellcome),
                     fontSize = 14.sp,
                     fontWeight = FontWeight(700),
                     fontFamily = stacionFamily,

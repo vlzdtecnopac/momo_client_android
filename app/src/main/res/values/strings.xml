@@ -4,4 +4,6 @@
     <string name="lang_content_description">Languaje</string>
     <string name="check_zettle">Check</string>
     <string name="orderhere">Order here</string>
+    <string name="wellcome">Wellcome</string>
+    <string name="txt_back">Back</string>
 </resources>
