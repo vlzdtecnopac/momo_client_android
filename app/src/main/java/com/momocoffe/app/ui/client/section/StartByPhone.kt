@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +35,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.zIndex
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.client.components.DropDownOutline
 import com.momocoffe.app.ui.client.components.OutTextField
@@ -46,102 +51,116 @@ import com.momocoffe.app.ui.theme.stacionFamily
 fun StartByPhone(){
     var phone by rememberSaveable { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
+    Dialog(
+        onDismissRequest = {},
+        DialogProperties(
+            usePlatformDefaultWidth = false
+        )
     ) {
-
-        Column(
+        Surface(
             modifier = Modifier
-                .fillMaxSize()
-                .weight(4f),
+                .padding(0.dp)
+                .zIndex(88f),
+            color = BlueDark
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.client_session),
-                contentDescription = stringResource(id = R.string.momo_coffe),
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
-            )
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .weight(7f)
-                .background(BlueDark),
-            verticalArrangement = Arrangement.SpaceAround,
-
-            ) {
-            Column(
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = stringResource(id = R.string.momo_coffe),
-                    modifier = Modifier.width(190.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    "Iniciar Sesión",
-                    color = Color.White,
-                    fontSize = 30.sp,
-                    fontFamily = redhatFamily,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(
-                    stringResource(id = R.string.enter_yuor_email),
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontFamily = stacionFamily,
-                    fontWeight = FontWeight.Normal,
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Box(
-                    modifier =Modifier
-                        .widthIn(0.dp, 480.dp),
-                ){
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .weight(0.3f)
-                        ) {
-                            Spacer(modifier = Modifier.height(8.dp))
-                            DropDownOutline()
-                        }
-                        Box(
-                            modifier = Modifier
-                                .weight(0.8f)
-                        ) {
-                            OutTextField(
-                                textValue = phone,
-                                onValueChange = { phone = it },
-                                onClickButton = { phone = "" },
-                                text = stringResource(id = R.string.phone),
-                                keyboardType = KeyboardType.Phone,
-                                icon = painterResource(R.drawable.phone),
-                                onNext = {
-                                    focusManager.moveFocus(
-                                        FocusDirection.Down
-                                    )
-                                }
-                            )
-                        }
-                    }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(4f),
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.client_session),
+                        contentDescription = stringResource(id = R.string.momo_coffe),
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop,
+                    )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
-                ButtonField(
-                    text = stringResource(id = R.string.enter),
-                    onclick = { /*TODO*/ },
-                    enabled = true
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .weight(7f)
+                        .background(BlueDark),
+                    verticalArrangement = Arrangement.SpaceAround,
+
+                    ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.logo),
+                            contentDescription = stringResource(id = R.string.momo_coffe),
+                            modifier = Modifier.width(190.dp)
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            "Iniciar Sesión",
+                            color = Color.White,
+                            fontSize = 30.sp,
+                            fontFamily = redhatFamily,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Text(
+                            stringResource(id = R.string.enter_yuor_email),
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontFamily = stacionFamily,
+                            fontWeight = FontWeight.Normal,
+                            textAlign = TextAlign.Center
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Box(
+                            modifier = Modifier
+                                .widthIn(0.dp, 480.dp),
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .weight(0.3f)
+                                ) {
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    DropDownOutline()
+                                }
+                                Box(
+                                    modifier = Modifier
+                                        .weight(0.8f)
+                                ) {
+                                    OutTextField(
+                                        textValue = phone,
+                                        onValueChange = { phone = it },
+                                        onClickButton = { phone = "" },
+                                        text = stringResource(id = R.string.phone),
+                                        keyboardType = KeyboardType.Phone,
+                                        icon = painterResource(R.drawable.phone),
+                                        onNext = {
+                                            focusManager.moveFocus(
+                                                FocusDirection.Down
+                                            )
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(30.dp))
+                        ButtonField(
+                            text = stringResource(id = R.string.enter),
+                            onclick = { /*TODO*/ },
+                            enabled = true
+                        )
 
 
+                    }
+                }
             }
         }
     }
