@@ -1,31 +1,22 @@
 package com.momocoffe.app.ui.orderhere
 
-
-import android.content.Intent
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.momocoffe.app.MainActivity
-import com.momocoffe.app.ui.orderhere.components.ButtonField
-import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.orderhere.components.ButtonLang
-import com.momocoffe.app.R
+import com.momocoffe.app.ui.orderhere.components.ButtonField
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.orderhere.components.ButtonEffecty
 import com.momocoffe.app.ui.orderhere.components.ContentNotEffecty
+import com.momocoffe.app.ui.theme.BlueDark
+import com.momocoffe.app.R
 import com.momocoffe.app.viewmodel.RegionInternational
-import java.util.Locale
+
 
 @Composable
 fun OrderHere(navController: NavController) {
@@ -70,19 +61,11 @@ fun OrderHere(navController: NavController) {
             ) {
                Row{
                    ButtonLang(onclick= {
-                       val localeToSwitchTo = Locale("es")
-                       RegionInternational.updateLocale(context, localeToSwitchTo)
-                       val intent = Intent(context, MainActivity::class.java)
-                       intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                       context.startActivity(intent)
+                       RegionInternational.setLocale(context, "es")
                    }, text= "Español", icon = painterResource(id = R.drawable.mexico_flag))
                    Spacer(modifier = Modifier.width(15.dp))
                    ButtonLang(onclick= {
-                       val localeToSwitchTo = Locale("en")
-                       RegionInternational.updateLocale(context, localeToSwitchTo)
-                       val intent = Intent(context, MainActivity::class.java)
-                       intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                       context.startActivity(intent)
+                       RegionInternational.setLocale(context, "en")
                    }, text="Ingles", icon = painterResource(id = R.drawable.usa_flag))
                }
             }

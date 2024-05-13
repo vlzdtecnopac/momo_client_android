@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import android.os.LocaleList
+import com.momocoffe.app.MainActivity
 import java.util.Locale
 
 
@@ -28,6 +29,18 @@ class RegionInternational(base: Context?) : ContextWrapper(base)  {
                 resources.updateConfiguration(configuration, resources.getDisplayMetrics())
             }
             return RegionInternational(context)
+        }
+
+
+        fun setLocale(context: Context, languageCode: String) {
+            val locale = Locale(languageCode)
+            Locale.setDefault(locale)
+            val resources = context.resources
+            val configuration = Configuration(resources.configuration)
+            configuration.setLocale(locale)
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+
+            (context as? MainActivity)?.recreate()
         }
 
     }
