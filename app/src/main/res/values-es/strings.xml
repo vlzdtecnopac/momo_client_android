@@ -7,4 +7,11 @@
     <string name="orderhere">Ordena Aquí</string>
     <string name="wellcome">Bienvenido</string>
     <string name="txt_back">Regresar</string>
+    <string name="reason_not_accepting_cash">No aceptamos efectivo.\nDescubre por qué.</string>
+    <string name="text_payment">En MOMO Coffee, estamos comprometidos con la mejora continua de nuestros servicios y la seguridad de nuestros clientes y empleados.\n
+        Por lo tanto, al no manejar efectivo:\n
+        * Mejoramos las condiciones de higiene y evitamos la contaminación de los productos.\n
+        * Agilizamos nuestras operaciones para que recibas tu café en pocos minutos.\n
+        * Reducimos los riesgos asociados con robos en el local y entre nuestros clientes.\n
+        Nos comprometemos a proporcionar una experiencia de compra eficiente, segura y moderna. Para consultas, contáctanos sin dudarlo.</string>
 </resources>

@@ -17,11 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -32,9 +31,11 @@ import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.redhatFamily
+import com.momocoffe.app.viewmodel.RegionInternational
 
 @Composable
 fun ContentNotEffecty(navController : NavController) {
+    val context = LocalContext.current
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -74,12 +75,8 @@ fun ContentNotEffecty(navController : NavController) {
                     verticalArrangement = Arrangement.Top
                 ){
 
-                    Text("En MOMO Coffee, estamos comprometidos con la mejora continua de nuestros servicios y la seguridad de nuestros clientes y empleados.\n" +
-                            "Es por ello que al no manejar efectivo: \n" +
-                            "* Mejoramos condiciones de higiene y evitamos contaminación de productos \n" +
-                            "* Agilizamos nuestras operaciones para que recibas tu café en pocos minutos \n" +
-                            "* Reducimos riesgos asociados con robos a local y a nuestros clientes \n" +
-                            "Nos comprometemos a proporcionar una experiencia de compra eficiente, segura y moderna. Para consultas, contáctanos sin dudarlo",
+                    Text(
+                        stringResource(id = R.string.text_payment),
                         color = Color.White, fontSize = 18.sp ,fontFamily = redhatFamily)
 
                 }
@@ -99,9 +96,13 @@ fun ContentNotEffecty(navController : NavController) {
                         horizontalAlignment = Alignment.Start
                     ) {
                         Row{
-                            ButtonLang(onclick= {}, text= "Español", icon = painterResource(id = R.drawable.mexico_flag))
+                            ButtonLang(onclick= {
+                                RegionInternational.setLocale(context, "es")
+                            }, text= "Español", icon = painterResource(id = R.drawable.mexico_flag))
                             Spacer(modifier = Modifier.width(15.dp))
-                            ButtonLang(onclick= {}, text="Ingles", icon = painterResource(id = R.drawable.usa_flag))
+                            ButtonLang(onclick= {
+                                RegionInternational.setLocale(context, "en")
+                            }, text="Ingles", icon = painterResource(id = R.drawable.usa_flag))
                         }
                     }
                     Column(
@@ -114,7 +115,7 @@ fun ContentNotEffecty(navController : NavController) {
                         ButtonField(
                             text = stringResource(id = R.string.orderhere),
                             onclick = {
-                                navController.navigate(Destination.Client.route)
+                                navController.navigate(Destination.Category.route)
                             },
                             enabled = true
                         )

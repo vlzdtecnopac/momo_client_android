@@ -6,4 +6,12 @@
     <string name="orderhere">Order here</string>
     <string name="wellcome">Wellcome</string>
     <string name="txt_back">Back</string>
+    <string name="reason_not_accepting_cash">We do not accept cash.\nFind out why.</string>
+    <string name="text_payment">At MOMO Coffee, we are committed to the continuous improvement of our services and the safety of our customers and employees.\n
+        That\'s why, by not handling cash:\n
+        * We improve hygiene conditions and avoid product contamination.\n
+        * We streamline our operations so you can receive your coffee in minutes.\n
+        * We reduce risks associated with theft at the store and among our customers.\n
+        We are committed to providing an efficient, safe, and modern shopping experience. For inquiries, feel free to contact us.</string>
+
 </resources>

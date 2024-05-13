@@ -47,7 +47,8 @@ fun ButtonEffecty(
             width = 1.2.dp,
             color = Color.White,
             shape = RoundedCornerShape(14.dp)
-        ).padding(8.dp)
+        )
+        .padding(8.dp)
 
     Box(modifier = modifierCard.clickable { onclick() }){
         Row(
@@ -63,8 +64,7 @@ fun ButtonEffecty(
             )
             Spacer(modifier = Modifier.width(25.dp))
             Text(
-                "No aceptamos efectivo.\n" +
-                        "Descubre por qué.",
+                stringResource(id = R.string.reason_not_accepting_cash),
                 color = BlueDark,
                 fontSize = 18.sp,
                 fontFamily = stacionFamily,
