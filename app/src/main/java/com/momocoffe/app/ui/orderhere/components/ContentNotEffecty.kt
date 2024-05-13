@@ -115,7 +115,7 @@ fun ContentNotEffecty(navController : NavController) {
                         ButtonField(
                             text = stringResource(id = R.string.orderhere),
                             onclick = {
-                                navController.navigate(Destination.Category.route)
+                                navController.navigate(Destination.Client.route)
                             },
                             enabled = true
                         )
@@ -129,7 +129,7 @@ fun ContentNotEffecty(navController : NavController) {
                     ) {
                         ButtonBack(
                             text = stringResource(id = R.string.txt_back),
-                            onclick = { navController.navigate(Destination.Client.route)
+                            onclick = { navController.navigate(Destination.OrderHere.route)
                         })
                     }
                 }

@@ -15,6 +15,7 @@
         We are committed to providing an efficient, safe, and modern shopping experience. For inquiries, feel free to contact us.</string>
     <string name="not_want">I do not want</string>
     <string name="start_session_kiosko">Login to Kiosko</string>
+    <string name="start_session">Login</string>
     <string name="enter_gmail_password">Enter your email and password</string>
     <string name="coffe">Coffe</string>
     <string name="tea">Tea</string>
@@ -31,7 +32,10 @@
     <string name="term_condition">Accept our Privacy Terms and Conditions.</string>
     <string name="select_option_session">Select an entry option.</string>
     <string name="enter">Log In</string>
-    <string name="client_register">Cliente registrado</string>
+    <string name="client_register">Registered customer</string>
     <string name="create_account">Create account</string>
     <string name="order_without_register">Order without registering</string>
+    <string name="enter_yuor_email">Enter yuor email</string>
+    <string name="enter_data_person">Enter your personal information.</string>
+    <string name="register">Register</string>
 </resources>

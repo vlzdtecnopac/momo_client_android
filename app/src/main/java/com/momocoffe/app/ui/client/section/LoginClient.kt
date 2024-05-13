@@ -6,6 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -28,6 +32,14 @@ import com.momocoffe.app.R
 
 @Composable
 fun LoginClient(navController: NavController) {
+    var isModalPhone by remember { mutableStateOf(false) }
+    var isModalEmail by remember { mutableStateOf(false) }
+    if (isModalPhone) {
+        StartByPhone()
+    }
+    if (isModalEmail) {
+        StartByEmail()
+    }
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -77,7 +89,7 @@ fun LoginClient(navController: NavController) {
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            "Iniciar Sesión",
+                            stringResource(id = R.string.start_session),
                             color = Color.White,
                             fontSize = 30.sp,
                             fontFamily = redhatFamily,
@@ -93,15 +105,24 @@ fun LoginClient(navController: NavController) {
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        ButtonOutLine(text = stringResource(id = R.string.phone), icon = R.drawable.phone, onclick = {})
+                        ButtonOutLine(
+                            text = stringResource(id = R.string.phone),
+                            icon = R.drawable.phone,
+                            onclick = {
+                                isModalPhone = true
+                            })
                         Spacer(modifier = Modifier.height(16.dp))
                         ButtonOutLine(
                             text = stringResource(id = R.string.mail),
                             icon = R.drawable.mail_icon,
-                            onclick = {})
+                            onclick = {
+                                isModalEmail = true
+                            })
                     }
                     Column(
-                        modifier = Modifier.fillMaxWidth().padding(10.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(10.dp),
                         horizontalAlignment = Alignment.End
                     ) {
 

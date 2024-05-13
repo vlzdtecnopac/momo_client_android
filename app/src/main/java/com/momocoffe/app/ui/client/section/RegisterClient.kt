@@ -62,7 +62,7 @@ fun RegisterClient(navController: NavController) {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    "Registrame",
+                    stringResource(id = R.string.register),
                     color = Color.White,
                     fontSize = 22.sp,
                     fontFamily = redhatFamily,
@@ -79,7 +79,7 @@ fun RegisterClient(navController: NavController) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                "Digita tus datos personales.",
+                                stringResource(id = R.string.enter_data_person),
                                 color = Color.White,
                                 fontSize = 16.sp,
                                 fontFamily = stacionFamily,

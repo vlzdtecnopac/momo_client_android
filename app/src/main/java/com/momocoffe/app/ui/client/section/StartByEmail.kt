@@ -31,7 +31,7 @@ import com.momocoffe.app.ui.login.components.ButtonField
 
 @Preview(widthDp = 1440, heightDp = 745, showBackground = true)
 @Composable
-fun StartByEmail(){
+fun StartByEmail() {
     var email by rememberSaveable { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
     Row(
@@ -79,7 +79,7 @@ fun StartByEmail(){
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    "Digita tu correo electrónico.",
+                    stringResource(id = R.string.enter_yuor_email),
                     color = Color.White,
                     fontSize = 20.sp,
                     fontFamily = stacionFamily,
@@ -87,26 +87,31 @@ fun StartByEmail(){
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-
-                OutTextField(
-                    textValue = email,
-                    onValueChange = { email = it },
-                    onClickButton = { email = "" },
-                    text = stringResource(id = R.string.mail),
-                    keyboardType = KeyboardType.Email,
-                    icon = painterResource(R.drawable.mail_icon),
-                    onNext = {
-                        focusManager.moveFocus(
-                            FocusDirection.Down
-                        )
-                    }
-                )
+                Box(
+                    modifier =Modifier
+                        .widthIn(0.dp, 480.dp),
+                ){
+                    OutTextField(
+                        textValue = email,
+                        onValueChange = { email = it },
+                        onClickButton = { email = "" },
+                        text = stringResource(id = R.string.mail),
+                        keyboardType = KeyboardType.Email,
+                        icon = painterResource(R.drawable.mail_icon),
+                        onNext = {
+                            focusManager.moveFocus(
+                                FocusDirection.Down
+                            )
+                        }
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
                 ButtonField(
-                    text= stringResource(id = R.string.enter),
+                    text = stringResource(id = R.string.enter),
                     onclick = { /*TODO*/ },
-                    enabled = true )
+                    enabled = true
+                )
 
 
             }

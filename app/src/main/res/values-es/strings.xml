@@ -16,6 +16,7 @@
         Nos comprometemos a proporcionar una experiencia de compra eficiente, segura y moderna. Para consultas, contáctanos sin dudarlo.</string>
     <string name="not_want">No deseo</string>
     <string name="start_session_kiosko">Iniciar sesión en Kiosko</string>
+    <string name="start_session">Iniciar Sesión</string>
     <string name="enter_gmail_password">Digita tu correo electrónico y contraseña</string>
     <string name="coffe">Café</string>
     <string name="tea">Té</string>
@@ -35,4 +36,7 @@
     <string name="client_register">Cliente registrado</string>
     <string name="create_account">Crear cuenta</string>
     <string name="order_without_register">Ordenar sin registrar</string>
+    <string name="enter_yuor_email">Digita tu correo electrónico</string>
+    <string name="enter_data_person">Digita tus datos personales.</string>
+    <string name="register">Registrame</string>
 </resources>
