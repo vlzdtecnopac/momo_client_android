@@ -17,4 +17,22 @@
     <string name="not_want">No deseo</string>
     <string name="start_session_kiosko">Iniciar sesión en Kiosko</string>
     <string name="enter_gmail_password">Digita tu correo electrónico y contraseña</string>
+    <string name="coffe">Café</string>
+    <string name="tea">Té</string>
+    <string name="coffe_with_tea">Cafe con té</string>
+    <string name="specials_momo">Especiales Momo</string>
+    <string name="combos">Combos</string>
+    <string name="foods">Alimentos</string>
+    <string name="others_drinks">Otras Bebidas</string>
+    <string name="our_store">Nuestra Tienda</string>
+    <string name="first_name">Nombres</string>
+    <string name="last_name">Apellidos</string>
+    <string name="phone">Telefono</string>
+    <string name="mail">Correo Electrónico</string>
+    <string name="term_condition">Acepta nuestros Términos y Condiciones de Privacidad.</string>
+    <string name="select_option_session">Selecciona una opción de ingreso.</string>
+    <string name="enter">Ingresar</string>
+    <string name="client_register">Cliente registrado</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="order_without_register">Ordenar sin registrar</string>
 </resources>

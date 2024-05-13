@@ -99,6 +99,7 @@ fun Login(navController: NavHostController) {
                     )
                     Spacer(modifier = Modifier.height(25.dp))
                     ButtonField(
+                        text = stringResource(id = R.string.enter),
                         onclick = {
                             navController.navigate(Destination.Wellcome.route)
                         },

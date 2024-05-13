@@ -14,6 +14,7 @@ import com.momocoffe.app.ui.theme.redhatFamily
 
 @Composable
 fun ButtonField(
+    text: String,
     onclick: () -> Unit,
     enabled: Boolean
 ){
@@ -29,7 +30,7 @@ fun ButtonField(
         )
     ) {
         Text(
-            text = "Ingresar",
+            text = text,
             fontSize = 22.sp,
             color = Color.White,
             fontFamily = redhatFamily,

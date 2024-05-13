@@ -16,5 +16,22 @@
     <string name="not_want">I do not want</string>
     <string name="start_session_kiosko">Login to Kiosko</string>
     <string name="enter_gmail_password">Enter your email and password</string>
-
+    <string name="coffe">Coffe</string>
+    <string name="tea">Tea</string>
+    <string name="coffe_with_tea">Coffe witch tea</string>
+    <string name="specials_momo">Specials Momo</string>
+    <string name="combos">Combos</string>
+    <string name="foods">Foods</string>
+    <string name="others_drinks">Others Drinks</string>
+    <string name="our_store">Our Store</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="phone">Phone</string>
+    <string name="mail">Email</string>
+    <string name="term_condition">Accept our Privacy Terms and Conditions.</string>
+    <string name="select_option_session">Select an entry option.</string>
+    <string name="enter">Log In</string>
+    <string name="client_register">Cliente registrado</string>
+    <string name="create_account">Create account</string>
+    <string name="order_without_register">Order without registering</string>
 </resources>

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -23,14 +24,14 @@ data class ListItem(val iconResId: Int, val name: String)
 fun Category(navController: NavController){
 
     val jsonList = listOf(
-        ListItem(R.drawable.coffee_mug_icon, "Café"),
-        ListItem(R.drawable.tea_mug_icon, "Té"),
-        ListItem(R.drawable.coffee_tea_icon, "Café con Té"),
-        ListItem(R.drawable.specials_momo_icon, "Especiales MoMo"),
-        ListItem(R.drawable.combos_icon, "Combos"),
-        ListItem(R.drawable.alimentos_icon, "Alimentos"),
-        ListItem(R.drawable.other_drinks_icon, "Otras Bebidas"),
-        ListItem(R.drawable.our_store_icon, "Nuestra Tienda"),
+        ListItem(R.drawable.coffee_mug_icon, stringResource(id = R.string.coffe)),
+        ListItem(R.drawable.tea_mug_icon,  stringResource(id = R.string.tea)),
+        ListItem(R.drawable.coffee_tea_icon,  stringResource(id = R.string.coffe_with_tea)),
+        ListItem(R.drawable.specials_momo_icon,  stringResource(id = R.string.specials_momo)),
+        ListItem(R.drawable.combos_icon,  stringResource(id = R.string.combos)),
+        ListItem(R.drawable.alimentos_icon, stringResource(id = R.string.foods)),
+        ListItem(R.drawable.other_drinks_icon, stringResource(id = R.string.others_drinks)),
+        ListItem(R.drawable.our_store_icon, stringResource(id = R.string.our_store)),
     )
 
     Column(

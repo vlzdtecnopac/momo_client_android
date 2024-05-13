@@ -42,7 +42,7 @@ fun OrderHere(navController: NavController) {
             ButtonField(
                 text = stringResource(id = R.string.orderhere),
                 onclick = {
-                    navController.navigate(Destination.Category.route)
+                    navController.navigate(Destination.Client.route)
                 },
                 enabled = true
             )

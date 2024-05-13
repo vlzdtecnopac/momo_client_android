@@ -86,8 +86,8 @@ fun RegisterClient(navController: NavController) {
                                 fontWeight = FontWeight.Normal
                             )
                             OutlineTextField(
-                                label = "Nombres",
-                                placeholder = "Nombres",
+                                label = stringResource(id = R.string.first_name),
+                                placeholder = stringResource(id = R.string.first_name),
                                 icon = R.drawable.user,
                                 keyboardType = KeyboardType.Text,
                                 textValue = firstName,
@@ -99,8 +99,8 @@ fun RegisterClient(navController: NavController) {
                                     )
                                 })
                             OutlineTextField(
-                                label = "Apellidos",
-                                placeholder = "Apellidos",
+                                label = stringResource(id = R.string.last_name),
+                                placeholder = stringResource(id = R.string.last_name),
                                 icon = R.drawable.user,
                                 keyboardType = KeyboardType.Text,
                                 textValue = lastName,
@@ -126,8 +126,8 @@ fun RegisterClient(navController: NavController) {
                                         .weight(0.8f)
                                 ) {
                                     OutlineTextField(
-                                        label = "Número telefónico",
-                                        placeholder = "Número telefónico",
+                                        label = stringResource(id = R.string.phone),
+                                        placeholder =  stringResource(id = R.string.phone),
                                         keyboardType = KeyboardType.Number,
                                         icon = R.drawable.phone,
                                         textValue = phone,
@@ -143,7 +143,7 @@ fun RegisterClient(navController: NavController) {
 
                             }
                             OutlineTextField(
-                                label = "Email",
+                                label =  stringResource(id = R.string.mail),
                                 placeholder = "Juan@momo.com",
                                 icon = R.drawable.mail_icon,
                                 keyboardType = KeyboardType.Email,
@@ -163,7 +163,7 @@ fun RegisterClient(navController: NavController) {
                                 checked = checkedState.value,
                                 onCheckedChange = { checkedState.value = it }
                             )
-                            Text("Acepta nuestros Términos y Condiciones de Privacidad", color = Color.White)
+                            Text(stringResource(id = R.string.term_condition), color = Color.White)
                         }
                         Row(
                          horizontalArrangement = Arrangement.Center

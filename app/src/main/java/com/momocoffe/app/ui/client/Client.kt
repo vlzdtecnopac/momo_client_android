@@ -81,16 +81,16 @@ fun Client(navController: NavController){
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(16.dp))
-            ButtonOutLine(text = "Cliente registrado", icon = R.drawable.user, onclick = {
+            ButtonOutLine(text = stringResource(id = R.string.client_register), icon = R.drawable.user, onclick = {
                 isModalLogin = true
             } )
             Spacer(modifier = Modifier.height(16.dp) )
-            ButtonOutLine(text = "Crear Cuenta", icon = R.drawable.user_square, onclick = {
+            ButtonOutLine(text = stringResource(id = R.string.create_account), icon = R.drawable.user_square, onclick = {
                 isModalRegister = true
             })
             Spacer(modifier = Modifier.height(16.dp))
-            ButtonOutLine(text = "Ordenar sin registrar", icon = R.drawable.user_octagon, onclick = {
-                navController.navigate(Destination.Products.route)
+            ButtonOutLine(text = stringResource(id = R.string.order_without_register), icon = R.drawable.user_octagon, onclick = {
+                navController.navigate(Destination.Category.route)
             })
 
         }
