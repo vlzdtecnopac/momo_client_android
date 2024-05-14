@@ -166,7 +166,7 @@ fun StartByPhone(navController: NavController) {
                     }
 
                     Column(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.padding(end = 10.dp).fillMaxWidth(),
                         horizontalAlignment = Alignment.End
                     ) {
                         ButtonBack(onclick = {

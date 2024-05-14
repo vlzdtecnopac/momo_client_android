@@ -41,7 +41,8 @@ fun ButtonBack(
             width = 1.2.dp,
             color = Color.White,
             shape = RoundedCornerShape(14.dp)
-        ).padding(10.dp)
+        )
+        .padding(10.dp)
 
     Row(
         modifier = modifierCard.clickable { onclick() },
@@ -50,7 +51,7 @@ fun ButtonBack(
     ){
         Spacer(modifier = Modifier.width(10.dp))
         Text(
-            "Regresar",
+            stringResource(id = R.string.txt_back),
             color = Color.White,
             fontSize = 18.sp,
             fontFamily = stacionFamily,

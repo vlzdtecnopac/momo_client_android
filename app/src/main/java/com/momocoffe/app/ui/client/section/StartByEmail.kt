@@ -127,7 +127,7 @@ fun StartByEmail(navController: NavController) {
                         }
 
                         Column(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.padding(end = 10.dp).fillMaxWidth(),
                             horizontalAlignment = Alignment.End
                         ) {
                             Spacer(modifier = Modifier.height(30.dp))
