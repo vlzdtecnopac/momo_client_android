@@ -35,10 +35,10 @@ fun LoginClient(navController: NavController) {
     var isModalPhone by remember { mutableStateOf(false) }
     var isModalEmail by remember { mutableStateOf(false) }
     if (isModalPhone) {
-        StartByPhone()
+        StartByPhone(navController)
     }
     if (isModalEmail) {
-        StartByEmail()
+        StartByEmail(navController)
     }
     Dialog(
         onDismissRequest = {},

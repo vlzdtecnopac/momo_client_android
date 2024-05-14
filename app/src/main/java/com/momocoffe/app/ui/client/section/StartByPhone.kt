@@ -38,7 +38,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import com.momocoffe.app.R
+import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.ui.client.components.ButtonBack
 import com.momocoffe.app.ui.client.components.DropDownOutline
 import com.momocoffe.app.ui.client.components.OutTextField
 import com.momocoffe.app.ui.login.components.ButtonField
@@ -46,9 +49,9 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.ui.theme.stacionFamily
 
-@Preview(widthDp = 1440, heightDp = 745, showBackground = true)
+
 @Composable
-fun StartByPhone(){
+fun StartByPhone(navController: NavController) {
     var phone by rememberSaveable { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
     Dialog(
@@ -87,10 +90,12 @@ fun StartByPhone(){
                         .weight(7f)
                         .background(BlueDark),
                     verticalArrangement = Arrangement.SpaceAround,
-
+                    horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                    Box {}
                     Column(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .widthIn(0.dp, 480.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Image(
@@ -100,7 +105,7 @@ fun StartByPhone(){
                         )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            "Iniciar Sesión",
+                            stringResource(id = R.string.start_session),
                             color = Color.White,
                             fontSize = 30.sp,
                             fontFamily = redhatFamily,
@@ -116,51 +121,60 @@ fun StartByPhone(){
                             textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Box(
-                            modifier = Modifier
-                                .widthIn(0.dp, 480.dp),
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth()
+                            Column(
+                                modifier = Modifier
+                                    .weight(0.3f)
                             ) {
-                                Column(
-                                    modifier = Modifier
-                                        .weight(0.3f)
-                                ) {
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    DropDownOutline()
-                                }
-                                Box(
-                                    modifier = Modifier
-                                        .weight(0.8f)
-                                ) {
-                                    OutTextField(
-                                        textValue = phone,
-                                        onValueChange = { phone = it },
-                                        onClickButton = { phone = "" },
-                                        text = stringResource(id = R.string.phone),
-                                        keyboardType = KeyboardType.Phone,
-                                        icon = painterResource(R.drawable.phone),
-                                        onNext = {
-                                            focusManager.moveFocus(
-                                                FocusDirection.Down
-                                            )
-                                        }
-                                    )
-                                }
+                                Spacer(modifier = Modifier.height(8.dp))
+                                DropDownOutline()
                             }
+                            Box(
+                                modifier = Modifier
+                                    .weight(0.8f)
+                            ) {
+                                OutTextField(
+                                    textValue = phone,
+                                    onValueChange = { phone = it },
+                                    onClickButton = { phone = "" },
+                                    text = stringResource(id = R.string.phone),
+                                    keyboardType = KeyboardType.Phone,
+                                    icon = painterResource(R.drawable.phone),
+                                    onNext = {
+                                        focusManager.moveFocus(
+                                            FocusDirection.Down
+                                        )
+                                    }
+                                )
+                            }
+
                         }
 
-                        Spacer(modifier = Modifier.height(30.dp))
-                        ButtonField(
-                            text = stringResource(id = R.string.enter),
-                            onclick = { /*TODO*/ },
-                            enabled = true
-                        )
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Spacer(modifier = Modifier.height(30.dp))
+                            ButtonField(
+                                text = stringResource(id = R.string.enter),
+                                onclick = { /*TODO*/ },
+                                enabled = true
+                            )
+                        }
+                    }
 
-
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        ButtonBack(onclick = {
+                            navController.popBackStack()
+                        })
                     }
                 }
+
             }
         }
     }
