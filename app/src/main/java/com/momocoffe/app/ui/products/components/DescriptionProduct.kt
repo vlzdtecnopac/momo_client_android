@@ -35,7 +35,9 @@ import com.momocoffe.app.ui.theme.redhatFamily
 
 @Composable
 fun DescriptionProduct() {
-    Column {
+    Column(
+        verticalArrangement = Arrangement.Top
+    ){
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data("https://lh3.googleusercontent.com/3bwSMf2jd8omjWNYsrUKcvyqduZfJnrkQnEfovtjjlXwXguqpu7CFcGNy59xEuIc0uCnAj5tuQ1J96996zTLy4PgtfIGwjivEQ")

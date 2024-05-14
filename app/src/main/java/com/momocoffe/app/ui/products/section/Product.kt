@@ -34,6 +34,7 @@ fun Product() {
     val navController = rememberNavController()
 
     Column(
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Header(navController)
@@ -53,11 +54,12 @@ fun Product() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    Row(modifier = Modifier.padding(20.dp)) {
+                    Row(modifier = Modifier.padding(10.dp)) {
                         Column(
                             modifier = Modifier
                                 .weight(.3f)
-                                .padding(10.dp)
+                                .padding(10.dp),
+                            verticalArrangement = Arrangement.Top
                         ) {
                             DescriptionProduct()
                         }
