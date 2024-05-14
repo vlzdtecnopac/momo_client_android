@@ -39,4 +39,6 @@
     <string name="enter_data_person">Enter your personal information.</string>
     <string name="register">Register</string>
     <string name="not_effecty">No Efectivo</string>
+    <string name="lang_es">Spanish</string>
+    <string name="lang_en">English</string>
 </resources>

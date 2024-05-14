@@ -61,11 +61,11 @@ fun OrderHere(navController: NavController) {
                Row{
                    ButtonLang(onclick= {
                        RegionInternational.setLocale(context, "es")
-                   }, text= "Español", icon = painterResource(id = R.drawable.mexico_flag))
+                   }, text= stringResource(id = R.string.lang_es), icon = painterResource(id = R.drawable.mexico_flag))
                    Spacer(modifier = Modifier.width(15.dp))
                    ButtonLang(onclick= {
                        RegionInternational.setLocale(context, "en")
-                   }, text="Ingles", icon = painterResource(id = R.drawable.usa_flag))
+                   }, text=stringResource(id = R.string.lang_en), icon = painterResource(id = R.drawable.usa_flag))
                }
             }
             Column(
