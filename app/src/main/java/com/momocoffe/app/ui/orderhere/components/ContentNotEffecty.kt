@@ -60,7 +60,7 @@ fun ContentNotEffecty(navController : NavController) {
                         .weight(4f),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Text("No efectivo", color = Color.White, fontSize = 26.sp ,fontFamily = redhatFamily)
+                    Text(stringResource(id = R.string.not_effecty), color = Color.White, fontSize = 26.sp ,fontFamily = redhatFamily)
                     Spacer(modifier = Modifier.height(10.dp))
                     Image(
                         painter = painterResource(id = R.drawable.coffe_momo),

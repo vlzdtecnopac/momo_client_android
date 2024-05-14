@@ -103,19 +103,23 @@ fun StartByEmail(navController: NavController) {
                             )
                             Spacer(modifier = Modifier.height(16.dp))
 
-                            OutTextField(
-                                textValue = email,
-                                onValueChange = { email = it },
-                                onClickButton = { email = "" },
-                                text = stringResource(id = R.string.mail),
-                                keyboardType = KeyboardType.Email,
-                                icon = painterResource(R.drawable.mail_icon),
-                                onNext = {
-                                    focusManager.moveFocus(
-                                        FocusDirection.Down
-                                    )
-                                }
-                            )
+                            Box(
+                                modifier =Modifier.width(400.dp)
+                            ) {
+                                OutTextField(
+                                    textValue = email,
+                                    onValueChange = { email = it },
+                                    onClickButton = { email = "" },
+                                    text = stringResource(id = R.string.mail),
+                                    keyboardType = KeyboardType.Email,
+                                    icon = painterResource(R.drawable.mail_icon),
+                                    onNext = {
+                                        focusManager.moveFocus(
+                                            FocusDirection.Down
+                                        )
+                                    }
+                                )
+                            }
 
 
                             Spacer(modifier = Modifier.height(30.dp))
