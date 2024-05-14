@@ -11,6 +11,8 @@ jobs:
     name: Job 1 - Build Signed AAB
     runs-on: ubuntu-latest
     steps:
+      - name: "Set custom run number"
+        run: echo "MY_CUSTOM_RUN_NUMBER=$((MY_CUSTOM_RUN_NUMBER + 1))" >> $GITHUB_ENV
 
       # Step 1 - Checkout the repository, making it available to the workflow
       -  uses: actions/checkout@v3
@@ -37,7 +39,7 @@ jobs:
          uses: chkfung/android-version-actions@v1.2.1
          with:
            gradlePath: app/build.gradle.kts
-           versionCode: ${{ github.run_number }}
+           versionCode: $MY_CUSTOM_RUN_NUMBER
            versionName: 1.0.0
 
       # Step 7 - Build App Bundle
