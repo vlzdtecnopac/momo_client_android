@@ -27,7 +27,7 @@ import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.products.components.DescriptionProduct
 import com.momocoffe.app.ui.theme.BlueDark
 
-@Preview(widthDp = 1440, heightDp = 800)
+@Preview(widthDp = 1440, heightDp = 800, showBackground = true)
 @Composable
 fun Product() {
 
@@ -38,9 +38,13 @@ fun Product() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Header(navController)
-        Spacer(modifier = Modifier.height(8.dp))
-        Box(modifier = Modifier.background(BlueDark)) {
+        Box(
+            modifier = Modifier.background(BlueDark).fillMaxWidth(),
+            contentAlignment = Alignment.Center
+            ) {
+            Spacer(modifier = Modifier.height(8.dp))
             Category(navController = navController)
+
         }
         Box(
             modifier = Modifier
