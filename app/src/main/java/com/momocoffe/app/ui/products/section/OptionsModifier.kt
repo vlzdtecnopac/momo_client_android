@@ -26,7 +26,7 @@ fun OptionsModifier() {
         modifier = Modifier
             .background(Color.Transparent)
             .fillMaxWidth()
-            .fillMaxHeight(0.9f)
+            .fillMaxHeight(0.8f)
             .padding(horizontal = 8.dp)
             .verticalScroll(state)
     ) {

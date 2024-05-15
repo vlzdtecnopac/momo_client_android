@@ -44,7 +44,9 @@ fun Product(navController: NavController) {
     ) {
         Header(navController)
         Column(
-            modifier = Modifier.background(BlueDark).fillMaxWidth(),
+            modifier = Modifier
+                .background(BlueDark)
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
             ) {
             Spacer(modifier = Modifier.height(8.dp))
@@ -88,23 +90,32 @@ fun Product(navController: NavController) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             OptionsModifier()
-                            Button(
-                                onClick = {},
-                                modifier = Modifier.width(400.dp).height(60.dp).padding(horizontal = 25.dp),
-                                shape =  RoundedCornerShape(8.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = OrangeDark,
-                                    disabledBackgroundColor = OrangeDarkLight,
-                                    disabledContentColor = OrangeDarkLight
-                                )
-                            ) {
-                                Text(
-                                    text = "Agregar al carrito",
-                                    fontSize = 22.sp,
-                                    color = Color.White,
-                                    fontFamily = redhatFamily,
-                                )
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ){
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Button(
+                                    onClick = {},
+                                    modifier = Modifier
+                                        .width(400.dp)
+                                        .height(60.dp)
+                                        .padding(horizontal = 25.dp),
+                                    shape =  RoundedCornerShape(8.dp),
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = OrangeDark,
+                                        disabledBackgroundColor = OrangeDarkLight,
+                                        disabledContentColor = OrangeDarkLight
+                                    )
+                                ) {
+                                    Text(
+                                        text = "Agregar al carrito",
+                                        fontSize = 22.sp,
+                                        color = Color.White,
+                                        fontFamily = redhatFamily,
+                                    )
+                                }
                             }
+
 
                         }
 
