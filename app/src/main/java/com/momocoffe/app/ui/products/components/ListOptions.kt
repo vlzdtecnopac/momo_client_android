@@ -53,7 +53,7 @@ fun ListOptions(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(0.2f),
+            modifier = Modifier.fillMaxWidth(0.1f),
         ) {
             Icon(
                 painterResource(id = iconResource),
@@ -95,12 +95,11 @@ fun ListOptions(
                     Checkbox(
                         checked = isChecked,
                         onCheckedChange = { isChecked = it },
-                        colors = CheckboxDefaults.colors(checkedColor = OrangeDark),
-                        modifier = Modifier.border(
-                            1.dp,
-                            Color.White,
-                            shape = MaterialTheme.shapes.small
-                        )
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = OrangeDark,
+                            uncheckedColor = Color.White
+
+                        ),
                     )
                 }
 

@@ -42,6 +42,7 @@ fun Product() {
             ) {
             Spacer(modifier = Modifier.height(8.dp))
             Category(navController = navController)
+            Spacer(modifier = Modifier.height(8.dp))
 
         }
         Box(
@@ -67,7 +68,7 @@ fun Product() {
                         }
                         Column(
                             modifier = Modifier
-                                .weight(.8f)
+                                .weight(.7f)
                                 .fillMaxHeight()
                                 .clip(RoundedCornerShape(14.dp))
                                 .background(BlueDark)
