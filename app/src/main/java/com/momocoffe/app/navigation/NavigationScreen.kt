@@ -10,6 +10,7 @@ import com.momocoffe.app.ui.client.Client
 import com.momocoffe.app.ui.orderhere.OrderHere
 import com.momocoffe.app.ui.login.Login
 import com.momocoffe.app.ui.products.Products
+import com.momocoffe.app.ui.products.section.Product
 import com.momocoffe.app.ui.wellcome.WellCome
 import com.momocoffe.app.ui.zettle.ZettlePayment
 import com.momocoffe.app.viewmodel.LoginViewModel
@@ -37,6 +38,10 @@ fun NavigationScreen(viewModel: LoginViewModel) {
 
         composable(route = Destination.Client.route) {
             Client(navController = navController)
+        }
+
+        composable(route = Destination.Product.route) {
+            Product()
         }
 
         composable(route = Destination.Products.route) {

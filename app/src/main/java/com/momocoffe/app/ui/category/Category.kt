@@ -18,6 +18,8 @@ import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.R
+import com.momocoffe.app.navigation.Destination
+
 data class ListItem(val iconResId: Int, val name: String)
 
 @Composable
@@ -64,7 +66,9 @@ fun Category(navController: NavController){
                         BtnOutlineCategory(
                             icon= item.iconResId,
                             text = item.name,
-                            onclick = {}
+                            onclick = {
+                                navController.navigate(Destination.Products.route)
+                            }
                         )
                     }
                 }

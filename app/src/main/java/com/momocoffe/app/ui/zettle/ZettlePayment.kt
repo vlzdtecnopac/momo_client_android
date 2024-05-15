@@ -69,6 +69,7 @@ fun ZettlePayment(navController: NavHostController){
             },
             modifier = Modifier
                 .fillMaxWidth(0.3f)
+                .height(60.dp)
                 .padding(horizontal = 5.dp),
             shape = RoundedCornerShape(4.dp),
             colors = ButtonDefaults.buttonColors(
@@ -92,6 +93,7 @@ fun ZettlePayment(navController: NavHostController){
             },
             modifier = Modifier
                 .fillMaxWidth(0.3f)
+                .height(60.dp)
                 .padding(horizontal = 5.dp),
             shape = RoundedCornerShape(4.dp),
             colors = ButtonDefaults.buttonColors(
@@ -102,7 +104,7 @@ fun ZettlePayment(navController: NavHostController){
         ) {
             Text(
                 text = stringResource(id = R.string.not_want),
-                fontSize = 16.sp,
+                fontSize = 18.sp,
                 color = BlueDark,
                 fontFamily = redhatFamily,
                 fontWeight = FontWeight(700)

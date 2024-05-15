@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -21,18 +20,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.momocoffe.app.ui.components.Category
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.products.components.DescriptionProduct
 import com.momocoffe.app.ui.theme.BlueDark
 
-@Preview(widthDp = 1440, heightDp = 800, showBackground = true)
+@Preview(widthDp = 1440, heightDp = 800)
 @Composable
 fun Product() {
-
     val navController = rememberNavController()
-
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
