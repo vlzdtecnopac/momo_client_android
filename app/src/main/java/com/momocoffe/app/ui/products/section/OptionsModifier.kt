@@ -34,15 +34,33 @@ fun OptionsModifier() {
             iconResource = R.drawable.tamano_icon,
             textResource = R.string.size,
             items = listOf(
-                ItemBox(1, "Item 1", 10),
+                ItemBox(1, "Chico 12 Oz", 10),
                 ItemBox(2, "Grande 16 Oz", 10),
             )
         )
-
+        BoxOptions(
+            iconResource = R.drawable.tamano_icon,
+            textResource = R.string.size,
+            items = listOf(
+                ItemBox(1, "Chico 12 Oz", 10),
+                ItemBox(2, "Grande 16 Oz", 10),
+            )
+        )
+        BoxOptions(
+            iconResource = R.drawable.tamano_icon,
+            textResource = R.string.size,
+            items = listOf(
+                ItemBox(1, "Chico 12 Oz", 10),
+                ItemBox(2, "Grande 16 Oz", 10),
+            )
+        )
         ListOptions(iconResource = R.drawable.tamano_icon,  items = listOf(
             ItemList(1, "Extra shot de café",  10),
             ItemList(1, "Extra shot de café",  10),
-
+        ))
+        ListOptions(iconResource = R.drawable.tamano_icon,  items = listOf(
+            ItemList(1, "Con Tapa",  10),
+            ItemList(1, "Sin Tapa",  10),
         ))
     }
 }

@@ -27,10 +27,8 @@ import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.products.components.DescriptionProduct
 import com.momocoffe.app.ui.theme.BlueDark
 
-@Preview(widthDp = 1440, heightDp = 800)
 @Composable
-fun Product() {
-    val navController = rememberNavController()
+fun Product(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
