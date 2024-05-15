@@ -84,7 +84,7 @@ fun Checkout(navController: NavHostController) {
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .widthIn(0.dp, 1100.dp)
                 .padding(10.dp)
         ) {
             Column(

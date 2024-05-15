@@ -36,14 +36,13 @@ fun Product() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Header(navController)
-        Box(
+        Column(
             modifier = Modifier.background(BlueDark).fillMaxWidth(),
-            contentAlignment = Alignment.Center
+            horizontalAlignment = Alignment.CenterHorizontally
             ) {
             Spacer(modifier = Modifier.height(8.dp))
             Category(navController = navController)
             Spacer(modifier = Modifier.height(8.dp))
-
         }
         Box(
             modifier = Modifier
