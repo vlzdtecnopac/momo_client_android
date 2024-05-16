@@ -1,7 +1,7 @@
 package com.momocoffe.app.network.dto
 
 import com.google.gson.annotations.SerializedName;
-data class LoginDto(
+data class LoginRequest(
     @SerializedName("email")
     val email: String,
     @SerializedName("password")

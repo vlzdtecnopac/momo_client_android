@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -52,13 +53,13 @@ fun PasswordOutTextField(
         trailingIcon = {
             val (icon, iconColor) = if (visibilityPassword) {
                 Pair(
-                    Icons.Filled.Done,
-                    Color.Red.copy(0.7F)
+                    Icons.Filled.Close,
+                    Color.White.copy(0.7F)
                 )
             } else {
                 Pair(
-                    Icons.Filled.Add,
-                    Color.DarkGray
+                    Icons.Filled.Done,
+                    Color.White.copy(0.7f)
                 )
             }
 

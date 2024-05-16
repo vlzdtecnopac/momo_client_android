@@ -1,5 +1,8 @@
 package com.momocoffe.app.ui.chekout
 
+import android.content.ComponentName
+import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -50,6 +53,7 @@ data class CoffeeCart(val name: String, val price: Int)
 
 @Composable
 fun Checkout(navController: NavHostController) {
+    val context = LocalContext.current
     var textState by rememberSaveable { mutableStateOf(value = "") }
     val list = ((0..10).map { it.toString() })
     val focusManager = LocalFocusManager.current
@@ -222,7 +226,18 @@ fun Checkout(navController: NavHostController) {
                     }
 
                     Button(
-                        onClick = {},
+                        onClick = {
+                            try {
+                                val intent = Intent()
+                                intent.component = ComponentName("com.momocoffe.izettlemomo", "com.momocoffe.izettlemomo.MainActivity")
+                                intent.putExtra("parametro1", "New Invoice")
+                                intent.putExtra("parametro2", 300)
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                Log.e("TAG", "Error al abrir la aplicación", e)
+                            }
+
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 5.dp),

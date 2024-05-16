@@ -88,23 +88,25 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // Navigation Compose
-    implementation("androidx.navigation:navigation-compose:2.8.0-alpha08")
+    implementation("androidx.navigation:navigation-compose:2.8.0-beta01")
 
     // ViewModel Compose
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.0")
 
 
     // Lifecycle Components
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-process:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
+    implementation("androidx.lifecycle:lifecycle-process:2.8.0")
 
     // Coil Package image y Image
     implementation("io.coil-kt:coil-compose:2.6.0")
 
     // Socket IO
-    implementation ("io.socket:socket.io-client:2.0.0") {
+    implementation("io.socket:socket.io-client:2.0.0") {
         exclude("org.json", "json")
     }
+
+
 }

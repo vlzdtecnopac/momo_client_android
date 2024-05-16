@@ -1,39 +1,34 @@
 package com.momocoffe.app.network.repository
 
-import com.momocoffe.app.BuildConfig
-import com.google.gson.GsonBuilder
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
-
 
 object RetrofitHelper {
-    private val retrofit: Retrofit
-     init {
-         val gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create()
+    private val okHttpClient = OkHttpClient.Builder().addInterceptor(TokenInterceptor()).build()
 
-         val builder = Retrofit.Builder()
-             .baseUrl(BuildConfig.API_BASE_URL)
-             .addConverterFactory(GsonConverterFactory.create(gson))
-             .addCallAdapterFactory(CoroutineCallAdapterFactory())
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl("http://momocoffe-lb-1774679013.us-east-1.elb.amazonaws.com")
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(okHttpClient)
+        .build()
 
-         val loggingInterceptor = HttpLoggingInterceptor()
-         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-
-         val okHttpClient = OkHttpClient.Builder()
-             .addInterceptor(loggingInterceptor)
-             .writeTimeout(0, TimeUnit.MILLISECONDS)
-             .writeTimeout(2, TimeUnit.MINUTES)
-             .connectTimeout(1, TimeUnit.MINUTES).build()
-         retrofit = builder.client(okHttpClient).build()
-     }
-
-
-    fun getAuthService() : AuthApiService {
-        return retrofit.create(AuthApiService::class.java)
+    fun apiService() : ApiService {
+        return retrofit.create(ApiService::class.java)
     }
+}
 
+class TokenInterceptor : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val originalRequest = chain.request()
+        val token = "tu_token_aqui"
+
+        val modifiedRequest = originalRequest.newBuilder()
+            .header("x-token", token)
+            .build()
+
+        return chain.proceed(modifiedRequest)
+    }
 }

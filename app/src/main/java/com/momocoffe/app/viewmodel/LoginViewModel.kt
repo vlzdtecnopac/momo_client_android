@@ -2,48 +2,44 @@ package com.momocoffe.app.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.momocoffe.app.network.dto.LoginDto
+import com.momocoffe.app.network.dto.LoginRequest
+import com.momocoffe.app.network.dto.LoginResponse
+import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LoginViewModel: ViewModel() {
-    val isSuccessLoading = mutableStateOf(value = false)
-    val imageErrorAuth = mutableStateOf(value = false)
-    val progressBar = mutableStateOf(value = false)
-    private val loginRequestLiveData = MutableLiveData<Boolean>()
+class LoginViewModel(): ViewModel() {
+
+    private val apiService: ApiService = RetrofitHelper.apiService()
+    val loadingState = mutableStateOf(false)
+    val loginResultState = mutableStateOf<Result<LoginResponse>?>(null)
 
     fun login(email: String, password: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                progressBar.value = true
-                val authService = RetrofitHelper.getAuthService()
-                val responseService = authService.getLogin(LoginDto(email = email, password = password))
 
-                if (responseService.isSuccessful) {
-                    delay(1500L)
-                    isSuccessLoading.value = true
-                    responseService.body()?.let { tokenDto ->
-                        Log.d("Logging", "Response TokenDto: $tokenDto")
+        loadingState.value = true
+        viewModelScope.launch{
+            try{
+                val response = apiService.getLogin(LoginRequest(email = email, password = password))
+                if(response.isSuccessful){
+                    val loginResponse: LoginResponse? = response.body()
+                    if(loginResponse != null){
+                        loginResultState.value = Result.success(loginResponse)
+                    } else {
+                        loginResultState.value = Result.failure(Exception("Empty response body"))
                     }
-                } else {
-                    responseService.errorBody()?.let { error ->
-                        imageErrorAuth.value = true
-                        delay(1500L)
-                        imageErrorAuth.value = false
-                        error.close()
-                    }
+                }else{
+                    loginResultState.value = Result.failure(Exception("Login failed"))
                 }
-
-                loginRequestLiveData.postValue(responseService.isSuccessful)
-                progressBar.value = false
-            } catch (e: Exception) {
-                Log.d("Logging", "Error Authentication", e)
-                progressBar.value = false
+            }catch (e: Exception){
+                loginResultState.value = Result.failure(e)
+                Log.e("Result.ViewModel", e.message.toString())
+            } finally {
+                loadingState.value = false
+                Log.d("Result.ViewModel", "Finally")
             }
         }
     }

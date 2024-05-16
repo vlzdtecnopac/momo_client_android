@@ -1,5 +1,7 @@
 package com.momocoffe.app.ui.login
 
+import android.content.Context
+import android.util.Log
 import com.momocoffe.app.ui.theme.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -20,14 +22,36 @@ import com.momocoffe.app.ui.login.components.ButtonField
 import com.momocoffe.app.ui.login.components.PasswordOutTextField
 import com.momocoffe.app.R
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.asFlow
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.viewmodel.LoginViewModel
 
 @Composable
-fun Login(navController: NavHostController) {
+fun Login(navController: NavHostController, loginViewModel: LoginViewModel = viewModel()) {
+    val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     var email by rememberSaveable { mutableStateOf(value = "") }
     var password by rememberSaveable { mutableStateOf(value = "") }
-    val focusManager = LocalFocusManager.current
     val isValidate by derivedStateOf { email.isNotBlank() && password.isNotBlank() }
+
+    LaunchedEffect(loginViewModel.loginResultState.value) {
+        loginViewModel.loginResultState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val loginResponse = result.getOrThrow()
+                    val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().putString("token", loginResponse.token).apply()
+                    navController.navigate(Destination.Wellcome.route)
+                }
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.d("Result.ViewModel", exception.toString())
+                }
+            }
+        }
+    }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -101,7 +125,9 @@ fun Login(navController: NavHostController) {
                     ButtonField(
                         text = stringResource(id = R.string.enter),
                         onclick = {
-                            navController.navigate(Destination.Wellcome.route)
+                            if(isValidate){
+                                loginViewModel.login(email, password)
+                            }
                         },
                         enabled = true
                     )
