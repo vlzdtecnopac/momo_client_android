@@ -3,16 +3,15 @@ package com.momocoffe.app.ui.login.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.*
+import androidx.compose.material.icons.outlined.DisabledByDefault
+import androidx.compose.material.icons.outlined.DisabledVisible
+import androidx.compose.material.icons.outlined.DoNotDisturb
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -53,12 +52,12 @@ fun PasswordOutTextField(
         trailingIcon = {
             val (icon, iconColor) = if (visibilityPassword) {
                 Pair(
-                    Icons.Filled.Close,
+                    Icons.Outlined.DisabledVisible,
                     Color.White.copy(0.7F)
                 )
             } else {
                 Pair(
-                    Icons.Filled.Done,
+                    Icons.Outlined.DoNotDisturb,
                     Color.White.copy(0.7f)
                 )
             }
