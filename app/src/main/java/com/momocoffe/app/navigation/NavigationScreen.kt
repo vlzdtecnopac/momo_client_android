@@ -23,10 +23,11 @@ fun NavigationScreen(viewModel: LoginViewModel) {
     val navController = rememberNavController()
     val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val token = sharedPreferences.getString("token", null) ?: ""
+    val kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
 
     NavHost(
         navController = navController,
-        startDestination = Destination.getStartDestination(token)
+        startDestination = Destination.getStartDestination(token, kiosko_id)
     ) {
         composable(route = Destination.Login.route) {
             Login(navController = navController)

@@ -101,7 +101,7 @@ fun WellCome(navController: NavController,
                     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
                     val kioskoResponse = result.getOrThrow()
                     kioskoData = kioskoResponse.data
-                    sharedPreferences.edit().putString("shoppingId", kioskoResponse.data.kioskoID).apply()
+                    sharedPreferences.edit().putString("kioskoId", kioskoResponse.data.kioskoID).apply()
                     if(shoppingData != null && kioskoData != null){
                         navController.navigate("orderhere")
                     }
