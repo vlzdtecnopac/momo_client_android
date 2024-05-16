@@ -1,6 +1,7 @@
 package com.momocoffe.app.ui.orderhere
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.momocoffe.app.App
+import com.momocoffe.app.MainActivity
 import com.momocoffe.app.ui.orderhere.components.ButtonLang
 import com.momocoffe.app.ui.orderhere.components.ButtonField
 import com.momocoffe.app.navigation.Destination
@@ -25,16 +27,18 @@ import org.json.JSONObject
 @Composable
 fun OrderHere(navController: NavController) {
     val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val preference_kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
+    val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
+    val preference_token = sharedPreferences.getString("token", null) ?: ""
+
     var isModalVisible by remember { mutableStateOf(false) }
+
     LaunchedEffect(key1 = true) {
         SocketHandler.getSocket().on("kiosko-verify-socket", Emitter.Listener {
             val payload: JSONObject = it[0] as JSONObject
             val kioskoId = payload.getString("kiosko_id")
             val shoppingId = payload.getString("shopping_id")
-
-            val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
-            val preference_kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
-            val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
             if (preference_shopping_id == shoppingId) {
                 if (preference_kiosko_id == kioskoId) {
                     val editor = sharedPreferences.edit()
@@ -42,10 +46,15 @@ fun OrderHere(navController: NavController) {
                     editor.remove("shoppingId")
                     editor.remove("token")
                     editor.apply()
+
+                    val intent = Intent(context, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
                 }
             }
         })
     }
+
 
     Column(
         modifier = Modifier.background(BlueDark),
