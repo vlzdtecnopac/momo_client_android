@@ -1,5 +1,9 @@
 package com.momocoffe.app.network.repository
 
+import android.content.Context
+import com.momocoffe.app.App
+import com.momocoffe.app.BuildConfig
+import com.momocoffe.app.ui.theme.MomoCoffeClientTheme
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -10,7 +14,7 @@ object RetrofitHelper {
     private val okHttpClient = OkHttpClient.Builder().addInterceptor(TokenInterceptor()).build()
 
     private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("http://momocoffe-lb-1774679013.us-east-1.elb.amazonaws.com")
+        .baseUrl(BuildConfig.API_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
@@ -20,11 +24,11 @@ object RetrofitHelper {
     }
 }
 
-class TokenInterceptor : Interceptor {
+class TokenInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
+        val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+        val token = sharedPreferences.getString("token", null) ?: ""
         val originalRequest = chain.request()
-        val token = "tu_token_aqui"
-
         val modifiedRequest = originalRequest.newBuilder()
             .header("x-token", token)
             .build()

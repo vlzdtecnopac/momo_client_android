@@ -25,8 +25,7 @@ android {
             buildConfig = true
         }
         defaultConfig {
-            buildConfigField("String", "API_BASE_URL", "\"https://tasks-planner-api.herokuapp.com/\"")
-
+            buildConfigField("String", "API_BASE_URL", "\"http://momocoffe-lb-1774679013.us-east-1.elb.amazonaws.com\"")
         }
 
         release {
@@ -35,7 +34,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "API_BASE_URL", "\"https://tasks-planner-api.herokuapp.com/\"")
+            buildConfigField("String", "API_BASE_URL", "\"http://momocoffe-lb-1774679013.us-east-1.elb.amazonaws.com\"")
 
         }
 
