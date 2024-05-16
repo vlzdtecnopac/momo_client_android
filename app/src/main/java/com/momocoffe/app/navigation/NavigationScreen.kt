@@ -33,7 +33,7 @@ fun NavigationScreen(viewModel: LoginViewModel) {
         }
 
         composable(route = Destination.Wellcome.route) {
-            WellCome()
+            WellCome(navController = navController)
         }
 
         composable(route = Destination.OrderHere.route) {

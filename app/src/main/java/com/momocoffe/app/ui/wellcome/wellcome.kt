@@ -26,6 +26,7 @@ import androidx.navigation.NavController
 import com.spr.jetpack_loading.components.indicators.BallBeatIndicator
 import com.momocoffe.app.ui.wellcome.component.CardOption
 import com.momocoffe.app.R
+import com.momocoffe.app.network.response.ItemEmployee
 import com.momocoffe.app.viewmodel.KioskoModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.momocoffe.app.viewmodel.WelcomeViewModel
@@ -42,6 +43,7 @@ fun WellCome(navController: NavController,
              ) {
     val context = LocalContext.current
     var shoppingID by rememberSaveable { mutableStateOf(value = "") }
+    var shoppingData: ItemEmployee? by rememberSaveable { mutableStateOf(null) }
 
     LaunchedEffect(Unit) {
         val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
@@ -54,6 +56,7 @@ fun WellCome(navController: NavController,
                     val employeeResponse = result.getOrThrow()
                     Log.d("Result.WelcomeModel", employeeResponse.items[0].shoppingID)
                     shoppingID = employeeResponse.items[0].shoppingID
+                    shoppingData = employeeResponse.items[0]
                 }
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
@@ -94,7 +97,6 @@ fun WellCome(navController: NavController,
                 result.isSuccess -> {
                     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
                     val kioskoResponse = result.getOrThrow()
-                    Log.d("Result.WelcomeModel", kioskoResponse.toString())
                     sharedPreferences.edit().putString("shoppingId", kioskoResponse.data.kioskoID).apply()
                     navController.navigate("orderhere")
                 }
@@ -143,28 +145,36 @@ fun WellCome(navController: NavController,
         )
         Spacer(modifier = Modifier.height(10.dp))
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.widthIn(0.dp, 850.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            val textModifier = Modifier.padding(5.dp)
-            Column(modifier = textModifier) {
-                CardOption(
-                    text = "Kiosko \n Tienda 1",
-                    icon = painterResource(R.drawable.kiosko),
-                    color = Color.White,
-                    textColor = BlueDark
-                )
+            val textModifier = Modifier.padding(5.dp).weight(0.5f)
+            Column(modifier = textModifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                shoppingData.let { data ->
+                    if (data != null) {
+                        CardOption(
+                            text = data.nameShopping,
+                            icon = painterResource(R.drawable.kiosko),
+                            color = Color.White,
+                            textColor = BlueDark
+                        )
+                    }
+                }
+
             }
 
             Column(
-                modifier = Modifier.height(200.dp),
+                modifier = Modifier.height(200.dp).weight(0.3f),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 BallBeatIndicator()
             }
 
-            Column(modifier = textModifier) {
+            Column(modifier = textModifier,
+                horizontalAlignment = Alignment.CenterHorizontally) {
                 CardOption(
                     text = "KDS \n Kiosko 1",
                     icon = painterResource(R.drawable.kds_off),
