@@ -66,10 +66,7 @@ fun WellCome(navController: NavController,
             }
         }
         shoppingViewModel.getShopping(shoppingID)
-        /*if (!hasNavigated) {
-            navController.navigate("orderhere")
-            hasNavigated = true
-        }*/
+
     }
 
     LaunchedEffect(shoppingViewModel.shoppingResultState.value) {
@@ -95,8 +92,11 @@ fun WellCome(navController: NavController,
         kioskoModel.kioskoResultState.value?.let { result ->
             when {
                 result.isSuccess -> {
+                    val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
                     val kioskoResponse = result.getOrThrow()
                     Log.d("Result.WelcomeModel", kioskoResponse.toString())
+                    sharedPreferences.edit().putString("shoppingId", kioskoResponse.data.kioskoID).apply()
+                    navController.navigate("orderhere")
                 }
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
