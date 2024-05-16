@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
@@ -26,6 +27,7 @@ import androidx.navigation.NavController
 import com.spr.jetpack_loading.components.indicators.BallBeatIndicator
 import com.momocoffe.app.ui.wellcome.component.CardOption
 import com.momocoffe.app.R
+import com.momocoffe.app.network.response.DataKiosko
 import com.momocoffe.app.network.response.ItemEmployee
 import com.momocoffe.app.viewmodel.KioskoModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
@@ -42,8 +44,9 @@ fun WellCome(navController: NavController,
              kioskoModel: KioskoModel = viewModel()
              ) {
     val context = LocalContext.current
-    var shoppingID by rememberSaveable { mutableStateOf(value = "") }
-    var shoppingData: ItemEmployee? by rememberSaveable { mutableStateOf(null) }
+    var shoppingID by remember { mutableStateOf(value = "") }
+    var shoppingData: ItemEmployee? by remember { mutableStateOf(null) }
+    var kioskoData:  DataKiosko? by remember { mutableStateOf(null) }
 
     LaunchedEffect(Unit) {
         val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
@@ -97,8 +100,11 @@ fun WellCome(navController: NavController,
                 result.isSuccess -> {
                     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
                     val kioskoResponse = result.getOrThrow()
+                    kioskoData = kioskoResponse.data
                     sharedPreferences.edit().putString("shoppingId", kioskoResponse.data.kioskoID).apply()
-                    navController.navigate("orderhere")
+                    if(shoppingData != null && kioskoData != null){
+                        navController.navigate("orderhere")
+                    }
                 }
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
@@ -148,7 +154,9 @@ fun WellCome(navController: NavController,
             modifier = Modifier.widthIn(0.dp, 850.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            val textModifier = Modifier.padding(5.dp).weight(0.5f)
+            val textModifier = Modifier
+                .padding(5.dp)
+                .weight(0.5f)
             Column(modifier = textModifier,
             horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -166,7 +174,9 @@ fun WellCome(navController: NavController,
             }
 
             Column(
-                modifier = Modifier.height(200.dp).weight(0.3f),
+                modifier = Modifier
+                    .height(200.dp)
+                    .weight(0.3f),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -175,12 +185,17 @@ fun WellCome(navController: NavController,
 
             Column(modifier = textModifier,
                 horizontalAlignment = Alignment.CenterHorizontally) {
-                CardOption(
-                    text = "KDS \n Kiosko 1",
-                    icon = painterResource(R.drawable.kds_off),
-                    color = BlueDark,
-                    textColor = Color.White
-                )
+                kioskoData.let {data ->
+                    if (data != null) {
+                        CardOption(
+                            text = data.nombre,
+                            icon = painterResource(R.drawable.kds_off),
+                            color = BlueDark,
+                            textColor = Color.White
+                        )
+                    }
+                }
+
             }
         }
     }
