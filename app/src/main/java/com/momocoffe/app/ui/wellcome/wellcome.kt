@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import com.spr.jetpack_loading.components.indicators.BallBeatIndicator
 import com.momocoffe.app.ui.wellcome.component.CardOption
 import com.momocoffe.app.R
+import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.response.DataKiosko
 import com.momocoffe.app.network.response.ItemEmployee
 import com.momocoffe.app.viewmodel.KioskoModel
@@ -103,7 +104,8 @@ fun WellCome(navController: NavController,
                     kioskoData = kioskoResponse.data
                     sharedPreferences.edit().putString("kioskoId", kioskoResponse.data.kioskoID).apply()
                     if(shoppingData != null && kioskoData != null){
-                        navController.navigate("orderhere")
+                        delay(2000)
+                        navController.navigate(Destination.OrderHere.route)
                     }
                 }
                 result.isFailure -> {
