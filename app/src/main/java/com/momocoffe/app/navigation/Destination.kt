@@ -12,6 +12,16 @@ sealed  class Destination(val route: String) {
     object Zettle: Destination(route = "zettle")
 
     companion object {
-        fun getStartDestination() = Zettle.route
+        fun getStartDestination(token: String?): String {
+            return if (tokenIsValid(token)) {
+                OrderHere.route
+            } else {
+                Zettle.route
+            }
+        }
+
+        private fun tokenIsValid(token: String?): Boolean {
+            return !token.isNullOrEmpty()
+        }
     }
 }

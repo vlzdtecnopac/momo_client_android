@@ -46,4 +46,5 @@
     <string name="error_enter_user_and_password">Enter the username and password</string>
     <string name="welcome">¡Welcome!</string>
     <string name="pair_device_kiosko">Before we begin,\n Wait until they pair up\n your devices...</string>
+    <string name="register_discovery_benefits">Register and discover a \n world of benefits</string>
 </resources>

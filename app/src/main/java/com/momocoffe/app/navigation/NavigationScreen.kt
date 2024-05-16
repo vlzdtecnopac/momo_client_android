@@ -1,9 +1,11 @@
 package com.momocoffe.app.navigation
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.momocoffe.app.App
 import com.momocoffe.app.ui.category.Category
 import com.momocoffe.app.ui.chekout.Checkout
 import com.momocoffe.app.ui.client.Client
@@ -19,17 +21,19 @@ import com.momocoffe.app.viewmodel.LoginViewModel
 fun NavigationScreen(viewModel: LoginViewModel) {
 
     val navController = rememberNavController()
+    val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val token = sharedPreferences.getString("token", null) ?: ""
 
     NavHost(
         navController = navController,
-        startDestination = Destination.getStartDestination()
+        startDestination = Destination.getStartDestination(token)
     ) {
         composable(route = Destination.Login.route) {
             Login(navController = navController)
         }
 
         composable(route = Destination.Wellcome.route) {
-            WellCome(navController = navController)
+            WellCome()
         }
 
         composable(route = Destination.OrderHere.route) {

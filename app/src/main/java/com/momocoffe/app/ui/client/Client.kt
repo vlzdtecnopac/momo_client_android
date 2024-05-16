@@ -64,7 +64,7 @@ fun Client(navController: NavController){
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                "¡Bienvenid@!",
+                stringResource(id = R.string.welcome),
                 color = Color.White,
                 fontSize = 30.sp,
                 fontFamily = redhatFamily,
@@ -72,8 +72,7 @@ fun Client(navController: NavController){
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                "Regístrate y descubre un mundo\n" +
-                        "de beneficios.",
+                stringResource(id = R.string.register_discovery_benefits),
                 color = Color.White,
                 fontSize = 20.sp,
                 fontFamily = stacionFamily,

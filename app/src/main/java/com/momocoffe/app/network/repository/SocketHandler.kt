@@ -11,7 +11,6 @@ object SocketHandler {
     @Synchronized
     fun setSocket() {
         try {
-            // "http://10.0.2.2:3000" is the network your Android emulator must use to join the localhost network on your computer
             mSocket = IO.socket("http://momocoffe-lb-1774679013.us-east-1.elb.amazonaws.com/")
             mSocket.on(Socket.EVENT_CONNECT, Emitter.Listener {
                 Log.d("Socket.IO", "Conectado")
