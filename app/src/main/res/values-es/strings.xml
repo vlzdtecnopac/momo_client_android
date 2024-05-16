@@ -43,4 +43,6 @@
     <string name="lang_es">Español</string>
     <string name="lang_en">Ingles</string>
     <string name="size">Size</string>
+    <string name="error_user_and_password">Ingresa correctamente el usuario y contraseña</string>
+    <string name="error_enter_user_and_password">Ingresa el usuario y contraseña</string>
 </resources>

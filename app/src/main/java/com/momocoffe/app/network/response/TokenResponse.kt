@@ -10,3 +10,7 @@ data class LoginResponse(
     val state: Boolean,
     val token: String
 )
+
+data class RefreshTokenResponse(
+    val token: String
+)

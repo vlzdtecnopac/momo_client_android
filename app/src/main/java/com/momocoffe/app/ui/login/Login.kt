@@ -2,6 +2,7 @@ package com.momocoffe.app.ui.login
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.momocoffe.app.ui.theme.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -49,6 +50,7 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
                 }
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
+                    Toast.makeText(context, R.string.error_user_and_password, Toast.LENGTH_LONG).show()
                     Log.d("Result.ViewModel", exception.toString())
                 }
             }
@@ -129,6 +131,8 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
                         onclick = {
                             if(isValidate){
                                 loginViewModel.login(email, password)
+                            }else{
+                                Toast.makeText(context, R.string.error_enter_user_and_password, Toast.LENGTH_LONG).show()
                             }
                         },
                         enabled = true
