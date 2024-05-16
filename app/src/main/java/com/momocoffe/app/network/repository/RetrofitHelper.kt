@@ -68,7 +68,6 @@ class TokenAuthenticator: Authenticator {
 
         return if (response.isSuccessful) {
             val newToken = response.body()?.token
-            // Save the new token to SharedPreferences
             newToken?.let {
                 sharedPreferences.edit().putString("token", it).apply()
             }

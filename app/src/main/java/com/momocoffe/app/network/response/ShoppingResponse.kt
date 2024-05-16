@@ -2,31 +2,29 @@ package com.momocoffe.app.network.response
 
 import com.google.gson.annotations.SerializedName
 
-data class EmployeeResponse (
-    val items: List<ItemEmployee>,
+data class ShoppingResponse (
+    val items: List<ItemShopping>,
     val page: Long,
     val limit: Long,
     val total: Long
 )
 
-data class ItemEmployee (
+data class ItemShopping (
     val id: Long,
-    @SerializedName("employee_id")
-    val employeeID: String,
     @SerializedName("shopping_id")
     val shoppingID: String,
     @SerializedName("name_shopping")
     val nameShopping: String,
-    @SerializedName("first_name")
-    val firstName: String,
-    @SerializedName("last_name")
-    val lastName: String,
-    val phone: String,
-    val email: String,
-    val password: String,
+    @SerializedName("no_shopping")
+    val noShopping: String,
     val address: String,
-    val state: Boolean,
-    val role: String,
+    val email: String,
+    val idenfication: String,
+    val phone: String,
+    val closing: String,
+    val open: String,
+    val effecty: Boolean,
+    val card: Boolean,
     @SerializedName("create_at")
     val createAt: String,
     @SerializedName("update_at")

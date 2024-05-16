@@ -45,4 +45,6 @@
     <string name="size">Size</string>
     <string name="error_user_and_password">Ingresa correctamente el usuario y contraseña</string>
     <string name="error_enter_user_and_password">Ingresa el usuario y contraseña</string>
+    <string name="welcome">¡Bienvenid@!</string>
+    <string name="pair_device_kiosko">Antes de comenzar,\n Espera que se emparejen\n tus dispositivos...</string>
 </resources>

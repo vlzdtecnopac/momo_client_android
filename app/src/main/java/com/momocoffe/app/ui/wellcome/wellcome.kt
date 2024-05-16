@@ -11,7 +11,10 @@ import androidx.compose.ui.unit.*
 import com.momocoffe.app.ui.theme.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.draw.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -23,6 +26,8 @@ import androidx.navigation.NavController
 import com.spr.jetpack_loading.components.indicators.BallBeatIndicator
 import com.momocoffe.app.ui.wellcome.component.CardOption
 import com.momocoffe.app.R
+import com.momocoffe.app.viewmodel.KioskoModel
+import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.momocoffe.app.viewmodel.WelcomeViewModel
 
 
@@ -30,32 +35,80 @@ import kotlinx.coroutines.delay
 
 
 @Composable
-fun WellCome(navController: NavController, welcomeViewModel: WelcomeViewModel = viewModel()) {
+fun WellCome(navController: NavController,
+             welcomeViewModel: WelcomeViewModel = viewModel(),
+             shoppingViewModel: ShoppingViewModel = viewModel(),
+             kioskoModel: KioskoModel = viewModel()
+             ) {
     val context = LocalContext.current
+    var shoppingID by rememberSaveable { mutableStateOf(value = "") }
 
     LaunchedEffect(Unit) {
         val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
         val employeeID = sharedPreferences.getString("employeeId", "") ?: ""
-        Log.d("Result.WelcomeModel", "ID: ${employeeID}")
         welcomeViewModel.getEmployee(employeeID)
         delay(2000)
         welcomeViewModel.employeeResultState.value?.let { result ->
             when {
                 result.isSuccess -> {
-                    val loginResponse = result.getOrThrow()
-                    Log.d("Result.WelcomeModel", loginResponse.toString())
-
+                    val employeeResponse = result.getOrThrow()
+                    Log.d("Result.WelcomeModel", employeeResponse.items[0].shoppingID)
+                    shoppingID = employeeResponse.items[0].shoppingID
                 }
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
                     Log.d("Result.WelcomeModel", exception.toString())
                 }
+
+                else -> {
+                    Log.d("Result.WelcomeModel", "Error")
+                }
             }
         }
+        shoppingViewModel.getShopping(shoppingID)
         /*if (!hasNavigated) {
             navController.navigate("orderhere")
             hasNavigated = true
         }*/
+    }
+
+    LaunchedEffect(shoppingViewModel.shoppingResultState.value) {
+        shoppingViewModel.shoppingResultState.value?.let {result ->
+            when {
+                result.isSuccess -> {
+                    val shoppingResponse = result.getOrThrow()
+                    kioskoModel.activeKiosko(shoppingID =  shoppingResponse.items[0].shoppingID)
+                }
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.d("Result.WelcomeModel", exception.toString())
+                }
+
+                else -> {
+                    Log.d("Result.WelcomeModel", "Error")
+                }
+            }
+        }
+    }
+
+    LaunchedEffect(kioskoModel.kioskoResultState.value) {
+        kioskoModel.kioskoResultState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val kioskoResponse = result.getOrThrow()
+                    Log.d("Result.WelcomeModel", kioskoResponse.toString())
+                }
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.d("Result.WelcomeModel", exception.toString())
+                }
+
+                else -> {
+                    Log.d("Result.WelcomeModel", "Error")
+                }
+            }
+
+        }
     }
 
     Column(
@@ -73,7 +126,7 @@ fun WellCome(navController: NavController, welcomeViewModel: WelcomeViewModel = 
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            "¡Bienvenid@!",
+            text = stringResource(id = R.string.welcome),
             color = Color.White,
             fontSize = 30.sp,
             fontFamily = redhatFamily,
@@ -81,9 +134,7 @@ fun WellCome(navController: NavController, welcomeViewModel: WelcomeViewModel = 
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
-            "Antes de comenzar,\n" +
-                    "Espera que se emparejen\n" +
-                    "tus dispositivos.",
+            stringResource(id = R.string.pair_device_kiosko),
             textAlign = TextAlign.Center,
             color = Color.White,
             fontSize = 18.sp,

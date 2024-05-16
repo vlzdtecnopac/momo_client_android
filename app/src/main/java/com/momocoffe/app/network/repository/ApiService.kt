@@ -3,8 +3,10 @@ package com.momocoffe.app.network.repository
 import com.momocoffe.app.network.dto.LoginRequest
 import com.momocoffe.app.network.dto.RefreshToken
 import com.momocoffe.app.network.response.EmployeeResponse
+import com.momocoffe.app.network.response.KioskoResponse
 import com.momocoffe.app.network.response.LoginResponse
 import com.momocoffe.app.network.response.RefreshTokenResponse
+import com.momocoffe.app.network.response.ShoppingResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -20,4 +22,10 @@ interface ApiService {
 
     @GET("/users/employee/")
     suspend fun getEmployee(@Query("employee_id") employeeID: String): Response<EmployeeResponse>
+
+    @GET("/shopping/")
+    suspend fun getShopping(@Query("shopping_id") shoppingID: String): Response<ShoppingResponse>
+
+    @GET("/kioskos/activate/")
+    suspend fun activateKiosko(@Query("shopping_id") shoppingID: String, @Query("state") state: Boolean): Response<KioskoResponse>
 }

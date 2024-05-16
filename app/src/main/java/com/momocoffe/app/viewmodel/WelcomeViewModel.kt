@@ -32,7 +32,6 @@ class WelcomeViewModel(): ViewModel()  {
                     employeeResultState.value = Result.failure(Exception("Employee failed"))
                 }
             }catch (e: Exception){
-
                 Log.e("Result.WelcomeModel", e.message.toString())
             }finally {
                 loadingState.value = false
