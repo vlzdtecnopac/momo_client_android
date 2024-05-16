@@ -2,12 +2,10 @@ package com.momocoffe.app.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.momocoffe.app.network.dto.LoginRequest
-import com.momocoffe.app.network.dto.LoginResponse
+import com.momocoffe.app.network.response.LoginResponse
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
 import kotlinx.coroutines.launch

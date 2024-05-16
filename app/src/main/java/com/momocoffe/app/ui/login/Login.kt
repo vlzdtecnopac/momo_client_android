@@ -43,6 +43,8 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
                     val loginResponse = result.getOrThrow()
                     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
                     sharedPreferences.edit().putString("token", loginResponse.token).apply()
+                    sharedPreferences.edit().putString("employeeId", loginResponse.employeeID).apply()
+                    sharedPreferences.edit().putString("shoppingId", loginResponse.shoppingID).apply()
                     navController.navigate(Destination.Wellcome.route)
                 }
                 result.isFailure -> {
