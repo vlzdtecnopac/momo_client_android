@@ -28,6 +28,7 @@ import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.viewmodel.LoginViewModel
+import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 
 @Composable
 fun Login(navController: NavHostController, loginViewModel: LoginViewModel = viewModel()) {
@@ -82,11 +83,11 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
+            BallClipRotatePulseIndicator()
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = stringResource(id = R.string.momo_coffe),
-                modifier = Modifier.width(290.dp)
+                modifier = Modifier.width(220.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(

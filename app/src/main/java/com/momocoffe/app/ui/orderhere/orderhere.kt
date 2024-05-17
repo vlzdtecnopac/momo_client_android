@@ -20,6 +20,7 @@ import com.momocoffe.app.ui.orderhere.components.ButtonEffecty
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.viewmodel.RegionInternational
 import com.momocoffe.app.R
+import com.momocoffe.app.ui.orderhere.components.ContentNotEffecty
 import io.socket.emitter.Emitter
 import kotlinx.coroutines.delay
 import org.json.JSONObject
@@ -30,9 +31,12 @@ fun OrderHere(navController: NavController) {
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val preference_kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
-    val preference_token = sharedPreferences.getString("token", null) ?: ""
 
     var isModalVisible by remember { mutableStateOf(false) }
+
+    if(isModalVisible) {
+        ContentNotEffecty(navController)
+    }
 
     LaunchedEffect(key1 = true) {
         SocketHandler.getSocket().on("kiosko-verify-socket", Emitter.Listener {

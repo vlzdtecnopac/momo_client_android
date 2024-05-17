@@ -71,7 +71,7 @@ fun ContentNotEffecty(navController : NavController) {
 
                 Column(
                     modifier =Modifier
-                        .widthIn(0.dp, 852.dp),
+                        .widthIn(0.dp, 852.dp).weight(8f),
                     verticalArrangement = Arrangement.Top
                 ){
 
@@ -84,7 +84,7 @@ fun ContentNotEffecty(navController : NavController) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(4f),
+                        .weight(3f),
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
