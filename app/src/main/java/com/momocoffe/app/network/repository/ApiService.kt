@@ -1,7 +1,9 @@
 package com.momocoffe.app.network.repository
 
+import com.momocoffe.app.network.dto.ClientRequest
 import com.momocoffe.app.network.dto.LoginRequest
 import com.momocoffe.app.network.dto.RefreshToken
+import com.momocoffe.app.network.response.ClientResponse
 import com.momocoffe.app.network.response.EmployeeResponse
 import com.momocoffe.app.network.response.KioskoResponse
 import com.momocoffe.app.network.response.LoginResponse
@@ -28,4 +30,8 @@ interface ApiService {
 
     @GET("/kioskos/activate/")
     suspend fun activateKiosko(@Query("shopping_id") shoppingID: String, @Query("state") state: Boolean): Response<KioskoResponse>
+
+    @POST("/users/client/register")
+    suspend fun getRegisterClient(@Body clientDto: ClientRequest) : Response<ClientResponse>
+
 }

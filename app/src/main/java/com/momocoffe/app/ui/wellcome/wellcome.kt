@@ -14,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -30,19 +29,16 @@ import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.response.DataKiosko
 import com.momocoffe.app.network.response.ItemEmployee
-import com.momocoffe.app.viewmodel.KioskoModel
+import com.momocoffe.app.viewmodel.KioskoViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.momocoffe.app.viewmodel.WelcomeViewModel
-
-
 import kotlinx.coroutines.delay
-
 
 @Composable
 fun WellCome(navController: NavController,
              welcomeViewModel: WelcomeViewModel = viewModel(),
              shoppingViewModel: ShoppingViewModel = viewModel(),
-             kioskoModel: KioskoModel = viewModel()
+             kioskoModel: KioskoViewModel = viewModel()
              ) {
     val context = LocalContext.current
     var shoppingID by remember { mutableStateOf(value = "") }

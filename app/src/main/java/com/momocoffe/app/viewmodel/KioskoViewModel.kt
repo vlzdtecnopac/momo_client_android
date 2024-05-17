@@ -7,10 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
 import com.momocoffe.app.network.response.KioskoResponse
-import com.momocoffe.app.network.response.ShoppingResponse
 import kotlinx.coroutines.launch
 
-class KioskoModel : ViewModel() {
+class KioskoViewModel : ViewModel() {
     private val apiService: ApiService = RetrofitHelper.apiService()
     val loadingState = mutableStateOf(false)
     val kioskoResultState = mutableStateOf<Result<KioskoResponse>?>(null)
