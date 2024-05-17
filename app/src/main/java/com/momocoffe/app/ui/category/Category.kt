@@ -19,6 +19,7 @@ import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.ui.theme.BlueLight
 
 data class ListItem(val iconResId: Int, val name: String)
 
@@ -50,30 +51,36 @@ fun Category(navController: NavController){
             Header(navController)
             Spacer(modifier = Modifier.height(8.dp))
         }
-        LazyVerticalGrid(
-            horizontalArrangement = Arrangement.Center,
-            verticalArrangement = Arrangement.Center,
-            modifier =Modifier
-                .widthIn(0.dp, 900.dp),
-            contentPadding = PaddingValues(vertical = 20.dp, horizontal = 30.dp),
-            columns = GridCells.Fixed(4),
-            content = {
-                items(jsonList) {  item ->
-                    Box(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(14.dp))
-                            .padding(5.dp)) {
-                        BtnOutlineCategory(
-                            icon= item.iconResId,
-                            text = item.name,
-                            onclick = {
-                                navController.navigate(Destination.Products.route)
-                            }
-                        )
+        Column(
+            modifier = Modifier.fillMaxSize().background(BlueDark),
+            horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+            LazyVerticalGrid(
+                horizontalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .widthIn(0.dp, 900.dp),
+                contentPadding = PaddingValues(vertical = 20.dp, horizontal = 30.dp),
+                columns = GridCells.Fixed(4),
+                content = {
+                    items(jsonList) { item ->
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(14.dp))
+                                .padding(5.dp)
+                        ) {
+                            BtnOutlineCategory(
+                                icon = item.iconResId,
+                                text = item.name,
+                                onclick = {
+                                    navController.navigate(Destination.Products.route)
+                                }
+                            )
+                        }
                     }
                 }
-            }
-        )
+            )
+        }
     }
 
 

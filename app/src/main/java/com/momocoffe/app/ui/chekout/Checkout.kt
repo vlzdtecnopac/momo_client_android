@@ -401,7 +401,7 @@ fun ContentPropinas() {
                             Text(
                                 "0%",
                                 color = BlueDark,
-                                fontFamily = stacionFamily,
+                                fontFamily = redhatFamily,
                                 fontSize = 18.sp
                             )
                             Spacer(modifier = Modifier.width(4.dp))
@@ -409,7 +409,7 @@ fun ContentPropinas() {
                                 Text(
                                     "Hoy no quiero dejar propina",
                                     color = BlueDark,
-                                    fontFamily = stacionFamily,
+                                    fontFamily = redhatFamily,
                                     fontSize = 10.sp,
                                     lineHeight = 12.sp
                                 )

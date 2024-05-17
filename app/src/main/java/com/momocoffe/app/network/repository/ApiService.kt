@@ -34,4 +34,7 @@ interface ApiService {
     @POST("/users/client/register")
     suspend fun getRegisterClient(@Body clientDto: ClientRequest) : Response<ClientResponse>
 
+    @GET("/users/client")
+    suspend fun getClient(@Query("email") email: String, @Query("phone") phone: String, @Query("client_id") clientID: String) : Response<ClientResponse>
+
 }
