@@ -1,7 +1,6 @@
 package com.momocoffe.app.ui.client.section
 
 
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.*
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.momocoffe.app.ui.theme.*
@@ -31,12 +31,16 @@ import com.momocoffe.app.ui.client.components.DropDownOutline
 import com.momocoffe.app.ui.client.components.OutlineTextField
 import com.momocoffe.app.viewmodel.ClientViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterClient(navController: NavController, clientViewModel: ClientViewModel = viewModel()) {
     val context = LocalContext.current
     val loading = clientViewModel.loadingState.value;
     val focusManager = LocalFocusManager.current
+    val lifecycleScope = LocalLifecycleOwner.current.lifecycleScope
+
     var firstName by remember { mutableStateOf(value = "") }
     var email by remember { mutableStateOf(value = "") }
     var lastName by remember { mutableStateOf(value = "") }
@@ -45,15 +49,17 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
     val selectedLabel = remember { mutableStateOf(value = "") }
     val checkedState = remember { mutableStateOf(true) }
 
+    var emailExists by remember { mutableStateOf(false) }
     val isValidate by derivedStateOf { email.isNotBlank() && firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && phone.isNotBlank() }
 
     LaunchedEffect(clientViewModel.clientResultState.value) {
         clientViewModel.clientResultState.value?.let { result ->
             when {
                 result.isSuccess -> {
-                    Toast.makeText(context, "Nuevo cliente creado.", Toast.LENGTH_LONG)
+                    Toast.makeText(context, "Se ha creado nuevo cliente.", Toast.LENGTH_LONG)
                         .show()
                     navController.navigate(Destination.Category.route)
+                    clientViewModel.clientResultState.value = null
                 }
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
@@ -64,6 +70,20 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
             }
         }
     }
+
+    fun checkEmailExists(email: String) {
+
+        // Llamar a la función del ViewModel para verificar si el correo electrónico ya existe
+        lifecycleScope.launch {
+            val exists = clientViewModel.checkEmailExists(email)
+            emailExists = exists
+            if (exists) {
+                // Mostrar un mensaje de error o tomar alguna otra acción si el correo electrónico ya existe
+                Toast.makeText(context, "El correo electrónico ya está registrado.", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
 
     Dialog(
         onDismissRequest = {},
@@ -181,13 +201,19 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                                     icon = R.drawable.mail_icon,
                                     keyboardType = KeyboardType.Email,
                                     textValue = email,
-                                    onValueChange = { email = it },
+                                    onValueChange = { newEmail ->
+                                        email = newEmail
+                                        if (newEmail.isNotBlank()) {
+                                            checkEmailExists(newEmail)
+                                        }
+                                    },
                                     onClickButton = { email = "" },
                                     onNext = {
                                         focusManager.moveFocus(
                                             FocusDirection.Down
                                         )
-                                    })
+                                    }
+                                )
                             }
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
@@ -219,7 +245,6 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                                     ButtonContinue(onclick = {
                                         Log.d("Register.Client", isValidate.toString())
                                         if (isValidate) {
-                                            Log.d("Result.ClientViewModel", "Padso..")
                                             clientViewModel.register(
                                                 clientDto = ClientRequest(
                                                     firstName,

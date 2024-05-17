@@ -22,7 +22,6 @@ import com.momocoffe.app.viewmodel.RegionInternational
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.orderhere.components.ContentNotEffecty
 import io.socket.emitter.Emitter
-import kotlinx.coroutines.delay
 import org.json.JSONObject
 
 @Composable
@@ -52,7 +51,8 @@ fun OrderHere(navController: NavController) {
                     editor.apply()
 
                     val intent = Intent(context, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     context.startActivity(intent)
                 }
             }
@@ -72,7 +72,7 @@ fun OrderHere(navController: NavController) {
             Image(
                 painter = painterResource(id = R.drawable.logo_momo_white),
                 contentDescription = stringResource(id = R.string.momo_coffe),
-                modifier = Modifier.width(200.dp)
+                modifier = Modifier.width(350.dp)
             )
             Spacer(modifier = Modifier.height(25.dp))
             ButtonField(

@@ -39,4 +39,14 @@ class ClientViewModel : ViewModel() {
             }
         }
     }
+
+    fun checkEmailExists(email: String): Boolean {
+        viewModelScope.launch {
+
+        }
+        return false
+
+    }
+
+
 }
