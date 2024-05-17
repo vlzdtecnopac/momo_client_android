@@ -21,8 +21,10 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -34,10 +36,12 @@ import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.BlueDark
 
 @Composable
-fun DropDownOutline() {
+fun DropDownOutline(
+    selected: MutableState<String>
+) {
     var selectedIndex by rememberSaveable { mutableStateOf(0) }
-    var expanded by rememberSaveable { mutableStateOf(false) }
-    val items = listOf("+55", "+57")
+    var expanded by remember { mutableStateOf(false) }
+    val items = listOf("+34", "+39", "+51", "+52", "+54", "+55", "+56", "+57", "+58", "+1", "+7")
 
     val selectModifierCard =
         Modifier
@@ -77,6 +81,7 @@ fun DropDownOutline() {
         items.forEachIndexed { index, s ->
             DropdownMenuItem(onClick = {
                 selectedIndex = index
+                selected.value = items[index]
                 expanded = false
             }) {
                 Text(text = s )

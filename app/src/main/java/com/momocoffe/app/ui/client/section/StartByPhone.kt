@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -52,7 +53,8 @@ import com.momocoffe.app.ui.theme.stacionFamily
 
 @Composable
 fun StartByPhone(navController: NavController) {
-    var phone by rememberSaveable { mutableStateOf(value = "") }
+    var phone by remember { mutableStateOf(value = "") }
+    val selected = remember { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
     Dialog(
         onDismissRequest = {},
@@ -130,7 +132,9 @@ fun StartByPhone(navController: NavController) {
                                     .weight(0.3f)
                             ) {
                                 Spacer(modifier = Modifier.height(8.dp))
-                                DropDownOutline()
+                                DropDownOutline(
+                                    selected = selected
+                                )
                             }
                             Box(
                                 modifier = Modifier

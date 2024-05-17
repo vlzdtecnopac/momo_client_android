@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.*
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
@@ -25,15 +24,14 @@ import com.momocoffe.app.ui.client.components.ButtonContinue
 import com.momocoffe.app.ui.client.components.DropDownOutline
 import com.momocoffe.app.ui.client.components.OutlineTextField
 
-
 @Composable
 fun RegisterClient(navController: NavController) {
     val focusManager = LocalFocusManager.current
-    var firstName by rememberSaveable { mutableStateOf(value = "") }
-    var email by rememberSaveable { mutableStateOf(value = "") }
-    var lastName by rememberSaveable { mutableStateOf(value = "") }
-    var phone by rememberSaveable { mutableStateOf(value = "") }
-
+    var firstName by remember { mutableStateOf(value = "") }
+    var email by remember { mutableStateOf(value = "") }
+    var lastName by remember { mutableStateOf(value = "") }
+    var phone by remember { mutableStateOf(value = "") }
+    val selected = remember { mutableStateOf(value = "") }
     val checkedState = remember { mutableStateOf(true) }
 
     Dialog(
@@ -119,7 +117,9 @@ fun RegisterClient(navController: NavController) {
                                         .weight(0.3f)
                                 ) {
                                     Spacer(modifier = Modifier.height(8.dp))
-                                    DropDownOutline()
+                                    DropDownOutline(
+                                        selected = selected
+                                    )
                                 }
                                 Box(
                                     modifier = Modifier
@@ -139,8 +139,6 @@ fun RegisterClient(navController: NavController) {
                                             )
                                         })
                                 }
-
-
                             }
                             OutlineTextField(
                                 label =  stringResource(id = R.string.mail),
