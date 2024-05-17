@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.momocoffe.app.network.dto.ClientRequest
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
+import com.momocoffe.app.network.response.ClientGeneralResponse
 import com.momocoffe.app.network.response.ClientResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -15,7 +16,7 @@ class ClientViewModel : ViewModel() {
     private val apiService: ApiService = RetrofitHelper.apiService()
     val loadingState = mutableStateOf(false)
     val clientResultState = mutableStateOf<Result<ClientResponse>?>(null)
-    val clientResultCheckEmailState = mutableStateOf<Result<ClientResponse>?>(null)
+    val clientResultCheckEmailState = mutableStateOf<Result<ClientGeneralResponse>?>(null)
     fun register(clientDto: ClientRequest) {
         loadingState.value = true
         viewModelScope.launch {
@@ -45,9 +46,9 @@ class ClientViewModel : ViewModel() {
     fun getClient(email: String = "", phone: String = "",  clientID: String = ""){
         viewModelScope.launch {
             try {
-                val response: Response<ClientResponse> = apiService.getClient(email, phone, clientID)
+                val response: Response<ClientGeneralResponse> = apiService.getClient(email, phone, clientID)
                 if (response.isSuccessful) {
-                    val clientResponse: ClientResponse? = response.body()
+                    val clientResponse: ClientGeneralResponse? = response.body()
                     if (clientResponse != null) {
                         clientResultCheckEmailState.value = Result.success(clientResponse)
                     } else {

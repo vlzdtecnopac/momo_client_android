@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.*
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.momocoffe.app.ui.theme.*
@@ -28,17 +27,17 @@ import com.momocoffe.app.network.dto.ClientRequest
 import com.momocoffe.app.ui.client.components.ButtonBack
 import com.momocoffe.app.ui.client.components.ButtonContinue
 import com.momocoffe.app.ui.client.components.DropDownOutline
+import com.momocoffe.app.ui.client.components.EmailOutlineTextField
 import com.momocoffe.app.ui.client.components.OutlineTextField
 import com.momocoffe.app.viewmodel.ClientViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
-import androidx.lifecycle.lifecycleScope
+
 
 @Composable
 fun RegisterClient(navController: NavController, clientViewModel: ClientViewModel = viewModel()) {
     val context = LocalContext.current
     val loading = clientViewModel.loadingState.value;
     val focusManager = LocalFocusManager.current
-    val lifecycleScope = LocalLifecycleOwner.current.lifecycleScope
 
     var firstName by remember { mutableStateOf(value = "") }
     var email by remember { mutableStateOf(value = "") }
@@ -48,7 +47,6 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
     val selectedLabel = remember { mutableStateOf(value = "") }
     val checkedState = remember { mutableStateOf(true) }
 
-    var emailExists by remember { mutableStateOf(false) }
     val isValidate by derivedStateOf { email.isNotBlank() && firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && phone.isNotBlank() }
 
     LaunchedEffect(clientViewModel.clientResultState.value) {
@@ -69,8 +67,6 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
             }
         }
     }
-
-
 
 
     Dialog(
@@ -183,20 +179,20 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                                             })
                                     }
                                 }
-                                OutlineTextField(
+                                EmailOutlineTextField(
                                     label = stringResource(id = R.string.mail),
-                                    placeholder = "Juan@momo.com",
+                                    placeholder = "ejemplo@momo.com",
                                     icon = R.drawable.mail_icon,
                                     keyboardType = KeyboardType.Email,
-                                    textValue = email,
-                                    onValueChange = { email = it },
                                     onClickButton = { email = "" },
+                                    onEmailValidated = {false},
                                     onNext = {
                                         focusManager.moveFocus(
                                             FocusDirection.Down
                                         )
                                     }
                                 )
+
                             }
                             Row(
                                 verticalAlignment = Alignment.CenterVertically
@@ -249,7 +245,9 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                 }
                 if(loading){ Box(
                     contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize().background(BlueDarkTransparent)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(BlueDarkTransparent)
                 ){
                     BallClipRotatePulseIndicator()
                 }}
