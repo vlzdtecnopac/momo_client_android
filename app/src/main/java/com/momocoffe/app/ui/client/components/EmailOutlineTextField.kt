@@ -31,9 +31,9 @@ fun EmailOutlineTextField(
     placeholder: String,
     keyboardType: KeyboardType,
     icon: Int,
-    onClickButton: () -> Unit,
     onNext: (KeyboardActionScope.() -> Unit),
-    onEmailValidated: (Boolean) -> Unit
+    onEmailValidated: (Boolean) -> Unit,
+    selected: MutableState<String>,
 ) {
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
@@ -47,7 +47,10 @@ fun EmailOutlineTextField(
 
     OutlinedTextField(
         value = email,
-        onValueChange = { email = it },
+        onValueChange = {
+            email = it
+            selected.value = it
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 20.dp, end = 20.dp),
@@ -63,7 +66,7 @@ fun EmailOutlineTextField(
         },
         trailingIcon = {
             IconButton(
-                onClick = onClickButton
+                onClick = {email = ""}
             ) {
                 Icon(
                     imageVector = Icons.Filled.Clear,
@@ -98,18 +101,22 @@ private suspend fun isValidEmail(
     context: Context,
     clientViewModel: ClientViewModel,
     email: String
-): Boolean{
+): Boolean {
     clientViewModel.getClient(email)
     delay(2000)
     clientViewModel.clientResultCheckEmailState.value?.let { result ->
         when {
             result.isSuccess -> {
                 val response = result.getOrThrow()
-                if(response.items.isNotEmpty()){
-                    Toast.makeText(context, "Este correo se encuentra registrado.", Toast.LENGTH_LONG)
+                if (response.items.isNotEmpty()) {
+                    Toast.makeText(
+                        context,
+                        "Este correo se encuentra registrado.",
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                     return true
-                }else{
+                } else {
                     return false
                 }
             }

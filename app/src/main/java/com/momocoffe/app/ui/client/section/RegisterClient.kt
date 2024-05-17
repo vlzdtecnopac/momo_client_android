@@ -40,14 +40,14 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
     val focusManager = LocalFocusManager.current
 
     var firstName by remember { mutableStateOf(value = "") }
-    var email by remember { mutableStateOf(value = "") }
     var lastName by remember { mutableStateOf(value = "") }
     var phone by remember { mutableStateOf(value = "") }
     val selected = remember { mutableStateOf(value = "") }
     val selectedLabel = remember { mutableStateOf(value = "") }
     val checkedState = remember { mutableStateOf(true) }
+    var email = remember { mutableStateOf(value = "") }
 
-    val isValidate by derivedStateOf { email.isNotBlank() && firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && phone.isNotBlank() }
+    val isValidate by derivedStateOf { email.value.isNotBlank() && firstName.isNotBlank() && lastName.isNotBlank()  && phone.isNotBlank() }
 
     LaunchedEffect(clientViewModel.clientResultState.value) {
         clientViewModel.clientResultState.value?.let { result ->
@@ -184,8 +184,8 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                                     placeholder = "ejemplo@momo.com",
                                     icon = R.drawable.mail_icon,
                                     keyboardType = KeyboardType.Email,
-                                    onClickButton = { email = "" },
                                     onEmailValidated = {false},
+                                    selected = email,
                                     onNext = {
                                         focusManager.moveFocus(
                                             FocusDirection.Down
@@ -231,7 +231,7 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                                                     phone,
                                                     selected.value,
                                                     selectedLabel.value,
-                                                    email
+                                                    email.value
                                                 )
                                             )
                                         }
