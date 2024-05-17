@@ -1,47 +1,47 @@
 package com.momocoffe.app.ui.client.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.BlueDark
 
+data class Country(val label: String, val value: String)
+
 @Composable
 fun DropDownOutline(
-    selected: MutableState<String>
+    selected: MutableState<String>,
+    selectedLabel: MutableState<String>
 ) {
-    var selectedIndex by rememberSaveable { mutableStateOf(0) }
+    var selectedIndex by remember{ mutableStateOf(0) }
     var expanded by remember { mutableStateOf(false) }
-    val items = listOf("+34", "+39", "+51", "+52", "+54", "+55", "+56", "+57", "+58", "+1", "+7")
+
+    val items = listOf(
+        Country(label = "", value = "" ),
+        Country(label = "España", value = "+34" ),
+        Country(label = "Italia", value = "+39" ),
+        Country(label = "Peru", value = "+51" ),
+        Country(label = "Mexico", value = "+52" ),
+        Country(label = "Cuba", value = "+53" ),
+        Country(label = "Argentina", value = "+54" ),
+        Country(label = "Brazil", value = "+55" ),
+        Country(label = "Chile", value = "+56" ),
+        Country(label = "Colombia", value = "+57" ),
+        Country(label = "Venezuela", value = "+58" ),
+        Country(label = "USA/Canada", value = "+1" ),
+        Country(label = "Rusia", value = "+7" ),
+    )
 
     val selectModifierCard =
         Modifier
@@ -61,7 +61,7 @@ fun DropDownOutline(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround
     ){
-        Text(items[selectedIndex], color = Color.White)
+        Text(items[selectedIndex].value, color = Color.White)
         Icon(
             Icons.Rounded.KeyboardArrowDown,
             contentDescription = stringResource(id = R.string.momo_coffe),
@@ -81,10 +81,11 @@ fun DropDownOutline(
         items.forEachIndexed { index, s ->
             DropdownMenuItem(onClick = {
                 selectedIndex = index
-                selected.value = items[index]
+                selected.value = items[index].value
+                selectedLabel.value = items[index].label
                 expanded = false
             }) {
-                Text(text = s )
+                Text(text = s.value )
             }
         }
     }

@@ -23,6 +23,7 @@ import com.momocoffe.app.ui.login.components.ButtonField
 import com.momocoffe.app.ui.login.components.PasswordOutTextField
 import com.momocoffe.app.R
 import androidx.compose.runtime.*
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,114 +38,136 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
     var email by rememberSaveable { mutableStateOf(value = "") }
     var password by rememberSaveable { mutableStateOf(value = "") }
     val isValidate by derivedStateOf { email.isNotBlank() && password.isNotBlank() }
+    val loading = loginViewModel.loadingState.value;
 
     LaunchedEffect(loginViewModel.loginResultState.value) {
         loginViewModel.loginResultState.value?.let { result ->
             when {
                 result.isSuccess -> {
                     val loginResponse = result.getOrThrow()
-                    val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+                    val sharedPreferences =
+                        context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
                     sharedPreferences.edit().putString("token", loginResponse.token).apply()
-                    sharedPreferences.edit().putString("employeeId", loginResponse.employeeID).apply()
-                    sharedPreferences.edit().putString("shoppingId", loginResponse.shoppingID).apply()
+                    sharedPreferences.edit().putString("employeeId", loginResponse.employeeID)
+                        .apply()
+                    sharedPreferences.edit().putString("shoppingId", loginResponse.shoppingID)
+                        .apply()
                     navController.navigate(Destination.Wellcome.route)
                 }
+
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
-                    Toast.makeText(context, R.string.error_user_and_password, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.error_user_and_password, Toast.LENGTH_LONG)
+                        .show()
                     Log.d("Result.ViewModel", exception.toString())
                 }
             }
         }
     }
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .weight(4f),
+    Box(
+        contentAlignment = Alignment.Center
+    ){
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.login_img),
-                contentDescription = stringResource(id = R.string.momo_coffe),
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop,
-            )
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .weight(7f)
-                .background(BlueDark),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            BallClipRotatePulseIndicator()
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = stringResource(id = R.string.momo_coffe),
-                modifier = Modifier.width(220.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                stringResource(id = R.string.start_session_kiosko),
-                color = Color.White,
-                fontSize = 30.sp,
-                fontFamily = redhatFamily,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                stringResource(id = R.string.enter_gmail_password),
-                color = Color.White,
-                fontSize = 20.sp,
-                fontFamily = stacionFamily,
-                fontWeight = FontWeight.Normal
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            Box(modifier = Modifier
-                .align(Alignment.CenterHorizontally) // Center the inner box
-                .width(480.dp)  ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    EmailOutTextField(
-                        textValue = email,
-                        onValueChange = { email = it },
-                        onClickButton = { email = "" },
-                        onNext = { focusManager.moveFocus(FocusDirection.Down) }
-                    )
-                    Spacer(modifier = Modifier.height(15.dp))
-                    PasswordOutTextField(
-                        textValue = password,
-                        onValueChange = { password = it },
-                        onDone = {
-                            focusManager.clearFocus()
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(25.dp))
-                    ButtonField(
-                        text = stringResource(id = R.string.enter),
-                        onclick = {
-                            if(isValidate){
-                                loginViewModel.login(email, password)
-                            }else{
-                                Toast.makeText(context, R.string.error_enter_user_and_password, Toast.LENGTH_LONG).show()
-                            }
-                        },
-                        enabled = true
-                    )
-                }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(4f),
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.login_img),
+                    contentDescription = stringResource(id = R.string.momo_coffe),
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                )
             }
 
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .weight(7f)
+                    .background(BlueDark),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+
+                Image(
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = stringResource(id = R.string.momo_coffe),
+                    modifier = Modifier.width(220.dp)
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    stringResource(id = R.string.start_session_kiosko),
+                    color = Color.White,
+                    fontSize = 30.sp,
+                    fontFamily = redhatFamily,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    stringResource(id = R.string.enter_gmail_password),
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontFamily = stacionFamily,
+                    fontWeight = FontWeight.Normal
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally) // Center the inner box
+                        .width(480.dp)
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        EmailOutTextField(
+                            textValue = email,
+                            onValueChange = { email = it },
+                            onClickButton = { email = "" },
+                            onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                        )
+                        Spacer(modifier = Modifier.height(15.dp))
+                        PasswordOutTextField(
+                            textValue = password,
+                            onValueChange = { password = it },
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(25.dp))
+                        ButtonField(
+                            text = stringResource(id = R.string.enter),
+                            onclick = {
+                                if (isValidate) {
+                                    loginViewModel.login(email, password)
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        R.string.error_enter_user_and_password,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            },
+                            enabled = true
+                        )
+                    }
+                }
+
+            }
         }
+        if(loading){ Box(
+            contentAlignment = Alignment.Center,
+           modifier = Modifier.fillMaxSize().background(BlueDarkTransparent)
+        ){
+          BallClipRotatePulseIndicator()
+        }}
+
     }
-
-
 }
 
 

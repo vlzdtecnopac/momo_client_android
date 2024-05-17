@@ -55,6 +55,7 @@ import com.momocoffe.app.ui.theme.stacionFamily
 fun StartByPhone(navController: NavController) {
     var phone by remember { mutableStateOf(value = "") }
     val selected = remember { mutableStateOf(value = "") }
+    val selectedLabel = remember { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
     Dialog(
         onDismissRequest = {},
@@ -133,7 +134,8 @@ fun StartByPhone(navController: NavController) {
                             ) {
                                 Spacer(modifier = Modifier.height(8.dp))
                                 DropDownOutline(
-                                    selected = selected
+                                    selected = selected,
+                                    selectedLabel = selectedLabel
                                 )
                             }
                             Box(

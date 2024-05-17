@@ -1,6 +1,7 @@
 package com.momocoffe.app.ui.client.section
 
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -15,24 +16,30 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.momocoffe.app.ui.theme.*
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.network.dto.ClientRequest
 import com.momocoffe.app.ui.client.components.ButtonBack
 import com.momocoffe.app.ui.client.components.ButtonContinue
 import com.momocoffe.app.ui.client.components.DropDownOutline
 import com.momocoffe.app.ui.client.components.OutlineTextField
+import com.momocoffe.app.viewmodel.ClientViewModel
 
 @Composable
-fun RegisterClient(navController: NavController) {
+fun RegisterClient(navController: NavController, clientViewModel: ClientViewModel = viewModel()) {
     val focusManager = LocalFocusManager.current
     var firstName by remember { mutableStateOf(value = "") }
     var email by remember { mutableStateOf(value = "") }
     var lastName by remember { mutableStateOf(value = "") }
     var phone by remember { mutableStateOf(value = "") }
     val selected = remember { mutableStateOf(value = "") }
+    val selectedLabel = remember { mutableStateOf(value = "") }
     val checkedState = remember { mutableStateOf(true) }
+
+    val isValidate by derivedStateOf { email.isNotBlank() && firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && phone.isNotBlank() }
 
     Dialog(
         onDismissRequest = {},
@@ -118,7 +125,8 @@ fun RegisterClient(navController: NavController) {
                                 ) {
                                     Spacer(modifier = Modifier.height(8.dp))
                                     DropDownOutline(
-                                        selected = selected
+                                        selected = selected,
+                                        selectedLabel = selectedLabel
                                     )
                                 }
                                 Box(
@@ -178,7 +186,20 @@ fun RegisterClient(navController: NavController) {
                                 modifier = Modifier
                                     .weight(0.5f)
                             ) {
-                                ButtonContinue(onclick = {})
+                                ButtonContinue(onclick = {
+                                    Log.d("Register.Client", isValidate.toString())
+                                    if(isValidate){
+                                        Log.d("Result.ClientViewModel", "Padso..")
+                                        clientViewModel.register(clientDto = ClientRequest(
+                                            firstName,
+                                            lastName,
+                                            phone,
+                                            selected.value,
+                                            selected.value,
+                                            email
+                                        ))
+                                    }
+                                })
                             }
                         }
                     }

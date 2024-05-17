@@ -19,6 +19,7 @@ class ClientViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = apiService.getRegisterClient(clientDto);
+                Log.e("Result.ClientViewModel", response.toString())
                 if (response.isSuccessful) {
                     val clientResponse: ClientResponse? = response.body()
                     if (clientResponse != null) {
@@ -31,10 +32,10 @@ class ClientViewModel : ViewModel() {
                 }
 
             } catch (e: Exception) {
-                Log.e("Result.ShoppingModel", e.message.toString())
+                Log.e("Result.ClientViewModel", e.message.toString())
             } finally {
                 loadingState.value = false
-                Log.d("Result.ShoppingModel", "Finally")
+                Log.d("Result.ClientViewModel", "Finally")
             }
         }
     }
