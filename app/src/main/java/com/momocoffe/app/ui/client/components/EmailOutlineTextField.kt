@@ -32,17 +32,15 @@ fun EmailOutlineTextField(
     keyboardType: KeyboardType,
     icon: Int,
     onNext: (KeyboardActionScope.() -> Unit),
-    onEmailValidated: (Boolean) -> Unit,
     selected: MutableState<String>,
 ) {
     val context = LocalContext.current
     var email by remember { mutableStateOf("") }
-    val (isValid, setIsValid) = remember { mutableStateOf(false) }
 
     LaunchedEffect(email) {
         delay(DEBOUNCE_TIME)
-        setIsValid(isValidEmail(context, clientViewModel, email))
-        onEmailValidated(isValid)
+        isValidEmail(context, clientViewModel, email)
+
     }
 
     OutlinedTextField(
@@ -101,7 +99,7 @@ private suspend fun isValidEmail(
     context: Context,
     clientViewModel: ClientViewModel,
     email: String
-): Boolean {
+) {
     clientViewModel.getClient(email)
     delay(2000)
     clientViewModel.clientResultCheckEmailState.value?.let { result ->
@@ -115,9 +113,8 @@ private suspend fun isValidEmail(
                         Toast.LENGTH_LONG
                     )
                         .show()
-                    return true
-                } else {
-                    return false
+                }else{
+
                 }
             }
 
@@ -126,9 +123,10 @@ private suspend fun isValidEmail(
                 Log.e("Result.ClientViewModel", exception.toString())
             }
 
-            else -> {}
+            else -> {
+            }
         }
 
     }
-    return false
+
 }

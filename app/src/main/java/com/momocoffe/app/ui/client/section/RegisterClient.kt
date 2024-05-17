@@ -24,11 +24,7 @@ import com.momocoffe.app.ui.theme.*
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.dto.ClientRequest
-import com.momocoffe.app.ui.client.components.ButtonBack
-import com.momocoffe.app.ui.client.components.ButtonContinue
-import com.momocoffe.app.ui.client.components.DropDownOutline
-import com.momocoffe.app.ui.client.components.EmailOutlineTextField
-import com.momocoffe.app.ui.client.components.OutlineTextField
+import com.momocoffe.app.ui.client.components.*
 import com.momocoffe.app.viewmodel.ClientViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 
@@ -45,9 +41,9 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
     val selected = remember { mutableStateOf(value = "") }
     val selectedLabel = remember { mutableStateOf(value = "") }
     val checkedState = remember { mutableStateOf(true) }
-    var email = remember { mutableStateOf(value = "") }
+    val email = remember { mutableStateOf(value = "") }
 
-    val isValidate by derivedStateOf { email.value.isNotBlank() && firstName.isNotBlank() && lastName.isNotBlank()  && phone.isNotBlank() }
+    val isValidate by derivedStateOf { email.value.isNotBlank() && firstName.isNotBlank() && lastName.isNotBlank()  && phone.isNotBlank()  }
 
     LaunchedEffect(clientViewModel.clientResultState.value) {
         clientViewModel.clientResultState.value?.let { result ->
@@ -184,7 +180,6 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                                     placeholder = "ejemplo@momo.com",
                                     icon = R.drawable.mail_icon,
                                     keyboardType = KeyboardType.Email,
-                                    onEmailValidated = {false},
                                     selected = email,
                                     onNext = {
                                         focusManager.moveFocus(
@@ -224,16 +219,16 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                                     ButtonContinue(onclick = {
                                         Log.d("Register.Client", isValidate.toString())
                                         if (isValidate) {
-                                            clientViewModel.register(
-                                                clientDto = ClientRequest(
-                                                    firstName,
-                                                    lastName,
-                                                    phone,
-                                                    selected.value,
-                                                    selectedLabel.value,
-                                                    email.value
+                                                clientViewModel.register(
+                                                    clientDto = ClientRequest(
+                                                        firstName,
+                                                        lastName,
+                                                        phone,
+                                                        selected.value,
+                                                        selectedLabel.value,
+                                                        email.value
+                                                    )
                                                 )
-                                            )
                                         }
                                     })
                                 }
