@@ -160,12 +160,16 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
 
             }
         }
-        if(loading){ Box(
-            contentAlignment = Alignment.Center,
-           modifier = Modifier.fillMaxSize().background(BlueDarkTransparent)
-        ){
-          BallClipRotatePulseIndicator()
-        }}
+        if (loading) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(BlueDarkTransparent)
+            ) {
+                BallClipRotatePulseIndicator()
+            }
+        }
 
     }
 }

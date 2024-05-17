@@ -1,7 +1,9 @@
 package com.momocoffe.app.ui.client.section
 
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -10,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.font.FontWeight
@@ -27,9 +30,12 @@ import com.momocoffe.app.ui.client.components.ButtonContinue
 import com.momocoffe.app.ui.client.components.DropDownOutline
 import com.momocoffe.app.ui.client.components.OutlineTextField
 import com.momocoffe.app.viewmodel.ClientViewModel
+import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 
 @Composable
 fun RegisterClient(navController: NavController, clientViewModel: ClientViewModel = viewModel()) {
+    val context = LocalContext.current
+    val loading = clientViewModel.loadingState.value;
     val focusManager = LocalFocusManager.current
     var firstName by remember { mutableStateOf(value = "") }
     var email by remember { mutableStateOf(value = "") }
@@ -40,6 +46,24 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
     val checkedState = remember { mutableStateOf(true) }
 
     val isValidate by derivedStateOf { email.isNotBlank() && firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && phone.isNotBlank() }
+
+    LaunchedEffect(clientViewModel.clientResultState.value) {
+        clientViewModel.clientResultState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    Toast.makeText(context, "Nuevo cliente creado.", Toast.LENGTH_LONG)
+                        .show()
+                    navController.navigate(Destination.Category.route)
+                }
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Toast.makeText(context, "Error en el registro del cliente.", Toast.LENGTH_LONG)
+                        .show()
+                    Log.d("Result.ViewModel", exception.toString())
+                }
+            }
+        }
+    }
 
     Dialog(
         onDismissRequest = {},
@@ -53,159 +77,174 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                 .zIndex(88f),
             color = BlueDark
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(BlueDark),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+            Box(
+                contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.logo),
-                    contentDescription = stringResource(id = R.string.momo_coffe),
-                    modifier = Modifier.width(180.dp)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    stringResource(id = R.string.register),
-                    color = Color.White,
-                    fontSize = 22.sp,
-                    fontFamily = redhatFamily,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                Box(modifier = Modifier.width(520.dp)) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ){
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(BlueDark),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = stringResource(id = R.string.momo_coffe),
+                        modifier = Modifier.width(180.dp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        stringResource(id = R.string.register),
+                        color = Color.White,
+                        fontSize = 22.sp,
+                        fontFamily = redhatFamily,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Box(modifier = Modifier.width(520.dp)) {
                         Column(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                stringResource(id = R.string.enter_data_person),
-                                color = Color.White,
-                                fontSize = 16.sp,
-                                fontFamily = stacionFamily,
-                                fontWeight = FontWeight.Normal
-                            )
-                            OutlineTextField(
-                                label = stringResource(id = R.string.first_name),
-                                placeholder = stringResource(id = R.string.first_name),
-                                icon = R.drawable.user,
-                                keyboardType = KeyboardType.Text,
-                                textValue = firstName,
-                                onValueChange = { firstName = it },
-                                onClickButton = { firstName = "" },
-                                onNext = {
-                                    focusManager.moveFocus(
-                                        FocusDirection.Down
-                                    )
-                                })
-                            OutlineTextField(
-                                label = stringResource(id = R.string.last_name),
-                                placeholder = stringResource(id = R.string.last_name),
-                                icon = R.drawable.user,
-                                keyboardType = KeyboardType.Text,
-                                textValue = lastName,
-                                onValueChange = { lastName = it },
-                                onClickButton = { lastName = "" },
-                                onNext = {
-                                    focusManager.moveFocus(
-                                        FocusDirection.Down
-                                    )
-                                })
-                            Row(
-                                modifier = Modifier.fillMaxWidth()
+                            Column(
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Column(
-                                    modifier = Modifier
-                                        .weight(0.3f)
+                                Text(
+                                    stringResource(id = R.string.enter_data_person),
+                                    color = Color.White,
+                                    fontSize = 16.sp,
+                                    fontFamily = stacionFamily,
+                                    fontWeight = FontWeight.Normal
+                                )
+                                OutlineTextField(
+                                    label = stringResource(id = R.string.first_name),
+                                    placeholder = stringResource(id = R.string.first_name),
+                                    icon = R.drawable.user,
+                                    keyboardType = KeyboardType.Text,
+                                    textValue = firstName,
+                                    onValueChange = { firstName = it },
+                                    onClickButton = { firstName = "" },
+                                    onNext = {
+                                        focusManager.moveFocus(
+                                            FocusDirection.Down
+                                        )
+                                    })
+                                OutlineTextField(
+                                    label = stringResource(id = R.string.last_name),
+                                    placeholder = stringResource(id = R.string.last_name),
+                                    icon = R.drawable.user,
+                                    keyboardType = KeyboardType.Text,
+                                    textValue = lastName,
+                                    onValueChange = { lastName = it },
+                                    onClickButton = { lastName = "" },
+                                    onNext = {
+                                        focusManager.moveFocus(
+                                            FocusDirection.Down
+                                        )
+                                    })
+                                Row(
+                                    modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    DropDownOutline(
-                                        selected = selected,
-                                        selectedLabel = selectedLabel
-                                    )
+                                    Column(
+                                        modifier = Modifier
+                                            .weight(0.3f)
+                                    ) {
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                        DropDownOutline(
+                                            selected = selected,
+                                            selectedLabel = selectedLabel
+                                        )
+                                    }
+                                    Box(
+                                        modifier = Modifier
+                                            .weight(0.8f)
+                                    ) {
+                                        OutlineTextField(
+                                            label = stringResource(id = R.string.phone),
+                                            placeholder = stringResource(id = R.string.phone),
+                                            keyboardType = KeyboardType.Number,
+                                            icon = R.drawable.phone,
+                                            textValue = phone,
+                                            onValueChange = { phone = it },
+                                            onClickButton = { phone = "" },
+                                            onNext = {
+                                                focusManager.moveFocus(
+                                                    FocusDirection.Down
+                                                )
+                                            })
+                                    }
+                                }
+                                OutlineTextField(
+                                    label = stringResource(id = R.string.mail),
+                                    placeholder = "Juan@momo.com",
+                                    icon = R.drawable.mail_icon,
+                                    keyboardType = KeyboardType.Email,
+                                    textValue = email,
+                                    onValueChange = { email = it },
+                                    onClickButton = { email = "" },
+                                    onNext = {
+                                        focusManager.moveFocus(
+                                            FocusDirection.Down
+                                        )
+                                    })
+                            }
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Checkbox(
+                                    checked = checkedState.value,
+                                    onCheckedChange = { checkedState.value = it }
+                                )
+                                Text(
+                                    stringResource(id = R.string.term_condition),
+                                    color = Color.White
+                                )
+                            }
+                            Row(
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .weight(0.5f)
+                                ) {
+                                    ButtonBack(onclick = {
+                                        navController.navigate(Destination.Client.route)
+                                    })
                                 }
                                 Box(
                                     modifier = Modifier
-                                        .weight(0.8f)
+                                        .weight(0.5f)
                                 ) {
-                                    OutlineTextField(
-                                        label = stringResource(id = R.string.phone),
-                                        placeholder =  stringResource(id = R.string.phone),
-                                        keyboardType = KeyboardType.Number,
-                                        icon = R.drawable.phone,
-                                        textValue = phone,
-                                        onValueChange = { phone = it },
-                                        onClickButton = { phone = "" },
-                                        onNext = {
-                                            focusManager.moveFocus(
-                                                FocusDirection.Down
+                                    ButtonContinue(onclick = {
+                                        Log.d("Register.Client", isValidate.toString())
+                                        if (isValidate) {
+                                            Log.d("Result.ClientViewModel", "Padso..")
+                                            clientViewModel.register(
+                                                clientDto = ClientRequest(
+                                                    firstName,
+                                                    lastName,
+                                                    phone,
+                                                    selected.value,
+                                                    selectedLabel.value,
+                                                    email
+                                                )
                                             )
-                                        })
+                                        }
+                                    })
                                 }
                             }
-                            OutlineTextField(
-                                label =  stringResource(id = R.string.mail),
-                                placeholder = "Juan@momo.com",
-                                icon = R.drawable.mail_icon,
-                                keyboardType = KeyboardType.Email,
-                                textValue = email,
-                                onValueChange = { email = it },
-                                onClickButton = { email = "" },
-                                onNext = {
-                                    focusManager.moveFocus(
-                                        FocusDirection.Down
-                                    )
-                                })
                         }
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ){
-                            Checkbox(
-                                checked = checkedState.value,
-                                onCheckedChange = { checkedState.value = it }
-                            )
-                            Text(stringResource(id = R.string.term_condition), color = Color.White)
-                        }
-                        Row(
-                         horizontalArrangement = Arrangement.Center
-                        ){
-                            Box(
-                                modifier = Modifier
-                                    .weight(0.5f)
-                            ) {
-                                ButtonBack(onclick = {
-                                    navController.navigate(Destination.Client.route)
-                                })
-                            }
-                            Box(
-                                modifier = Modifier
-                                    .weight(0.5f)
-                            ) {
-                                ButtonContinue(onclick = {
-                                    Log.d("Register.Client", isValidate.toString())
-                                    if(isValidate){
-                                        Log.d("Result.ClientViewModel", "Padso..")
-                                        clientViewModel.register(clientDto = ClientRequest(
-                                            firstName,
-                                            lastName,
-                                            phone,
-                                            selected.value,
-                                            selected.value,
-                                            email
-                                        ))
-                                    }
-                                })
-                            }
-                        }
+
                     }
 
                 }
-
+                if(loading){ Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize().background(BlueDarkTransparent)
+                ){
+                    BallClipRotatePulseIndicator()
+                }}
             }
         }
 
