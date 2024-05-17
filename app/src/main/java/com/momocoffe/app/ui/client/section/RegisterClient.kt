@@ -32,7 +32,6 @@ import com.momocoffe.app.ui.client.components.OutlineTextField
 import com.momocoffe.app.viewmodel.ClientViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterClient(navController: NavController, clientViewModel: ClientViewModel = viewModel()) {
@@ -71,18 +70,7 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
         }
     }
 
-    fun checkEmailExists(email: String) {
 
-        // Llamar a la función del ViewModel para verificar si el correo electrónico ya existe
-        lifecycleScope.launch {
-            val exists = clientViewModel.checkEmailExists(email)
-            emailExists = exists
-            if (exists) {
-                // Mostrar un mensaje de error o tomar alguna otra acción si el correo electrónico ya existe
-                Toast.makeText(context, "El correo electrónico ya está registrado.", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
 
 
     Dialog(
@@ -201,12 +189,7 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                                     icon = R.drawable.mail_icon,
                                     keyboardType = KeyboardType.Email,
                                     textValue = email,
-                                    onValueChange = { newEmail ->
-                                        email = newEmail
-                                        if (newEmail.isNotBlank()) {
-                                            checkEmailExists(newEmail)
-                                        }
-                                    },
+                                    onValueChange = { email = it },
                                     onClickButton = { email = "" },
                                     onNext = {
                                         focusManager.moveFocus(
