@@ -35,10 +35,10 @@ import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicato
 fun Login(navController: NavHostController, loginViewModel: LoginViewModel = viewModel()) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val loading = loginViewModel.loadingState.value;
     var email by rememberSaveable { mutableStateOf(value = "") }
     var password by rememberSaveable { mutableStateOf(value = "") }
     val isValidate by derivedStateOf { email.isNotBlank() && password.isNotBlank() }
-    val loading = loginViewModel.loadingState.value;
 
     LaunchedEffect(loginViewModel.loginResultState.value) {
         loginViewModel.loginResultState.value?.let { result ->
