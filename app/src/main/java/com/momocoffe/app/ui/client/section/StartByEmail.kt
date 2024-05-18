@@ -48,11 +48,6 @@ fun StartByEmail(navController: NavController, clientViewModel: ClientViewModel 
         clientViewModel.clientResultSession.value?.let{ result ->
             when {
                 result.isSuccess -> {
-                    val sharedPreferences =
-                        context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
-                    val clientResponse = result.getOrThrow()
-                    sharedPreferences.edit().putString("clientId", clientResponse.clientID)
-                        .apply()
                     navController.navigate(Destination.Category.route)
                 }
                 result.isFailure -> {

@@ -87,6 +87,10 @@ class ClientViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val response: ArrayList<ClientSessionResponse>? = response.body()
                     if (response!= null) {
+                        val sharedPreferences =
+                            App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+                        sharedPreferences.edit().putString("clientId", response[0].clientID)
+                            .apply()
                         clientResultSession.value = Result.success(response[0])
                     }else{
                         clientResultSession.value =
@@ -115,6 +119,10 @@ class ClientViewModel : ViewModel() {
                 if(response.isSuccessful){
                     val response: ArrayList<ClientSessionResponse>? = response.body()
                     if (response!= null) {
+                        val sharedPreferences =
+                            App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+                        sharedPreferences.edit().putString("clientId", response[0].clientID)
+                            .apply()
                         clientResultSession.value = Result.success(response[0])
                     }else{
                         clientResultSession.value =
