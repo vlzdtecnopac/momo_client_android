@@ -49,4 +49,5 @@
     <string name="register_discovery_benefits">Register and discover a \n world of benefits</string>
     <string name="start_failed_session">Login failed.</string>
     <string name="required_email">Email required.</string>
+    <string name="required_inputs_phone_and_code">Telephone fields as local code are required.</string>
 </resources>

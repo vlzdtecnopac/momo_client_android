@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.client.section
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,9 +42,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.network.dto.ClientSessionPhoneRequest
 import com.momocoffe.app.ui.client.components.ButtonBack
 import com.momocoffe.app.ui.client.components.DropDownOutline
 import com.momocoffe.app.ui.client.components.OutTextField
@@ -49,14 +54,19 @@ import com.momocoffe.app.ui.login.components.ButtonField
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.ui.theme.stacionFamily
+import com.momocoffe.app.viewmodel.ClientViewModel
 
 
 @Composable
-fun StartByPhone(navController: NavController) {
+fun StartByPhone(navController: NavController, clientViewModel: ClientViewModel =  viewModel()) {
+    val context = LocalContext.current
     var phone by remember { mutableStateOf(value = "") }
     val selected = remember { mutableStateOf(value = "") }
     val selectedLabel = remember { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
+
+    val isValidate by derivedStateOf { phone.isNotBlank() && selected.value.isNotBlank() }
+
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -165,14 +175,32 @@ fun StartByPhone(navController: NavController) {
                             Spacer(modifier = Modifier.height(30.dp))
                             ButtonField(
                                 text = stringResource(id = R.string.enter),
-                                onclick = { /*TODO*/ },
+                                onclick = {
+                                    if(isValidate){
+                                        clientViewModel.getSessionPhoneClient(
+                                            ClientSessionPhoneRequest(
+                                                phone,
+                                                code = selected.value
+                                            )
+                                        )
+                                    }else{
+                                        Toast.makeText(
+                                            context,
+                                            R.string.required_inputs_phone_and_code,
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+
+                                },
                                 enabled = true
                             )
                         }
                     }
 
                     Column(
-                        modifier = Modifier.padding(end = 10.dp).fillMaxWidth(),
+                        modifier = Modifier
+                            .padding(end = 10.dp)
+                            .fillMaxWidth(),
                         horizontalAlignment = Alignment.End
                     ) {
                         ButtonBack(onclick = {
