@@ -10,6 +10,7 @@ import androidx.compose.ui.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.momocoffe.app.App
 import com.momocoffe.app.MainActivity
@@ -21,11 +22,13 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.viewmodel.RegionInternational
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.orderhere.components.ContentNotEffecty
+import com.momocoffe.app.viewmodel.KioskoViewModel
 import io.socket.emitter.Emitter
+import kotlinx.coroutines.delay
 import org.json.JSONObject
 
 @Composable
-fun OrderHere(navController: NavController) {
+fun OrderHere(navController: NavController, kioskoViewModel: KioskoViewModel = viewModel()) {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val preference_kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
@@ -35,6 +38,38 @@ fun OrderHere(navController: NavController) {
 
     if(isModalVisible) {
         ContentNotEffecty(navController)
+    }
+
+    LaunchedEffect(Unit){
+        kioskoViewModel.verifyKiosko(kioskoId = preference_kiosko_id)
+    }
+
+    LaunchedEffect( kioskoViewModel.kioskoVefiryResultState.value){
+        kioskoViewModel.kioskoVefiryResultState.value?.let{ result ->
+            when{
+                result.isSuccess->{
+                    val response = result.getOrThrow()
+                    if(!response.state){
+                        val editor = sharedPreferences.edit()
+                        editor.remove("kioskoId")
+                        editor.remove("shoppingId")
+                        editor.remove("token")
+                        editor.apply()
+
+                        val intent = Intent(context, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(intent)
+                    }
+                }
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.e("Result.KioskoModel", exception.toString())
+
+                }
+            }
+
+        }
     }
 
     LaunchedEffect(key1 = true) {
