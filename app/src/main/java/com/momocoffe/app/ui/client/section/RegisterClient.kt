@@ -219,6 +219,7 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                                     ButtonContinue(onclick = {
                                         Log.d("Register.Client", isValidate.toString())
                                         if (isValidate) {
+                                            if(checkedState.value) {
                                                 clientViewModel.register(
                                                     clientDto = ClientRequest(
                                                         firstName,
@@ -229,6 +230,10 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
                                                         email.value
                                                     )
                                                 )
+                                            }else{
+                                                Toast.makeText(context, "Acepta términos y condiciones.", Toast.LENGTH_LONG)
+                                                    .show()
+                                            }
                                         }
                                     })
                                 }

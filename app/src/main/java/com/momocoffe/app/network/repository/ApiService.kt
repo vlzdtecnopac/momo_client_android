@@ -1,11 +1,14 @@
 package com.momocoffe.app.network.repository
 
 import com.momocoffe.app.network.dto.ClientRequest
+import com.momocoffe.app.network.dto.ClientSessionEmailRequest
+import com.momocoffe.app.network.dto.ClientSessionPhoneRequest
 import com.momocoffe.app.network.dto.LoginRequest
 import com.momocoffe.app.network.dto.RefreshToken
 import com.momocoffe.app.network.dto.VerifyKioskoRequest
 import com.momocoffe.app.network.response.ClientGeneralResponse
 import com.momocoffe.app.network.response.ClientResponse
+import com.momocoffe.app.network.response.ClientSessionResponse
 import com.momocoffe.app.network.response.DataKiosko
 import com.momocoffe.app.network.response.EmployeeResponse
 import com.momocoffe.app.network.response.KioskoResponse
@@ -42,5 +45,12 @@ interface ApiService {
 
     @POST("/kioskos/verify")
     suspend fun verifyKiosko(@Body requestBody: VerifyKioskoRequest): Response<ArrayList<DataKiosko>>
+
+    @POST("/users/client/login")
+    suspend fun getClientEmailSession(@Body requestBody: ClientSessionEmailRequest): Response<ArrayList<ClientSessionResponse>>
+
+    @POST("/users/client/login")
+    suspend fun getClientPhoneSession(@Body requestBody: ClientSessionPhoneRequest): Response<ArrayList<ClientSessionResponse>>
+
 
 }

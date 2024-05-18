@@ -31,7 +31,7 @@ import com.momocoffe.app.ui.login.components.ButtonField
 
 @Composable
 fun StartByEmail(navController: NavController) {
-    var email by rememberSaveable { mutableStateOf(value = "") }
+    var email by remember { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
     Dialog(
         onDismissRequest = {},
@@ -120,7 +120,6 @@ fun StartByEmail(navController: NavController) {
                                     }
                                 )
                             }
-
 
                             Spacer(modifier = Modifier.height(30.dp))
                             ButtonField(

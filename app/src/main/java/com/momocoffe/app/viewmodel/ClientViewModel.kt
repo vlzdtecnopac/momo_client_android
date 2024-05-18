@@ -8,10 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.momocoffe.app.App
 import com.momocoffe.app.network.dto.ClientRequest
+import com.momocoffe.app.network.dto.ClientSessionEmailRequest
+import com.momocoffe.app.network.dto.ClientSessionPhoneRequest
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
 import com.momocoffe.app.network.response.ClientGeneralResponse
 import com.momocoffe.app.network.response.ClientResponse
+import com.momocoffe.app.network.response.ClientSessionResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -20,6 +23,7 @@ class ClientViewModel : ViewModel() {
     val loadingState = mutableStateOf(false)
     val clientResultState = mutableStateOf<Result<ClientResponse>?>(null)
     val clientResultCheckEmailState = mutableStateOf<Result<ClientGeneralResponse>?>(null)
+    val clientResultSession = mutableStateOf<Result<ClientSessionResponse>?>(null)
     fun register(clientDto: ClientRequest) {
         loadingState.value = true
         viewModelScope.launch {
@@ -38,7 +42,7 @@ class ClientViewModel : ViewModel() {
                         clientResultState.value = Result.failure(Exception("Empty response body"))
                     }
                 } else {
-                    clientResultState.value = Result.failure(Exception("Shopping failed"))
+                    clientResultState.value = Result.failure(Exception("Client Session failed"))
                 }
 
             } catch (e: Exception) {
@@ -74,6 +78,63 @@ class ClientViewModel : ViewModel() {
             }
         }
     }
+
+    fun getSessionPhoneClient(clientDto: ClientSessionPhoneRequest){
+        loadingState.value = true
+        viewModelScope.launch {
+            try{
+                val response: Response<ArrayList<ClientSessionResponse>> = apiService.getClientPhoneSession(ClientSessionPhoneRequest(phone = clientDto.phone, code= clientDto.code))
+                if (response.isSuccessful) {
+                    val response: ArrayList<ClientSessionResponse>? = response.body()
+                    if (response!= null) {
+                        clientResultSession.value = Result.success(response[0])
+                    }else{
+                        clientResultSession.value =
+                            Result.failure(Exception("Empty response body"))
+                    }
+                } else {
+                    clientResultSession.value = Result.failure(Exception("Client session failed"))
+                }
+            } catch (e: Exception){
+                Log.e("Result.ClientViewModel", e.message.toString())
+            } finally {
+                loadingState.value = false
+                Log.d("Result.ClientViewModel", "Finally")
+            }
+        }
+    }
+
+
+    fun getSessionEmailClient(email: String){
+        loadingState.value = true
+        viewModelScope.launch {
+            try{
+                val response: Response<ArrayList<ClientSessionResponse>> = apiService.getClientEmailSession(
+                    ClientSessionEmailRequest(email)
+                )
+                if(response.isSuccessful){
+                    val response: ArrayList<ClientSessionResponse>? = response.body()
+                    if (response!= null) {
+                        clientResultSession.value = Result.success(response[0])
+                    }else{
+                        clientResultSession.value =
+                            Result.failure(Exception("Empty response body"))
+                    }
+                }else {
+                    clientResultSession.value = Result.failure(Exception("Client session failed"))
+                }
+
+            }catch (e: Exception){
+                Log.e("Result.ClientViewModel", e.message.toString())
+            }finally {
+                loadingState.value = false
+                Log.d("Result.ClientViewModel", "Finally")
+            }
+        }
+    }
+
+
+
 
 
 }
