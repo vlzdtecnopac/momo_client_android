@@ -1,9 +1,12 @@
 package com.momocoffe.app.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.momocoffe.app.App
 import com.momocoffe.app.network.dto.ClientRequest
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
@@ -26,6 +29,10 @@ class ClientViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val clientResponse: ClientResponse? = response.body()
                     if (clientResponse != null) {
+                        val sharedPreferences =
+                            App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+                        sharedPreferences.edit().putString("clientId", clientResponse.clientID)
+                            .apply()
                         clientResultState.value = Result.success(clientResponse)
                     } else {
                         clientResultState.value = Result.failure(Exception("Empty response body"))
@@ -43,16 +50,18 @@ class ClientViewModel : ViewModel() {
         }
     }
 
-    fun getClient(email: String = "", phone: String = "",  clientID: String = ""){
+    fun getClient(email: String = "", phone: String = "", clientID: String = "") {
         viewModelScope.launch {
             try {
-                val response: Response<ClientGeneralResponse> = apiService.getClient(email, phone, clientID)
+                val response: Response<ClientGeneralResponse> =
+                    apiService.getClient(email, phone, clientID)
                 if (response.isSuccessful) {
                     val clientResponse: ClientGeneralResponse? = response.body()
                     if (clientResponse != null) {
                         clientResultCheckEmailState.value = Result.success(clientResponse)
                     } else {
-                        clientResultCheckEmailState.value = Result.failure(Exception("Empty response body"))
+                        clientResultCheckEmailState.value =
+                            Result.failure(Exception("Empty response body"))
                     }
                 } else {
                     clientResultCheckEmailState.value = Result.failure(Exception("Shopping failed"))

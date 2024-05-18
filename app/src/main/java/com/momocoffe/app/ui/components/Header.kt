@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.components
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +39,10 @@ import com.momocoffe.app.ui.theme.stacionFamily
 
 @Composable
 fun Header(navController: NavController) {
+    val context = LocalContext.current
+    val sharedPreferences =
+        context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val client_id = sharedPreferences.getString("clientId", null) ?: ""
 
     Row(
         modifier = Modifier
