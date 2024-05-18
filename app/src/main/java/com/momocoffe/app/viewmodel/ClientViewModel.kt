@@ -100,6 +100,7 @@ class ClientViewModel : ViewModel() {
                     clientResultSession.value = Result.failure(Exception("Client session failed"))
                 }
             } catch (e: Exception){
+                clientResultSession.value = Result.failure(Exception("Client error session"))
                 Log.e("Result.ClientViewModel", e.message.toString())
             } finally {
                 loadingState.value = false
@@ -133,6 +134,7 @@ class ClientViewModel : ViewModel() {
                 }
 
             }catch (e: Exception){
+                clientResultSession.value = Result.failure(Exception("Client error session"))
                 Log.e("Result.ClientViewModel", e.message.toString())
             }finally {
                 loadingState.value = false
