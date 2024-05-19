@@ -67,6 +67,7 @@ fun Sidebar(navController: NavController, clientViewModel: ClientViewModel = vie
         context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val client_id = sharedPreferences.getString("clientId", null) ?: ""
     var email_client by rememberSaveable { mutableStateOf(value = "") }
+    var full_name_client by rememberSaveable { mutableStateOf(value = "") }
 
     var showPopup by rememberSaveable {
         mutableStateOf(false)
@@ -81,6 +82,12 @@ fun Sidebar(navController: NavController, clientViewModel: ClientViewModel = vie
             when {
                 result.isSuccess -> {
                     val loginResponse = result.getOrThrow()
+                    full_name_client = if (loginResponse.items.isNotEmpty()) {
+                        "${loginResponse.items[0].firstName} ${loginResponse.items[0].lastName}"
+                    } else {
+                        " "
+                    }
+
                     email_client = if (loginResponse.items.isNotEmpty()) {
                         loginResponse.items[0].email
                     } else {
@@ -193,18 +200,26 @@ fun Sidebar(navController: NavController, clientViewModel: ClientViewModel = vie
                                     Column {
                                         androidx.compose.material.Text(
                                             stringResource(id = R.string.wellcome),
-                                            fontSize = 14.sp,
+                                            fontSize = 22.sp,
                                             fontWeight = FontWeight(700),
                                             fontFamily = stacionFamily,
                                             color = BlueDark
                                         )
-                                        androidx.compose.material.Text(
+                                        Text(
+                                            full_name_client,
+                                            fontSize = 18.sp,
+                                            fontWeight = FontWeight(400),
+                                            fontFamily = redhatFamily,
+                                            color = BlueDark
+                                        )
+                                        Text(
                                             email_client,
                                             fontSize = 12.sp,
                                             fontWeight = FontWeight(400),
                                             fontFamily = redhatFamily,
                                             color = BlueDark
                                         )
+
                                     }
                                     Image(
                                         painter = painterResource(R.drawable.header_icon_momo),
