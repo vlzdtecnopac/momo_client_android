@@ -28,7 +28,9 @@ import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.client.components.*
 import com.momocoffe.app.ui.login.components.ButtonField
+import com.momocoffe.app.ui.theme.BlueDarkTransparent
 import com.momocoffe.app.viewmodel.ClientViewModel
+import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 
 @Composable
 fun StartByEmail(navController: NavController, clientViewModel: ClientViewModel = viewModel()) {
@@ -36,6 +38,8 @@ fun StartByEmail(navController: NavController, clientViewModel: ClientViewModel 
     var email by remember { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
     val isValidate by derivedStateOf { email.isNotBlank() }
+    val loading = clientViewModel.loadingState.value
+
 
 
     LaunchedEffect(clientViewModel.clientResultSession.value){
@@ -66,33 +70,34 @@ fun StartByEmail(navController: NavController, clientViewModel: ClientViewModel 
                 .zIndex(88f),
             color = BlueDark
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(4f),
+            Box{
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.client_session),
-                        contentDescription = stringResource(id = R.string.momo_coffe),
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(7f)
-                        .background(BlueDark),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceAround,
-
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .weight(4f),
                     ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.client_session),
+                            contentDescription = stringResource(id = R.string.momo_coffe),
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop,
+                        )
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(7f)
+                            .background(BlueDark),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.SpaceAround,
+
+                        ) {
 
                         Box{}
                         Column(
@@ -172,8 +177,20 @@ fun StartByEmail(navController: NavController, clientViewModel: ClientViewModel 
                             })
                         }
 
+                    }
+                }
+                if (loading) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(BlueDarkTransparent)
+                    ) {
+                        BallClipRotatePulseIndicator()
+                    }
                 }
             }
+
         }
     }
 }

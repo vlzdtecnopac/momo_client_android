@@ -1,29 +1,19 @@
 package com.momocoffe.app.ui.components
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material3.Icon
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -31,18 +21,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.ui.theme.stacionFamily
+import com.momocoffe.app.viewmodel.ClientViewModel
 
 @Composable
 fun Header(navController: NavController) {
-    val context = LocalContext.current
-    val sharedPreferences =
-        context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
-    val client_id = sharedPreferences.getString("clientId", null) ?: ""
 
     Row(
         modifier = Modifier
@@ -88,32 +76,6 @@ fun Header(navController: NavController) {
             contentDescription = stringResource(id = R.string.momo_coffe),
             modifier = Modifier.width(135.dp)
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    stringResource(id = R.string.wellcome),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight(700),
-                    fontFamily = stacionFamily,
-                    color = Color.White
-                )
-                Text(
-                    "vlzdavid12@outlook.com",
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight(400),
-                    fontFamily = redhatFamily,
-                    color = Color.White
-                )
-            }
-            Image(
-                painter = painterResource(R.drawable.header_icon_momo),
-                contentDescription = stringResource(id = R.string.momo_coffe),
-                modifier = Modifier.width(45.dp)
-            )
-
-        }
-
+        Sidebar()
     }
 }

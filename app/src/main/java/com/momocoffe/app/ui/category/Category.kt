@@ -1,6 +1,9 @@
 package com.momocoffe.app.ui.category
 
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
@@ -9,22 +12,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.momocoffe.app.App
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.network.repository.SessionManager
 import com.momocoffe.app.ui.theme.BlueLight
 
 data class ListItem(val iconResId: Int, val name: String)
 
 @Composable
 fun Category(navController: NavController){
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val clientId = sharedPreferences.getString("clientId", null)
+    val sessionManager = SessionManager()
+    if (!clientId.isNullOrEmpty()) {
+        sessionManager.startSession()
+        Log.d("Session.Manger", "Start Session")
+    }else{
+        sessionManager.stopSession()
+        Log.d("Session.Manger", "Stop Session")
+    }
 
     val jsonList = listOf(
         ListItem(R.drawable.coffee_mug_icon, stringResource(id = R.string.coffe)),

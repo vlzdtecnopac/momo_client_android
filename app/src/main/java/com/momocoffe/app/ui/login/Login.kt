@@ -35,7 +35,7 @@ import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicato
 fun Login(navController: NavHostController, loginViewModel: LoginViewModel = viewModel()) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
-    val loading = loginViewModel.loadingState.value;
+    val loading = loginViewModel.loadingState.value
     var email by rememberSaveable { mutableStateOf(value = "") }
     var password by rememberSaveable { mutableStateOf(value = "") }
     val isValidate by derivedStateOf { email.isNotBlank() && password.isNotBlank() }
@@ -59,7 +59,7 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
                     val exception = result.exceptionOrNull()
                     Toast.makeText(context, R.string.error_user_and_password, Toast.LENGTH_LONG)
                         .show()
-                    Log.d("Result.ViewModel", exception.toString())
+                    Log.e("Result.ViewModel", exception.toString())
                 }
             }
         }
@@ -160,6 +160,17 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
 
             }
         }
+        if (loading) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(BlueDarkTransparent)
+            ) {
+                BallClipRotatePulseIndicator()
+            }
+        }
+
         if (loading) {
             Box(
                 contentAlignment = Alignment.Center,

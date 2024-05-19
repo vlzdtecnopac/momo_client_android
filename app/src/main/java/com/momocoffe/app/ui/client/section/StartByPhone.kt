@@ -34,6 +34,8 @@ import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.ui.theme.stacionFamily
 import com.momocoffe.app.viewmodel.ClientViewModel
 import com.momocoffe.app.R
+import com.momocoffe.app.ui.theme.BlueDarkTransparent
+import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 
 
 @Composable
@@ -43,6 +45,7 @@ fun StartByPhone(navController: NavController, clientViewModel: ClientViewModel 
     val selected = remember { mutableStateOf(value = "") }
     val selectedLabel = remember { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
+    val loading = clientViewModel.loadingState.value
 
     val isValidate by derivedStateOf { phone.isNotBlank() && selected.value.isNotBlank() }
 
@@ -74,137 +77,154 @@ fun StartByPhone(navController: NavController, clientViewModel: ClientViewModel 
                 .zIndex(88f),
             color = BlueDark
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(4f),
+            Box{
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.client_session),
-                        contentDescription = stringResource(id = R.string.momo_coffe),
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .weight(7f)
-                        .background(BlueDark),
-                    verticalArrangement = Arrangement.SpaceAround,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                    Box {}
                     Column(
                         modifier = Modifier
-                            .widthIn(0.dp, 480.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .fillMaxSize()
+                            .weight(4f),
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.logo),
+                            painter = painterResource(id = R.drawable.client_session),
                             contentDescription = stringResource(id = R.string.momo_coffe),
-                            modifier = Modifier.width(190.dp)
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop,
                         )
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Text(
-                            stringResource(id = R.string.start_session),
-                            color = Color.White,
-                            fontSize = 30.sp,
-                            fontFamily = redhatFamily,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Text(
-                            stringResource(id = R.string.enter_yuor_email),
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontFamily = stacionFamily,
-                            fontWeight = FontWeight.Normal,
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
+                    }
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth()
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(7f)
+                            .background(BlueDark),
+                        verticalArrangement = Arrangement.SpaceAround,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Box {}
+                        Column(
+                            modifier = Modifier
+                                .widthIn(0.dp, 480.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Column(
-                                modifier = Modifier
-                                    .weight(0.3f)
+                            Image(
+                                painter = painterResource(id = R.drawable.logo),
+                                contentDescription = stringResource(id = R.string.momo_coffe),
+                                modifier = Modifier.width(190.dp)
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Text(
+                                stringResource(id = R.string.start_session),
+                                color = Color.White,
+                                fontSize = 30.sp,
+                                fontFamily = redhatFamily,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Text(
+                                stringResource(id = R.string.enter_yuor_email),
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontFamily = stacionFamily,
+                                fontWeight = FontWeight.Normal,
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Spacer(modifier = Modifier.height(8.dp))
-                                DropDownOutline(
-                                    selected = selected,
-                                    selectedLabel = selectedLabel
-                                )
-                            }
-                            Box(
-                                modifier = Modifier
-                                    .weight(0.8f)
-                            ) {
-                                OutTextField(
-                                    textValue = phone,
-                                    onValueChange = { phone = it },
-                                    onClickButton = { phone = "" },
-                                    text = stringResource(id = R.string.phone),
-                                    keyboardType = KeyboardType.Phone,
-                                    icon = painterResource(R.drawable.phone),
-                                    onNext = {
-                                        focusManager.moveFocus(
-                                            FocusDirection.Down
-                                        )
-                                    }
-                                )
+                                Column(
+                                    modifier = Modifier
+                                        .weight(0.3f)
+                                ) {
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                    DropDownOutline(
+                                        selected = selected,
+                                        selectedLabel = selectedLabel
+                                    )
+                                }
+                                Box(
+                                    modifier = Modifier
+                                        .weight(0.8f)
+                                ) {
+                                    OutTextField(
+                                        textValue = phone,
+                                        onValueChange = { phone = it },
+                                        onClickButton = { phone = "" },
+                                        text = stringResource(id = R.string.phone),
+                                        keyboardType = KeyboardType.Phone,
+                                        icon = painterResource(R.drawable.phone),
+                                        onNext = {
+                                            focusManager.moveFocus(
+                                                FocusDirection.Down
+                                            )
+                                        }
+                                    )
+                                }
+
                             }
 
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Spacer(modifier = Modifier.height(30.dp))
+                                ButtonField(
+                                    text = stringResource(id = R.string.enter),
+                                    onclick = {
+                                        if(isValidate){
+                                            clientViewModel.getSessionPhoneClient(
+                                                ClientSessionPhoneRequest(
+                                                    phone,
+                                                    code = selected.value
+                                                )
+                                            )
+                                        }else{
+                                            Toast.makeText(
+                                                context,
+                                                R.string.required_inputs_phone_and_code,
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+
+                                    },
+                                    enabled = true
+                                )
+                            }
                         }
 
                         Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
+                            modifier = Modifier
+                                .padding(end = 10.dp)
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.End
                         ) {
-                            Spacer(modifier = Modifier.height(30.dp))
-                            ButtonField(
-                                text = stringResource(id = R.string.enter),
-                                onclick = {
-                                    if(isValidate){
-                                        clientViewModel.getSessionPhoneClient(
-                                            ClientSessionPhoneRequest(
-                                                phone,
-                                                code = selected.value
-                                            )
-                                        )
-                                    }else{
-                                        Toast.makeText(
-                                            context,
-                                            R.string.required_inputs_phone_and_code,
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
-
-                                },
-                                enabled = true
-                            )
+                            ButtonBack(onclick = {
+                                navController.popBackStack()
+                            })
                         }
                     }
 
-                    Column(
+                }
+                if (loading) {
+                    Box(
+                        contentAlignment = Alignment.Center,
                         modifier = Modifier
-                            .padding(end = 10.dp)
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.End
+                            .fillMaxSize()
+                            .background(BlueDarkTransparent)
                     ) {
-                        ButtonBack(onclick = {
-                            navController.popBackStack()
-                        })
+                        BallClipRotatePulseIndicator()
                     }
                 }
-
             }
+
         }
+
+
+
     }
+
 }

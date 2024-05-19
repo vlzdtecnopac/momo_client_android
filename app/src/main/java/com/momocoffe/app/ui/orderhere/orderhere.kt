@@ -1,7 +1,6 @@
 package com.momocoffe.app.ui.orderhere
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -12,8 +11,6 @@ import androidx.compose.ui.res.*
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.momocoffe.app.App
-import com.momocoffe.app.MainActivity
 import com.momocoffe.app.ui.orderhere.components.ButtonLang
 import com.momocoffe.app.ui.orderhere.components.ButtonField
 import com.momocoffe.app.navigation.Destination
@@ -24,7 +21,6 @@ import com.momocoffe.app.R
 import com.momocoffe.app.ui.orderhere.components.ContentNotEffecty
 import com.momocoffe.app.viewmodel.KioskoViewModel
 import io.socket.emitter.Emitter
-import kotlinx.coroutines.delay
 import org.json.JSONObject
 
 @Composable
@@ -55,11 +51,6 @@ fun OrderHere(navController: NavController, kioskoViewModel: KioskoViewModel = v
                         editor.remove("shoppingId")
                         editor.remove("token")
                         editor.apply()
-
-                        val intent = Intent(context, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(intent)
                     }
                 }
                 result.isFailure -> {
@@ -84,11 +75,6 @@ fun OrderHere(navController: NavController, kioskoViewModel: KioskoViewModel = v
                     editor.remove("shoppingId")
                     editor.remove("token")
                     editor.apply()
-
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(intent)
                 }
             }
         })
