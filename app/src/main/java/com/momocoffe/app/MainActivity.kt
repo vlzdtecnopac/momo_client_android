@@ -78,6 +78,11 @@ class MainActivity : ComponentActivity() {
     private fun isTablet(): Boolean {
         return resources.configuration.smallestScreenWidthDp >= 600 // For tablets with at least 600dp width
     }
+
+    override fun onBackPressed() {
+        // No hacer nada al presionar el botón de "volver atrás"
+        // Esto bloquea el comportamiento predeterminado
+    }
 }
 
 

@@ -86,7 +86,7 @@ fun ContentCart(onClickOutside: () -> Unit, navController: NavController) {
                         tint = Color.White,
                         modifier = Modifier.size(20.dp),
                     )
-                };
+                }
             }
 
         }
