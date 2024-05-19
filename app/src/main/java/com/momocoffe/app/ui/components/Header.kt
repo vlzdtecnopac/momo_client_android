@@ -15,19 +15,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.redhatFamily
-import com.momocoffe.app.ui.theme.stacionFamily
-import com.momocoffe.app.viewmodel.ClientViewModel
 
 @Composable
 fun Header(navController: NavController) {

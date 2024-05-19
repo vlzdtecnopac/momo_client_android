@@ -12,6 +12,7 @@ import com.momocoffe.app.network.dto.ClientSessionEmailRequest
 import com.momocoffe.app.network.dto.ClientSessionPhoneRequest
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
+import com.momocoffe.app.network.repository.SessionManager
 import com.momocoffe.app.network.response.ClientGeneralResponse
 import com.momocoffe.app.network.response.ClientResponse
 import com.momocoffe.app.network.response.ClientSessionResponse
@@ -87,10 +88,12 @@ class ClientViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val response: ArrayList<ClientSessionResponse>? = response.body()
                     if (response!= null) {
+                        val sessionManager = SessionManager()
                         val sharedPreferences =
                             App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
                         sharedPreferences.edit().putString("clientId", response[0].clientID)
                             .apply()
+                        sessionManager.startSession()
                         clientResultSession.value = Result.success(response[0])
                     }else{
                         clientResultSession.value =
@@ -120,10 +123,12 @@ class ClientViewModel : ViewModel() {
                 if(response.isSuccessful){
                     val response: ArrayList<ClientSessionResponse>? = response.body()
                     if (response!= null) {
+                        val sessionManager = SessionManager()
                         val sharedPreferences =
                             App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
                         sharedPreferences.edit().putString("clientId", response[0].clientID)
                             .apply()
+                        sessionManager.startSession()
                         clientResultSession.value = Result.success(response[0])
                     }else{
                         clientResultSession.value =

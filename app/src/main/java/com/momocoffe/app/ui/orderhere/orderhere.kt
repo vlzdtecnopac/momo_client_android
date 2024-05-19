@@ -18,6 +18,7 @@ import com.momocoffe.app.ui.orderhere.components.ButtonEffecty
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.viewmodel.RegionInternational
 import com.momocoffe.app.R
+import com.momocoffe.app.network.repository.SessionManager
 import com.momocoffe.app.ui.orderhere.components.ContentNotEffecty
 import com.momocoffe.app.viewmodel.KioskoViewModel
 import io.socket.emitter.Emitter
@@ -29,6 +30,9 @@ fun OrderHere(navController: NavController, kioskoViewModel: KioskoViewModel = v
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val preference_kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
+
+    val sessionManager = SessionManager()
+    sessionManager.stopSession()
 
     var isModalVisible by remember { mutableStateOf(false) }
 

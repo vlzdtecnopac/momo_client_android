@@ -47,7 +47,6 @@ fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
     val sharedPreferences =
         context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val client_id = sharedPreferences.getString("clientId", null) ?: ""
-
     var email_client by rememberSaveable { mutableStateOf(value = "") }
 
     var showPopup by rememberSaveable {
@@ -55,9 +54,7 @@ fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
     }
 
     LaunchedEffect(Unit){
-        if(email_client.isNullOrEmpty()){
             clientViewModel.getClient("","", client_id)
-        }
     }
 
     LaunchedEffect( clientViewModel.clientResultCheckEmailState.value){
@@ -65,10 +62,16 @@ fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
             when{
                 result.isSuccess -> {
                     val loginResponse = result.getOrThrow()
-                    email_client =  loginResponse.items[0].email
+                    email_client =  if(loginResponse.items.isNotEmpty()){
+                      loginResponse.items[0].email
+                    }else{
+                      "Invitado"
+                    }
+
                 }
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
+                    email_client = ""
                     Log.e("Result.ViewModel", exception.toString())
                 }
             }

@@ -50,4 +50,5 @@
     <string name="start_failed_session">Login failed.</string>
     <string name="required_email">Email required.</string>
     <string name="required_inputs_phone_and_code">Telephone fields as local code are required.</string>
+    <string name="guest">Guest.</string>
 </resources>
