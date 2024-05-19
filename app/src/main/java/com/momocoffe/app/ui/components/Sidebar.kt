@@ -23,6 +23,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalProvider
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,6 +46,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.momocoffe.app.ui.theme.BlueDarkTransparent
 import com.momocoffe.app.ui.theme.redhatFamily
@@ -54,12 +55,13 @@ import com.momocoffe.app.viewmodel.ClientViewModel
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.theme.BlueDark
+import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 
 
 @Composable
-fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
-    val navController = rememberNavController()
+fun Sidebar(navController: NavController, clientViewModel: ClientViewModel = viewModel()) {
+
     val context = LocalContext.current
     val sharedPreferences =
         context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
@@ -70,22 +72,23 @@ fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
         mutableStateOf(false)
     }
 
-    LaunchedEffect(Unit){
-            clientViewModel.getClient("","", client_id)
+    LaunchedEffect(Unit) {
+        clientViewModel.getClient("", "", client_id)
     }
 
-    LaunchedEffect( clientViewModel.clientResultCheckEmailState.value){
-        clientViewModel.clientResultCheckEmailState.value?.let{result ->
-            when{
+    LaunchedEffect(clientViewModel.clientResultCheckEmailState.value) {
+        clientViewModel.clientResultCheckEmailState.value?.let { result ->
+            when {
                 result.isSuccess -> {
                     val loginResponse = result.getOrThrow()
-                    email_client =  if(loginResponse.items.isNotEmpty()){
-                      loginResponse.items[0].email
-                    }else{
-                      "Invitado"
+                    email_client = if (loginResponse.items.isNotEmpty()) {
+                        loginResponse.items[0].email
+                    } else {
+                        "Invitado"
                     }
 
                 }
+
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
                     email_client = ""
@@ -99,7 +102,9 @@ fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
     Box {
         Row(
             modifier = Modifier.clickable {
-                      showPopup = true
+                if(client_id.isNotBlank()){
+                    showPopup = true
+                }
             },
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -128,8 +133,7 @@ fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
         }
 
         if (showPopup) {
-           PopupBox() {
-
+            PopupBox{
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.3f)
@@ -141,14 +145,14 @@ fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
                 ) {
                     Column(
                         verticalArrangement = Arrangement.SpaceBetween
-                    ){
+                    ) {
                         Column(
                             modifier = Modifier
                                 .weight(0.8f)
                                 .padding(vertical = 10.dp),
                             horizontalAlignment = Alignment.End
 
-                        ){
+                        ) {
                             IconButton(
                                 modifier = Modifier
                                     .width(42.dp)
@@ -177,7 +181,7 @@ fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
                                     .fillMaxWidth()
                                     .padding(5.dp),
                                 horizontalArrangement = Arrangement.Center
-                            ){
+                            ) {
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -214,22 +218,32 @@ fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalAlignment = Alignment.End
-                        ){
+                        ) {
                             Button(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .clip(RoundedCornerShape(14.dp))
+                                    .border(
+                                        width = 0.6.dp,
+                                        color = BlueDark,
+                                        shape = RoundedCornerShape(14.dp)
+                                    ).fillMaxWidth(),
                                 onClick = {
                                     val editor = sharedPreferences.edit()
                                     editor.remove("clientId")
                                     editor.apply()
                                     navController.navigate(Destination.OrderHere.route)
-                                }
+                                },
+                                colors = ButtonDefaults.buttonColors(
+                                    disabledContentColor = Color.Transparent,
+                                    containerColor = Color.Transparent
+                                )
                             ) {
-                                Text("Cerrar sesión")
+                                Text(stringResource(id = R.string.close_session), color = BlueDark, fontSize = 24.sp)
                             }
                         }
 
                     }
-
-
                 }
             }
         }
@@ -238,7 +252,7 @@ fun Sidebar(clientViewModel: ClientViewModel = viewModel()) {
 
 
 @Composable
-fun PopupBox( content: @Composable () -> Unit) {
+fun PopupBox(content: @Composable () -> Unit) {
     // full screen background
     Dialog(
         onDismissRequest = {},

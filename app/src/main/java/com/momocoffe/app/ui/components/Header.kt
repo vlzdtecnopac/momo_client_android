@@ -66,11 +66,17 @@ fun Header(navController: NavController) {
             }
 
         }
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = stringResource(id = R.string.momo_coffe),
-            modifier = Modifier.width(135.dp)
-        )
-        Sidebar()
+        Column(
+            modifier = Modifier.fillMaxWidth().weight(0.6f),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = stringResource(id = R.string.momo_coffe),
+                modifier = Modifier.width(135.dp)
+            )
+        }
+
+        Sidebar(navController)
     }
 }

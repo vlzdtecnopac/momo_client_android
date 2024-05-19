@@ -51,4 +51,5 @@
     <string name="required_email">Email required.</string>
     <string name="required_inputs_phone_and_code">Telephone fields as local code are required.</string>
     <string name="guest">Guest.</string>
+    <string name="close_session">Sign In</string>
 </resources>
