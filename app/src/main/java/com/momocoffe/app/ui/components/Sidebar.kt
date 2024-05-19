@@ -55,7 +55,6 @@ import com.momocoffe.app.viewmodel.ClientViewModel
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.theme.BlueDark
-import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 
 
@@ -198,7 +197,7 @@ fun Sidebar(navController: NavController, clientViewModel: ClientViewModel = vie
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Column {
-                                        androidx.compose.material.Text(
+                                        Text(
                                             stringResource(id = R.string.wellcome),
                                             fontSize = 22.sp,
                                             fontWeight = FontWeight(700),
