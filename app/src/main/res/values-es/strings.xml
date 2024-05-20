@@ -57,4 +57,5 @@
     <string name="error_register_client">Error en el registro del cliente.</string>
     <string name="warning_email_exist">Este correo se encuentra registrado.</string>
     <string name="warning_phone_exist">El número telefónico se encuentra registrado.</string>
+    <string name="writing_here">Escriba Aqui</string>
 </resources>

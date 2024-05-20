@@ -46,9 +46,10 @@ import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.R
 
-@Preview(widthDp = 1440, heightDp = 880, showBackground = true)
 @Composable
-fun PropinaModal() {
+fun PropinaModal(
+    title: String
+) {
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -62,8 +63,9 @@ fun PropinaModal() {
             color = BlueLight
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxWidth()
+                    .height(400.dp)
+                    .padding(10.dp)
                     .background(BlueLight),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -79,7 +81,7 @@ fun PropinaModal() {
                 )
 
                 Text(
-                    "¡Escribe un porcentaje!",
+                    title,
                     fontFamily = redhatFamily,
                     fontSize = 28.sp,
                     fontWeight = FontWeight(700)
@@ -93,8 +95,8 @@ fun PropinaModal() {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     OutlineTextField(
-                        label = "Escriba Aqui",
-                        placeholder = "Escriba Aqui",
+                        label = stringResource(id = R.string.writing_here),
+                        placeholder = stringResource(id = R.string.writing_here),
                         icon = R.drawable.catch_icon,
                         keyboardType = KeyboardType.Text,
                         textValue = textState,
@@ -121,7 +123,8 @@ fun PropinaModal() {
                                     width = 0.6.dp,
                                     color = BlueDark,
                                     shape = RoundedCornerShape(14.dp)
-                                ).weight(0.5f),
+                                )
+                                .weight(0.5f),
                             onClick = {},
                             colors = ButtonDefaults.buttonColors(
                                 disabledContentColor = Color.Transparent,
