@@ -23,14 +23,19 @@ import androidx.navigation.NavController
 import com.momocoffe.app.ui.theme.*
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.network.dto.ClientReceptorEmailRequest
+import com.momocoffe.app.network.dto.ClientReceptorSMSRequest
 import com.momocoffe.app.network.dto.ClientRequest
 import com.momocoffe.app.ui.client.components.*
 import com.momocoffe.app.viewmodel.ClientViewModel
+import com.momocoffe.app.viewmodel.EmailSmsViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 
 
 @Composable
-fun RegisterClient(navController: NavController, clientViewModel: ClientViewModel = viewModel()) {
+fun RegisterClient(navController: NavController,
+                   clientViewModel: ClientViewModel = viewModel(),
+                   emailSmsViewModel: EmailSmsViewModel = viewModel()) {
     val context = LocalContext.current
     val loading = clientViewModel.loadingState.value;
     val focusManager = LocalFocusManager.current
@@ -49,6 +54,10 @@ fun RegisterClient(navController: NavController, clientViewModel: ClientViewMode
         clientViewModel.clientResultState.value?.let { result ->
             when {
                 result.isSuccess -> {
+                    val newClientResponse = result.getOrThrow()
+                    val newPhone = "${newClientResponse.code}${newClientResponse.phone}"
+                    emailSmsViewModel.sendEmail(ClientReceptorEmailRequest("Activar Cuenta <davidvalenzuela@tecnopac.com.co>", newClientResponse.email, "Confirma Nueva Cuenta"))
+                    emailSmsViewModel.sendSms(ClientReceptorSMSRequest("arn:aws:sns:us-east-1:946074075589:Momo", newPhone, "Momo", "Bienvenido a Momo Coffe, ingresando aqui puedes verificar tu cuenta. https://tudominio.com/verificar-cuenta" ))
                     Toast.makeText(context, "Se ha creado nuevo cliente.", Toast.LENGTH_LONG)
                         .show()
                     navController.navigate(Destination.Category.route)

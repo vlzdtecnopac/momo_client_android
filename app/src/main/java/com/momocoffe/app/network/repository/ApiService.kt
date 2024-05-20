@@ -1,11 +1,14 @@
 package com.momocoffe.app.network.repository
 
+import com.momocoffe.app.network.dto.ClientReceptorEmailRequest
+import com.momocoffe.app.network.dto.ClientReceptorSMSRequest
 import com.momocoffe.app.network.dto.ClientRequest
 import com.momocoffe.app.network.dto.ClientSessionEmailRequest
 import com.momocoffe.app.network.dto.ClientSessionPhoneRequest
 import com.momocoffe.app.network.dto.LoginRequest
 import com.momocoffe.app.network.dto.RefreshToken
 import com.momocoffe.app.network.dto.VerifyKioskoRequest
+import com.momocoffe.app.network.response.ClientEmailSMSResponse
 import com.momocoffe.app.network.response.ClientGeneralResponse
 import com.momocoffe.app.network.response.ClientResponse
 import com.momocoffe.app.network.response.ClientSessionResponse
@@ -51,6 +54,12 @@ interface ApiService {
 
     @POST("/users/client/login")
     suspend fun getClientPhoneSession(@Body requestBody: ClientSessionPhoneRequest): Response<ArrayList<ClientSessionResponse>>
+
+    @POST("/")
+    suspend fun getClientEmailConfirm(@Body requestBody: ClientReceptorEmailRequest): Response<ClientEmailSMSResponse>
+
+    @POST("/sms")
+    suspend fun getClientSMSConfirm(@Body requestBody: ClientReceptorSMSRequest): Response<ClientEmailSMSResponse>
 
 
 }

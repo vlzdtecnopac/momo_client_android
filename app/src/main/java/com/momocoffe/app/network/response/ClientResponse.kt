@@ -10,6 +10,7 @@ data class ClientResponse (
     @SerializedName("last_name")
     val lastName: String,
     val phone: String,
+    val code: String,
     val email: String
 )
 

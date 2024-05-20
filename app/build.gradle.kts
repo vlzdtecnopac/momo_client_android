@@ -26,6 +26,7 @@ android {
         }
         defaultConfig {
             buildConfigField("String", "API_BASE_URL", "\"http://momocoffe-lb-1774679013.us-east-1.elb.amazonaws.com\"")
+            buildConfigField("String", "API_BASE_URL_LAMBDA", "\"https://qgxpiwrc14.execute-api.us-east-1.amazonaws.com\"")
         }
 
         release {
@@ -35,6 +36,7 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "API_BASE_URL", "\"http://momocoffe-lb-1774679013.us-east-1.elb.amazonaws.com\"")
+            buildConfigField("String", "API_BASE_URL_LAMBDA", "\"https://qgxpiwrc14.execute-api.us-east-1.amazonaws.com\"")
 
         }
 
