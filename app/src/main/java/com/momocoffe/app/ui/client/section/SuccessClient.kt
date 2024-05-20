@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,12 +25,17 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import com.momocoffe.app.R
+import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.theme.BlueDark
 
-@Preview(widthDp = 1440, heightDp = 740, showBackground = true)
 @Composable
-fun SuccessClient(){
+fun SuccessClient(controller: NavController){
+    LaunchedEffect(Unit){
+        controller.navigate(Destination.Category.route)
+    }
+
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -44,7 +50,9 @@ fun SuccessClient(){
             color = BlueDark
         ) {
             Column(
-                modifier = Modifier.fillMaxSize().padding(10.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -73,7 +81,7 @@ fun SuccessClient(){
                             "Bienvenido a la experiencia \n" + "MOMO",
                     fontSize = 24.sp,
                     color = Color.White,
-                    fontWeight = FontWeight(700),
+                    fontWeight = FontWeight(400),
                     textAlign = TextAlign.Center
                 )
 
