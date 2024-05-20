@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.platform.LocalContext
@@ -30,6 +32,7 @@ fun OrderHere(navController: NavController, kioskoViewModel: KioskoViewModel = v
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val preference_kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
+    val stateExpiredSession  = remember { mutableStateOf(false) }
 
     val sessionManager = SessionManager()
     sessionManager.stopSession()
@@ -79,17 +82,23 @@ fun OrderHere(navController: NavController, kioskoViewModel: KioskoViewModel = v
                     editor.remove("shoppingId")
                     editor.remove("token")
                     editor.apply()
+                    stateExpiredSession.value = true
                 }
             }
         })
     }
 
+    if(stateExpiredSession.value) {
+        stateExpiredSession.value = false
+        navController.navigate(Destination.Login.route)
+    }
 
     Column(
         modifier = Modifier.background(BlueDark),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+
         Column {}
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
