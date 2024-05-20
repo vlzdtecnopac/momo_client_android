@@ -35,7 +35,8 @@ fun OutlineTextField(
     icon: Int,
     onValueChange: (String) -> Unit,
     onClickButton: () -> Unit,
-    onNext: (KeyboardActionScope.() -> Unit)
+    onNext: (KeyboardActionScope.() -> Unit),
+    borderColor: Color
 ){
 
     OutlinedTextField(
@@ -51,7 +52,7 @@ fun OutlineTextField(
                 modifier = Modifier.size(20.dp).padding(0.dp),
                 painter = painterResource(icon),
                 contentDescription = stringResource(id = R.string.momo_coffe),
-                tint = Color.White
+                tint = borderColor
             )
         },
         trailingIcon = {
@@ -62,7 +63,7 @@ fun OutlineTextField(
                     modifier = Modifier.size(20.dp).padding(0.dp),
                     imageVector = Icons.Filled.Clear,
                     contentDescription = stringResource(id = R.string.momo_coffe),
-                    tint = Color.White
+                    tint = borderColor
                 )
             }
         },
@@ -75,13 +76,13 @@ fun OutlineTextField(
         ),
         shape = RoundedCornerShape(20),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            focusedBorderColor = Color.White,
-            cursorColor = Color.White,
-            textColor = Color.White,
-            focusedLabelColor = Color.White,
-            unfocusedBorderColor = Color.White,
-            placeholderColor = Color.White,
-            unfocusedLabelColor = Color.White
+            focusedBorderColor = borderColor,
+            cursorColor = borderColor,
+            textColor = borderColor,
+            focusedLabelColor = borderColor,
+            unfocusedBorderColor = borderColor,
+            placeholderColor = borderColor,
+            unfocusedLabelColor = borderColor
 
         )
     )

@@ -173,6 +173,7 @@ fun Checkout(navController: NavHostController) {
                         textValue = textState,
                         onValueChange = { textState = it },
                         onClickButton = { textState = "" },
+                        borderColor = Color.White,
                         onNext = {
                             focusManager.moveFocus(
                                 FocusDirection.Down
@@ -190,7 +191,8 @@ fun Checkout(navController: NavHostController) {
                             backgroundColor = BlueLight,
                             disabledBackgroundColor = BlueLight,
                             disabledContentColor = BlueLight
-                        )
+                        ),
+                        elevation = ButtonDefaults.elevation(0.dp)
                     ) {
                         Text(
                             text = "Agregar",

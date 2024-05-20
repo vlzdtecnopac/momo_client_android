@@ -99,7 +99,6 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
                     contentDescription = stringResource(id = R.string.momo_coffe),
                     modifier = Modifier.width(220.dp)
                 )
-
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     stringResource(id = R.string.start_session_kiosko),
