@@ -29,10 +29,12 @@ import androidx.navigation.NavController
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.theme.BlueDark
+import kotlinx.coroutines.delay
 
 @Composable
 fun SuccessClient(controller: NavController){
     LaunchedEffect(Unit){
+        delay(4000)
         controller.navigate(Destination.Category.route)
     }
 
