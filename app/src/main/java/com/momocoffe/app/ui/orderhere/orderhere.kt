@@ -21,77 +21,24 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.viewmodel.RegionInternational
 import com.momocoffe.app.R
 import com.momocoffe.app.network.repository.SessionManager
+import com.momocoffe.app.ui.components.VerifyKiosko
 import com.momocoffe.app.ui.orderhere.components.ContentNotEffecty
 import com.momocoffe.app.viewmodel.KioskoViewModel
 import io.socket.emitter.Emitter
 import org.json.JSONObject
 
 @Composable
-fun OrderHere(navController: NavController, kioskoViewModel: KioskoViewModel = viewModel()) {
+fun OrderHere(navController: NavController,) {
     val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
-    val preference_kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
-    val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
-    val stateExpiredSession  = remember { mutableStateOf(false) }
-
-    val sessionManager = SessionManager()
-    sessionManager.stopSession()
 
     var isModalVisible by remember { mutableStateOf(false) }
+
 
     if(isModalVisible) {
         ContentNotEffecty(navController)
     }
 
-    LaunchedEffect(Unit){
-        kioskoViewModel.verifyKiosko(kioskoId = preference_kiosko_id)
-    }
-
-    LaunchedEffect( kioskoViewModel.kioskoVefiryResultState.value){
-        kioskoViewModel.kioskoVefiryResultState.value?.let{ result ->
-            when{
-                result.isSuccess->{
-                    val response = result.getOrThrow()
-                    if(!response.state){
-                        val editor = sharedPreferences.edit()
-                        editor.remove("kioskoId")
-                        editor.remove("shoppingId")
-                        editor.remove("token")
-                        editor.apply()
-                    }
-                }
-                result.isFailure -> {
-                    val exception = result.exceptionOrNull()
-                    Log.e("Result.KioskoModel", exception.toString())
-
-                }
-            }
-
-        }
-    }
-
-    LaunchedEffect(key1 = true) {
-        SocketHandler.getSocket().on("kiosko-verify-socket", Emitter.Listener {
-            val payload: JSONObject = it[0] as JSONObject
-            val kioskoId = payload.getString("kiosko_id")
-            val shoppingId = payload.getString("shopping_id")
-            if (preference_shopping_id == shoppingId) {
-                if (preference_kiosko_id == kioskoId) {
-                    val editor = sharedPreferences.edit()
-                    editor.remove("kioskoId")
-                    editor.remove("shoppingId")
-                    editor.remove("token")
-                    editor.apply()
-                    stateExpiredSession.value = true
-                }
-            }
-        })
-    }
-
-    if(stateExpiredSession.value) {
-        stateExpiredSession.value = false
-        navController.navigate(Destination.Login.route)
-    }
+    VerifyKiosko(navController)
 
     Column(
         modifier = Modifier.background(BlueDark),

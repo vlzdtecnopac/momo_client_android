@@ -19,18 +19,24 @@ import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.client.components.ButtonOutLine
 import com.momocoffe.app.ui.client.section.LoginClient
 import com.momocoffe.app.ui.client.section.RegisterClient
+import com.momocoffe.app.ui.components.VerifyKiosko
 import com.momocoffe.app.ui.theme.*
 
 @Composable
 fun Client(navController: NavController){
     var isModalLogin by remember { mutableStateOf(false) }
     var isModalRegister by remember { mutableStateOf(false) }
+
     if (isModalLogin) {
         LoginClient(navController)
     }
     if(isModalRegister){
         RegisterClient(navController)
     }
+
+
+    VerifyKiosko(navController)
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween

@@ -1,7 +1,5 @@
 package com.momocoffe.app.ui.components
 
-import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,7 +9,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material3.Icon
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
@@ -26,6 +23,8 @@ import com.momocoffe.app.ui.theme.redhatFamily
 
 @Composable
 fun Header(navController: NavController) {
+
+    VerifyKiosko(navController)
 
     Row(
         modifier = Modifier
