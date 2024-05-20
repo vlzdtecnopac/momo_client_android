@@ -58,4 +58,5 @@
     <string name="warning_email_exist">Este correo se encuentra registrado.</string>
     <string name="warning_phone_exist">El número telefónico se encuentra registrado.</string>
     <string name="writing_here">Escriba Aqui</string>
+    <string name="create_success_fully_client">Se ha creado nuevo cliente.</string>
 </resources>

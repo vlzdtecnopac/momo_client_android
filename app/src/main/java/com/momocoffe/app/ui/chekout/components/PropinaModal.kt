@@ -63,7 +63,8 @@ fun PropinaModal(
             color = BlueLight
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .height(400.dp)
                     .padding(10.dp)
                     .background(BlueLight),

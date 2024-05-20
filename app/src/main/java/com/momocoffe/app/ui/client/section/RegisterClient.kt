@@ -59,7 +59,7 @@ fun RegisterClient(navController: NavController,
                     val newPhone = "${newClientResponse.code}${newClientResponse.phone}"
                     emailSmsViewModel.sendEmail(ClientReceptorEmailRequest("Activar Cuenta <davidvalenzuela@tecnopac.com.co>", newClientResponse.email, "Confirma Nueva Cuenta"))
                     emailSmsViewModel.sendSms(ClientReceptorSMSRequest("arn:aws:sns:us-east-1:946074075589:Momo", newPhone, "Momo", "Bienvenido a Momo Coffe, ingresando aqui puedes verificar tu cuenta. https://tudominio.com/verificar-cuenta" ))
-                    Toast.makeText(context, "Se ha creado nuevo cliente.", Toast.LENGTH_LONG)
+                    Toast.makeText(context, R.string.create_success_fully_client, Toast.LENGTH_LONG)
                         .show()
                     navController.navigate(Destination.Category.route)
                     clientViewModel.clientResultState.value = null
