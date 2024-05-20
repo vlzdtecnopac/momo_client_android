@@ -42,13 +42,14 @@ fun RegisterClient(navController: NavController,
 
     var firstName by remember { mutableStateOf(value = "") }
     var lastName by remember { mutableStateOf(value = "") }
-    var phone by remember { mutableStateOf(value = "") }
+
     val selected = remember { mutableStateOf(value = "") }
     val selectedLabel = remember { mutableStateOf(value = "") }
     val checkedState = remember { mutableStateOf(true) }
     val email = remember { mutableStateOf(value = "") }
+    var phone = remember { mutableStateOf(value = "") }
 
-    val isValidate by derivedStateOf { email.value.isNotBlank() && firstName.isNotBlank() && lastName.isNotBlank()  && phone.isNotBlank()  }
+    val isValidate by derivedStateOf { email.value.isNotBlank() && firstName.isNotBlank() && lastName.isNotBlank()  && phone.value.isNotBlank()  }
 
     LaunchedEffect(clientViewModel.clientResultState.value) {
         clientViewModel.clientResultState.value?.let { result ->
@@ -169,14 +170,12 @@ fun RegisterClient(navController: NavController,
                                         modifier = Modifier
                                             .weight(0.8f)
                                     ) {
-                                        OutlineTextField(
+                                        PhoneOutlineTextField(
                                             label = stringResource(id = R.string.phone),
                                             placeholder = stringResource(id = R.string.phone),
                                             keyboardType = KeyboardType.Number,
                                             icon = R.drawable.phone,
-                                            textValue = phone,
-                                            onValueChange = { phone = it },
-                                            onClickButton = { phone = "" },
+                                            selected = phone,
                                             onNext = {
                                                 focusManager.moveFocus(
                                                     FocusDirection.Down
@@ -186,7 +185,7 @@ fun RegisterClient(navController: NavController,
                                 }
                                 EmailOutlineTextField(
                                     label = stringResource(id = R.string.mail),
-                                    placeholder = "ejemplo@momo.com",
+                                    placeholder = "micorreo@momo.com",
                                     icon = R.drawable.mail_icon,
                                     keyboardType = KeyboardType.Email,
                                     selected = email,
@@ -233,7 +232,7 @@ fun RegisterClient(navController: NavController,
                                                     clientDto = ClientRequest(
                                                         firstName,
                                                         lastName,
-                                                        phone,
+                                                        phone.value,
                                                         selected.value,
                                                         selectedLabel.value,
                                                         email.value
