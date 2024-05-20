@@ -59,4 +59,5 @@
     <string name="warning_phone_exist">El número telefónico se encuentra registrado.</string>
     <string name="writing_here">Escriba Aqui</string>
     <string name="create_success_fully_client">Se ha creado nuevo cliente.</string>
+    <string name="welcome_success_fully_register_text_large">Tu registro \n se completó con éxito.\n Bienvenido a la experiencia \n MOMO</string>
 </resources>

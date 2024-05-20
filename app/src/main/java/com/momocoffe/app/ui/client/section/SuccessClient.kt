@@ -78,9 +78,7 @@ fun SuccessClient(controller: NavController){
                 )
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(
-                    "Tu registro\n" +
-                            "se completó con éxito.\n" +
-                            "Bienvenido a la experiencia \n" + "MOMO",
+                    stringResource(id = R.string.welcome_success_fully_register_text_large),
                     fontSize = 24.sp,
                     color = Color.White,
                     fontWeight = FontWeight(400),

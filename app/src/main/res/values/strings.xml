@@ -58,4 +58,5 @@
     <string name="warning_phone_exist">The telephone number is registered.</string>
     <string name="writing_here">Write here</string>
     <string name="create_success_fully_client">New client success fully.</string>
+    <string name="welcome_success_fully_register_text_large">Your registration \nhas been completed successfully.\nWelcome to the \nMOMO experience</string>
 </resources>
