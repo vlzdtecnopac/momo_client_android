@@ -66,7 +66,7 @@ fun RegisterClient(navController: NavController,
                 }
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
-                    Toast.makeText(context, "Error en el registro del cliente.", Toast.LENGTH_LONG)
+                    Toast.makeText(context, R.string.error_register_client, Toast.LENGTH_LONG)
                         .show()
                     Log.d("Result.ViewModel", exception.toString())
                 }
@@ -239,7 +239,7 @@ fun RegisterClient(navController: NavController,
                                                     )
                                                 )
                                             }else{
-                                                Toast.makeText(context, "Acepta términos y condiciones.", Toast.LENGTH_LONG)
+                                                Toast.makeText(context, R.string.accept_term, Toast.LENGTH_LONG)
                                                     .show()
                                             }
                                         }

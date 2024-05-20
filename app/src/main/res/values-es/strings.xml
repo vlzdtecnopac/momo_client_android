@@ -53,4 +53,8 @@
     <string name="required_inputs_phone_and_code">Los campos de telefóno como codigo local es requerido.</string>
     <string name="guest">Invitado.</string>
     <string name="close_session">Cerrar sesión</string>
+    <string name="accept_term">Acepta términos y condiciones.</string>
+    <string name="error_register_client">Error en el registro del cliente.</string>
+    <string name="warning_email_exist">Este correo se encuentra registrado.</string>
+    <string name="warning_phone_exist">El número telefónico se encuentra registrado.</string>
 </resources>

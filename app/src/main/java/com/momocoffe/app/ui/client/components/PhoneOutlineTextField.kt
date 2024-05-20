@@ -124,7 +124,7 @@ private suspend fun isValidPhone(
                 if (response.items.isNotEmpty()) {
                     Toast.makeText(
                         context,
-                        "El número ´telefonico se encuentra registrado.",
+                        R.string.warning_phone_exist,
                         Toast.LENGTH_LONG
                     )
                         .show()

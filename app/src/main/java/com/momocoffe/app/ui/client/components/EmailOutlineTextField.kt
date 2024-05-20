@@ -108,7 +108,7 @@ private suspend fun isValidEmail(
                 if (response.items.isNotEmpty()) {
                     Toast.makeText(
                         context,
-                        "Este correo se encuentra registrado.",
+                        R.string.warning_email_exist,
                         Toast.LENGTH_LONG
                     )
                         .show()
