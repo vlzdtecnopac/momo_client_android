@@ -41,10 +41,6 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
                     }
                 }
             }
-
-
-
-
             Cart(navController)
         }
     }

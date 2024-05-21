@@ -8,6 +8,8 @@ data class CategoriesResponse (
     val categoryID: String,
     @SerializedName("name_category")
     val nameCategory: String,
+    @SerializedName("class_icon")
+    val classIcon: String,
     @SerializedName("category_response_class")
     val categoryResponseClass: String,
     @SerializedName("sub_category")
