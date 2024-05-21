@@ -34,7 +34,6 @@ fun Client(navController: NavController){
         RegisterClient(navController)
     }
 
-
     VerifyKiosko(navController)
 
     Row(

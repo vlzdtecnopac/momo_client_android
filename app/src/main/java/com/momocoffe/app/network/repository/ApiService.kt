@@ -8,6 +8,7 @@ import com.momocoffe.app.network.dto.ClientSessionPhoneRequest
 import com.momocoffe.app.network.dto.LoginRequest
 import com.momocoffe.app.network.dto.RefreshToken
 import com.momocoffe.app.network.dto.VerifyKioskoRequest
+import com.momocoffe.app.network.response.CategoriesResponse
 import com.momocoffe.app.network.response.ClientEmailSMSResponse
 import com.momocoffe.app.network.response.ClientGeneralResponse
 import com.momocoffe.app.network.response.ClientResponse
@@ -60,6 +61,9 @@ interface ApiService {
 
     @POST("/sms")
     suspend fun getClientSMSConfirm(@Body requestBody: ClientReceptorSMSRequest): Response<ClientEmailSMSResponse>
+
+    @GET("/category/")
+    suspend fun getCategories(): Response<ArrayList<CategoriesResponse>>
 
 
 }

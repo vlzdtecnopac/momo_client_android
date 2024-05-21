@@ -2,41 +2,52 @@ package com.momocoffe.app.ui.components
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.momocoffe.app.ui.components.cart.Cart
 import com.momocoffe.app.ui.theme.stacionFamily
+import com.momocoffe.app.viewmodel.CategoryViewModel
 
 @Composable
-fun Category(navController: NavController){
+fun Category(navController: NavController, categoryViewModel: CategoryViewModel = viewModel()){
+    LaunchedEffect(Unit){
+        categoryViewModel.categorys();
+    }
+
+
+    if(!categoryViewModel.loadingState.value) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            BtnOutlineCategory(text = "Café", onclick = {})
-            Spacer(modifier = Modifier.width(5.dp))
-            BtnOutlineCategory(text = "Té", onclick = {})
-            Spacer(modifier = Modifier.width(5.dp))
-            BtnOutlineCategory(text = "Café con Té", onclick = {})
-            Spacer(modifier = Modifier.width(5.dp))
-            BtnOutlineCategory(text = "Especiales Momo", onclick = {})
-            Spacer(modifier = Modifier.width(5.dp))
-            BtnOutlineCategory(text = "Otras Bebidas", onclick = {})
-            Spacer(modifier = Modifier.width(5.dp))
-            BtnOutlineCategory(text = "Alimentos", onclick = {})
-            Spacer(modifier = Modifier.width(5.dp))
-            BtnOutlineCategory(text = "Combos", onclick = {})
-            Spacer(modifier = Modifier.width(5.dp))
-            BtnOutlineCategory(text = "Nuestra Tienda", onclick = {})
-            Spacer(modifier = Modifier.width(10.dp))
+            categoryViewModel.categoriesResultState.value?.let { result ->
+                result.onSuccess { categoriesResponse ->
+                    LazyRow {
+                        items(categoriesResponse) { category ->
+                            Spacer(modifier = Modifier.width(5.dp))
+                            BtnOutlineCategory(text = category.nameCategory, onclick = {})
+                            Spacer(modifier = Modifier.width(5.dp))
+                        }
+                    }
+                }
+            }
+
+
+
+
             Cart(navController)
         }
+    }
 }
 
 
