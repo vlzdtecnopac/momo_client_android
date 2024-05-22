@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.momocoffe.app.ui.category.sections.ColAndHot
 import com.momocoffe.app.ui.category.sections.Food
 import com.momocoffe.app.ui.category.sections.Store
 import com.momocoffe.app.ui.components.cart.Cart
@@ -38,7 +39,12 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
     if(subCategorySelected.isNotEmpty()) {
 
         if(subCategorySelected.count() <= 2){
-            Store(list = subCategorySelected)
+            if(subCategorySelected.contains("hot")){
+                ColAndHot(list = subCategorySelected)
+            }else{
+                Store(list = subCategorySelected)
+            }
+
         }else{
             Food(list = subCategorySelected)
         }
