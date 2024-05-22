@@ -67,17 +67,17 @@ fun Food(navController: NavController,
                     contentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp),
                     columns = GridCells.Fixed(3),
                     content = {
-                        itemsIndexed(newList) { index, item ->
+                        items(newList.size) { index ->
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(14.dp))
                                     .padding(20.dp)
                             ) {
                                 BtnOutlineCategory(
-                                    icon = item.iconResId,
-                                    text = item.name,
+                                    icon = newList[index].iconResId,
+                                    text = newList[index].name,
                                     onclick = {
-                                        navController.navigate("products/$selectCategory/${item.name}")
+                                        navController.navigate("products/$selectCategory/${list[index]}")
 
                                     }
                                 )

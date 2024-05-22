@@ -93,7 +93,11 @@ fun CardProduct(navController: NavController, product: ProductsItem) {
                 .padding(top = 10.dp, bottom = 10.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text("\$ 31", color = Color.White, fontFamily = stacionFamily)
+            if (product.nameProduct.isNullOrEmpty()) {
+                Text("\$ 0", color = Color.White, fontFamily = stacionFamily)
+            }else{
+                Text("\$ ${product.price}", color = Color.White, fontFamily = stacionFamily)
+            }
         }
         Spacer(modifier = Modifier.height(8.dp))
         if (product.nameProduct.isNullOrEmpty()) {
