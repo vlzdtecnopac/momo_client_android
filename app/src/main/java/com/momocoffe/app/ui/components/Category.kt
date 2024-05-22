@@ -71,7 +71,7 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
                                     val parts = newSubcategory.split(",")
                                     subCategorySelected = parts.toList()
                                 }else{
-                                    navController.navigate(Destination.Products.route)
+                                    navController.navigate("products/${category.nameCategory}/${category.subCategory}")
                                 }
                             })
                             Spacer(modifier = Modifier.width(5.dp))

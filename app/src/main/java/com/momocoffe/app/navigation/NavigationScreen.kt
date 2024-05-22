@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.momocoffe.app.App
 import com.momocoffe.app.ui.category.Category
 import com.momocoffe.app.ui.chekout.Checkout
@@ -49,8 +50,19 @@ fun NavigationScreen(viewModel: LoginViewModel) {
             Product(navController = navController)
         }
 
-        composable(route = Destination.Products.route) {
-            Products(navController = navController)
+        composable(route = Destination.ProductsCategoryAndSubProduct.route,
+            arguments = listOf(navArgument("category") { defaultValue = "" }, navArgument("subcategory") { defaultValue = "" })
+            ) {backStackEntry ->
+            val category = backStackEntry.arguments?.getString("category")
+            val subcategory = backStackEntry.arguments?.getString("subcategory")
+            Products(navController = navController, category, subcategory )
+        }
+
+        composable(route = Destination.ProductsCategory.route,
+            arguments = listOf(navArgument("category") { defaultValue = "" })
+        ) {backStackEntry ->
+            val category = backStackEntry.arguments?.getString("category")
+            Products(navController = navController, category )
         }
 
         composable(route = Destination.Checkout.route) {

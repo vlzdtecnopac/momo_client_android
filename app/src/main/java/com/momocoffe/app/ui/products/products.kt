@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.products
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +21,10 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 
 @Composable
-fun Products(navController: NavHostController){
+fun Products(navController: NavHostController, category: String? = "", subcategory: String? = ""){
+
+    Log.d("Result.CategoryViewModel", category.toString())
+    Log.d("Result.CategoryViewModel", subcategory.toString())
     val list = (1..100).map { it.toString() }
 
     Column(modifier = Modifier

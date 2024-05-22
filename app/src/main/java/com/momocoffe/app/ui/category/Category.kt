@@ -109,7 +109,7 @@ fun Category(navController: NavController,  categoryViewModel: CategoryViewModel
                                                 subCategorySelected = parts.toList()
                                                 showDialog = true
                                             }else{
-                                                navController.navigate(Destination.Products.route)
+                                                navController.navigate("products/${item.nameCategory}")
                                             }
 
                                         }

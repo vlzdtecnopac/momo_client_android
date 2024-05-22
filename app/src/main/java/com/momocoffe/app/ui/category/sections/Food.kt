@@ -78,7 +78,8 @@ fun Food(navController: NavController,
                                     icon = item.iconResId,
                                     text = item.name,
                                     onclick = {
-                                        navController.navigate(Destination.Products.route)
+                                        navController.navigate("products/myCategory/${item.name}")
+
                                     }
                                 )
                             }
