@@ -43,7 +43,7 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
     if (subCategorySelected.isNotEmpty()) {
 
         if (subCategorySelected.count() <= 2) {
-            if (subCategorySelected.contains("hot")) {
+            if (subCategorySelected.contains("Caliente")) {
                 ColAndHot(navController, selectCategory, list = subCategorySelected, onCloseDialog = { showDialog = false })
             } else {
                 Store(navController, selectCategory, list = subCategorySelected, onCloseDialog = { showDialog = false })
@@ -73,7 +73,7 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
                                     selectCategory = category.nameCategory
                                     subCategorySelected = parts.toList()
                                 }else{
-                                    navController.navigate("products/${category.nameCategory}/${category.subCategory}")
+                                    navController.navigate("products/${category.nameCategory}")
                                 }
                             })
                             Spacer(modifier = Modifier.width(5.dp))

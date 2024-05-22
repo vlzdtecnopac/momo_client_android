@@ -24,7 +24,7 @@ import com.momocoffe.app.ui.theme.BlueLight
 fun Products(navController: NavHostController, category: String? = "", subcategory: String? = ""){
 
     Log.d("Result.CategoryViewModel", category.toString())
-    Log.d("Result.CategoryViewModel", subcategory.toString())
+    //Log.d("Result.CategoryViewModel", subcategory.toString())
     val list = (1..100).map { it.toString() }
 
     Column(modifier = Modifier

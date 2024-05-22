@@ -6,7 +6,7 @@ sealed  class Destination(val route: String) {
     object OrderHere: Destination(route = "orderhere")
     object Client: Destination(route = "client")
     object ProductsCategoryAndSubProduct: Destination(route = "products/{category}/{subcategory}")
-    object ProductsCategory: Destination(route = "products/{category}/")
+    object ProductsCategory: Destination(route = "products/{category}")
     object Product: Destination(route = "product")
     object Checkout: Destination(route = "checkout")
     object Category: Destination(route = "category")
