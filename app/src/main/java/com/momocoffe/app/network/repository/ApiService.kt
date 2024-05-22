@@ -17,6 +17,7 @@ import com.momocoffe.app.network.response.DataKiosko
 import com.momocoffe.app.network.response.EmployeeResponse
 import com.momocoffe.app.network.response.KioskoResponse
 import com.momocoffe.app.network.response.LoginResponse
+import com.momocoffe.app.network.response.ProductsResponse
 import com.momocoffe.app.network.response.RefreshTokenResponse
 import com.momocoffe.app.network.response.ShoppingResponse
 import retrofit2.Response
@@ -64,6 +65,10 @@ interface ApiService {
 
     @GET("/category/")
     suspend fun getCategories(): Response<ArrayList<CategoriesResponse>>
+
+    @GET("/product/")
+    suspend fun getProducts( @Query("shopping_id") shoppingId: String,  @Query("categorys") category: String, @Query("subcategory") subcategory: String): Response<ProductsResponse>
+
 
 
 }

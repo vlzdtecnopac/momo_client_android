@@ -4,7 +4,6 @@ import android.content.Context
 import com.momocoffe.app.App
 import com.momocoffe.app.BuildConfig
 import com.momocoffe.app.network.dto.RefreshToken
-import com.momocoffe.app.ui.theme.MomoCoffeClientTheme
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Interceptor
