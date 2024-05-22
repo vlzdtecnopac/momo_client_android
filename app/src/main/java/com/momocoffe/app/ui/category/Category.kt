@@ -32,7 +32,9 @@ import com.momocoffe.app.viewmodel.CategoryViewModel
 data class ListItem(val iconResId: Int, val name: String)
 
 @Composable
-fun Category(navController: NavController,  categoryViewModel: CategoryViewModel = viewModel()){
+fun Category(navController: NavController,
+             categoryViewModel: CategoryViewModel = viewModel()){
+
     var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
     var showDialog by remember { mutableStateOf(false) }
 
@@ -43,7 +45,7 @@ fun Category(navController: NavController,  categoryViewModel: CategoryViewModel
     if (subCategorySelected.isNotEmpty() && showDialog) {
         if (subCategorySelected.count() <= 2) {
             Log.d("Result.CategoryViewModel", subCategorySelected.toString())
-            if (subCategorySelected.contains("hot")) {
+            if (subCategorySelected.contains("Caliente")) {
                 ColAndHot(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
             } else {
                 Store(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
