@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.category.sections
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import com.momocoffe.app.R
+import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.category.ListItem
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 
@@ -31,7 +34,7 @@ import com.momocoffe.app.ui.theme.BlueDark
 
 
 @Composable
-fun Store(list: List<String>){
+fun Store(navController: NavController, list: List<String>){
 
     val image = listOf(R.drawable.metch_icon, R.drawable.coffe_granel_icon)
     val textLabel = listOf(R.string.text_merch, R.string.text_coffe_granel)
@@ -71,7 +74,9 @@ fun Store(list: List<String>){
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(14.dp))
-                                    .padding(20.dp)
+                                    .padding(20.dp).clickable {
+                                        navController.navigate(Destination.Products.route)
+                                    }
                             ) {
                                 BtnOutlineCategory(
                                     icon = item.iconResId,

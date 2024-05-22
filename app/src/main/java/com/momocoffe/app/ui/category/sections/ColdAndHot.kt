@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.category.sections
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,13 +15,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import com.momocoffe.app.R
+import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.category.ListItem
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.theme.BlueDark
 
 @Composable
-fun ColAndHot(list: List<String>) {
+fun ColAndHot(navController: NavController, list: List<String>) {
 
     val image = listOf(R.drawable.hot_icon, R.drawable.cold_icon)
     val textLabel = listOf(R.string.text_hot, R.string.text_cold)
@@ -60,7 +63,9 @@ fun ColAndHot(list: List<String>) {
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(14.dp))
-                                .padding(20.dp)
+                                .padding(20.dp).clickable {
+                                    navController.navigate(Destination.Products.route)
+                                }
                         ) {
                             BtnOutlineCategory(
                                 icon = item.iconResId,

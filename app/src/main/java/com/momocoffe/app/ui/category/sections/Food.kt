@@ -1,6 +1,5 @@
 package com.momocoffe.app.ui.category.sections
-
-import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
@@ -23,14 +21,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.R
+import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.category.ListItem
 
 
 @Composable
-fun Food(list: List<String>){
+fun Food(navController: NavController, list: List<String>){
 
     val image = listOf(R.drawable.sweet_icon, R.drawable.bread_icon, R.drawable.snack_icon)
     val textLabel = listOf(R.string.text_sweet, R.string.text_sald, R.string.text_snack)
@@ -70,7 +70,9 @@ fun Food(list: List<String>){
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(14.dp))
-                                    .padding(20.dp)
+                                    .padding(20.dp).clickable {
+                                        navController.navigate(Destination.Products.route)
+                                    }
                             ) {
                                 BtnOutlineCategory(
                                     icon = item.iconResId,

@@ -28,31 +28,31 @@ import com.momocoffe.app.ui.theme.stacionFamily
 import com.momocoffe.app.viewmodel.CategoryViewModel
 
 @Composable
-fun Category(navController: NavController, categoryViewModel: CategoryViewModel = viewModel()){
+fun Category(navController: NavController, categoryViewModel: CategoryViewModel = viewModel()) {
 
     var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         categoryViewModel.categorys();
     }
 
-    if(subCategorySelected.isNotEmpty()) {
+    if (subCategorySelected.isNotEmpty()) {
 
-        if(subCategorySelected.count() <= 2){
-            if(subCategorySelected.contains("hot")){
-                ColAndHot(list = subCategorySelected)
-            }else{
-                Store(list = subCategorySelected)
+        if (subCategorySelected.count() <= 2) {
+            if (subCategorySelected.contains("hot")) {
+                ColAndHot(navController, list = subCategorySelected)
+            } else {
+                Store(navController, list = subCategorySelected)
             }
 
-        }else{
-            Food(list = subCategorySelected)
+        } else {
+            Food(navController, list = subCategorySelected)
         }
-      
+
     }
 
 
-    if(!categoryViewModel.loadingState.value) {
+    if (!categoryViewModel.loadingState.value) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -82,7 +82,7 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
 fun BtnOutlineCategory(
     text: String,
     onclick: () -> Unit
-){
+) {
     val modifierCard = Modifier
         .width(93.dp)
         .height(60.dp)
@@ -98,7 +98,7 @@ fun BtnOutlineCategory(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
 
-    ){
+    ) {
         Text(
             text,
             color = Color.White,
