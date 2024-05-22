@@ -34,7 +34,9 @@ import com.momocoffe.app.ui.theme.BlueDark
 
 
 @Composable
-fun Store(navController: NavController, list: List<String>){
+fun Store(navController: NavController,
+          list: List<String>,
+          onCloseDialog: () -> Unit){
 
     val image = listOf(R.drawable.metch_icon, R.drawable.coffe_granel_icon)
     val textLabel = listOf(R.string.text_merch, R.string.text_coffe_granel)
@@ -46,7 +48,7 @@ fun Store(navController: NavController, list: List<String>){
 
 
     Dialog(
-        onDismissRequest = {},
+        onDismissRequest = onCloseDialog,
         DialogProperties(
             usePlatformDefaultWidth = false
         )
@@ -74,14 +76,14 @@ fun Store(navController: NavController, list: List<String>){
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(14.dp))
-                                    .padding(20.dp).clickable {
-                                        navController.navigate(Destination.Products.route)
-                                    }
+                                    .padding(20.dp)
                             ) {
                                 BtnOutlineCategory(
                                     icon = item.iconResId,
                                     text = item.name,
-                                    onclick = {}
+                                    onclick = {
+                                        navController.navigate(Destination.Products.route)
+                                    }
                                 )
                             }
                         }

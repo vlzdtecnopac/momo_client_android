@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -22,12 +23,9 @@ import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.R
-import com.momocoffe.app.navigation.Destination
-import com.momocoffe.app.network.repository.SessionManager
 import com.momocoffe.app.ui.category.sections.ColAndHot
 import com.momocoffe.app.ui.category.sections.Food
 import com.momocoffe.app.ui.category.sections.Store
-import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.viewmodel.CategoryViewModel
 
 data class ListItem(val iconResId: Int, val name: String)
@@ -35,23 +33,24 @@ data class ListItem(val iconResId: Int, val name: String)
 @Composable
 fun Category(navController: NavController,  categoryViewModel: CategoryViewModel = viewModel()){
     var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit){
         categoryViewModel.categorys();
     }
 
 
-    if (subCategorySelected.isNotEmpty()) {
+    if (subCategorySelected.isNotEmpty() && showDialog) {
         if (subCategorySelected.count() <= 2) {
             Log.d("Result.CategoryViewModel", subCategorySelected.toString())
             if (subCategorySelected.contains("hot")) {
-                ColAndHot(navController, list = subCategorySelected)
+                ColAndHot(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
             } else {
-                Store(navController, list = subCategorySelected)
+                Store(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
             }
 
         } else {
-            Food(navController, list = subCategorySelected)
+            Food(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
         }
     }
 
@@ -107,6 +106,7 @@ fun Category(navController: NavController,  categoryViewModel: CategoryViewModel
                                                 .removeSurrounding("[", "]")
                                             val parts = newSubcategory.split(",")
                                             subCategorySelected = parts.toList()
+                                            showDialog = true
                                         }
                                     )
                                 }

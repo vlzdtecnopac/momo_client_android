@@ -23,7 +23,9 @@ import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.theme.BlueDark
 
 @Composable
-fun ColAndHot(navController: NavController, list: List<String>) {
+fun ColAndHot(navController: NavController,
+              list: List<String>,
+              onCloseDialog: () -> Unit) {
 
     val image = listOf(R.drawable.hot_icon, R.drawable.cold_icon)
     val textLabel = listOf(R.string.text_hot, R.string.text_cold)
@@ -35,7 +37,7 @@ fun ColAndHot(navController: NavController, list: List<String>) {
     }
 
     Dialog(
-        onDismissRequest = {},
+        onDismissRequest = onCloseDialog,
         DialogProperties(
             usePlatformDefaultWidth = false
         )
@@ -63,14 +65,14 @@ fun ColAndHot(navController: NavController, list: List<String>) {
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(14.dp))
-                                .padding(20.dp).clickable {
-                                    navController.navigate(Destination.Products.route)
-                                }
+                                .padding(20.dp)
                         ) {
                             BtnOutlineCategory(
                                 icon = item.iconResId,
                                 text = item.name,
-                                onclick = {}
+                                onclick = {
+                                    navController.navigate(Destination.Products.route)
+                                }
                             )
                         }
                     }

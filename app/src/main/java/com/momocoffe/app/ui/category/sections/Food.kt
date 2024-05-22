@@ -30,7 +30,9 @@ import com.momocoffe.app.ui.category.ListItem
 
 
 @Composable
-fun Food(navController: NavController, list: List<String>){
+fun Food(navController: NavController,
+         list: List<String>,
+         onCloseDialog: () -> Unit){
 
     val image = listOf(R.drawable.sweet_icon, R.drawable.bread_icon, R.drawable.snack_icon)
     val textLabel = listOf(R.string.text_sweet, R.string.text_sald, R.string.text_snack)
@@ -42,7 +44,7 @@ fun Food(navController: NavController, list: List<String>){
     }
 
     Dialog(
-        onDismissRequest = {},
+        onDismissRequest = onCloseDialog,
         DialogProperties(
             usePlatformDefaultWidth = false
         )
@@ -70,14 +72,14 @@ fun Food(navController: NavController, list: List<String>){
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(14.dp))
-                                    .padding(20.dp).clickable {
-                                        navController.navigate(Destination.Products.route)
-                                    }
+                                    .padding(20.dp)
                             ) {
                                 BtnOutlineCategory(
                                     icon = item.iconResId,
                                     text = item.name,
-                                    onclick = {}
+                                    onclick = {
+                                        navController.navigate(Destination.Products.route)
+                                    }
                                 )
                             }
                         }

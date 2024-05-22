@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.*
@@ -31,6 +32,7 @@ import com.momocoffe.app.viewmodel.CategoryViewModel
 fun Category(navController: NavController, categoryViewModel: CategoryViewModel = viewModel()) {
 
     var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
+    var showDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         categoryViewModel.categorys();
@@ -40,13 +42,13 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
 
         if (subCategorySelected.count() <= 2) {
             if (subCategorySelected.contains("hot")) {
-                ColAndHot(navController, list = subCategorySelected)
+                ColAndHot(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
             } else {
-                Store(navController, list = subCategorySelected)
+                Store(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
             }
 
         } else {
-            Food(navController, list = subCategorySelected)
+            Food(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
         }
 
     }
