@@ -1,5 +1,4 @@
 package com.momocoffe.app.ui.category.sections
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,6 @@ import androidx.navigation.NavController
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.R
-import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.category.ListItem
 
 
