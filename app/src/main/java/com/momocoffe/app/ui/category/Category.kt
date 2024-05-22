@@ -37,6 +37,7 @@ fun Category(navController: NavController,
 
     var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
     var showDialog by remember { mutableStateOf(false) }
+    var selectCategory by remember { mutableStateOf(value = "" ) }
 
     LaunchedEffect(Unit){
         categoryViewModel.categorys();
@@ -46,13 +47,13 @@ fun Category(navController: NavController,
         if (subCategorySelected.count() <= 2) {
             Log.d("Result.CategoryViewModel", subCategorySelected.toString())
             if (subCategorySelected.contains("Caliente")) {
-                ColAndHot(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
+                ColAndHot(navController, selectCategory, list = subCategorySelected, onCloseDialog = { showDialog = false })
             } else {
-                Store(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
+                Store(navController, selectCategory, list = subCategorySelected, onCloseDialog = { showDialog = false })
             }
 
         } else {
-            Food(navController, list = subCategorySelected, onCloseDialog = { showDialog = false })
+            Food(navController, selectCategory ,list = subCategorySelected, onCloseDialog = { showDialog = false })
         }
     }
 
@@ -109,6 +110,7 @@ fun Category(navController: NavController,
                                                     .removeSurrounding("[", "]")
                                                 val parts = newSubcategory.split(",")
                                                 subCategorySelected = parts.toList()
+                                                selectCategory = item.nameCategory
                                                 showDialog = true
                                             }else{
                                                 navController.navigate("products/${item.nameCategory}")

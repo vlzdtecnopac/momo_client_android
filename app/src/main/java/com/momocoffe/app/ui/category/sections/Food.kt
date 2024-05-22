@@ -29,6 +29,7 @@ import com.momocoffe.app.ui.category.ListItem
 
 @Composable
 fun Food(navController: NavController,
+         selectCategory: String,
          list: List<String>,
          onCloseDialog: () -> Unit){
 
@@ -76,7 +77,7 @@ fun Food(navController: NavController,
                                     icon = item.iconResId,
                                     text = item.name,
                                     onclick = {
-                                        navController.navigate("products/myCategory/${item.name}")
+                                        navController.navigate("products/$selectCategory/${item.name}")
 
                                     }
                                 )

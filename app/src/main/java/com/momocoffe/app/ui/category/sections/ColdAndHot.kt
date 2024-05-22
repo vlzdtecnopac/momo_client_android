@@ -22,6 +22,7 @@ import com.momocoffe.app.ui.theme.BlueDark
 
 @Composable
 fun ColAndHot(navController: NavController,
+              selectCategory: String,
               list: List<String>,
               onCloseDialog: () -> Unit) {
 
@@ -69,7 +70,7 @@ fun ColAndHot(navController: NavController,
                                 icon = item.iconResId,
                                 text = item.name,
                                 onclick = {
-                                    navController.navigate("products/myCategory/${item.name}")
+                                    navController.navigate("products/$selectCategory/${item.name}")
                                 }
                             )
                         }
