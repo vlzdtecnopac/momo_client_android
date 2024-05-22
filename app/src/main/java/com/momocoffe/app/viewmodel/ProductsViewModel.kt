@@ -4,11 +4,11 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.momocoffe.app.network.dto.LoginRequest
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
 import com.momocoffe.app.network.response.ProductsResponse
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class ProductsViewModel : ViewModel() {
     private val apiService: ApiService = RetrofitHelper.apiService()
@@ -18,9 +18,17 @@ class ProductsViewModel : ViewModel() {
     fun products(shopping_id: String = "", categorys: String = "", subcategory: String = "") {
         loadingState.value = true
         viewModelScope.launch{
+
             try{
-                val response = apiService.getProducts(shopping_id, category = categorys, subcategory)
-                Log.e("Result.ProductsModelView", response.toString())
+                var response: Response<ProductsResponse>
+
+                if(subcategory.isNotEmpty()){
+                     response = apiService.getProductsCategoryAndSubcategory(shopping_id, category = categorys, subcategory)
+                }else{
+                     response = apiService.getProductsCategory(shopping_id, category = categorys)
+                }
+
+                Log.d("Result.ProductsModelView", response.toString())
                 if(response.isSuccessful){
                     val loginResponse: ProductsResponse? = response.body()
                     if(loginResponse != null){

@@ -1,13 +1,13 @@
 package com.momocoffe.app.network.response
 
 data class ProductsResponse (
-    val items: List<Item>,
+    val items: List<ProductsItem>,
     val page: Long,
     val limit: Long,
     val total: Long
 )
 
-data class Item (
+data class ProductsItem (
     val id: Long,
     val productID: String,
     val shoppingID: String,
