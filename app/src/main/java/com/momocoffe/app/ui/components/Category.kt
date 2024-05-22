@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,6 +9,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -15,14 +20,29 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.momocoffe.app.ui.category.sections.Food
+import com.momocoffe.app.ui.category.sections.Store
 import com.momocoffe.app.ui.components.cart.Cart
 import com.momocoffe.app.ui.theme.stacionFamily
 import com.momocoffe.app.viewmodel.CategoryViewModel
 
 @Composable
 fun Category(navController: NavController, categoryViewModel: CategoryViewModel = viewModel()){
+
+    var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
+
     LaunchedEffect(Unit){
         categoryViewModel.categorys();
+    }
+
+    if(subCategorySelected.isNotEmpty()) {
+
+        if(subCategorySelected.count() <= 2){
+            Store(list = subCategorySelected)
+        }else{
+            Food(list = subCategorySelected)
+        }
+      
     }
 
 
@@ -35,7 +55,12 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
                     LazyRow {
                         items(categoriesResponse) { category ->
                             Spacer(modifier = Modifier.width(5.dp))
-                            BtnOutlineCategory(text = category.nameCategory, onclick = {})
+                            BtnOutlineCategory(text = category.nameCategory, onclick = {
+                                val newSubcategory = category.subCategory
+                                    .removeSurrounding("[", "]")
+                                val parts = newSubcategory.split(",")
+                                subCategorySelected = parts.toList()
+                            })
                             Spacer(modifier = Modifier.width(5.dp))
                         }
                     }

@@ -28,14 +28,18 @@ import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.theme.BlueDark
 
 
-@Preview(widthDp = 1440, heightDp = 875, showBackground = true)
-@Composable
-fun Store(){
 
-    val jsonList = listOf(
-        ListItem(R.drawable.metch_icon, "Tienda"),
-        ListItem(R.drawable.coffe_granel_icon, "Cafe Granel"),
-    )
+@Composable
+fun Store(list: List<String>){
+
+    val image = listOf(R.drawable.metch_icon, R.drawable.coffe_granel_icon)
+
+    val newList = mutableListOf<ListItem>()
+
+    list.forEachIndexed { index, item ->
+        newList.add(ListItem(image[index], item))
+    }
+
 
     Dialog(
         onDismissRequest = {},
@@ -62,7 +66,7 @@ fun Store(){
                     contentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp),
                     columns = GridCells.Fixed(2),
                     content = {
-                        items(jsonList) { item ->
+                        items(newList) { item ->
                             Box(
                                 modifier = Modifier
                                     .clip(RoundedCornerShape(14.dp))

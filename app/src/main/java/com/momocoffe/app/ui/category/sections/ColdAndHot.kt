@@ -1,6 +1,5 @@
 package com.momocoffe.app.ui.category.sections
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -19,15 +19,17 @@ import com.momocoffe.app.ui.category.ListItem
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.theme.BlueDark
 
-
-@Preview(widthDp = 1440, heightDp = 875, showBackground = true)
 @Composable
-fun ColAndHot() {
+fun ColAndHot(list: List<String>) {
 
-    val jsonList = listOf(
-        ListItem(R.drawable.hot_icon, "Caliente"),
-        ListItem(R.drawable.cold_icon, "Frio"),
-    )
+    val image = listOf(R.drawable.hot_icon, R.drawable.cold_icon)
+    val textLabel = listOf(R.string.text_hot, R.string.text_cold)
+
+    val newList = mutableListOf<ListItem>()
+
+    list.forEachIndexed { index, item ->
+        newList.add(ListItem(image[index], stringResource(id = textLabel[index])))
+    }
 
     Dialog(
         onDismissRequest = {},
@@ -54,7 +56,7 @@ fun ColAndHot() {
                 contentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp),
                 columns = GridCells.Fixed(2),
                 content = {
-                    items(jsonList) { item ->
+                    items(newList) { item ->
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(14.dp))

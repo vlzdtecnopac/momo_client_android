@@ -3,16 +3,13 @@ package com.momocoffe.app.ui.category
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.*
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -33,9 +30,6 @@ fun Category(navController: NavController,  categoryViewModel: CategoryViewModel
     LaunchedEffect(Unit){
         categoryViewModel.categorys();
     }
-
-
-
 
     Column(
         modifier = Modifier
