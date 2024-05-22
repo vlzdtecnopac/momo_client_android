@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.category.sections.ColAndHot
 import com.momocoffe.app.ui.category.sections.Food
 import com.momocoffe.app.ui.category.sections.Store
@@ -64,10 +65,14 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
                         items(categoriesResponse) { category ->
                             Spacer(modifier = Modifier.width(5.dp))
                             BtnOutlineCategory(text = category.nameCategory, onclick = {
-                                val newSubcategory = category.subCategory
-                                    .removeSurrounding("[", "]")
-                                val parts = newSubcategory.split(",")
-                                subCategorySelected = parts.toList()
+                                if(category.subCategory.isNotEmpty()) {
+                                    val newSubcategory = category.subCategory
+                                        .removeSurrounding("[", "]")
+                                    val parts = newSubcategory.split(",")
+                                    subCategorySelected = parts.toList()
+                                }else{
+                                    navController.navigate(Destination.Products.route)
+                                }
                             })
                             Spacer(modifier = Modifier.width(5.dp))
                         }

@@ -23,6 +23,7 @@ import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.R
+import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.category.sections.ColAndHot
 import com.momocoffe.app.ui.category.sections.Food
 import com.momocoffe.app.ui.category.sections.Store
@@ -38,7 +39,6 @@ fun Category(navController: NavController,  categoryViewModel: CategoryViewModel
     LaunchedEffect(Unit){
         categoryViewModel.categorys();
     }
-
 
     if (subCategorySelected.isNotEmpty() && showDialog) {
         if (subCategorySelected.count() <= 2) {
@@ -102,11 +102,16 @@ fun Category(navController: NavController,  categoryViewModel: CategoryViewModel
                                         },
                                         text = item.nameCategory,
                                         onclick = {
-                                            val newSubcategory = item.subCategory
-                                                .removeSurrounding("[", "]")
-                                            val parts = newSubcategory.split(",")
-                                            subCategorySelected = parts.toList()
-                                            showDialog = true
+                                            if(item.subCategory.isNotEmpty()){
+                                                val newSubcategory = item.subCategory
+                                                    .removeSurrounding("[", "]")
+                                                val parts = newSubcategory.split(",")
+                                                subCategorySelected = parts.toList()
+                                                showDialog = true
+                                            }else{
+                                                navController.navigate(Destination.Products.route)
+                                            }
+
                                         }
                                     )
                                 }
