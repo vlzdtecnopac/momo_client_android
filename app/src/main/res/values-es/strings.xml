@@ -65,4 +65,6 @@
     <string name="text_snack">Snack</string>
     <string name="text_hot">Caliente</string>
     <string name="text_cold">Frio</string>
+    <string name="text_merch">Merch</string>
+    <string name="text_coffe_granel">Café granel</string>
 </resources>
