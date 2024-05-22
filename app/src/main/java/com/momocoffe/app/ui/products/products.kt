@@ -84,7 +84,6 @@ fun Products(
         }
     }
 
-
         Column(
             modifier = Modifier
                 .background(BlueLight),

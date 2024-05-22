@@ -42,7 +42,7 @@ fun Cart(navController: NavController) {
 
     Spacer(modifier = Modifier.width(10.dp))
     Box {
-        BtnCartMomo(text = "Ver Carrito", onclick = {
+        BtnCartMomo(text = stringResource(id = R.string.show_cart), onclick = {
             showPopup = true
         }, icon = R.drawable.cart_icon)
 

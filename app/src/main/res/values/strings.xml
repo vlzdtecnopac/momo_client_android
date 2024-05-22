@@ -66,4 +66,5 @@
     <string name="text_cold">Cold</string>
     <string name="text_merch">Merch</string>
     <string name="text_coffe_granel">Café granel</string>
+    <string name="show_cart">Show Cart</string>
 </resources>

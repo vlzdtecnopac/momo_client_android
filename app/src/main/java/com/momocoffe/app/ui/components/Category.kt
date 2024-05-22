@@ -16,11 +16,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.category.sections.ColAndHot
 import com.momocoffe.app.ui.category.sections.Food
@@ -35,6 +37,7 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
     var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
     var showDialog by remember { mutableStateOf(false) }
     var selectCategory by remember { mutableStateOf(value = "" ) }
+    val textLabel = listOf(R.string.coffe, R.string.tea, R.string.coffe_with_tea, R.string.specials_momo, R.string.combos, R.string.foods, R.string.others_drinks, R.string.our_store)
 
     LaunchedEffect(Unit) {
         categoryViewModel.categorys();
@@ -63,17 +66,17 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
             categoryViewModel.categoriesResultState.value?.let { result ->
                 result.onSuccess { categoriesResponse ->
                     LazyRow {
-                        items(categoriesResponse) { category ->
+                        items(categoriesResponse.size) { index ->
                             Spacer(modifier = Modifier.width(5.dp))
-                            BtnOutlineCategory(text = category.nameCategory, onclick = {
-                                if(category.subCategory.isNotEmpty()) {
-                                    val newSubcategory = category.subCategory
+                            BtnOutlineCategory(text = stringResource(id = textLabel[index]), onclick = {
+                                if(categoriesResponse[index].subCategory.isNotEmpty()) {
+                                    val newSubcategory = categoriesResponse[index].subCategory
                                         .removeSurrounding("[", "]")
                                     val parts = newSubcategory.split(",")
-                                    selectCategory = category.nameCategory
+                                    selectCategory = categoriesResponse[index].nameCategory
                                     subCategorySelected = parts.toList()
                                 }else{
-                                    navController.navigate("products/${category.nameCategory}")
+                                    navController.navigate("products/${categoriesResponse[index].nameCategory}")
                                 }
                             })
                             Spacer(modifier = Modifier.width(5.dp))

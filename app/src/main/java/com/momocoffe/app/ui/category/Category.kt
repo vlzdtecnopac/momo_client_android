@@ -16,18 +16,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
-import com.momocoffe.app.R
-import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.category.sections.ColAndHot
 import com.momocoffe.app.ui.category.sections.Food
 import com.momocoffe.app.ui.category.sections.Store
 import com.momocoffe.app.viewmodel.CategoryViewModel
+import com.momocoffe.app.R
 
 data class ListItem(val iconResId: Int, val name: String)
 
@@ -38,6 +38,7 @@ fun Category(navController: NavController,
     var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
     var showDialog by remember { mutableStateOf(false) }
     var selectCategory by remember { mutableStateOf(value = "" ) }
+    val textLabel = listOf(R.string.coffe, R.string.tea, R.string.coffe_with_tea, R.string.specials_momo, R.string.combos, R.string.foods, R.string.others_drinks, R.string.our_store)
 
     LaunchedEffect(Unit){
         categoryViewModel.categorys();
@@ -72,7 +73,9 @@ fun Category(navController: NavController,
             Spacer(modifier = Modifier.height(8.dp))
         }
         Column(
-            modifier = Modifier.fillMaxSize().background(BlueDark),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(BlueDark),
             horizontalAlignment = Alignment.CenterHorizontally
             ) {
             categoryViewModel.categoriesResultState.value?.let { result ->
@@ -85,14 +88,14 @@ fun Category(navController: NavController,
                         contentPadding = PaddingValues(vertical = 20.dp, horizontal = 30.dp),
                         columns = GridCells.Fixed(4),
                         content = {
-                            items(categoriesResponse) { item ->
+                            items(categoriesResponse.size) {index ->
                                 Box(
                                     modifier = Modifier
                                         .clip(RoundedCornerShape(14.dp))
                                         .padding(5.dp)
                                 ) {
                                     BtnOutlineCategory(
-                                        icon = when (item.classIcon) {
+                                        icon = when (categoriesResponse[index].classIcon) {
                                             "coffee-icon" -> R.drawable.coffee_mug_icon
                                             "tea-icon" -> R.drawable.tea_mug_icon
                                             "coffee-tea-icon" -> R.drawable.coffee_tea_icon
@@ -103,17 +106,17 @@ fun Category(navController: NavController,
                                             "store-icon" -> R.drawable.our_store_icon
                                             else -> R.drawable.logo
                                         },
-                                        text = item.nameCategory,
+                                        text = stringResource(id = textLabel[index]),
                                         onclick = {
-                                            if(item.subCategory.isNotEmpty()){
-                                                val newSubcategory = item.subCategory
+                                            if(categoriesResponse[index].subCategory.isNotEmpty()){
+                                                val newSubcategory = categoriesResponse[index].subCategory
                                                     .removeSurrounding("[", "]")
                                                 val parts = newSubcategory.split(",")
                                                 subCategorySelected = parts.toList()
-                                                selectCategory = item.nameCategory
+                                                selectCategory = categoriesResponse[index].nameCategory
                                                 showDialog = true
                                             }else{
-                                                navController.navigate("products/${item.nameCategory}")
+                                                navController.navigate("products/${categoriesResponse[index].nameCategory}")
                                             }
 
                                         }
@@ -123,12 +126,7 @@ fun Category(navController: NavController,
                         }
                     )
                 }
-
             }
-
-
-
-
         }
     }
 

@@ -28,7 +28,6 @@ class ProductsViewModel : ViewModel() {
                      response = apiService.getProductsCategory(shopping_id, category = categorys)
                 }
 
-                Log.d("Result.ProductsModelView", response.toString())
                 if(response.isSuccessful){
                     val loginResponse: ProductsResponse? = response.body()
                     if(loginResponse != null){
