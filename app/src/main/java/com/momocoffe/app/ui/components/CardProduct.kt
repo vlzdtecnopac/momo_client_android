@@ -23,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -95,8 +96,12 @@ fun CardProduct(navController: NavController, product: ProductsItem) {
             Text("\$ 31", color = Color.White, fontFamily = stacionFamily)
         }
         Spacer(modifier = Modifier.height(8.dp))
+        if (product.nameProduct.isNullOrEmpty()) {
+            Text("Product", color = BlueDark, fontFamily = redhatFamily, fontSize = 18.sp, fontWeight = FontWeight(700))
+        }else{
+            Text(product.nameProduct, color = BlueDark, fontFamily = redhatFamily, fontSize = 18.sp, fontWeight = FontWeight(700))
+        }
 
-            Text("Product", color = BlueDark, fontFamily = redhatFamily, fontSize = 18.sp)
 
         Spacer(modifier = Modifier.height(8.dp))
     }
