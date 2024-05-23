@@ -94,10 +94,10 @@ fun BoxOptions(
                             disabledContentColor =  if (isItemActive.value == item.id) OrangeDark else  BlueDark,
                         )
                     ) {
-                        val txt_price = if( item.price.toInt() == 0) "" else item.price
+                        val txt_price = if( item.price.toInt() == 0) "" else "\n" + "$${item.price}"
                         Text(
-                            text = item.name + "\n" + txt_price,
-                            fontSize = 14.sp,
+                            text = "${item.name} $txt_price",
+                            fontSize = 12.sp,
                             color = Color.White,
                             fontFamily = redhatFamily,
                             textAlign = TextAlign.Center
