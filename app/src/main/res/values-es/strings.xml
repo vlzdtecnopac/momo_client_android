@@ -68,4 +68,6 @@
     <string name="text_merch">Merch</string>
     <string name="text_coffe_granel">Café granel</string>
     <string name="show_cart">Ver Carrito</string>
+    <string name="txt_sugar">Azúcar</string>
+    <string name="txt_milk">Leche</string>
 </resources>
