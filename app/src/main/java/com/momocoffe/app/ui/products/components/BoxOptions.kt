@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -72,12 +73,11 @@ fun BoxOptions(
         ){
             items.forEach { item ->
                 Box(
-                    modifier = Modifier.padding(1.dp)
+                    modifier = Modifier.padding(4.dp).width(144.dp).height(60.dp)
                 ){
                     Button(
                         onClick = {},
-                        modifier = Modifier
-                            .width(124.dp).height(50.dp),
+                        modifier = Modifier.fillMaxSize(),
                         shape = RoundedCornerShape(4.dp),
                         border = BorderStroke(1.dp, Color.White),
                         colors = ButtonDefaults.buttonColors(
@@ -88,7 +88,7 @@ fun BoxOptions(
                     ) {
                         Text(
                             text = item.name,
-                            fontSize = 12.sp,
+                            fontSize = 14.sp,
                             color = Color.White,
                             fontFamily = redhatFamily,
                             textAlign = TextAlign.Center

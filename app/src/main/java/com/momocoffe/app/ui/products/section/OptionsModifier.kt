@@ -60,75 +60,117 @@ fun OptionsModifier(productsItem: ProductsItem, productsViewModel: ProductsViewM
             .padding(horizontal = 8.dp)
             .verticalScroll(state)
     ) {
-        optionsItems?.let { options ->
-            var newsItems = mutableListOf<ItemBox>()
-            if(options.azúcar.isNotEmpty()) {
-                options.azúcar.map { product ->
-                    if (newsItems.none { it.name == product.name }) {
-                        newsItems.add(
-                            ItemBox(
-                                product.id.toInt(),
-                                product.name,
-                                product.price.toInt()
+        if(optionsItems?.azúcar?.isNotEmpty() == true) {
+            optionsItems?.let { options ->
+                var newsItems = mutableListOf<ItemBox>()
+                if (options.azúcar.isNotEmpty()) {
+                    options.azúcar.map { product ->
+                        if (newsItems.none { it.name == product.name }) {
+                            newsItems.add(
+                                ItemBox(
+                                    product.id.toInt(),
+                                    product.name,
+                                    product.price.toInt()
+                                )
                             )
-                        )
+                        }
                     }
                 }
-            }
 
-            if(newsItems.size > 0){
-                BoxOptions(
-                    iconResource = R.drawable.tamano_icon,
-                    textResource = R.string.size,
-                    items = newsItems.map { product ->
-                        ItemBox(product.id, product.name, product.price)
-                    })
+                if (newsItems.size > 0) {
+                    BoxOptions(
+                        iconResource = R.drawable.tamano_icon,
+                        textResource = R.string.size,
+                        items = newsItems.map { product ->
+                            ItemBox(product.id, product.name, product.price)
+                        })
+                }
             }
         }
 
-        optionsItems?.let { options ->
+        if(optionsItems?.leche?.isNotEmpty() == true) {
 
-            var newsItems = mutableListOf<ItemBox>()
+            optionsItems?.let { options ->
 
-            if(options.leche.isNotEmpty()) {
-                options.leche.map { product ->
-                    if (newsItems.none { it.name == product.name }) {
-                        newsItems.add(
-                            ItemBox(
-                                product.id.toInt(),
-                                product.name,
-                                product.price.toInt()
+                var newsItems = mutableListOf<ItemBox>()
+
+                if (options.leche.isNotEmpty()) {
+                    options.leche.map { product ->
+                        if (newsItems.none { it.name == product.name }) {
+                            newsItems.add(
+                                ItemBox(
+                                    product.id.toInt(),
+                                    product.name,
+                                    product.price.toInt()
+                                )
                             )
-                        )
+                        }
                     }
                 }
-            }
-            if(newsItems.size > 0) {
-                BoxOptions(
-                    iconResource = R.drawable.tamano_icon,
-                    textResource = R.string.size,
-                    items = newsItems.map { product ->
-                        ItemBox(product.id, product.name, product.price)
-                    })
+                if (newsItems.size > 0) {
+                    BoxOptions(
+                        iconResource = R.drawable.tamano_icon,
+                        textResource = R.string.size,
+                        items = newsItems.map { product ->
+                            ItemBox(product.id, product.name, product.price)
+                        })
+                }
             }
         }
 
-        optionsItems?.let { options ->
-            var newsItems = mutableListOf<ItemList>()
+        if(optionsItems?.tapa?.isNotEmpty() == true) {
+            optionsItems?.let { options ->
+                var newsItems = mutableListOf<ItemList>()
 
-            if(options.tapa.isNotEmpty()){
-                options.tapa.map { product ->
-                    if (newsItems.none { it.name == product.name }) {
-                        newsItems.add(ItemList(product.id.toInt(), product.name, product.price.toInt()))
+                if (options.tapa.isNotEmpty()) {
+                    options.tapa.map { product ->
+                        if (newsItems.none { it.name == product.name }) {
+                            newsItems.add(
+                                ItemList(
+                                    product.id.toInt(),
+                                    product.name,
+                                    product.price.toInt()
+                                )
+                            )
+                        }
                     }
                 }
-            }
 
-            if(newsItems.size > 0) {
-                ListOptions(iconResource = R.drawable.tamano_icon,
-                    items = newsItems.map { product ->
-                        ItemList(product.id, product.name, product.price)
-                    })
+                if (newsItems.size > 0) {
+                    ListOptions(iconResource = R.drawable.tamano_icon,
+                        items = newsItems.map { product ->
+                            ItemList(product.id, product.name, product.price)
+                        })
+                }
+            }
+        }
+
+        if(optionsItems?.temperaturaDeBebidas?.isNotEmpty() == true) {
+            optionsItems?.let { options ->
+
+                var newsItems = mutableListOf<ItemBox>()
+
+                if (options.temperaturaDeBebidas.isNotEmpty()) {
+                    options.temperaturaDeBebidas.map { product ->
+                        if (newsItems.none { it.name == product.name }) {
+                            newsItems.add(
+                                ItemBox(
+                                    product.id.toInt(),
+                                    product.name,
+                                    product.price.toInt()
+                                )
+                            )
+                        }
+                    }
+                }
+                if (newsItems.size > 0) {
+                    BoxOptions(
+                        iconResource = R.drawable.tamano_icon,
+                        textResource = R.string.size,
+                        items = newsItems.map { product ->
+                            ItemBox(product.id, product.name, product.price)
+                        })
+                }
             }
         }
     }
