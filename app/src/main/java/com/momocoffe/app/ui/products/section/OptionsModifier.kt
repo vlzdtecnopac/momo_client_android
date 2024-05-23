@@ -62,52 +62,74 @@ fun OptionsModifier(productsItem: ProductsItem, productsViewModel: ProductsViewM
     ) {
         optionsItems?.let { options ->
             var newsItems = mutableListOf<ItemBox>()
-
-            options.azúcar.map { product ->
-                if (newsItems.none { it.name == product.name }) {
-                    newsItems.add(ItemBox(product.id.toInt(), product.name, product.price.toInt()))
+            if(options.azúcar.isNotEmpty()) {
+                options.azúcar.map { product ->
+                    if (newsItems.none { it.name == product.name }) {
+                        newsItems.add(
+                            ItemBox(
+                                product.id.toInt(),
+                                product.name,
+                                product.price.toInt()
+                            )
+                        )
+                    }
                 }
             }
 
-            BoxOptions(
-                iconResource = R.drawable.tamano_icon,
-                textResource = R.string.size,
-                items = newsItems.map { product ->
-                    ItemBox(product.id, product.name, product.price)
-                })
+            if(newsItems.size > 0){
+                BoxOptions(
+                    iconResource = R.drawable.tamano_icon,
+                    textResource = R.string.size,
+                    items = newsItems.map { product ->
+                        ItemBox(product.id, product.name, product.price)
+                    })
+            }
         }
 
         optionsItems?.let { options ->
 
             var newsItems = mutableListOf<ItemBox>()
 
-            options.leche.map { product ->
-                if (newsItems.none { it.name == product.name }) {
-                    newsItems.add(ItemBox(product.id.toInt(), product.name, product.price.toInt()))
+            if(options.leche.isNotEmpty()) {
+                options.leche.map { product ->
+                    if (newsItems.none { it.name == product.name }) {
+                        newsItems.add(
+                            ItemBox(
+                                product.id.toInt(),
+                                product.name,
+                                product.price.toInt()
+                            )
+                        )
+                    }
                 }
             }
-
-            BoxOptions(
-            iconResource = R.drawable.tamano_icon,
-            textResource = R.string.size,
-            items = newsItems.map { product ->
-                ItemBox(product.id, product.name, product.price)
-            })
+            if(newsItems.size > 0) {
+                BoxOptions(
+                    iconResource = R.drawable.tamano_icon,
+                    textResource = R.string.size,
+                    items = newsItems.map { product ->
+                        ItemBox(product.id, product.name, product.price)
+                    })
+            }
         }
 
         optionsItems?.let { options ->
             var newsItems = mutableListOf<ItemList>()
 
-            options.tapa.map { product ->
-                if (newsItems.none { it.name == product.name }) {
-                    newsItems.add(ItemList(product.id.toInt(), product.name, product.price.toInt()))
+            if(options.tapa.isNotEmpty()){
+                options.tapa.map { product ->
+                    if (newsItems.none { it.name == product.name }) {
+                        newsItems.add(ItemList(product.id.toInt(), product.name, product.price.toInt()))
+                    }
                 }
             }
 
-            ListOptions(iconResource = R.drawable.tamano_icon,
-            items =  newsItems.map { product ->
-                ItemList(product.id, product.name, product.price)
-            })
+            if(newsItems.size > 0) {
+                ListOptions(iconResource = R.drawable.tamano_icon,
+                    items = newsItems.map { product ->
+                        ItemList(product.id, product.name, product.price)
+                    })
+            }
         }
     }
 }
