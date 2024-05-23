@@ -69,4 +69,8 @@
     <string name="show_cart">Show Cart</string>
     <string name="txt_sugar">Sugar</string>
     <string name="txt_milk">Milk</string>
+    <string name="txt_temp">Temperature</string>
+    <string name="txt_sauces">Sauces</string>
+
+    <string name="add_cart_payment">Add cart</string>
 </resources>

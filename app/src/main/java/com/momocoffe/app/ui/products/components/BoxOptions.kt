@@ -20,6 +20,9 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import com.momocoffe.app.ui.theme.stacionFamily
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.BlueDark
-import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 
@@ -43,13 +45,15 @@ fun BoxOptions(
     textResource: Int,
     items: List<ItemBox>
 ) {
+    val isItemActive = remember { mutableStateOf(0) }
+    val selectOption = remember { mutableStateOf("") }
 
     Row(
         modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
         Row(
-            modifier = Modifier.weight(0.2f),
+            modifier = Modifier.weight(0.3f),
             verticalAlignment = Alignment.CenterVertically
         ){
             Icon(
@@ -58,7 +62,7 @@ fun BoxOptions(
                 tint = Color.White,
                 modifier = Modifier.size(width = 40.dp, height = 40.dp)
             )
-            Spacer(modifier = Modifier.width(20.dp))
+            Spacer(modifier = Modifier.width(5.dp))
             Text(
                 stringResource(id = textResource),
                 fontFamily = stacionFamily,
@@ -68,26 +72,31 @@ fun BoxOptions(
         }
 
         FlowRow(
-            modifier = Modifier.fillMaxWidth(0.8f),
+            modifier = Modifier.fillMaxWidth(0.7f),
             horizontalArrangement = Arrangement.End
         ){
             items.forEach { item ->
+
                 Box(
-                    modifier = Modifier.padding(4.dp).width(144.dp).height(60.dp)
+                    modifier = Modifier.padding(4.dp).width(130.dp).height(55.dp)
                 ){
                     Button(
-                        onClick = {},
+                        onClick = {
+                            isItemActive.value = item.id
+                            selectOption.value = item.name
+                        },
                         modifier = Modifier.fillMaxSize(),
                         shape = RoundedCornerShape(4.dp),
-                        border = BorderStroke(1.dp, Color.White),
+                        border = if (isItemActive.value == item.id) BorderStroke(1.dp, OrangeDark) else BorderStroke(1.dp, Color.White),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = BlueDark,
-                            disabledBackgroundColor = BlueDark,
-                            disabledContentColor = BlueDark,
+                            backgroundColor = if (isItemActive.value == item.id) OrangeDark else  BlueDark,
+                            disabledBackgroundColor =  if (isItemActive.value == item.id) OrangeDark else  BlueDark,
+                            disabledContentColor =  if (isItemActive.value == item.id) OrangeDark else  BlueDark,
                         )
                     ) {
+                        val txt_price = if( item.price.toInt() == 0) "" else item.price
                         Text(
-                            text = item.name,
+                            text = item.name + "\n" + txt_price,
                             fontSize = 14.sp,
                             color = Color.White,
                             fontFamily = redhatFamily,

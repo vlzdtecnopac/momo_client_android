@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.products.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -30,21 +31,37 @@ fun DescriptionProduct(product: ProductsItem) {
     Column(
         verticalArrangement = Arrangement.Top
     ){
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(product.image)
-                .crossfade(true)
-                .build(),
-            placeholder = painterResource(R.drawable.no_found),
-            contentDescription = stringResource(R.string.momo_coffe),
-            contentScale = ContentScale.FillWidth,
-            modifier = Modifier
-                .clip(
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .width(230.dp)
-                .height(230.dp)
-        )
+        if(product.image.isNullOrEmpty()){
+            Image(
+                painter = painterResource(id = R.drawable.no_found),
+                contentDescription = stringResource(id = R.string.momo_coffe),
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .clip(
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .width(230.dp)
+                    .height(230.dp)
+            )
+        }else{
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(product.image)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.no_found),
+                contentDescription = stringResource(R.string.momo_coffe),
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .clip(
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .width(230.dp)
+                    .height(230.dp)
+            )
+
+        }
+
         Spacer(modifier = Modifier.height(10.dp))
         Text(product.nameProduct, fontSize = 22.sp, fontFamily = redhatFamily, fontWeight = FontWeight(700), color = BlueDark
         )

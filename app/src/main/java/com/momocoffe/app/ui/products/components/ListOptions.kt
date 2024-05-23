@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -45,7 +46,10 @@ fun ListOptions(
     iconResource: Int,
     items: List<ItemList>
 ) {
-    var isChecked by rememberSaveable { mutableStateOf(false) }
+
+    val isItemActive = remember { mutableStateOf(0) }
+    val selectOption = remember { mutableStateOf("") }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -93,8 +97,11 @@ fun ListOptions(
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     Checkbox(
-                        checked = isChecked,
-                        onCheckedChange = { isChecked = it },
+                        checked = isItemActive.value == item.id,
+                        onCheckedChange = {
+                            isItemActive.value = item.id
+                            selectOption.value = item.name
+                                          },
                         colors = CheckboxDefaults.colors(
                             checkedColor = OrangeDark,
                             uncheckedColor = Color.White

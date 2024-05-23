@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,6 +45,7 @@ import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.OrangeDarkLight
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.ProductsViewModel
+import com.momocoffe.app.R
 
 @Composable
 fun Product(navController: NavController,
@@ -148,7 +150,7 @@ fun Product(navController: NavController,
                                     )
                                 ) {
                                     Text(
-                                        text = "Agregar al carrito $12",
+                                        text = stringResource(id = R.string.add_cart_payment) + " $12",
                                         fontSize = 18.sp,
                                         color = Color.White,
                                         fontFamily = redhatFamily,
