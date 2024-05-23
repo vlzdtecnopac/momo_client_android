@@ -1,5 +1,7 @@
 package com.momocoffe.app.ui.products.section
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -18,13 +20,22 @@ import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.momocoffe.app.network.response.ProductsItem
 import com.momocoffe.app.ui.components.Category
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.products.components.DescriptionProduct
@@ -32,14 +43,44 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.OrangeDarkLight
 import com.momocoffe.app.ui.theme.redhatFamily
+import com.momocoffe.app.viewmodel.ProductsViewModel
 
 @Composable
-fun Product(navController: NavController) {
+fun Product(navController: NavController,
+            product_id: String?,
+            productsViewModel: ProductsViewModel = viewModel()) {
+
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
+    var productsItems: List<ProductsItem>? by remember { mutableStateOf(null) }
+
+    LaunchedEffect(Unit){
+        productsViewModel.product(preference_shopping_id, product_id)
+    }
+
+    LaunchedEffect(productsViewModel.productsResultState.value){
+        productsViewModel.productsResultState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val response = result.getOrThrow()
+                    productsItems = response.items.toList()
+                }
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.e("Result.ProductsModelView", exception.toString())
+                }
+            }
+
+        }
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Header(navController)
+
         Column(
             modifier = Modifier
                 .background(BlueDark)
@@ -50,10 +91,12 @@ fun Product(navController: NavController) {
             Category(navController = navController)
             Spacer(modifier = Modifier.height(8.dp))
         }
-        Box(
-            modifier = Modifier
-                .widthIn(0.dp, 900.dp)
-        ) {
+
+        productsItems.let { product ->
+            Box(
+                modifier = Modifier
+                    .widthIn(0.dp, 900.dp)
+            ) {
 
                 Column(
                     modifier = Modifier
@@ -66,14 +109,14 @@ fun Product(navController: NavController) {
                         Column(
                             modifier = Modifier
                                 .weight(.3f)
-                                .padding(10.dp),
+                                .padding(end = 10.dp),
                             verticalArrangement = Arrangement.Top
                         ) {
-                            DescriptionProduct()
+                            (product?.get(0) ?: null)?.let { DescriptionProduct(it) }
                         }
                         Column(
                             modifier = Modifier
-                                .weight(.7f)
+                                .weight(.8f)
                                 .fillMaxHeight()
                                 .clip(RoundedCornerShape(14.dp))
                                 .background(BlueDark)
@@ -86,7 +129,7 @@ fun Product(navController: NavController) {
                             verticalArrangement = Arrangement.Top,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            OptionsModifier()
+                            (product?.get(0) ?: null)?.let {  OptionsModifier(it) }
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ){
@@ -105,21 +148,23 @@ fun Product(navController: NavController) {
                                     )
                                 ) {
                                     Text(
-                                        text = "Agregar al carrito",
-                                        fontSize = 22.sp,
+                                        text = "Agregar al carrito $12",
+                                        fontSize = 18.sp,
                                         color = Color.White,
                                         fontFamily = redhatFamily,
+                                        fontWeight = FontWeight(700)
                                     )
                                 }
                             }
-
 
                         }
 
                     }
 
+                }
             }
         }
+
     }
 
 }

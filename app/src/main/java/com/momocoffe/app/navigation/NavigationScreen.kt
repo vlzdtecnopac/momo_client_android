@@ -46,8 +46,9 @@ fun NavigationScreen(viewModel: LoginViewModel) {
             Client(navController = navController)
         }
 
-        composable(route = Destination.Product.route) {
-            Product(navController = navController)
+        composable(route = Destination.Product.route, arguments = listOf(navArgument("product_id") { defaultValue = "" })) {backStackEntry ->
+            val product_id = backStackEntry.arguments?.getString("product_id")
+            Product(navController = navController, product_id)
         }
 
         composable(route = Destination.ProductsCategoryAndSubProduct.route,

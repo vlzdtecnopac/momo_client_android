@@ -45,7 +45,7 @@ fun CardProduct(navController: NavController, product: ProductsItem) {
         modifier = Modifier
             .padding(5.dp)
             .clickable {
-                navController.navigate(Destination.Product.route)
+                navController.navigate("product/${product.productID}")
             }
     ) {
 
@@ -105,7 +105,6 @@ fun CardProduct(navController: NavController, product: ProductsItem) {
         }else{
             Text(product.nameProduct, color = BlueDark, fontFamily = redhatFamily, fontSize = 18.sp, fontWeight = FontWeight(700))
         }
-
 
         Spacer(modifier = Modifier.height(8.dp))
     }

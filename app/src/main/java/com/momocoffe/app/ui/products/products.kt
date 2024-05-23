@@ -48,8 +48,6 @@ fun Products(
     var productsItems: List<ProductsItem>? by remember { mutableStateOf(null) }
     var loading = productsViewModel.loadingState.value;
 
-    Log.d("Result.ProductsModelView", category.toString())
-    Log.d("Result.ProductsModelView", subcategory.toString())
 
     LaunchedEffect(Unit) {
         if (category != null && subcategory != null) {
@@ -116,8 +114,4 @@ fun Products(
                 }
             }
         }
-
-
-
-
 }

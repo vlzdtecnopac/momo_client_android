@@ -48,7 +48,7 @@ fun BoxOptions(
         verticalAlignment = Alignment.CenterVertically
     ){
         Row(
-            modifier = Modifier.weight(0.3f),
+            modifier = Modifier.weight(0.2f),
             verticalAlignment = Alignment.CenterVertically
         ){
             Icon(
@@ -67,17 +67,17 @@ fun BoxOptions(
         }
 
         FlowRow(
-            modifier = Modifier.fillMaxWidth(0.7f),
+            modifier = Modifier.fillMaxWidth(0.8f),
             horizontalArrangement = Arrangement.End
         ){
             items.forEach { item ->
                 Box(
-                    modifier = Modifier.padding(2.dp)
+                    modifier = Modifier.padding(1.dp)
                 ){
                     Button(
                         onClick = {},
                         modifier = Modifier
-                            .width(134.dp).height(60.dp),
+                            .width(124.dp).height(50.dp),
                         shape = RoundedCornerShape(4.dp),
                         border = BorderStroke(1.dp, Color.White),
                         colors = ButtonDefaults.buttonColors(
@@ -88,7 +88,7 @@ fun BoxOptions(
                     ) {
                         Text(
                             text = item.name,
-                            fontSize = 14.sp,
+                            fontSize = 12.sp,
                             color = Color.White,
                             fontFamily = redhatFamily,
                             textAlign = TextAlign.Center

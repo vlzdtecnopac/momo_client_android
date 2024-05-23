@@ -36,14 +36,15 @@ data class ProductsItem (
 )
 
 data class ProductModifier (
-    val tamaño: List<Azúcar>? = null,
-    val azúcar: List<Azúcar>? = null,
-    val tapa: List<Azúcar>? = null,
-    val extraShotDeCafé: List<Azúcar>? = null,
-    val leche: List<Azúcar>? = null
+    val tamaño: List<ItemModifier>? = null,
+    val azúcar: List<ItemModifier>? = null,
+    val tapa: List<ItemModifier>? = null,
+    @SerializedName("extra_shot_de_cafe")
+    val extraShotDeCafé: List<ItemModifier>? = null,
+    val leche: List<ItemModifier>? = null
 )
 
-data class Azúcar (
+data class ItemModifier (
     val category: Category,
     val name: String
 )
