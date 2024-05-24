@@ -67,7 +67,7 @@ fun Category(navController: NavController, categoryViewModel: CategoryViewModel 
                 result.onSuccess { categoriesResponse ->
                     LazyRow {
                         items(categoriesResponse.size) { index ->
-                            Spacer(modifier = Modifier.width(5.dp))
+                            Spacer(modifier = Modifier.width(2.dp))
                             BtnOutlineCategory(text = stringResource(id = textLabel[index]), onclick = {
                                 if(categoriesResponse[index].subCategory.isNotEmpty()) {
                                     val newSubcategory = categoriesResponse[index].subCategory

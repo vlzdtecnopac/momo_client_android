@@ -28,13 +28,15 @@ import com.momocoffe.app.ui.category.sections.Food
 import com.momocoffe.app.ui.category.sections.Store
 import com.momocoffe.app.viewmodel.CategoryViewModel
 import com.momocoffe.app.R
+import com.momocoffe.app.ui.theme.BlueDarkTransparent
+import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 
 data class ListItem(val iconResId: Int, val name: String)
 
 @Composable
 fun Category(navController: NavController,
              categoryViewModel: CategoryViewModel = viewModel()){
-
+    val loading = categoryViewModel.loadingState.value
     var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
     var showDialog by remember { mutableStateOf(false) }
     var selectCategory by remember { mutableStateOf(value = "" ) }
@@ -58,74 +60,88 @@ fun Category(navController: NavController,
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
+    Box {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(BlueDark),
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Header(navController)
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(BlueDark),
-            horizontalAlignment = Alignment.CenterHorizontally
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(BlueDark),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-            categoryViewModel.categoriesResultState.value?.let { result ->
-                result.onSuccess { categoriesResponse ->
-                    LazyVerticalGrid(
-                        horizontalArrangement = Arrangement.Center,
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .widthIn(0.dp, 900.dp),
-                        contentPadding = PaddingValues(vertical = 20.dp, horizontal = 30.dp),
-                        columns = GridCells.Fixed(4),
-                        content = {
-                            items(categoriesResponse.size) {index ->
-                                Box(
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(14.dp))
-                                        .padding(5.dp)
-                                ) {
-                                    BtnOutlineCategory(
-                                        icon = when (categoriesResponse[index].classIcon) {
-                                            "coffee-icon" -> R.drawable.coffee_mug_icon
-                                            "tea-icon" -> R.drawable.tea_mug_icon
-                                            "coffee-tea-icon" -> R.drawable.coffee_tea_icon
-                                            "specials-icon" -> R.drawable.specials_momo_icon
-                                            "combos-icon" -> R.drawable.combos_icon
-                                            "food-icon" -> R.drawable.alimentos_icon
-                                            "drinks-icon" -> R.drawable.other_drinks_icon
-                                            "store-icon" -> R.drawable.our_store_icon
-                                            else -> R.drawable.logo
-                                        },
-                                        text = stringResource(id = textLabel[index]),
-                                        onclick = {
-                                            if(categoriesResponse[index].subCategory.isNotEmpty()){
-                                                val newSubcategory = categoriesResponse[index].subCategory
-                                                    .removeSurrounding("[", "]")
-                                                val parts = newSubcategory.split(",")
-                                                subCategorySelected = parts.toList()
-                                                selectCategory = categoriesResponse[index].nameCategory
-                                                showDialog = true
-                                            }else{
-                                                navController.navigate("products/${categoriesResponse[index].nameCategory}")
-                                            }
+                Header(navController)
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(BlueDark),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                categoryViewModel.categoriesResultState.value?.let { result ->
+                    result.onSuccess { categoriesResponse ->
+                        LazyVerticalGrid(
+                            horizontalArrangement = Arrangement.Center,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .widthIn(0.dp, 900.dp),
+                            contentPadding = PaddingValues(vertical = 20.dp, horizontal = 30.dp),
+                            columns = GridCells.Fixed(4),
+                            content = {
+                                items(categoriesResponse.size) { index ->
+                                    Box(
+                                        modifier = Modifier
+                                            .clip(RoundedCornerShape(14.dp))
+                                            .padding(5.dp)
+                                    ) {
+                                        BtnOutlineCategory(
+                                            icon = when (categoriesResponse[index].classIcon) {
+                                                "coffee-icon" -> R.drawable.coffee_mug_icon
+                                                "tea-icon" -> R.drawable.tea_mug_icon
+                                                "coffee-tea-icon" -> R.drawable.coffee_tea_icon
+                                                "specials-icon" -> R.drawable.specials_momo_icon
+                                                "combos-icon" -> R.drawable.combos_icon
+                                                "food-icon" -> R.drawable.alimentos_icon
+                                                "drinks-icon" -> R.drawable.other_drinks_icon
+                                                "store-icon" -> R.drawable.our_store_icon
+                                                else -> R.drawable.logo
+                                            },
+                                            text = stringResource(id = textLabel[index]),
+                                            onclick = {
+                                                if (categoriesResponse[index].subCategory.isNotEmpty()) {
+                                                    val newSubcategory =
+                                                        categoriesResponse[index].subCategory
+                                                            .removeSurrounding("[", "]")
+                                                    val parts = newSubcategory.split(",")
+                                                    subCategorySelected = parts.toList()
+                                                    selectCategory =
+                                                        categoriesResponse[index].nameCategory
+                                                    showDialog = true
+                                                } else {
+                                                    navController.navigate("products/${categoriesResponse[index].nameCategory}")
+                                                }
 
-                                        }
-                                    )
+                                            }
+                                        )
+                                    }
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
+            }
+        }
+        if (loading) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(BlueDarkTransparent)
+            ) {
+                BallClipRotatePulseIndicator()
             }
         }
     }
