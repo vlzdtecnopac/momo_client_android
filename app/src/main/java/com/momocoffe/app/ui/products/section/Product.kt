@@ -62,7 +62,6 @@ fun Product(
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
     var productsItems: List<ProductsItem>? by remember { mutableStateOf(null) }
 
-    Log.d("Result.ProductsModelView", productsViewModel.selectModifiersOptions.toString())
 
 
     LaunchedEffect(Unit) {
@@ -156,7 +155,9 @@ fun Product(
                                            cartViewModel.createProduct(CartProduct(
                                                 titleProduct = firstProduct.nameProduct,
                                                 imageProduct = firstProduct.image,
-                                                priceProduct = productsViewModel.calculatePriceResult.value.toString()
+                                                priceProduct = productsViewModel.calculatePriceResult.value.toString(),
+                                                modifiersOptions = productsViewModel.selectModifiersOptions,
+                                                modifiersList = productsViewModel.selectModifiersList
                                             ))
                                         }
                                     },

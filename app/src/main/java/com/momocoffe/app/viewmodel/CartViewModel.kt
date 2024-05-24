@@ -17,7 +17,9 @@ data class CartState(
 data class  CartProduct(
     val titleProduct: String,
     val imageProduct: String,
-    val priceProduct: String
+    val priceProduct: String,
+    val modifiersOptions:  MutableMap<String, ItemModifier>,
+    val modifiersList: MutableMap<String, ItemModifier>
 )
 class CartViewModel(
     private val dao: CartDao
@@ -40,7 +42,9 @@ class CartViewModel(
             Cart(0,
                 product.titleProduct,
                 product.imageProduct,
-                product.priceProduct
+                product.priceProduct,
+                product.modifiersOptions.toString(),
+                product.modifiersList.toString()
             )
 
         viewModelScope.launch {
