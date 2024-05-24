@@ -56,7 +56,7 @@ fun OptionsModifier(productsItem: ProductsItem,
 
     LaunchedEffect(selectedOptions) {
         val totalPrice = selectedOptions.calculatePrice()
-        productsViewModel.calculatePriceResult.value =  totalPrice
+        productsViewModel.calculatePriceResult.value =  totalPrice + productsItem.price.toInt()
     }
 
     Column(
