@@ -15,6 +15,7 @@ class ProductsViewModel : ViewModel() {
     private val apiService: ApiService = RetrofitHelper.apiService()
     val productsResultState = mutableStateOf<Result<ProductsResponse>?>(null)
     val productsOptionsResultState = mutableStateOf<Result<ProductOptionsResponse>?>(null)
+    val calculatePriceResult = mutableStateOf(0)
     val loadingState = mutableStateOf(false)
 
     fun product(shopping_id: String = "", product_id: String? = "") {

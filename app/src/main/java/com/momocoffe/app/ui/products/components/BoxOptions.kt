@@ -31,11 +31,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.ui.theme.stacionFamily
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
+import com.momocoffe.app.viewmodel.ProductsViewModel
 
 data class ItemBox(val id: Int, val name: String, val price: Int)
 @OptIn(ExperimentalLayoutApi::class)
@@ -43,13 +45,17 @@ data class ItemBox(val id: Int, val name: String, val price: Int)
 fun BoxOptions(
     iconResource: Int,
     textResource: Int,
+    productPrice: Int,
     items: List<ItemBox>
 ) {
+    val productsViewModel:ProductsViewModel = viewModel()
     val isItemActive = remember { mutableStateOf(0) }
     val selectOption = remember { mutableStateOf("") }
 
     Row(
-        modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
         Row(
@@ -76,12 +82,15 @@ fun BoxOptions(
             horizontalArrangement = Arrangement.End
         ){
             items.forEach { item ->
-
                 Box(
-                    modifier = Modifier.padding(4.dp).width(130.dp).height(55.dp)
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .width(130.dp)
+                        .height(55.dp)
                 ){
                     Button(
                         onClick = {
+                            productsViewModel.calculatePriceResult.value = productPrice + item.price
                             isItemActive.value = item.id
                             selectOption.value = item.name
                         },

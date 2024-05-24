@@ -48,26 +48,29 @@ import com.momocoffe.app.viewmodel.ProductsViewModel
 import com.momocoffe.app.R
 
 @Composable
-fun Product(navController: NavController,
-            product_id: String?,
-            productsViewModel: ProductsViewModel = viewModel()) {
+fun Product(
+    navController: NavController,
+    product_id: String?,
+    productsViewModel: ProductsViewModel = viewModel()
+) {
 
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
     var productsItems: List<ProductsItem>? by remember { mutableStateOf(null) }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         productsViewModel.product(preference_shopping_id, product_id)
     }
 
-    LaunchedEffect(productsViewModel.productsResultState.value){
+    LaunchedEffect(productsViewModel.productsResultState.value) {
         productsViewModel.productsResultState.value?.let { result ->
             when {
                 result.isSuccess -> {
                     val response = result.getOrThrow()
                     productsItems = response.items.toList()
                 }
+
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
                     Log.e("Result.ProductsModelView", exception.toString())
@@ -88,13 +91,17 @@ fun Product(navController: NavController,
                 .background(BlueDark)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+        ) {
             Spacer(modifier = Modifier.height(8.dp))
             Category(navController = navController)
             Spacer(modifier = Modifier.height(8.dp))
         }
 
         productsItems.let { product ->
+            product?.get(0)?.let {
+                productsViewModel.calculatePriceResult.value = it.price.toInt()
+            }
+
             Box(
                 modifier = Modifier
                     .widthIn(0.dp, 900.dp)
@@ -131,10 +138,10 @@ fun Product(navController: NavController,
                             verticalArrangement = Arrangement.Top,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            (product?.get(0) ?: null)?.let {  OptionsModifier(it) }
+                            (product?.get(0) ?: null)?.let { OptionsModifier(it) }
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally
-                            ){
+                            ) {
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Button(
                                     onClick = {},
@@ -142,7 +149,7 @@ fun Product(navController: NavController,
                                         .width(400.dp)
                                         .height(60.dp)
                                         .padding(horizontal = 25.dp),
-                                    shape =  RoundedCornerShape(8.dp),
+                                    shape = RoundedCornerShape(8.dp),
                                     colors = ButtonDefaults.buttonColors(
                                         backgroundColor = OrangeDark,
                                         disabledBackgroundColor = OrangeDarkLight,
@@ -150,7 +157,7 @@ fun Product(navController: NavController,
                                     )
                                 ) {
                                     Text(
-                                        text = stringResource(id = R.string.add_cart_payment) + " $12",
+                                        text = stringResource(id = R.string.add_cart_payment) + " $${productsViewModel.calculatePriceResult.value}",
                                         fontSize = 18.sp,
                                         color = Color.White,
                                         fontFamily = redhatFamily,

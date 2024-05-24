@@ -32,7 +32,9 @@ import com.momocoffe.app.viewmodel.ProductsViewModel
 
 
 @Composable
-fun OptionsModifier(productsItem: ProductsItem, productsViewModel: ProductsViewModel = viewModel()) {
+fun OptionsModifier(productsItem: ProductsItem,
+                    productsViewModel: ProductsViewModel = viewModel()
+) {
     val state = rememberScrollState()
     var optionsItems: ProductOptionsResponse? by remember { mutableStateOf(null) }
 
@@ -81,6 +83,7 @@ fun OptionsModifier(productsItem: ProductsItem, productsViewModel: ProductsViewM
                     BoxOptions(
                         iconResource = R.drawable.temp_icon,
                         textResource = R.string.txt_temp,
+                        productPrice = productsItem.price.toInt(),
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
@@ -109,6 +112,7 @@ fun OptionsModifier(productsItem: ProductsItem, productsViewModel: ProductsViewM
                     BoxOptions(
                         iconResource = R.drawable.tamano_icon,
                         textResource = R.string.size,
+                        productPrice = productsItem.price.toInt(),
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
@@ -142,6 +146,7 @@ fun OptionsModifier(productsItem: ProductsItem, productsViewModel: ProductsViewM
                     BoxOptions(
                         iconResource = R.drawable.milk_icon,
                         textResource = R.string.txt_milk,
+                        productPrice = productsItem.price.toInt(),
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
@@ -170,6 +175,7 @@ fun OptionsModifier(productsItem: ProductsItem, productsViewModel: ProductsViewM
                     BoxOptions(
                         iconResource = R.drawable.sugar_icon,
                         textResource = R.string.txt_sugar,
+                        productPrice = productsItem.price.toInt(),
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
@@ -253,6 +259,7 @@ fun OptionsModifier(productsItem: ProductsItem, productsViewModel: ProductsViewM
                     BoxOptions(
                         iconResource = R.drawable.temp_icon,
                         textResource = R.string.txt_temp,
+                        productPrice = productsItem.price.toInt(),
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
@@ -282,6 +289,7 @@ fun OptionsModifier(productsItem: ProductsItem, productsViewModel: ProductsViewM
                     BoxOptions(
                         iconResource = R.drawable.salsa_icon,
                         textResource = R.string.txt_sauces,
+                        productPrice = productsItem.price.toInt(),
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
