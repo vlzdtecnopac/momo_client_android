@@ -1,9 +1,13 @@
 package com.momocoffe.app.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.momocoffe.app.network.data.SelectedOptions
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
 import com.momocoffe.app.network.response.ProductOptionsResponse

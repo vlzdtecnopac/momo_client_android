@@ -63,6 +63,8 @@ fun Product(
         productsViewModel.product(preference_shopping_id, product_id)
     }
 
+
+
     LaunchedEffect(productsViewModel.productsResultState.value) {
         productsViewModel.productsResultState.value?.let { result ->
             when {
@@ -79,6 +81,7 @@ fun Product(
 
         }
     }
+
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -98,9 +101,11 @@ fun Product(
         }
 
         productsItems.let { product ->
+
             product?.get(0)?.let {
                 productsViewModel.calculatePriceResult.value = it.price.toInt()
             }
+
 
             Box(
                 modifier = Modifier

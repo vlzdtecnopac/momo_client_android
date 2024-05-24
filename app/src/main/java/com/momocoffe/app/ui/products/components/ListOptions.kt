@@ -35,18 +35,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
+import com.momocoffe.app.viewmodel.ProductsViewModel
 
 data class ItemList(val id: Int, val name: String, val price: Int)
 
 @Composable
 fun ListOptions(
     iconResource: Int,
+    selectPrice: (Int) -> Unit,
     items: List<ItemList>
 ) {
-
+    val productsViewModel: ProductsViewModel = viewModel()
     val isItemActive = remember { mutableStateOf(0) }
     val selectOption = remember { mutableStateOf("") }
 
@@ -99,6 +102,7 @@ fun ListOptions(
                     Checkbox(
                         checked = isItemActive.value == item.id,
                         onCheckedChange = {
+                            selectPrice(item.price)
                             isItemActive.value = item.id
                             selectOption.value = item.name
                                           },

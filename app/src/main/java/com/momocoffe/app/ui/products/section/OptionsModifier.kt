@@ -1,6 +1,5 @@
 package com.momocoffe.app.ui.products.section
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -20,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 import com.momocoffe.app.R
+import com.momocoffe.app.network.data.SelectedOptions
 import com.momocoffe.app.network.response.ProductOptionsResponse
 
 import com.momocoffe.app.network.response.ProductsItem
@@ -30,16 +30,15 @@ import com.momocoffe.app.ui.products.components.ListOptions
 import com.momocoffe.app.viewmodel.ProductsViewModel
 
 
-
 @Composable
 fun OptionsModifier(productsItem: ProductsItem,
                     productsViewModel: ProductsViewModel = viewModel()
 ) {
     val state = rememberScrollState()
     var optionsItems: ProductOptionsResponse? by remember { mutableStateOf(null) }
+    var selectedOptions by remember { mutableStateOf(SelectedOptions()) }
 
     LaunchedEffect(Unit) {
-        Log.d("Result.ProductsModelView", productsItem.productID)
         productsViewModel.productOptions(product_id = productsItem.productID)
     }
 
@@ -52,6 +51,12 @@ fun OptionsModifier(productsItem: ProductsItem,
                 }
             }
         }
+    }
+
+
+    LaunchedEffect(selectedOptions) {
+        val totalPrice = selectedOptions.calculatePrice()
+        productsViewModel.calculatePriceResult.value =  totalPrice
     }
 
     Column(
@@ -83,7 +88,9 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.temp_icon,
                         textResource = R.string.txt_temp,
-                        productPrice = productsItem.price.toInt(),
+                        selectPrice = { price ->
+                            selectedOptions = selectedOptions.copy(temperatureFood = price)
+                        },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
@@ -112,7 +119,9 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.tamano_icon,
                         textResource = R.string.size,
-                        productPrice = productsItem.price.toInt(),
+                        selectPrice = { price ->
+                            selectedOptions = selectedOptions.copy(size = price)
+                        },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
@@ -146,7 +155,9 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.milk_icon,
                         textResource = R.string.txt_milk,
-                        productPrice = productsItem.price.toInt(),
+                        selectPrice = { price ->
+                            selectedOptions = selectedOptions.copy(milk = price)
+                        },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
@@ -175,7 +186,9 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.sugar_icon,
                         textResource = R.string.txt_sugar,
-                        productPrice = productsItem.price.toInt(),
+                        selectPrice = { price ->
+                            selectedOptions = selectedOptions.copy(sugar = price)
+                        },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
@@ -202,6 +215,9 @@ fun OptionsModifier(productsItem: ProductsItem,
                 if (newsItems.size > 0) {
                     ListOptions(
                         iconResource = R.drawable.extra_icon,
+                        selectPrice = { price ->
+                            selectedOptions = selectedOptions.copy(extraShot = price)
+                        },
                         items = newsItems.map { product ->
                             ItemList(product.id, product.name, product.price)
                         })
@@ -230,6 +246,9 @@ fun OptionsModifier(productsItem: ProductsItem,
 
                 if (newsItems.size > 0) {
                     ListOptions(iconResource = R.drawable.tapa_icon,
+                        selectPrice = { price ->
+                            selectedOptions = selectedOptions.copy(tapLib = price)
+                        },
                         items = newsItems.map { product ->
                             ItemList(product.id, product.name, product.price)
                         })
@@ -259,7 +278,9 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.temp_icon,
                         textResource = R.string.txt_temp,
-                        productPrice = productsItem.price.toInt(),
+                        selectPrice = { price ->
+                            selectedOptions = selectedOptions.copy(temperatureDrink = price)
+                        },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })
@@ -289,7 +310,9 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.salsa_icon,
                         textResource = R.string.txt_sauces,
-                        productPrice = productsItem.price.toInt(),
+                        selectPrice = { price ->
+                            selectedOptions = selectedOptions.copy(sauce = price)
+                        },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         })

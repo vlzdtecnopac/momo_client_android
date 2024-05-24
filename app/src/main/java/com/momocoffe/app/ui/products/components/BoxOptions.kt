@@ -21,6 +21,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -45,10 +46,9 @@ data class ItemBox(val id: Int, val name: String, val price: Int)
 fun BoxOptions(
     iconResource: Int,
     textResource: Int,
-    productPrice: Int,
+    selectPrice: (Int) -> Unit,
     items: List<ItemBox>
 ) {
-    val productsViewModel:ProductsViewModel = viewModel()
     val isItemActive = remember { mutableStateOf(0) }
     val selectOption = remember { mutableStateOf("") }
 
@@ -90,7 +90,7 @@ fun BoxOptions(
                 ){
                     Button(
                         onClick = {
-                            productsViewModel.calculatePriceResult.value = productPrice + item.price
+                            selectPrice(item.price)
                             isItemActive.value = item.id
                             selectOption.value = item.name
                         },
