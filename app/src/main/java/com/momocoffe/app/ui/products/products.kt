@@ -32,6 +32,7 @@ import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueDarkTransparent
 import com.momocoffe.app.ui.theme.BlueLight
+import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.ProductsViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 
@@ -40,6 +41,7 @@ fun Products(
     navController: NavHostController,
     category: String? = "",
     subcategory: String? = "",
+    viewModelCart: CartViewModel,
     productsViewModel: ProductsViewModel = viewModel()
 ) {
     val context = LocalContext.current

@@ -58,14 +58,14 @@ fun NavigationScreen(viewModel: LoginViewModel, viewModelCart: CartViewModel) {
             ) {backStackEntry ->
             val category = backStackEntry.arguments?.getString("category")
             val subcategory = backStackEntry.arguments?.getString("subcategory")
-            Products(navController = navController, category, subcategory )
+            Products(navController = navController, category, subcategory, viewModelCart )
         }
 
         composable(route = Destination.ProductsCategory.route,
             arguments = listOf(navArgument("category") { defaultValue = "" })
         ) {backStackEntry ->
             val category = backStackEntry.arguments?.getString("category")
-            Products(navController = navController, category )
+            Products(navController = navController, category, viewModelCart = viewModelCart )
         }
 
         composable(route = Destination.Checkout.route) {
