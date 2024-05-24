@@ -1,7 +1,9 @@
 package com.momocoffe.app.viewmodel
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -25,6 +27,7 @@ data class  CartProduct(
 class CartViewModel(
     private val dao: CartDao
 ) : ViewModel() {
+    var stateTotal = mutableMapOf<Int, Int>()
 
     var state by mutableStateOf(CartState())
         private set

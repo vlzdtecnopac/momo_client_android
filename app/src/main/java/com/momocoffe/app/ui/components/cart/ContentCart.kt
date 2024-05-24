@@ -1,15 +1,22 @@
 package com.momocoffe.app.ui.components.cart
 
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -30,8 +37,8 @@ import com.momocoffe.app.ui.theme.*
 import com.momocoffe.app.viewmodel.CartProduct
 import com.momocoffe.app.viewmodel.CartState
 import com.momocoffe.app.viewmodel.CartViewModel
+import com.momocoffe.app.viewmodel.ItemModifier
 
-data class Coffee(val name: String, val price: Int)
 
 @Composable
 fun ContentCart(
@@ -100,23 +107,29 @@ fun ContentCart(
         }
 
         LazyColumn(modifier = Modifier.fillMaxHeight(0.8f)) {
-            items(items = state.carts, itemContent = { item -> ProductCart(item, cartViewModel) })
+            itemsIndexed(items = state.carts) { index, item ->
+                ProductCart(index, item, cartViewModel)
+            }
         }
-        TotalPayment(navController)
+
+        TotalPayment(navController, cartViewModel)
     }
 }
 
 @Composable
-fun ProductCart(product: Cart,  cartViewModel: CartViewModel) {
-    val optionsSize = listOf("Chico", "Regular", "Menos azúcar", "Sin tapa")
-    val json = """
-        [
-            {"name": "Extra de café", "price": 10},
-            {"name": "Another Coffee", "price": 15}
-        ]
-    """.trimIndent()
+fun ProductCart(index: Int, product: Cart, cartViewModel: CartViewModel) {
+    val optionsSize = mutableListOf<String?>()
+    var count by remember { mutableStateOf(value = 1) }
 
-    val coffees = Gson().fromJson(json, Array<Coffee>::class.java)
+    val itemsModifiersOptions = parseItemModifiers(product.modifiersOptions)
+    val itemsModifiersList = parseObject(product.modifiersList)
+
+
+
+    for ((key, value) in itemsModifiersOptions) {
+        optionsSize.add(value.name)
+    }
+
 
     Column {
         Row(modifier = Modifier.padding(8.dp)) {
@@ -157,20 +170,29 @@ fun ProductCart(product: Cart,  cartViewModel: CartViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     BtnCart(
-                        onClickButton = {},
+                        onClickButton = {
+                            if (count > 1) {
+                                count -= 1
+                                cartViewModel.stateTotal[index] =
+                                    product.priceProduct.toInt() * count
+                            }
+                        },
                         icon = R.drawable.menus_icon,
                         color = Color.White,
                         iconColor = OrangeDark,
                         borderColor = OrangeDark
                     )
                     Text(
-                        "1",
+                        count.toString(),
                         modifier = Modifier.width(22.dp),
                         textAlign = TextAlign.Center,
                         fontFamily = stacionFamily
                     )
                     BtnCart(
-                        onClickButton = {},
+                        onClickButton = {
+                            count += 1
+                            cartViewModel.stateTotal[index] = product.priceProduct.toInt() * count
+                        },
                         icon = R.drawable.pluss_icon,
                         color = OrangeDark,
                         iconColor = Color.White,
@@ -194,18 +216,19 @@ fun ProductCart(product: Cart,  cartViewModel: CartViewModel) {
                     color = BlueDark
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                coffees.forEach { coffee ->
+                itemsModifiersList.forEach {
                     Row(
-                        modifier = Modifier.padding(horizontal = 10.dp)
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            "${coffee.name}",
+                            it.name,
                             modifier = Modifier.weight(0.6f),
                             fontFamily = redhatFamily,
                             fontSize = 12.sp
                         )
                         Text(
-                            "${coffee.price}",
+                           it.price,
                             modifier = Modifier.weight(0.4f),
                             fontFamily = redhatFamily,
                             fontSize = 12.sp
@@ -223,7 +246,11 @@ fun ProductCart(product: Cart,  cartViewModel: CartViewModel) {
                 modifier = Modifier.weight(0.8f),
                 contentAlignment = Alignment.CenterEnd
             ) {
-                Text("\$ ${product.priceProduct}", fontSize = 20.sp, fontFamily = stacionFamily)
+                Text(
+                    "\$ ${(product.priceProduct.toInt() * count)}",
+                    fontSize = 20.sp,
+                    fontFamily = stacionFamily
+                )
             }
             Box(
                 modifier = Modifier.weight(0.2f),
@@ -247,7 +274,12 @@ fun ProductCart(product: Cart,  cartViewModel: CartViewModel) {
 
 
 @Composable
-fun TotalPayment(navController: NavController) {
+fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
+
+    cartViewModel.stateTotal.forEach{(index, value) ->
+        println("Índice: $index, Valor: $value")
+    }
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -262,7 +294,7 @@ fun TotalPayment(navController: NavController) {
         ) {
             Text("Subtotal (1 producto)", fontSize = 16.sp, fontFamily = redhatFamily)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("\$ 67.00", fontSize = 18.sp, fontFamily = stacionFamily)
+            Text("$", fontSize = 18.sp, fontFamily = stacionFamily)
         }
         Spacer(modifier = Modifier.width(10.dp))
         Button(
@@ -277,4 +309,31 @@ fun TotalPayment(navController: NavController) {
 
 }
 
+fun parseObject(input: String): List<ItemModifier> {
+    // Expresión regular para capturar los nombres y precios de ItemModifier
+    val regex = Regex("""ItemModifier\(name=(.*?), price=(\d+)\)""")
+
+    val matches = regex.findAll(input)
+    val itemModifiers = matches.map { matchResult ->
+        val (name, price) = matchResult.destructured
+        ItemModifier(name.trim(), price)
+    }.toList()
+
+    return itemModifiers
+}
+
+private fun parseItemModifiers(input: String): Map<String, ItemModifier> {
+    val regex = """(\w+)=ItemModifier\(name=(\w+), price=(\d+)\)""".toRegex()
+    val matches = regex.findAll(input)
+    val result = mutableMapOf<String, ItemModifier>()
+
+    for (match in matches) {
+        val key = match.groupValues[1]
+        val name = match.groupValues[2]
+        val price = match.groupValues[3]
+        result[key] = ItemModifier(name, price)
+    }
+
+    return result
+}
 

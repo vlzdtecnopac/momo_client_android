@@ -265,7 +265,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         selectPrice = { price, name ->
                             selectedOptions = selectedOptions.copy(tapLib = price)
                             val updatedMap = productsViewModel.selectModifiersList.toMutableMap()
-                            updatedMap["lib"] =  ItemModifier(name, price.toString())
+                            updatedMap["libTapa"] =  ItemModifier(name, price.toString())
                             productsViewModel.selectModifiersList = updatedMap
                         },
                         items = newsItems.map { product ->
