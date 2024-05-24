@@ -26,12 +26,15 @@ import com.google.gson.Gson
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.theme.*
+import com.momocoffe.app.viewmodel.CartState
 
 data class Coffee(val name: String, val price: Int)
 
 @Composable
-fun ContentCart(onClickOutside: () -> Unit, navController: NavController) {
-    val list = ((0..100).map { it.toString() })
+fun ContentCart(onClickOutside: () -> Unit,
+                navController: NavController,
+                state: CartState
+) {
 
     Column(
         verticalArrangement = Arrangement.SpaceBetween
@@ -54,7 +57,7 @@ fun ContentCart(onClickOutside: () -> Unit, navController: NavController) {
                     fontWeight = FontWeight(700)
                 )
                 Text(
-                    "2 productos",
+                    "${state.carts.size} productos",
                     color = Color.Black,
                     fontFamily = redhatFamily,
                     fontSize = 12.sp
@@ -92,7 +95,7 @@ fun ContentCart(onClickOutside: () -> Unit, navController: NavController) {
         }
 
         LazyColumn(modifier = Modifier.fillMaxHeight(0.8f)) {
-            items(items = list, itemContent = { item -> ProductCart() })
+            items(items = state.carts, itemContent = { item -> ProductCart() })
         }
         TotalPayment(navController)
     }

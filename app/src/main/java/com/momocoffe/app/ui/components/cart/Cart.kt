@@ -1,4 +1,5 @@
 package com.momocoffe.app.ui.components.cart
+
 import android.util.Log
 import androidx.compose.ui.window.Dialog
 import androidx.compose.foundation.background
@@ -32,13 +33,14 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.momocoffe.app.ui.theme.BlueDarkTransparent
 import com.momocoffe.app.viewmodel.CartViewModel
 
 @Composable
-fun Cart(navController: NavController) {
+fun Cart(navController: NavController, cartViewModel: CartViewModel) {
+
+    val state = cartViewModel.state;
 
     var showPopup by rememberSaveable {
         mutableStateOf(false)
@@ -61,7 +63,7 @@ fun Cart(navController: NavController) {
                         .align(Alignment.TopEnd)
                         .zIndex(40F),
                 ) {
-                    ContentCart(onClickOutside = { showPopup = false }, navController)
+                    ContentCart(onClickOutside = { showPopup = false }, navController, state)
                 }
             }
         }

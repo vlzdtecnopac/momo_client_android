@@ -98,7 +98,7 @@ fun Product(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            Category(navController = navController)
+            Category(navController = navController, cartViewModel)
             Spacer(modifier = Modifier.height(8.dp))
         }
 

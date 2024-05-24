@@ -48,11 +48,12 @@ import com.momocoffe.app.R
 import com.momocoffe.app.ui.chekout.components.OutlineTextField
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.stacionFamily
+import com.momocoffe.app.viewmodel.CartViewModel
 
 data class CoffeeCart(val name: String, val price: Int)
 
 @Composable
-fun Checkout(navController: NavHostController) {
+fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
     val context = LocalContext.current
     var textState by rememberSaveable { mutableStateOf(value = "") }
     val list = ((0..10).map { it.toString() })
@@ -80,7 +81,7 @@ fun Checkout(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Header(navController)
-            Category(navController)
+            Category(navController, cartViewModel)
             Spacer(modifier = Modifier.height(8.dp))
         }
 

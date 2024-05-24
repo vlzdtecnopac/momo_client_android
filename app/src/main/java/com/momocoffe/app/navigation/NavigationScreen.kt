@@ -69,7 +69,7 @@ fun NavigationScreen(viewModel: LoginViewModel, viewModelCart: CartViewModel) {
         }
 
         composable(route = Destination.Checkout.route) {
-            Checkout(navController = navController)
+            Checkout(navController = navController, viewModelCart)
         }
 
         composable(route = Destination.Category.route) {

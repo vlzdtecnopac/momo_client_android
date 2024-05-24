@@ -28,10 +28,12 @@ import com.momocoffe.app.ui.category.sections.Store
 import com.momocoffe.app.ui.components.cart.Cart
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.stacionFamily
+import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.CategoryViewModel
 
 @Composable
 fun Category(navController: NavController,
+             cartViewModel: CartViewModel,
              categoryViewModel: CategoryViewModel = viewModel()) {
 
     var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
@@ -83,7 +85,7 @@ fun Category(navController: NavController,
                     }
                 }
             }
-            Cart(navController)
+            Cart(navController, cartViewModel)
         }
     }
 }
