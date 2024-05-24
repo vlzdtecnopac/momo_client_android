@@ -1,6 +1,6 @@
 package com.momocoffe.app.ui.components.cart
 
-import android.util.Log
+
 import androidx.compose.ui.window.Dialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -63,7 +63,7 @@ fun Cart(navController: NavController, cartViewModel: CartViewModel) {
                         .align(Alignment.TopEnd)
                         .zIndex(40F),
                 ) {
-                    ContentCart(onClickOutside = { showPopup = false }, navController, state)
+                    ContentCart(onClickOutside = { showPopup = false }, navController, cartViewModel ,state)
                 }
             }
         }

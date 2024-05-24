@@ -71,6 +71,7 @@
     <string name="txt_milk">Milk</string>
     <string name="txt_temp">Temperature</string>
     <string name="txt_sauces">Sauces</string>
-
+    <string name="resum_pedido">Summary of your order</string>
     <string name="add_cart_payment">Add cart</string>
+    <string name="products">Products</string>
 </resources>

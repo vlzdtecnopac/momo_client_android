@@ -21,6 +21,7 @@ data class  CartProduct(
     val modifiersOptions:  MutableMap<String, ItemModifier>,
     val modifiersList: MutableMap<String, ItemModifier>
 )
+
 class CartViewModel(
     private val dao: CartDao
 ) : ViewModel() {
@@ -36,6 +37,11 @@ class CartViewModel(
         }
     }
 
+    fun deleteProduct(product: Cart) {
+        viewModelScope.launch {
+            dao.deleteProduct(product)
+        }
+    }
 
     fun createProduct(product: CartProduct) {
         val cart =

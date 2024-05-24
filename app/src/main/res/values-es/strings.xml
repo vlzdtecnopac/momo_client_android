@@ -73,4 +73,6 @@
     <string name="txt_temp">Temperatura</string>
     <string name="txt_sauces">Salsas</string>
     <string name="add_cart_payment">Agregar al carrito</string>
+    <string name="resum_pedido">Resumen de tu pedido</string>
+    <string name="products">Productos</string>
 </resources>
