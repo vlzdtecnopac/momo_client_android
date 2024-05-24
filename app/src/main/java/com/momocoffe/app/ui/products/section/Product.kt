@@ -55,7 +55,6 @@ fun Product(
     product_id: String?,
     cartViewModel: CartViewModel,
     productsViewModel: ProductsViewModel = viewModel(),
-
 ) {
 
     val context = LocalContext.current
@@ -63,11 +62,10 @@ fun Product(
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
     var productsItems: List<ProductsItem>? by remember { mutableStateOf(null) }
 
+
     LaunchedEffect(Unit) {
         productsViewModel.product(preference_shopping_id, product_id)
     }
-
-
 
     LaunchedEffect(productsViewModel.productsResultState.value) {
         productsViewModel.productsResultState.value?.let { result ->
@@ -85,7 +83,6 @@ fun Product(
 
         }
     }
-
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -109,7 +106,6 @@ fun Product(
             product?.get(0)?.let {
                 productsViewModel.calculatePriceResult.value = it.price.toInt()
             }
-
 
             Box(
                 modifier = Modifier
@@ -154,12 +150,13 @@ fun Product(
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Button(
                                     onClick = {
-                                        cartViewModel.createProduct(product = CartProduct(
-                                            titleProduct = "Prueba Product",
-                                            imageProduct = "Image",
-                                            priceProduct = "200"
-
-                                        ))
+                                        product?.get(0)?.let { firstProduct->
+                                           cartViewModel.createProduct(CartProduct(
+                                                titleProduct = firstProduct.nameProduct,
+                                                imageProduct = firstProduct.image,
+                                                priceProduct = productsViewModel.calculatePriceResult.value.toString()
+                                            ))
+                                        }
                                     },
                                     modifier = Modifier
                                         .width(400.dp)

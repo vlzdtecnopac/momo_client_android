@@ -34,6 +34,10 @@ class CartViewModel(
         }
     }
 
+    fun changePrice(price: String) {
+        state = state.copy(carts = state.carts)
+    }
+
 
     fun createProduct(product: CartProduct) {
         val cart =
@@ -49,5 +53,10 @@ class CartViewModel(
         state = state.copy(carts = state.carts)
     }
 
+    fun deleteProduct(product: CartProduct) {
+        viewModelScope.launch {
+            dao.deleteCart(product)
+        }
+    }
 
 }
