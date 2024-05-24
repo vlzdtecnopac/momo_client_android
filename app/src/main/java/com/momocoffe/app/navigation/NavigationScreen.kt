@@ -16,10 +16,11 @@ import com.momocoffe.app.ui.products.Products
 import com.momocoffe.app.ui.products.section.Product
 import com.momocoffe.app.ui.wellcome.WellCome
 import com.momocoffe.app.ui.zettle.ZettlePayment
+import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.LoginViewModel
 
 @Composable
-fun NavigationScreen(viewModel: LoginViewModel) {
+fun NavigationScreen(viewModel: LoginViewModel, viewModelCart: CartViewModel) {
 
     val navController = rememberNavController()
     val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
@@ -48,7 +49,8 @@ fun NavigationScreen(viewModel: LoginViewModel) {
 
         composable(route = Destination.Product.route, arguments = listOf(navArgument("product_id") { defaultValue = "" })) {backStackEntry ->
             val product_id = backStackEntry.arguments?.getString("product_id")
-            Product(navController = navController, product_id)
+
+            Product(navController = navController, product_id, viewModelCart)
         }
 
         composable(route = Destination.ProductsCategoryAndSubProduct.route,

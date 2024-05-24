@@ -3,7 +3,6 @@ package com.momocoffe.app
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -12,16 +11,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.core.view.doOnLayout
+import androidx.room.Room
 import com.momocoffe.app.navigation.NavigationScreen
-import com.momocoffe.app.ui.client.section.RegisterClient
+import com.momocoffe.app.network.database.CartDataBase
 import com.momocoffe.app.ui.theme.MomoCoffeClientTheme
+import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.LoginViewModel
 import com.momocoffe.app.viewmodel.RegionInternational
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
-    private val viewModel: LoginViewModel by viewModels()
+    private val viewModelLogin: LoginViewModel by viewModels()
 
     override fun attachBaseContext(newBase: Context?) {
         val localeToSwitchTo = Locale("es")
@@ -42,34 +44,30 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
+                        val database =
+                            Room.databaseBuilder(applicationContext, CartDataBase::class.java, "momo_db")
+                                .build()
+                        val dao = database.dao
+                        val viewModelDb by viewModels<CartViewModel>(factoryProducer = {
+                            object : ViewModelProvider.Factory {
+                                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                                    return CartViewModel(dao) as T
+                                }
+                            }
+                        })
                         LaunchedEffect(Unit) {
                             // Set up and establish socket connection
                             SocketHandler.setSocket()
                             SocketHandler.establishConnection()
                         }
 
-                        NavigationScreen(viewModel = viewModel)
+                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)
                     }
                 }
             }
         } else {
             setContent {
-                MomoCoffeClientTheme {
-                    // A surface container using the 'background' color from the theme
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
 
-                        LaunchedEffect(Unit) {
-                            // Set up and establish socket connection
-                            SocketHandler.setSocket()
-                            SocketHandler.establishConnection()
-                        }
-
-                        NavigationScreen(viewModel = viewModel)
-                    }
-                }
             }
             //finish()
         }

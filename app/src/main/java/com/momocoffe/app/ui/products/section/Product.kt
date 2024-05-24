@@ -46,12 +46,16 @@ import com.momocoffe.app.ui.theme.OrangeDarkLight
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.ProductsViewModel
 import com.momocoffe.app.R
+import com.momocoffe.app.viewmodel.CartProduct
+import com.momocoffe.app.viewmodel.CartViewModel
 
 @Composable
 fun Product(
     navController: NavController,
     product_id: String?,
-    productsViewModel: ProductsViewModel = viewModel()
+    cartViewModel: CartViewModel,
+    productsViewModel: ProductsViewModel = viewModel(),
+
 ) {
 
     val context = LocalContext.current
@@ -149,7 +153,14 @@ fun Product(
                             ) {
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Button(
-                                    onClick = {},
+                                    onClick = {
+                                        cartViewModel.createProduct(product = CartProduct(
+                                            titleProduct = "Prueba Product",
+                                            imageProduct = "Image",
+                                            priceProduct = "200"
+
+                                        ))
+                                    },
                                     modifier = Modifier
                                         .width(400.dp)
                                         .height(60.dp)
