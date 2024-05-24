@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 class CategoryViewModel : ViewModel() {
     private val apiService: ApiService = RetrofitHelper.apiService()
     val loadingState = mutableStateOf(false)
+    val selectCategory = mutableStateOf("")
     val categoriesResultState = mutableStateOf<Result<List<CategoriesResponse>>?>(null)
     fun categorys() {
         loadingState.value = true
