@@ -62,6 +62,8 @@ fun Product(
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
     var productsItems: List<ProductsItem>? by remember { mutableStateOf(null) }
 
+    Log.d("Result.ProductsModelView", productsViewModel.selectModifiersOptions.toString())
+
 
     LaunchedEffect(Unit) {
         productsViewModel.product(preference_shopping_id, product_id)

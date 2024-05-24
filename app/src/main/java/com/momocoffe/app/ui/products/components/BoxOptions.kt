@@ -20,8 +20,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,13 +30,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.ui.theme.stacionFamily
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
-import com.momocoffe.app.viewmodel.ProductsViewModel
 
 data class ItemBox(val id: Int, val name: String, val price: Int)
 @OptIn(ExperimentalLayoutApi::class)
@@ -46,7 +42,7 @@ data class ItemBox(val id: Int, val name: String, val price: Int)
 fun BoxOptions(
     iconResource: Int,
     textResource: Int,
-    selectPrice: (Int) -> Unit,
+    selectPrice: (Int, String) -> Unit,
     items: List<ItemBox>
 ) {
     val isItemActive = remember { mutableStateOf(0) }
@@ -90,7 +86,7 @@ fun BoxOptions(
                 ){
                     Button(
                         onClick = {
-                            selectPrice(item.price)
+                            selectPrice(item.price, item.name)
                             isItemActive.value = item.id
                             selectOption.value = item.name
                         },

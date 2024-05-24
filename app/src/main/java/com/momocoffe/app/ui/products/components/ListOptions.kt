@@ -46,10 +46,9 @@ data class ItemList(val id: Int, val name: String, val price: Int)
 @Composable
 fun ListOptions(
     iconResource: Int,
-    selectPrice: (Int) -> Unit,
+    selectPrice: (Int, String) -> Unit,
     items: List<ItemList>
 ) {
-    val productsViewModel: ProductsViewModel = viewModel()
     val isItemActive = remember { mutableStateOf(0) }
     val selectOption = remember { mutableStateOf("") }
 
@@ -102,7 +101,7 @@ fun ListOptions(
                     Checkbox(
                         checked = isItemActive.value == item.id,
                         onCheckedChange = {
-                            selectPrice(item.price)
+                            selectPrice(item.price, item.name)
                             isItemActive.value = item.id
                             selectOption.value = item.name
                                           },

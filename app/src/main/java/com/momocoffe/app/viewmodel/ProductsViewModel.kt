@@ -3,11 +3,9 @@ package com.momocoffe.app.viewmodel
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.momocoffe.app.network.data.SelectedOptions
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
 import com.momocoffe.app.network.response.ProductOptionsResponse
@@ -15,11 +13,21 @@ import com.momocoffe.app.network.response.ProductsResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
+data class SelectModifiers(
+    var options: ItemModifier?,
+    var list: ItemModifier?
+)
+data class ItemModifier(
+    val name: String,
+    val price: String
+)
 class ProductsViewModel : ViewModel() {
     private val apiService: ApiService = RetrofitHelper.apiService()
     val productsResultState = mutableStateOf<Result<ProductsResponse>?>(null)
     val productsOptionsResultState = mutableStateOf<Result<ProductOptionsResponse>?>(null)
     val calculatePriceResult = mutableStateOf(0)
+    var selectModifiersOptions by mutableStateOf(mutableMapOf<String,ItemModifier>())
+    var selectModifiersList by mutableStateOf(mutableMapOf<String,ItemModifier>())
     val loadingState = mutableStateOf(false)
 
     fun product(shopping_id: String = "", product_id: String? = "") {
