@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
+import com.momocoffe.app.ui.components.SolidLineDivider
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.ProductsViewModel
@@ -52,70 +53,72 @@ fun ListOptions(
     val isItemActive = remember { mutableStateOf(0) }
     val selectOption = remember { mutableStateOf("") }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(0.1f),
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                painterResource(id = iconResource),
-                contentDescription = stringResource(id = R.string.momo_coffe),
-                tint = Color.White,
-                modifier = Modifier.size(width = 40.dp, height = 40.dp)
-            )
-        }
-
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            items.forEach { item ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(2.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(0.8f),
-                        text = item.name,
-                        fontSize = 16.sp,
-                        color = Color.White,
-                        fontFamily = redhatFamily,
-                        textAlign = TextAlign.Start
-                    )
-
-                    Text(
-                        modifier = Modifier.fillMaxWidth(0.4f),
-                        text = "$ ${item.price}",
-                        fontSize = 16.sp,
-                        color = Color.White,
-                        fontFamily = redhatFamily,
-                        textAlign = TextAlign.Start
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Checkbox(
-                        checked = isItemActive.value == item.id,
-                        onCheckedChange = {
-                            selectPrice(item.price, item.name)
-                            isItemActive.value = item.id
-                            selectOption.value = item.name
-                                          },
-                        colors = CheckboxDefaults.colors(
-                            checkedColor = OrangeDark,
-                            uncheckedColor = Color.White
-
-                        ),
-                    )
-                }
-
+            Column(
+                modifier = Modifier.fillMaxWidth(0.1f),
+            ) {
+                Icon(
+                    painterResource(id = iconResource),
+                    contentDescription = stringResource(id = R.string.momo_coffe),
+                    tint = Color.White,
+                    modifier = Modifier.size(width = 40.dp, height = 40.dp)
+                )
             }
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                items.forEach { item ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(2.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(0.8f),
+                            text = item.name,
+                            fontSize = 16.sp,
+                            color = Color.White,
+                            fontFamily = redhatFamily,
+                            textAlign = TextAlign.Start
+                        )
+
+                        Text(
+                            modifier = Modifier.fillMaxWidth(0.4f),
+                            text = "$ ${item.price}",
+                            fontSize = 16.sp,
+                            color = Color.White,
+                            fontFamily = redhatFamily,
+                            textAlign = TextAlign.Start
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Checkbox(
+                            checked = isItemActive.value == item.id,
+                            onCheckedChange = {
+                                selectPrice(item.price, item.name)
+                                isItemActive.value = item.id
+                                selectOption.value = item.name
+                            },
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = OrangeDark,
+                                uncheckedColor = Color.White
+
+                            ),
+                        )
+                    }
+
+                }
+            }
+
         }
-
-
+        SolidLineDivider()
     }
 }

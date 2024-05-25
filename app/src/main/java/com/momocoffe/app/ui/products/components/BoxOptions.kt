@@ -4,6 +4,7 @@ package com.momocoffe.app.ui.products.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.momocoffe.app.ui.theme.stacionFamily
 import com.momocoffe.app.R
+import com.momocoffe.app.ui.components.SolidLineDivider
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
@@ -48,69 +50,76 @@ fun BoxOptions(
     val isItemActive = remember { mutableStateOf(0) }
     val selectOption = remember { mutableStateOf("") }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ){
+    Column {
         Row(
-            modifier = Modifier.weight(0.3f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
             verticalAlignment = Alignment.CenterVertically
-        ){
-            Icon(
-                painterResource(id = iconResource),
-                contentDescription = stringResource(id = R.string.momo_coffe),
-                tint = Color.White,
-                modifier = Modifier.size(width = 40.dp, height = 40.dp)
-            )
-            Spacer(modifier = Modifier.width(5.dp))
-            Text(
-                stringResource(id = textResource),
-                fontFamily = stacionFamily,
-                color = Color.White,
-                fontSize = 14.5.sp
-            )
-        }
+        ) {
+            Row(
+                modifier = Modifier.weight(0.3f),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painterResource(id = iconResource),
+                    contentDescription = stringResource(id = R.string.momo_coffe),
+                    tint = Color.White,
+                    modifier = Modifier.size(width = 40.dp, height = 40.dp)
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    stringResource(id = textResource),
+                    fontFamily = stacionFamily,
+                    color = Color.White,
+                    fontSize = 14.5.sp
+                )
+            }
 
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(0.7f),
-            horizontalArrangement = Arrangement.End
-        ){
-            items.forEach { item ->
-                Box(
-                    modifier = Modifier
-                        .padding(4.dp)
-                        .width(130.dp)
-                        .height(55.dp)
-                ){
-                    Button(
-                        onClick = {
-                            selectPrice(item.price, item.name)
-                            isItemActive.value = item.id
-                            selectOption.value = item.name
-                        },
-                        modifier = Modifier.fillMaxSize(),
-                        shape = RoundedCornerShape(4.dp),
-                        border = if (isItemActive.value == item.id) BorderStroke(1.dp, OrangeDark) else BorderStroke(1.dp, Color.White),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = if (isItemActive.value == item.id) OrangeDark else  BlueDark,
-                            disabledBackgroundColor =  if (isItemActive.value == item.id) OrangeDark else  BlueDark,
-                            disabledContentColor =  if (isItemActive.value == item.id) OrangeDark else  BlueDark,
-                        )
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(0.7f),
+                horizontalArrangement = Arrangement.End
+            ) {
+                items.forEach { item ->
+                    Box(
+                        modifier = Modifier
+                            .padding(4.dp)
+                            .width(130.dp)
+                            .height(55.dp)
                     ) {
-                        val txt_price = if( item.price.toInt() == 0) "" else "\n" + "$${item.price}"
-                        Text(
-                            text = "${item.name} $txt_price",
-                            fontSize = 12.sp,
-                            color = Color.White,
-                            fontFamily = redhatFamily,
-                            textAlign = TextAlign.Center
-                        )
+                        Button(
+                            onClick = {
+                                selectPrice(item.price, item.name)
+                                isItemActive.value = item.id
+                                selectOption.value = item.name
+                            },
+                            modifier = Modifier.fillMaxSize(),
+                            shape = RoundedCornerShape(4.dp),
+                            border = if (isItemActive.value == item.id) BorderStroke(
+                                1.dp,
+                                OrangeDark
+                            ) else BorderStroke(1.dp, Color.White),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = if (isItemActive.value == item.id) OrangeDark else BlueDark,
+                                disabledBackgroundColor = if (isItemActive.value == item.id) OrangeDark else BlueDark,
+                                disabledContentColor = if (isItemActive.value == item.id) OrangeDark else BlueDark,
+                            )
+                        ) {
+                            val txt_price =
+                                if (item.price.toInt() == 0) "" else "\n" + "$${item.price}"
+                            Text(
+                                text = "${item.name} $txt_price",
+                                fontSize = 12.sp,
+                                color = Color.White,
+                                fontFamily = redhatFamily,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
-                }
 
+                }
             }
         }
+        SolidLineDivider()
     }
 }
