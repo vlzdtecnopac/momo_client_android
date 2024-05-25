@@ -156,9 +156,12 @@ fun Product(
                                             try {
                                                 cartViewModel.createProduct(
                                                     CartProduct(
+                                                        0,
                                                         titleProduct = firstProduct.nameProduct,
                                                         imageProduct = firstProduct.image,
                                                         priceProduct = productsViewModel.calculatePriceResult.value.toString(),
+                                                        priceProductMod = productsViewModel.calculatePriceResult.value.toString(),
+                                                        countProduct = 1,
                                                         modifiersOptions = productsViewModel.selectModifiersOptions,
                                                         modifiersList = productsViewModel.selectModifiersList
                                                     )

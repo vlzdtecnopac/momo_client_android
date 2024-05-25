@@ -17,11 +17,20 @@ data class CartState(
 )
 
 data class  CartProduct(
+    val id: Int,
     val titleProduct: String,
     val imageProduct: String,
     val priceProduct: String,
+    val priceProductMod: String,
+    val countProduct: Int,
     val modifiersOptions:  MutableMap<String, ItemModifier>,
     val modifiersList: MutableMap<String, ItemModifier>
+)
+
+data class CartProductEdit(
+    val id: Int,
+    val countProduct: Int,
+    val priceProduct: Int,
 )
 
 class CartViewModel(
@@ -53,6 +62,8 @@ class CartViewModel(
                 product.titleProduct,
                 product.imageProduct,
                 product.priceProduct,
+                product.priceProductMod,
+                product.countProduct,
                 product.modifiersOptions.toString(),
                 product.modifiersList.toString()
             )
@@ -64,6 +75,16 @@ class CartViewModel(
         loadingCartState.value = false
     }
 
+    fun editCart(product: CartProductEdit) {
+        viewModelScope.launch {
+            loadingCartState.value = true
+            val cart = state.carts.find { it.id == product.id }
+            if (cart != null) {
+                dao.updateProductCountById(cart.id, product.countProduct, product.priceProduct)
+            }
+            loadingCartState.value = false
+        }
+    }
 
 
 }

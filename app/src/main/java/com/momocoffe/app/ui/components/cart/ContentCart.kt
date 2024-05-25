@@ -1,6 +1,5 @@
 package com.momocoffe.app.ui.components.cart
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,6 +32,7 @@ import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.database.Cart
 import com.momocoffe.app.ui.theme.*
+import com.momocoffe.app.viewmodel.CartProductEdit
 import com.momocoffe.app.viewmodel.CartState
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.ItemModifier
@@ -50,7 +50,7 @@ fun ContentCart(
     val loading = cartViewModel.loadingCartState.value
 
     LaunchedEffect(state.carts) {
-        stateTotal.value = state.carts.sumOf { it.priceProduct.toInt() }
+        stateTotal.value = state.carts.sumOf { it.priceProductMod.toInt() }
     }
 
     Box {
@@ -112,11 +112,6 @@ fun ContentCart(
 
             }
 
-            if (state.carts.isNotEmpty()) {
-                stateTotal.value =
-                    state.carts.map { it.priceProduct.toInt() }.reduce { acc, price -> acc + price }
-            }
-
             LazyColumn(modifier = Modifier.fillMaxHeight(0.8f)) {
                 itemsIndexed(items = state.carts) { index, item ->
                     ProductCart(index, item, cartViewModel, onStateTotal = { newTotal ->
@@ -160,11 +155,10 @@ fun ProductCart(
     LaunchedEffect(Unit) {
         cartViewModel.stateTotalSub[index] =
             product.priceProduct.toInt() * count
+        count = product.countProduct
     }
 
-    LaunchedEffect(count) {
-        onStateTotal(cartViewModel.stateTotalSub.values.sum())
-    }
+
 
     Column {
         Row(modifier = Modifier.padding(8.dp)) {
@@ -208,8 +202,7 @@ fun ProductCart(
                         onClickButton = {
                             if (count > 1) {
                                 count -= 1
-                                cartViewModel.stateTotalSub[index] =
-                                    product.priceProduct.toInt() * count
+                                cartViewModel.editCart(CartProductEdit(product.id, countProduct = count,  product.priceProduct.toInt() * count))
                             }
                         },
                         icon = R.drawable.menus_icon,
@@ -226,8 +219,7 @@ fun ProductCart(
                     BtnCart(
                         onClickButton = {
                             count += 1
-                            cartViewModel.stateTotalSub[index] =
-                                product.priceProduct.toInt() * count
+                            cartViewModel.editCart(CartProductEdit(product.id, countProduct = count,  product.priceProduct.toInt() * count))
                         },
                         icon = R.drawable.pluss_icon,
                         color = OrangeDark,
@@ -283,7 +275,7 @@ fun ProductCart(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 Text(
-                    "\$ ${(product.priceProduct.toInt() * count)}",
+                    "\$ ${(product.priceProductMod.toInt())}",
                     fontSize = 20.sp,
                     fontFamily = stacionFamily
                 )
