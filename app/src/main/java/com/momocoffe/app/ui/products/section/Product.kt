@@ -2,6 +2,7 @@ package com.momocoffe.app.ui.products.section
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -152,13 +153,31 @@ fun Product(
                                 Button(
                                     onClick = {
                                         product?.get(0)?.let { firstProduct->
-                                           cartViewModel.createProduct(CartProduct(
-                                                titleProduct = firstProduct.nameProduct,
-                                                imageProduct = firstProduct.image,
-                                                priceProduct = productsViewModel.calculatePriceResult.value.toString(),
-                                                modifiersOptions = productsViewModel.selectModifiersOptions,
-                                                modifiersList = productsViewModel.selectModifiersList
-                                            ))
+                                            try {
+                                                cartViewModel.createProduct(
+                                                    CartProduct(
+                                                        titleProduct = firstProduct.nameProduct,
+                                                        imageProduct = firstProduct.image,
+                                                        priceProduct = productsViewModel.calculatePriceResult.value.toString(),
+                                                        modifiersOptions = productsViewModel.selectModifiersOptions,
+                                                        modifiersList = productsViewModel.selectModifiersList
+                                                    )
+                                                )
+                                                Toast.makeText(
+                                                    context,
+                                                    R.string.add_cart_product_new,
+                                                    Toast.LENGTH_LONG
+                                                )
+                                                    .show()
+                                            }catch (e: Exception){
+                                                Toast.makeText(
+                                                    context,
+                                                    R.string.error_cart_product_new,
+                                                    Toast.LENGTH_LONG
+                                                )
+                                                    .show()
+                                                Log.e("Result.CartModelView", e.message.toString())
+                                            }
                                         }
                                     },
                                     modifier = Modifier

@@ -27,6 +27,8 @@ data class  CartProduct(
 class CartViewModel(
     private val dao: CartDao
 ) : ViewModel() {
+    val loadingCartState = mutableStateOf(false)
+
     var stateTotalSub = mutableMapOf<Int, Int>()
     var state by mutableStateOf(CartState())
         private set
@@ -45,6 +47,7 @@ class CartViewModel(
     }
 
     fun createProduct(product: CartProduct) {
+        loadingCartState.value = true
         val cart =
             Cart(0,
                 product.titleProduct,
@@ -58,6 +61,7 @@ class CartViewModel(
             dao.insertCart(cart)
         }
         state = state.copy(carts = state.carts)
+        loadingCartState.value = false
     }
 
 

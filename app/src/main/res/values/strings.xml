@@ -74,4 +74,6 @@
     <string name="resum_pedido">Summary of your order</string>
     <string name="add_cart_payment">Add cart</string>
     <string name="products">Products</string>
+    <string name="add_cart_product_new">New product has been added</string>
+    <string name="error_cart_product_new">Error and entry of the new product</string>
 </resources>

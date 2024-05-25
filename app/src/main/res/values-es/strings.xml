@@ -75,4 +75,6 @@
     <string name="add_cart_payment">Agregar al carrito</string>
     <string name="resum_pedido">Resumen de tu pedido</string>
     <string name="products">Productos</string>
+    <string name="add_cart_product_new">Se ha agregado nuevo producto</string>
+    <string name="error_cart_product_new">Error e ingreso del nuevo producto</string>
 </resources>

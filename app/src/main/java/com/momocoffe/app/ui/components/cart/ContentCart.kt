@@ -36,6 +36,7 @@ import com.momocoffe.app.ui.theme.*
 import com.momocoffe.app.viewmodel.CartState
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.ItemModifier
+import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 
 
 @Composable
@@ -46,83 +47,96 @@ fun ContentCart(
     state: CartState
 ) {
     var stateTotal = remember { mutableStateOf(0) }
+    val loading = cartViewModel.loadingCartState.value
 
     LaunchedEffect(state.carts) {
         stateTotal.value = state.carts.sumOf { it.priceProduct.toInt() }
     }
 
-    Column(
-        verticalArrangement = Arrangement.SpaceBetween
-    ) {
-        Row(
-            modifier = Modifier.padding(8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top
+    Box {
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(0.8f),
-                verticalArrangement = Arrangement.Center
+            Row(
+                modifier = Modifier.padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
             ) {
-                Text(
-                    stringResource(id = R.string.resum_pedido),
-                    color = Color.Black,
-                    fontFamily = redhatFamily,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight(700)
-                )
-                Text(
-                    "${state.carts.size} " + stringResource(id = R.string.products),
-                    color = Color.Black,
-                    fontFamily = redhatFamily,
-                    fontSize = 12.sp
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .weight(0.2f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.End
-            ) {
-                IconButton(
+                Column(
                     modifier = Modifier
-                        .width(32.dp)
-                        .height(32.dp)
-                        .clip(RoundedCornerShape(50.dp))
-                        .background(OrangeDark)
-                        .border(
-                            width = 0.6.dp,
-                            color = Color.White,
-                            shape = RoundedCornerShape(50.dp)
-                        )
-                        .padding(4.dp),
-                    onClick = onClickOutside
+                        .weight(0.8f),
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        Icons.Rounded.Close,
-                        contentDescription = stringResource(id = R.string.momo_coffe),
-                        tint = Color.White,
-                        modifier = Modifier.size(20.dp),
+                    Text(
+                        stringResource(id = R.string.resum_pedido),
+                        color = Color.Black,
+                        fontFamily = redhatFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight(700)
                     )
+                    Text(
+                        "${state.carts.size} " + stringResource(id = R.string.products),
+                        color = Color.Black,
+                        fontFamily = redhatFamily,
+                        fontSize = 12.sp
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .weight(0.2f),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.End
+                ) {
+                    IconButton(
+                        modifier = Modifier
+                            .width(32.dp)
+                            .height(32.dp)
+                            .clip(RoundedCornerShape(50.dp))
+                            .background(OrangeDark)
+                            .border(
+                                width = 0.6.dp,
+                                color = Color.White,
+                                shape = RoundedCornerShape(50.dp)
+                            )
+                            .padding(4.dp),
+                        onClick = onClickOutside
+                    ) {
+                        Icon(
+                            Icons.Rounded.Close,
+                            contentDescription = stringResource(id = R.string.momo_coffe),
+                            tint = Color.White,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
+                }
+
+            }
+
+            if (state.carts.isNotEmpty()) {
+                stateTotal.value =
+                    state.carts.map { it.priceProduct.toInt() }.reduce { acc, price -> acc + price }
+            }
+
+            LazyColumn(modifier = Modifier.fillMaxHeight(0.8f)) {
+                itemsIndexed(items = state.carts) { index, item ->
+                    ProductCart(index, item, cartViewModel, onStateTotal = { newTotal ->
+                        stateTotal.value = newTotal
+                    })
                 }
             }
 
+            TotalPayment(navController, stateTotal)
         }
-
-        if (state.carts.isNotEmpty()) {
-            stateTotal.value =
-                state.carts.map { it.priceProduct.toInt() }.reduce { acc, price -> acc + price }
-        }
-
-        LazyColumn(modifier = Modifier.fillMaxHeight(0.8f)) {
-            itemsIndexed(items = state.carts) { index, item ->
-                ProductCart(index, item, cartViewModel, onStateTotal = { newTotal ->
-                    stateTotal.value = newTotal
-                })
+        if (loading) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(BlueDarkTransparent)
+            ) {
+                BallClipRotatePulseIndicator()
             }
         }
-
-        TotalPayment(navController, stateTotal)
     }
 }
 
@@ -143,7 +157,7 @@ fun ProductCart(
         optionsSize.add(value.name)
     }
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         cartViewModel.stateTotalSub[index] =
             product.priceProduct.toInt() * count
     }
