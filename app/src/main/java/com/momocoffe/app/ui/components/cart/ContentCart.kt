@@ -51,7 +51,7 @@ fun ContentCart(
     LaunchedEffect(Unit) {
         if (state.carts.isNullOrEmpty()) {
             cartViewModel.loadingCartState.value = false
-        }else{
+        } else {
             cartViewModel.countTotal()
             cartViewModel.priceSubTotal()
         }
@@ -59,89 +59,87 @@ fun ContentCart(
         cartViewModel.loadingCartState.value = false
     }
 
-        Box {
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween
+    Box {
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                modifier = Modifier.padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
             ) {
-                Row(
-                    modifier = Modifier.padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.Top
+                Column(
+                    modifier = Modifier
+                        .weight(0.8f),
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .weight(0.8f),
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            stringResource(id = R.string.resum_pedido),
-                            color = Color.Black,
-                            fontFamily = redhatFamily,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight(700)
-                        )
-                        if (state.carts.isNotEmpty()) {
-                            Text(
-                                "${cartViewModel.countCartState.value ?: 0} " + stringResource(id = R.string.products),
-                                color = Color.Black,
-                                fontFamily = redhatFamily,
-                                fontSize = 12.sp
-                            )
-                        }
+                    Text(
+                        stringResource(id = R.string.resum_pedido),
+                        color = Color.Black,
+                        fontFamily = redhatFamily,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight(700)
+                    )
 
-                    }
-                    Column(
-                        modifier = Modifier
-                            .weight(0.2f),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.End
-                    ) {
-                        IconButton(
-                            modifier = Modifier
-                                .width(32.dp)
-                                .height(32.dp)
-                                .clip(RoundedCornerShape(50.dp))
-                                .background(OrangeDark)
-                                .border(
-                                    width = 0.6.dp,
-                                    color = Color.White,
-                                    shape = RoundedCornerShape(50.dp)
-                                )
-                                .padding(4.dp),
-                            onClick = onClickOutside
-                        ) {
-                            Icon(
-                                Icons.Rounded.Close,
-                                contentDescription = stringResource(id = R.string.momo_coffe),
-                                tint = Color.White,
-                                modifier = Modifier.size(20.dp),
-                            )
-                        }
-                    }
+                    Text(
+                        "${cartViewModel.countCartState.value ?: 0} " + stringResource(id = R.string.products),
+                        color = Color.Black,
+                        fontFamily = redhatFamily,
+                        fontSize = 12.sp
+                    )
 
                 }
-
-                if (state.carts.isNotEmpty()) {
-                    LazyColumn(modifier = Modifier.fillMaxHeight(0.8f)) {
-                        itemsIndexed(items = state.carts) { index, item ->
-                            ProductCart(item, cartViewModel)
-                        }
+                Column(
+                    modifier = Modifier
+                        .weight(0.2f),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.End
+                ) {
+                    IconButton(
+                        modifier = Modifier
+                            .width(32.dp)
+                            .height(32.dp)
+                            .clip(RoundedCornerShape(50.dp))
+                            .background(OrangeDark)
+                            .border(
+                                width = 0.6.dp,
+                                color = Color.White,
+                                shape = RoundedCornerShape(50.dp)
+                            )
+                            .padding(4.dp),
+                        onClick = onClickOutside
+                    ) {
+                        Icon(
+                            Icons.Rounded.Close,
+                            contentDescription = stringResource(id = R.string.momo_coffe),
+                            tint = Color.White,
+                            modifier = Modifier.size(20.dp),
+                        )
                     }
+                }
 
-                    TotalPayment(navController, cartViewModel)
+            }
+
+            LazyColumn(modifier = Modifier.fillMaxHeight(0.8f)) {
+                itemsIndexed(items = state.carts) { index, item ->
+                    ProductCart(item, cartViewModel)
                 }
             }
-            if (loading) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(BlueDarkTransparent)
-                ) {
-                    BallClipRotatePulseIndicator()
-                }
+
+            TotalPayment(navController, cartViewModel)
+
+        }
+        if (loading) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(BlueDarkTransparent)
+            ) {
+                BallClipRotatePulseIndicator()
             }
         }
+    }
 
 }
 
