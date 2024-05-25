@@ -63,7 +63,10 @@ fun Cart(navController: NavController, cartViewModel: CartViewModel) {
                         .align(Alignment.TopEnd)
                         .zIndex(40F),
                 ) {
-                    ContentCart(onClickOutside = { showPopup = false }, navController, cartViewModel ,state)
+                    if(state.carts.isNotEmpty()){
+                        ContentCart(onClickOutside = { showPopup = false }, navController, cartViewModel ,state)
+                    }
+
                 }
             }
         }

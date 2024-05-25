@@ -11,6 +11,12 @@ interface CartDao {
     @Query("SELECT * FROM cart")
     fun getAllCart(): Flow<List<Cart>>
 
+    @Query("SELECT SUM(c.price_product_mod) FROM cart c")
+    fun getAllSumTotal(): Flow<Int?>
+
+    @Query("SELECT SUM(c.count_product) FROM cart c")
+    fun getAllCountTotal(): Flow<Int?>
+
     @Delete
     suspend fun deleteProduct(product: Cart)
 

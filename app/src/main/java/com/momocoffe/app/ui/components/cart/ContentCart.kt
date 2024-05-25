@@ -11,7 +11,6 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,101 +45,110 @@ fun ContentCart(
     cartViewModel: CartViewModel,
     state: CartState
 ) {
-    var stateTotal = remember { mutableStateOf(0) }
+
     val loading = cartViewModel.loadingCartState.value
 
-    LaunchedEffect(state.carts) {
-        stateTotal.value = state.carts.sumOf { it.priceProductMod.toInt() }
+    LaunchedEffect(Unit) {
+        if (state.carts.isNullOrEmpty()) {
+            cartViewModel.loadingCartState.value = false
+        }else{
+            cartViewModel.countTotal()
+            cartViewModel.priceSubTotal()
+        }
+
+        cartViewModel.loadingCartState.value = false
     }
 
-    Box {
-        Column(
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(
-                modifier = Modifier.padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top
+        Box {
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Column(
-                    modifier = Modifier
-                        .weight(0.8f),
-                    verticalArrangement = Arrangement.Center
+                Row(
+                    modifier = Modifier.padding(8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Top
                 ) {
-                    Text(
-                        stringResource(id = R.string.resum_pedido),
-                        color = Color.Black,
-                        fontFamily = redhatFamily,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight(700)
-                    )
-                    Text(
-                        "${state.carts.size} " + stringResource(id = R.string.products),
-                        color = Color.Black,
-                        fontFamily = redhatFamily,
-                        fontSize = 12.sp
-                    )
-                }
-                Column(
-                    modifier = Modifier
-                        .weight(0.2f),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.End
-                ) {
-                    IconButton(
+                    Column(
                         modifier = Modifier
-                            .width(32.dp)
-                            .height(32.dp)
-                            .clip(RoundedCornerShape(50.dp))
-                            .background(OrangeDark)
-                            .border(
-                                width = 0.6.dp,
-                                color = Color.White,
-                                shape = RoundedCornerShape(50.dp)
-                            )
-                            .padding(4.dp),
-                        onClick = onClickOutside
+                            .weight(0.8f),
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Icon(
-                            Icons.Rounded.Close,
-                            contentDescription = stringResource(id = R.string.momo_coffe),
-                            tint = Color.White,
-                            modifier = Modifier.size(20.dp),
+                        Text(
+                            stringResource(id = R.string.resum_pedido),
+                            color = Color.Black,
+                            fontFamily = redhatFamily,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight(700)
                         )
+                        if (state.carts.isNotEmpty()) {
+                            Text(
+                                "${cartViewModel.countCartState.value ?: 0} " + stringResource(id = R.string.products),
+                                color = Color.Black,
+                                fontFamily = redhatFamily,
+                                fontSize = 12.sp
+                            )
+                        }
+
                     }
+                    Column(
+                        modifier = Modifier
+                            .weight(0.2f),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        IconButton(
+                            modifier = Modifier
+                                .width(32.dp)
+                                .height(32.dp)
+                                .clip(RoundedCornerShape(50.dp))
+                                .background(OrangeDark)
+                                .border(
+                                    width = 0.6.dp,
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(50.dp)
+                                )
+                                .padding(4.dp),
+                            onClick = onClickOutside
+                        ) {
+                            Icon(
+                                Icons.Rounded.Close,
+                                contentDescription = stringResource(id = R.string.momo_coffe),
+                                tint = Color.White,
+                                modifier = Modifier.size(20.dp),
+                            )
+                        }
+                    }
+
                 }
 
-            }
+                if (state.carts.isNotEmpty()) {
+                    LazyColumn(modifier = Modifier.fillMaxHeight(0.8f)) {
+                        itemsIndexed(items = state.carts) { index, item ->
+                            ProductCart(item, cartViewModel)
+                        }
+                    }
 
-            LazyColumn(modifier = Modifier.fillMaxHeight(0.8f)) {
-                itemsIndexed(items = state.carts) { index, item ->
-                    ProductCart(index, item, cartViewModel, onStateTotal = { newTotal ->
-                        stateTotal.value = newTotal
-                    })
+                    TotalPayment(navController, cartViewModel)
                 }
             }
-
-            TotalPayment(navController, stateTotal)
-        }
-        if (loading) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(BlueDarkTransparent)
-            ) {
-                BallClipRotatePulseIndicator()
+            if (loading) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(BlueDarkTransparent)
+                ) {
+                    BallClipRotatePulseIndicator()
+                }
             }
         }
-    }
+
 }
 
 @Composable
 fun ProductCart(
-    index: Int,
     product: Cart,
     cartViewModel: CartViewModel,
-    onStateTotal: (Int) -> Unit
 ) {
 
     var count by remember { mutableStateOf(value = 1) }
@@ -153,12 +161,8 @@ fun ProductCart(
     }
 
     LaunchedEffect(Unit) {
-        cartViewModel.stateTotalSub[index] =
-            product.priceProduct.toInt() * count
         count = product.countProduct
     }
-
-
 
     Column {
         Row(modifier = Modifier.padding(8.dp)) {
@@ -202,7 +206,13 @@ fun ProductCart(
                         onClickButton = {
                             if (count > 1) {
                                 count -= 1
-                                cartViewModel.editCart(CartProductEdit(product.id, countProduct = count,  product.priceProduct.toInt() * count))
+                                cartViewModel.editCart(
+                                    CartProductEdit(
+                                        product.id,
+                                        countProduct = count,
+                                        product.priceProduct.toInt() * count
+                                    )
+                                )
                             }
                         },
                         icon = R.drawable.menus_icon,
@@ -219,7 +229,13 @@ fun ProductCart(
                     BtnCart(
                         onClickButton = {
                             count += 1
-                            cartViewModel.editCart(CartProductEdit(product.id, countProduct = count,  product.priceProduct.toInt() * count))
+                            cartViewModel.editCart(
+                                CartProductEdit(
+                                    product.id,
+                                    countProduct = count,
+                                    product.priceProduct.toInt() * count
+                                )
+                            )
                         },
                         icon = R.drawable.pluss_icon,
                         color = OrangeDark,
@@ -302,7 +318,7 @@ fun ProductCart(
 
 
 @Composable
-fun TotalPayment(navController: NavController, stateTotal: MutableState<Int>) {
+fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -316,9 +332,22 @@ fun TotalPayment(navController: NavController, stateTotal: MutableState<Int>) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            Text("Subtotal (1 producto)", fontSize = 16.sp, fontFamily = redhatFamily)
+
+            Text(
+                "Subtotal (${cartViewModel.countCartState.value ?: 0} producto)",
+                fontSize = 16.sp,
+                fontFamily = redhatFamily
+            )
+
+
             Spacer(modifier = Modifier.width(8.dp))
-            Text("$${stateTotal.value}", fontSize = 18.sp, fontFamily = stacionFamily)
+
+            Text(
+                "$${cartViewModel.stateTotalSub.value ?: 0}",
+                fontSize = 18.sp,
+                fontFamily = stacionFamily
+            )
+
         }
         Spacer(modifier = Modifier.width(10.dp))
         Button(
@@ -334,7 +363,7 @@ fun TotalPayment(navController: NavController, stateTotal: MutableState<Int>) {
 }
 
 fun parseObject(input: String): List<ItemModifier> {
-    // Expresión regular para capturar los nombres y precios de ItemModifier
+
     val regex = Regex("""ItemModifier\(name=(.*?), price=(\d+)\)""")
 
     val matches = regex.findAll(input)
