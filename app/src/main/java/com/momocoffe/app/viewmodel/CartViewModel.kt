@@ -27,11 +27,9 @@ data class  CartProduct(
 class CartViewModel(
     private val dao: CartDao
 ) : ViewModel() {
-    var stateTotal = mutableMapOf<Int, Int>()
-
+    var stateTotalSub = mutableMapOf<Int, Int>()
     var state by mutableStateOf(CartState())
         private set
-
     init {
         viewModelScope.launch {
             dao.getAllCart().collectLatest {

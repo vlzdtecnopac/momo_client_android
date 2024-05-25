@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -12,10 +11,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
@@ -29,12 +29,10 @@ import androidx.compose.ui.unit.*
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.gson.Gson
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.database.Cart
 import com.momocoffe.app.ui.theme.*
-import com.momocoffe.app.viewmodel.CartProduct
 import com.momocoffe.app.viewmodel.CartState
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.ItemModifier
@@ -47,6 +45,11 @@ fun ContentCart(
     cartViewModel: CartViewModel,
     state: CartState
 ) {
+    var stateTotal = remember { mutableStateOf(0) }
+
+    LaunchedEffect(state.carts) {
+        stateTotal.value = state.carts.sumOf { it.priceProduct.toInt() }
+    }
 
     Column(
         verticalArrangement = Arrangement.SpaceBetween
@@ -106,30 +109,48 @@ fun ContentCart(
 
         }
 
+        if (state.carts.isNotEmpty()) {
+            stateTotal.value =
+                state.carts.map { it.priceProduct.toInt() }.reduce { acc, price -> acc + price }
+        }
+
         LazyColumn(modifier = Modifier.fillMaxHeight(0.8f)) {
             itemsIndexed(items = state.carts) { index, item ->
-                ProductCart(index, item, cartViewModel)
+                ProductCart(index, item, cartViewModel, onStateTotal = { newTotal ->
+                    stateTotal.value = newTotal
+                })
             }
         }
 
-        TotalPayment(navController, cartViewModel)
+        TotalPayment(navController, stateTotal)
     }
 }
 
 @Composable
-fun ProductCart(index: Int, product: Cart, cartViewModel: CartViewModel) {
-    val optionsSize = mutableListOf<String?>()
-    var count by remember { mutableStateOf(value = 1) }
+fun ProductCart(
+    index: Int,
+    product: Cart,
+    cartViewModel: CartViewModel,
+    onStateTotal: (Int) -> Unit
+) {
 
+    var count by remember { mutableStateOf(value = 1) }
+    val optionsSize = mutableListOf<String?>()
     val itemsModifiersOptions = parseItemModifiers(product.modifiersOptions)
     val itemsModifiersList = parseObject(product.modifiersList)
-
-
 
     for ((key, value) in itemsModifiersOptions) {
         optionsSize.add(value.name)
     }
 
+    LaunchedEffect(Unit){
+        cartViewModel.stateTotalSub[index] =
+            product.priceProduct.toInt() * count
+    }
+
+    LaunchedEffect(count) {
+        onStateTotal(cartViewModel.stateTotalSub.values.sum())
+    }
 
     Column {
         Row(modifier = Modifier.padding(8.dp)) {
@@ -173,7 +194,7 @@ fun ProductCart(index: Int, product: Cart, cartViewModel: CartViewModel) {
                         onClickButton = {
                             if (count > 1) {
                                 count -= 1
-                                cartViewModel.stateTotal[index] =
+                                cartViewModel.stateTotalSub[index] =
                                     product.priceProduct.toInt() * count
                             }
                         },
@@ -191,7 +212,8 @@ fun ProductCart(index: Int, product: Cart, cartViewModel: CartViewModel) {
                     BtnCart(
                         onClickButton = {
                             count += 1
-                            cartViewModel.stateTotal[index] = product.priceProduct.toInt() * count
+                            cartViewModel.stateTotalSub[index] =
+                                product.priceProduct.toInt() * count
                         },
                         icon = R.drawable.pluss_icon,
                         color = OrangeDark,
@@ -228,7 +250,7 @@ fun ProductCart(index: Int, product: Cart, cartViewModel: CartViewModel) {
                             fontSize = 12.sp
                         )
                         Text(
-                           it.price,
+                            it.price,
                             modifier = Modifier.weight(0.4f),
                             fontFamily = redhatFamily,
                             fontSize = 12.sp
@@ -274,11 +296,7 @@ fun ProductCart(index: Int, product: Cart, cartViewModel: CartViewModel) {
 
 
 @Composable
-fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
-
-    cartViewModel.stateTotal.forEach{(index, value) ->
-        println("Índice: $index, Valor: $value")
-    }
+fun TotalPayment(navController: NavController, stateTotal: MutableState<Int>) {
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -294,7 +312,7 @@ fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
         ) {
             Text("Subtotal (1 producto)", fontSize = 16.sp, fontFamily = redhatFamily)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("$", fontSize = 18.sp, fontFamily = stacionFamily)
+            Text("$${stateTotal.value}", fontSize = 18.sp, fontFamily = stacionFamily)
         }
         Spacer(modifier = Modifier.width(10.dp))
         Button(
