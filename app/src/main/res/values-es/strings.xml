@@ -82,4 +82,7 @@
     <string name="add_tip">Agregar Propina</string>
     <string name="start_barista_working">Los baristas son las estrella \n de nuestro trabajo.</string>
     <string name="payment">Pagar</string>
+    <string name="try_again">Intentémoslo de nuevo.</string>
+    <string name="something_went_wrong">¡Al parecer algo salió mal!</string>
+    <string name="there_problem_helping">!Si hay algún problema, estamos para ayudarte¡</string>
 </resources>

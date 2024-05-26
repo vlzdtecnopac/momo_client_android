@@ -71,14 +71,14 @@ fun ErrorPaymentModal() {
                     contentScale = ContentScale.Crop,
                 )
                 Text(
-                    "¡Al parecer algo salió mal!",
+                    stringResource(id = R.string.something_went_wrong),
                     fontFamily = redhatFamily,
                     fontSize = 28.sp,
                     fontWeight = FontWeight(700)
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
-                    "Intentémoslo de nuevo.",
+                    stringResource(id = R.string.try_again),
                     fontFamily = redhatFamily,
                     fontSize = 22.sp,
                     fontWeight = FontWeight(700)
@@ -95,7 +95,7 @@ fun ErrorPaymentModal() {
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    "¡Si hay algún problema, estamos para ayudarte!",
+                    stringResource(id = R.string.there_problem_helping),
                     fontFamily = redhatFamily,
                     fontSize = 22.sp,
                     fontWeight = FontWeight(400),
