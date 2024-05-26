@@ -84,10 +84,7 @@ fun ErrorPaymentModal() {
                     fontWeight = FontWeight(700)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    "Tu pago no pudo ser procesado.\n" +
-                            "Por favor verifica tu tarjeta y vuelve a intentar,\n" +
-                            "si no lo logras, considera otra tarjeta o método de pago",
+                Text( stringResource(id = R.string.yuo_payment_could_error),
                     fontFamily = redhatFamily,
                     fontSize = 22.sp,
                     fontWeight = FontWeight(400),

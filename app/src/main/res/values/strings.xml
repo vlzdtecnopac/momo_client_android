@@ -84,4 +84,5 @@
     <string name="try_again">Try Again.</string>
     <string name="something_went_wrong">¡Apparently something went wrong!</string>
     <string name="there_problem_helping">!If there is a problem, we are here to help you¡</string>
+    <string name="yuo_payment_could_error">Your payment could not be processed.\n Please verify your card and try again,\n if unsuccessful, consider another card or payment method</string>
 </resources>
