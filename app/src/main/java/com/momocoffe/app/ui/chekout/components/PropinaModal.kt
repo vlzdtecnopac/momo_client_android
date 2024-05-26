@@ -118,6 +118,7 @@ fun PropinaModal(
                     ) {
                         Button(
                             modifier = Modifier
+                                .height(60.dp)
                                 .padding(16.dp)
                                 .clip(RoundedCornerShape(14.dp))
                                 .border(
@@ -145,6 +146,7 @@ fun PropinaModal(
                             onClick = {},
                             modifier = Modifier
                                 .weight(0.5f)
+                                .height(60.dp)
                                 .padding(horizontal = 5.dp)
                                 .border(
                                     width = 0.6.dp,

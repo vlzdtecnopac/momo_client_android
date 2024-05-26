@@ -19,21 +19,14 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,10 +42,13 @@ import com.momocoffe.app.R
 
 @Preview(widthDp = 1440, heightDp = 700, showBackground = true)
 @Composable
-fun ErrorPaymentModal(
-
-) {
-
+fun ErrorPaymentModal() {
+    Dialog(
+        onDismissRequest = {},
+        DialogProperties(
+            usePlatformDefaultWidth = false
+        )
+    ) {
         Surface(
             modifier = Modifier
                 .padding(0.dp)
@@ -61,15 +57,12 @@ fun ErrorPaymentModal(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(400.dp)
+                    .fillMaxSize()
                     .padding(10.dp)
                     .background(BlueLight),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                var textState by rememberSaveable { mutableStateOf(value = "") }
-                val focusManager = LocalFocusManager.current
 
                 Image(
                     painter = painterResource(id = R.drawable.momo_coffe_mug),
@@ -117,6 +110,7 @@ fun ErrorPaymentModal(
                 ) {
                     Button(
                         modifier = Modifier
+                            .height(60.dp)
                             .padding(16.dp)
                             .clip(RoundedCornerShape(14.dp))
                             .border(
@@ -144,6 +138,7 @@ fun ErrorPaymentModal(
                         onClick = {},
                         modifier = Modifier
                             .weight(0.5f)
+                            .height(60.dp)
                             .padding(horizontal = 5.dp)
                             .border(
                                 width = 0.6.dp,
@@ -170,6 +165,6 @@ fun ErrorPaymentModal(
             }
         }
 
-
+    }
 
 }
