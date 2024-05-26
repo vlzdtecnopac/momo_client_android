@@ -131,7 +131,7 @@ fun ErrorPaymentModal() {
                         )
                     ) {
                         Text(
-                            "Cancelar",
+                            stringResource(id = R.string.cancel),
                             color = BlueDark,
                             fontSize = 22.sp
                         )
@@ -163,7 +163,7 @@ fun ErrorPaymentModal() {
                         )
                     ) {
                         Text(
-                            text = "Reintetar Pago",
+                            text = stringResource(id = R.string.try_again),
                             fontSize = 22.sp,
                             color = Color.White,
                             fontFamily = redhatFamily,
