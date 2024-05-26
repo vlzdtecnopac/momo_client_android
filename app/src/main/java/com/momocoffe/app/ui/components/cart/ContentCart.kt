@@ -352,12 +352,14 @@ fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
         }
         Spacer(modifier = Modifier.width(10.dp))
         Button(
-            modifier = Modifier.fillMaxWidth(0.9f),
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .height(55.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = OrangeDark),
             onClick = {
                 navController.navigate(Destination.Checkout.route)
             }) {
-            Text("Continuar al pago", color = Color.White, fontFamily = stacionFamily)
+            Text(stringResource(id = R.string.continue_payment), fontSize = 18.sp ,color = Color.White, fontFamily = stacionFamily)
         }
     }
 

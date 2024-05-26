@@ -41,7 +41,7 @@
     <string name="not_effecty">No Efectivo</string>
     <string name="lang_es">Spanish</string>
     <string name="lang_en">English</string>
-    <string name="size">Tamaño</string>
+    <string name="size">Size</string>
     <string name="error_user_and_password">Enter the username and password correctly</string>
     <string name="error_enter_user_and_password">Enter the username and password</string>
     <string name="welcome">¡Welcome!</string>
@@ -86,4 +86,5 @@
     <string name="something_went_wrong">¡Apparently something went wrong!</string>
     <string name="there_problem_helping">!If there is a problem, we are here to help you¡</string>
     <string name="yuo_payment_could_error">Your payment could not be processed.\n Please verify your card and try again,\n if unsuccessful, consider another card or payment method</string>
+    <string name="continue_payment">Continue payment</string>
 </resources>

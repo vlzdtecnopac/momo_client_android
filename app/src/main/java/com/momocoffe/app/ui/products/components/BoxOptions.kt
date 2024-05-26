@@ -1,6 +1,7 @@
 package com.momocoffe.app.ui.products.components
 
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -44,11 +46,25 @@ data class ItemBox(val id: Int, val name: String, val price: Int)
 fun BoxOptions(
     iconResource: Int,
     textResource: Int,
-    selectPrice: (Int, String) -> Unit,
-    items: List<ItemBox>
+    onSelectPrice: (Int, String) -> Unit,
+    items: List<ItemBox>,
+    defaultSelect: String
 ) {
     val isItemActive = remember { mutableStateOf(0) }
     val selectOption = remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit){
+        val parts = defaultSelect.split("|")
+        for (part in parts) {
+            val selected = items.find { it.name == part}
+            if (selected != null) {
+                onSelectPrice(selected.price, selected.name)
+                isItemActive.value = selected.id
+                selectOption.value = selected.name
+            }
+        }
+
+    }
 
     Column {
         Row(
@@ -89,7 +105,7 @@ fun BoxOptions(
                     ) {
                         Button(
                             onClick = {
-                                selectPrice(item.price, item.name)
+                                onSelectPrice(item.price, item.name)
                                 isItemActive.value = item.id
                                 selectOption.value = item.name
                             },

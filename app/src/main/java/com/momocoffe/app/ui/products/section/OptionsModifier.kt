@@ -89,7 +89,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.temp_icon,
                         textResource = R.string.txt_temp,
-                        selectPrice = { price, name ->
+                        onSelectPrice = { price, name ->
                             selectedOptions = selectedOptions.copy(temperatureFood = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["temp"] = ItemModifier(name, price.toString())
@@ -97,7 +97,10 @@ fun OptionsModifier(productsItem: ProductsItem,
                         },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
-                        })
+                        },
+                        defaultSelect = "Al tiempo"
+                        )
+
                 }
             }
         }
@@ -123,7 +126,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.tamano_icon,
                         textResource = R.string.size,
-                        selectPrice = { price, name ->
+                        onSelectPrice = { price, name ->
                             selectedOptions = selectedOptions.copy(size = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["size"] = ItemModifier(name, price.toString())
@@ -131,7 +134,9 @@ fun OptionsModifier(productsItem: ProductsItem,
                         },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
-                        })
+                        },
+                        defaultSelect = "Chico"
+                        )
                 }
             }
         }
@@ -162,7 +167,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.milk_icon,
                         textResource = R.string.txt_milk,
-                        selectPrice = { price, name ->
+                        onSelectPrice = { price, name ->
                             selectedOptions = selectedOptions.copy(milk = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["milk"] = ItemModifier(name, price.toString())
@@ -170,7 +175,8 @@ fun OptionsModifier(productsItem: ProductsItem,
                         },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
-                        })
+                        },
+                        defaultSelect = "Entera")
                 }
             }
         }
@@ -196,7 +202,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.sugar_icon,
                         textResource = R.string.txt_sugar,
-                        selectPrice = { price, name ->
+                        onSelectPrice = { price, name ->
                             selectedOptions = selectedOptions.copy(sugar = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["sugar"] = ItemModifier(name, price.toString())
@@ -204,7 +210,8 @@ fun OptionsModifier(productsItem: ProductsItem,
                         },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
-                        })
+                        },
+                        defaultSelect = "Blanca|Original")
                 }
             }
         }
@@ -228,7 +235,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                 if (newsItems.size > 0) {
                     ListOptions(
                         iconResource = R.drawable.extra_icon,
-                        selectPrice = { price, name ->
+                        onSelectPrice = { price, name ->
                             selectedOptions = selectedOptions.copy(extraShot = price)
                             val updatedMap = productsViewModel.selectModifiersList.toMutableMap()
                             updatedMap["extra"] =  ItemModifier(name, price.toString())
@@ -236,7 +243,9 @@ fun OptionsModifier(productsItem: ProductsItem,
                         },
                         items = newsItems.map { product ->
                             ItemList(product.id, product.name, product.price)
-                        })
+                        },
+                        defaultSelect = ""
+                        )
                 }
             }
         }
@@ -262,7 +271,7 @@ fun OptionsModifier(productsItem: ProductsItem,
 
                 if (newsItems.size > 0) {
                     ListOptions(iconResource = R.drawable.tapa_icon,
-                        selectPrice = { price, name ->
+                        onSelectPrice = { price, name ->
                             selectedOptions = selectedOptions.copy(tapLib = price)
                             val updatedMap = productsViewModel.selectModifiersList.toMutableMap()
                             updatedMap["libTapa"] =  ItemModifier(name, price.toString())
@@ -270,7 +279,9 @@ fun OptionsModifier(productsItem: ProductsItem,
                         },
                         items = newsItems.map { product ->
                             ItemList(product.id, product.name, product.price)
-                        })
+                        },
+                        defaultSelect = "Sin tapa"
+                        )
                 }
             }
         }
@@ -297,7 +308,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.temp_icon,
                         textResource = R.string.txt_temp,
-                        selectPrice = { price, name ->
+                        onSelectPrice = { price, name ->
                             selectedOptions = selectedOptions.copy(temperatureDrink = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["temp"] = ItemModifier(name, price.toString())
@@ -305,7 +316,8 @@ fun OptionsModifier(productsItem: ProductsItem,
                         },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
-                        })
+                        },
+                        defaultSelect = "Al tiempo")
                 }
             }
         }
@@ -329,18 +341,20 @@ fun OptionsModifier(productsItem: ProductsItem,
                     }
                 }
                 if (newsItems.size > 0) {
-                    BoxOptions(
+                    ListOptions(
                         iconResource = R.drawable.salsa_icon,
-                        textResource = R.string.txt_sauces,
-                        selectPrice = { price, name ->
-                            selectedOptions = selectedOptions.copy(sauce = price)
-                            val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
-                            updatedMap["sauce"] = ItemModifier(name, price.toString())
-                            productsViewModel.selectModifiersOptions = updatedMap
+                        onSelectPrice = { price, name ->
+                            selectedOptions = selectedOptions.copy(extraShot = price)
+                            val updatedMap = productsViewModel.selectModifiersList.toMutableMap()
+                            updatedMap["sauce"] =  ItemModifier(name, price.toString())
+                            productsViewModel.selectModifiersList = updatedMap
                         },
                         items = newsItems.map { product ->
-                            ItemBox(product.id, product.name, product.price)
-                        })
+                            ItemList(product.id, product.name, product.price)
+                        },
+                        defaultSelect = "Sin salsa"
+                    )
+
                 }
             }
         }

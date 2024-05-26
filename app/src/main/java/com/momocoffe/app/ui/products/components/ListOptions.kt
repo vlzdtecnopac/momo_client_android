@@ -22,6 +22,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,11 +48,21 @@ data class ItemList(val id: Int, val name: String, val price: Int)
 @Composable
 fun ListOptions(
     iconResource: Int,
-    selectPrice: (Int, String) -> Unit,
-    items: List<ItemList>
+    onSelectPrice: (Int, String) -> Unit,
+    items: List<ItemList>,
+    defaultSelect: String
 ) {
     val isItemActive = remember { mutableStateOf(0) }
     val selectOption = remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit){
+        val selected = items.find { it.name == defaultSelect}
+        if (selected != null) {
+            onSelectPrice(selected.price, selected.name)
+            isItemActive.value = selected.id
+            selectOption.value = selected.name
+        }
+    }
 
     Column {
         Row(
@@ -103,7 +114,7 @@ fun ListOptions(
                         Checkbox(
                             checked = isItemActive.value == item.id,
                             onCheckedChange = {
-                                selectPrice(item.price, item.name)
+                                onSelectPrice(item.price, item.name)
                                 isItemActive.value = item.id
                                 selectOption.value = item.name
                             },
