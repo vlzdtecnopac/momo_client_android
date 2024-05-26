@@ -32,7 +32,7 @@ fun OutlineTextField(
     placeholder: String,
     keyboardType: KeyboardType,
     textValue: String,
-    icon: Int,
+    icon: Int?,
     onValueChange: (String) -> Unit,
     onClickButton: () -> Unit,
     onNext: (KeyboardActionScope.() -> Unit),
@@ -48,12 +48,14 @@ fun OutlineTextField(
         label = { Text(text = label) },
         placeholder = { Text(text = placeholder, fontSize = 12.sp, fontFamily = redhatFamily) },
         leadingIcon = {
-            Icon(
-                modifier = Modifier.size(20.dp).padding(0.dp),
-                painter = painterResource(icon),
-                contentDescription = stringResource(id = R.string.momo_coffe),
-                tint = borderColor
-            )
+            icon?.let { painterResource(it) }?.let {
+                Icon(
+                    modifier = Modifier.size(20.dp).padding(0.dp),
+                    painter = it,
+                    contentDescription = stringResource(id = R.string.momo_coffe),
+                    tint = borderColor
+                )
+            }
         },
         trailingIcon = {
             IconButton(

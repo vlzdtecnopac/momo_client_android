@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -48,7 +49,8 @@ import com.momocoffe.app.R
 
 @Composable
 fun PropinaModal(
-    title: String
+    title: String,
+    onCancel: () -> Unit
 ) {
     Dialog(
         onDismissRequest = {},
@@ -58,7 +60,10 @@ fun PropinaModal(
     ) {
         Surface(
             modifier = Modifier
+                .clip(RoundedCornerShape(14.dp))
                 .padding(0.dp)
+                .widthIn(min = 460.dp, max = 830.dp)
+                .heightIn(min = 540.dp, max = 560.dp)
                 .zIndex(88f),
             color = BlueLight
         ) {
@@ -98,7 +103,7 @@ fun PropinaModal(
                     OutlineTextField(
                         label = stringResource(id = R.string.writing_here),
                         placeholder = stringResource(id = R.string.writing_here),
-                        icon = R.drawable.catch_icon,
+                        icon = null,
                         keyboardType = KeyboardType.Text,
                         textValue = textState,
                         onValueChange = { textState = it },
@@ -127,7 +132,7 @@ fun PropinaModal(
                                 )
                                 .weight(0.5f)
                                 .height(60.dp),
-                            onClick = {},
+                            onClick = onCancel,
                             colors = ButtonDefaults.buttonColors(
                                 disabledContentColor = BlueLight,
                                 contentColor =  BlueLight,
@@ -142,7 +147,7 @@ fun PropinaModal(
                             )
                         ) {
                             Text(
-                                "Cancelar",
+                                stringResource(id = R.string.cancel),
                                 color = BlueDark,
                                 fontSize = 22.sp
                             )
@@ -174,7 +179,7 @@ fun PropinaModal(
                             )
                         ) {
                             Text(
-                                text = "Agregar Propina",
+                                text = stringResource(id = R.string.add_propina),
                                 fontSize = 22.sp,
                                 color = Color.White,
                                 fontFamily = redhatFamily,

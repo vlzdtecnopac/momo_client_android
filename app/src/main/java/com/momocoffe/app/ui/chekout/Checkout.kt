@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -33,10 +34,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.gson.Gson
@@ -48,6 +47,7 @@ import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.R
 import com.momocoffe.app.network.database.Cart
 import com.momocoffe.app.ui.chekout.components.OutlineTextField
+import com.momocoffe.app.ui.chekout.components.PropinaModal
 import com.momocoffe.app.ui.components.cart.parseItemModifiers
 import com.momocoffe.app.ui.components.cart.parseObject
 import com.momocoffe.app.ui.theme.OrangeDark
@@ -57,13 +57,13 @@ import com.momocoffe.app.viewmodel.CartViewModel
 data class CoffeeCart(val name: String, val price: Int)
 
 @Composable
-fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
+fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     val context = LocalContext.current
     var textState by rememberSaveable { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
     val state = cartViewModel.state;
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         cartViewModel.priceSubTotal()
         cartViewModel.countTotal()
     }
@@ -122,7 +122,10 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
                             .padding(start = 10.dp),
                         verticalArrangement = Arrangement.Bottom
                     ) {
-                        Text(stringResource(id = R.string.start_barista_working), color = Color.White)
+                        Text(
+                            stringResource(id = R.string.start_barista_working),
+                            color = Color.White
+                        )
                         Spacer(modifier = Modifier.height(10.dp))
                         Row {
                             Icon(
@@ -174,7 +177,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
                 ) {
                     OutlineTextField(
                         label = stringResource(id = R.string.add_cupon),
-                        placeholder =  stringResource(id = R.string.add_cupon),
+                        placeholder = stringResource(id = R.string.add_cupon),
                         icon = R.drawable.procent_cupon_icon,
                         keyboardType = KeyboardType.Text,
                         textValue = textState,
@@ -238,7 +241,10 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
                         onClick = {
                             try {
                                 val intent = Intent()
-                                intent.component = ComponentName("com.momocoffe.izettlemomo", "com.momocoffe.izettlemomo.MainActivity")
+                                intent.component = ComponentName(
+                                    "com.momocoffe.izettlemomo",
+                                    "com.momocoffe.izettlemomo.MainActivity"
+                                )
                                 intent.putExtra("parametro1", "New Invoice")
                                 intent.putExtra("parametro2", 300)
                                 context.startActivity(intent)
@@ -369,7 +375,11 @@ fun ProductCartChekout(product: Cart) {
                     modifier = Modifier.weight(0.8f),
                     contentAlignment = Alignment.CenterEnd
                 ) {
-                    Text("\$ ${product.priceProductMod}", fontSize = 20.sp, fontFamily = stacionFamily)
+                    Text(
+                        "\$ ${product.priceProductMod}",
+                        fontSize = 20.sp,
+                        fontFamily = stacionFamily
+                    )
                 }
             }
 
@@ -379,15 +389,54 @@ fun ProductCartChekout(product: Cart) {
 
 }
 
+data class ListItemPropina(
+    val title: String,
+    val percentage: String
+
+)
+
 @Composable
 fun ContentPropinas() {
-    val list = (1..4).map { it.toString() }
+
+    var typePropina by remember { mutableStateOf(0) }
+    if (typePropina == 1) {
+        PropinaModal(
+            title = stringResource(id = R.string.write_percent),
+            onCancel = { typePropina = 0 })
+    }
+
+    if (typePropina == 2) {
+        PropinaModal(
+            title = stringResource(id = R.string.write_amount_peso),
+            onCancel = { typePropina = 0 })
+    }
+
+    val optionsPropinas = listOf(
+        ListItemPropina(
+            title = "Hoy no quiero dejar propina",
+            percentage = "0%"
+        ),
+        ListItemPropina(
+            title = "¡Un extra para nuestros héroes!",
+            percentage = "5%"
+        ),
+        ListItemPropina(
+            title = "¡Excelente\n" +
+                    "elección!",
+            percentage = "10%"
+        ),
+        ListItemPropina(
+            title = "¡Un gesto\n" +
+                    "increíble!",
+            percentage = "15%"
+        )
+    )
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(0.dp),
         content = {
-            items(list.size) { index ->
+            items(optionsPropinas.size) { index ->
                 Card(
                     backgroundColor = Color.Transparent,
                     modifier = Modifier
@@ -408,7 +457,7 @@ fun ContentPropinas() {
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                "0%",
+                                optionsPropinas[index].percentage,
                                 color = BlueDark,
                                 fontFamily = redhatFamily,
                                 fontSize = 18.sp
@@ -416,7 +465,7 @@ fun ContentPropinas() {
                             Spacer(modifier = Modifier.width(4.dp))
                             Box(modifier = Modifier.weight(0.5f)) {
                                 Text(
-                                    "Hoy no quiero dejar propina",
+                                    optionsPropinas[index].title,
                                     color = BlueDark,
                                     fontFamily = redhatFamily,
                                     fontSize = 10.sp,
@@ -438,5 +487,100 @@ fun ContentPropinas() {
         }
     )
 
+    Row(
+        modifier = Modifier.padding(start = 3.dp, end = 3.dp)
+    ) {
+        Button(
+            elevation = ButtonDefaults.elevation(0.dp),
+            modifier = Modifier.width(165.dp),
+            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+            shape = RoundedCornerShape(5.dp),
+            border = BorderStroke(width = 0.dp, color = BlueLight),
+            colors = ButtonDefaults.buttonColors(backgroundColor = BlueLight),
+            onClick = {
 
+            }) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Otra",
+                    color = BlueDark,
+                    fontFamily = redhatFamily,
+                    fontSize = 18.sp
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Box(modifier = Modifier.weight(0.5f)) {
+                    Text(
+                        "¡Tú decides!",
+                        color = BlueDark,
+                        fontFamily = redhatFamily,
+                        fontSize = 10.sp,
+                        lineHeight = 12.sp
+                    )
+                }
+
+                Icon(
+                    painterResource(id = R.drawable.dollar_circle_icon),
+                    contentDescription = stringResource(id = R.string.momo_coffe),
+                    tint = BlueDark,
+                    modifier = Modifier.size(width = 18.dp, height = 18.dp)
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp),
+        ) {
+            Button(
+                elevation = ButtonDefaults.elevation(0.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(4.dp)
+                    .height(41.dp),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                shape = RoundedCornerShape(5.dp),
+                border = BorderStroke(width = 0.dp, color = BlueLight),
+                colors = ButtonDefaults.buttonColors(backgroundColor = BlueLight),
+                onClick = {
+                    typePropina = 1
+                }
+            ) {
+                Text(
+                    "%",
+                    color = BlueDark,
+                    fontFamily = redhatFamily,
+                    fontSize = 10.sp,
+                    lineHeight = 12.sp
+                )
+            }
+            Button(
+                elevation = ButtonDefaults.elevation(0.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(4.dp)
+                    .height(41.dp),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                shape = RoundedCornerShape(5.dp),
+                border = BorderStroke(width = 0.dp, color = BlueLight),
+                colors = ButtonDefaults.buttonColors(backgroundColor = BlueLight),
+                onClick = {
+                    typePropina = 2
+                }
+            ) {
+                Text(
+                    "$",
+                    color = BlueDark,
+                    fontFamily = redhatFamily,
+                    fontSize = 10.sp,
+                    lineHeight = 12.sp
+                )
+            }
+        }
+
+    }
 }
+
+

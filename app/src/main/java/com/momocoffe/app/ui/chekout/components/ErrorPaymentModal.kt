@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -40,18 +41,20 @@ import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.R
 
-@Preview(widthDp = 1440, heightDp = 700, showBackground = true)
 @Composable
 fun ErrorPaymentModal() {
     Dialog(
         onDismissRequest = {},
         DialogProperties(
-            usePlatformDefaultWidth = false
+            usePlatformDefaultWidth = true
         )
     ) {
         Surface(
             modifier = Modifier
+                .clip(RoundedCornerShape(14.dp))
                 .padding(0.dp)
+                .widthIn(min = 460.dp, max = 830.dp)
+                .heightIn(min = 610.dp, max = 620.dp)
                 .zIndex(88f),
             color = BlueLight
         ) {
@@ -78,7 +81,7 @@ fun ErrorPaymentModal() {
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
-                    stringResource(id = R.string.try_again),
+                    stringResource(id = R.string.text_try_again),
                     fontFamily = redhatFamily,
                     fontSize = 22.sp,
                     fontWeight = FontWeight(700)
@@ -163,7 +166,7 @@ fun ErrorPaymentModal() {
                         )
                     ) {
                         Text(
-                            text = stringResource(id = R.string.try_again),
+                            text = stringResource(id = R.string.intend),
                             fontSize = 22.sp,
                             color = Color.White,
                             fontFamily = redhatFamily,
