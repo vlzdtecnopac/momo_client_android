@@ -73,8 +73,13 @@
     <string name="txt_temp">Temperatura</string>
     <string name="txt_sauces">Salsas</string>
     <string name="add_cart_payment">Agregar al carrito</string>
+    <string name="txt_add">Agregar</string>
     <string name="resum_pedido">Resumen de tu pedido</string>
     <string name="products">Productos</string>
     <string name="add_cart_product_new">Se ha agregado nuevo producto</string>
     <string name="error_cart_product_new">Error e ingreso del nuevo producto</string>
+    <string name="add_cupon">Agregar Cupón</string>
+    <string name="add_tip">Agregar Propina</string>
+    <string name="start_barista_working">Los baristas son las estrella \n de nuestro trabajo.</string>
+    <string name="payment">Pagar</string>
 </resources>

@@ -30,6 +30,7 @@ import coil.request.ImageRequest
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.database.Cart
+import com.momocoffe.app.ui.components.SolidLineDivider
 import com.momocoffe.app.ui.theme.*
 import com.momocoffe.app.viewmodel.CartProductEdit
 import com.momocoffe.app.viewmodel.CartState
@@ -162,7 +163,9 @@ fun ProductCart(
         count = product.countProduct
     }
 
-    Column {
+    Column(
+        modifier = Modifier.padding(horizontal = 8.dp)
+    ){
         Row(modifier = Modifier.padding(8.dp)) {
             Column {
                 if (product.imageProduct.isNullOrBlank()) {
@@ -309,7 +312,7 @@ fun ProductCart(
                 )
             }
         }
-
+        SolidLineDivider(color= GrayDark)
     }
 
 }
@@ -373,7 +376,7 @@ fun parseObject(input: String): List<ItemModifier> {
     return itemModifiers
 }
 
-private fun parseItemModifiers(input: String): Map<String, ItemModifier> {
+fun parseItemModifiers(input: String): Map<String, ItemModifier> {
     val regex = """(\w+)=ItemModifier\(name=(\w+), price=(\d+)\)""".toRegex()
     val matches = regex.findAll(input)
     val result = mutableMapOf<String, ItemModifier>()

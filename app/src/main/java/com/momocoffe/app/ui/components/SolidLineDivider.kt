@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.Dp
 @Composable
 fun SolidLineDivider(
     color: Color = Color.White,
-    thickness: Dp = .8.dp,
+    thickness: Dp = .6.dp,
     paddingTop: Dp = 8.dp,
     paddingButton: Dp = 0.dp,
     paddingLeft: Dp = 0.dp,

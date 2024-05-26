@@ -45,7 +45,10 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.R
+import com.momocoffe.app.network.database.Cart
 import com.momocoffe.app.ui.chekout.components.OutlineTextField
+import com.momocoffe.app.ui.components.cart.parseItemModifiers
+import com.momocoffe.app.ui.components.cart.parseObject
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.stacionFamily
 import com.momocoffe.app.viewmodel.CartViewModel
@@ -56,8 +59,8 @@ data class CoffeeCart(val name: String, val price: Int)
 fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
     val context = LocalContext.current
     var textState by rememberSaveable { mutableStateOf(value = "") }
-    val list = ((0..10).map { it.toString() })
     val focusManager = LocalFocusManager.current
+    val state = cartViewModel.state;
 
     val json = """
         [
@@ -113,10 +116,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
                             .padding(start = 10.dp),
                         verticalArrangement = Arrangement.Bottom
                     ) {
-                        Text(
-                            """Los baristas son las estrella
-                           |de nuestro trabajo.""".trimMargin(), color = Color.White
-                        )
+                        Text(stringResource(id = R.string.start_barista_working), color = Color.White)
                         Spacer(modifier = Modifier.height(10.dp))
                         Row {
                             Icon(
@@ -127,7 +127,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
                             )
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
-                                "Agrega tu propina",
+                                stringResource(id = R.string.add_tip),
                                 color = Color.White,
                                 fontFamily = redhatFamily,
                                 fontSize = 14.sp
@@ -148,7 +148,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
                     .padding(10.dp)
             ) {
                 LazyColumn(modifier = Modifier.fillMaxHeight()) {
-                    items(items = list, itemContent = { item -> ProductCartChekout() })
+                    items(items = state.carts, itemContent = { item -> ProductCartChekout(item) })
                 }
 
             }
@@ -167,8 +167,8 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     OutlineTextField(
-                        label = "Agregar Cupón",
-                        placeholder = "Agregar Cupón",
+                        label = stringResource(id = R.string.add_cupon),
+                        placeholder =  stringResource(id = R.string.add_cupon),
                         icon = R.drawable.procent_cupon_icon,
                         keyboardType = KeyboardType.Text,
                         textValue = textState,
@@ -196,7 +196,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
                         elevation = ButtonDefaults.elevation(0.dp)
                     ) {
                         Text(
-                            text = "Agregar",
+                            text = stringResource(id = R.string.txt_add),
                             fontSize = 16.sp,
                             color = BlueDark,
                             fontFamily = redhatFamily,
@@ -252,7 +252,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
                         )
                     ) {
                         Text(
-                            text = "Pagar",
+                            text = stringResource(id = R.string.payment),
                             fontSize = 16.sp,
                             color = Color.White,
                             fontFamily = redhatFamily,
@@ -267,16 +267,14 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
 }
 
 @Composable
-fun ProductCartChekout() {
-    val optionsSize = listOf("Chico", "Regular", "Menos azúcar", "Sin tapa")
-    val json = """
-        [
-            {"name": "Extra de café", "price": 10},
-            {"name": "Another Coffee", "price": 15}
-        ]
-    """.trimIndent()
+fun ProductCartChekout(product: Cart) {
+    val optionsSize = mutableListOf<String?>()
+    val itemsModifiersOptions = parseItemModifiers(product.modifiersOptions)
+    val itemsModifiersList = parseObject(product.modifiersList)
 
-    val coffees = Gson().fromJson(json, Array<CoffeeCart>::class.java)
+    for ((key, value) in itemsModifiersOptions) {
+        optionsSize.add(value.name)
+    }
 
     Card {
         Column {
@@ -287,7 +285,7 @@ fun ProductCartChekout() {
                 ) {
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data("https://lh3.googleusercontent.com/3bwSMf2jd8omjWNYsrUKcvyqduZfJnrkQnEfovtjjlXwXguqpu7CFcGNy59xEuIc0uCnAj5tuQ1J96996zTLy4PgtfIGwjivEQ")
+                            .data(product.imageProduct)
                             .crossfade(true)
                             .build(),
                         placeholder = painterResource(R.drawable.no_found),
@@ -308,7 +306,7 @@ fun ProductCartChekout() {
                     ) {
 
                         Text(
-                            "x1",
+                            "x${product.countProduct}",
                             modifier = Modifier
                                 .width(30.dp)
                                 .height(20.dp)
@@ -323,7 +321,7 @@ fun ProductCartChekout() {
                 Column(modifier = Modifier.padding(start = 5.dp)) {
 
                     Text(
-                        "Macadamia Black Tea Soda",
+                        product.titleProduct,
                         fontFamily = redhatFamily,
                         fontSize = 14.sp,
                         fontWeight = FontWeight(700)
@@ -336,18 +334,18 @@ fun ProductCartChekout() {
                         color = BlueDark
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    coffees.forEach { coffee ->
+                    itemsModifiersList.forEach {
                         Row(
                             modifier = Modifier.padding(horizontal = 10.dp)
                         ) {
                             Text(
-                                "${coffee.name}",
+                                it.name,
                                 modifier = Modifier.weight(0.6f),
                                 fontFamily = redhatFamily,
                                 fontSize = 12.sp
                             )
                             Text(
-                                "${coffee.price}",
+                                it.price,
                                 modifier = Modifier.weight(0.4f),
                                 fontFamily = redhatFamily,
                                 fontSize = 12.sp
@@ -365,7 +363,7 @@ fun ProductCartChekout() {
                     modifier = Modifier.weight(0.8f),
                     contentAlignment = Alignment.CenterEnd
                 ) {
-                    Text("\$ 67.00", fontSize = 20.sp, fontFamily = stacionFamily)
+                    Text("\$ ${product.priceProductMod}", fontSize = 20.sp, fontFamily = stacionFamily)
                 }
             }
 
@@ -397,7 +395,9 @@ fun ContentPropinas() {
                         shape = RoundedCornerShape(5.dp),
                         border = BorderStroke(width = 0.dp, color = BlueLight),
                         colors = ButtonDefaults.buttonColors(backgroundColor = BlueLight),
-                        onClick = { /*TODO*/ }) {
+                        onClick = {
+
+                        }) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
