@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -62,9 +63,14 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
     val focusManager = LocalFocusManager.current
     val state = cartViewModel.state;
 
+    LaunchedEffect(Unit){
+        cartViewModel.priceSubTotal()
+        cartViewModel.countTotal()
+    }
+
     val json = """
         [
-            {"name": "Subtotal  (2 productos)", "price": 10},
+            {"name": "Subtotal  (${cartViewModel.countCartState.value} productos)", "price": 10},
             {"name": "Propina", "price": 15},
             {"name": "Cupón", "price": 15}
         ]
