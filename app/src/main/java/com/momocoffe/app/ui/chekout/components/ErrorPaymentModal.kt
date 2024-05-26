@@ -110,7 +110,6 @@ fun ErrorPaymentModal() {
                 ) {
                     Button(
                         modifier = Modifier
-                            .height(60.dp)
                             .padding(16.dp)
                             .clip(RoundedCornerShape(14.dp))
                             .border(
@@ -118,14 +117,21 @@ fun ErrorPaymentModal() {
                                 color = BlueDark,
                                 shape = RoundedCornerShape(14.dp)
                             )
-                            .weight(0.5f),
+                            .weight(0.5f)
+                            .height(60.dp),
                         onClick = {},
                         colors = ButtonDefaults.buttonColors(
                             disabledContentColor = Color.Transparent,
                             contentColor = Color.Transparent,
                             backgroundColor = Color.Transparent
                         ),
-                        elevation = ButtonDefaults.elevation(0.dp)
+                        elevation = ButtonDefaults.elevation(
+                            defaultElevation = 0.dp,
+                            pressedElevation = 0.dp,
+                            disabledElevation = 0.dp,
+                            hoveredElevation = 0.dp,
+                            focusedElevation = 0.dp
+                        )
                     ) {
                         Text(
                             "Cancelar",
@@ -151,7 +157,13 @@ fun ErrorPaymentModal() {
                             disabledBackgroundColor = OrangeDark,
                             disabledContentColor = OrangeDark
                         ),
-                        elevation = ButtonDefaults.elevation(0.dp)
+                        elevation = ButtonDefaults.elevation(
+                            defaultElevation = 0.dp,
+                            pressedElevation = 0.dp,
+                            disabledElevation = 0.dp,
+                            hoveredElevation = 0.dp,
+                            focusedElevation = 0.dp
+                        )
                     ) {
                         Text(
                             text = "Reintetar Pago",

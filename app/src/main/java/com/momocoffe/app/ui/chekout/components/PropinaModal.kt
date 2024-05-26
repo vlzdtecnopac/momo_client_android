@@ -118,7 +118,6 @@ fun PropinaModal(
                     ) {
                         Button(
                             modifier = Modifier
-                                .height(60.dp)
                                 .padding(16.dp)
                                 .clip(RoundedCornerShape(14.dp))
                                 .border(
@@ -126,14 +125,21 @@ fun PropinaModal(
                                     color = BlueDark,
                                     shape = RoundedCornerShape(14.dp)
                                 )
-                                .weight(0.5f),
+                                .weight(0.5f)
+                                .height(60.dp),
                             onClick = {},
                             colors = ButtonDefaults.buttonColors(
-                                disabledContentColor = Color.Transparent,
-                                contentColor = Color.Transparent,
-                                backgroundColor = Color.Transparent
+                                disabledContentColor = BlueLight,
+                                contentColor =  BlueLight,
+                                backgroundColor =  BlueLight
                             ),
-                            elevation = ButtonDefaults.elevation(0.dp)
+                            elevation = ButtonDefaults.elevation(
+                                defaultElevation = 0.dp,
+                                pressedElevation = 0.dp,
+                                disabledElevation = 0.dp,
+                                hoveredElevation = 0.dp,
+                                focusedElevation = 0.dp
+                            )
                         ) {
                             Text(
                                 "Cancelar",
@@ -159,7 +165,13 @@ fun PropinaModal(
                                 disabledBackgroundColor = OrangeDark,
                                 disabledContentColor = OrangeDark
                             ),
-                            elevation = ButtonDefaults.elevation(0.dp)
+                            elevation = ButtonDefaults.elevation(
+                                defaultElevation = 0.dp,
+                                pressedElevation = 0.dp,
+                                disabledElevation = 0.dp,
+                                hoveredElevation = 0.dp,
+                                focusedElevation = 0.dp
+                            )
                         ) {
                             Text(
                                 text = "Agregar Propina",
