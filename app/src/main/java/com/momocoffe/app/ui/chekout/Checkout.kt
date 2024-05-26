@@ -70,7 +70,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel,) {
 
     val json = """
         [
-            {"name": "Subtotal  (${cartViewModel.countCartState.value} productos)", "price": 10},
+            {"name": "Subtotal  (${cartViewModel.countCartState.value} productos)", "price": ${cartViewModel.stateTotalSub.value}},
             {"name": "Propina", "price": 15},
             {"name": "Cupón", "price": 15}
         ]
