@@ -68,13 +68,18 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     val subTotalProduct = cartViewModel.stateTotalSub.value
     var propina by rememberSaveable { mutableStateOf(value = 0) }
     var typePropina by rememberSaveable { mutableStateOf(value = 0) }
+
+    var valorTotal by remember { mutableStateOf(0) }
+    var valueCupon by remember { mutableStateOf(value = 0) }
     var valuePropinaPerson by remember { mutableStateOf(value = 0) }
     var valuePropina by remember { mutableStateOf(value = 0) }
-    var tableList = remember { mutableStateListOf<CoffeeCart>() }
-    val focusManager = LocalFocusManager.current
-    val state = cartViewModel.state;
-    var valorTotal by remember { mutableStateOf(0) }
 
+    var isCuponValid by remember { mutableStateOf(false) }
+
+    var tableList = remember { mutableStateListOf<CoffeeCart>() }
+    val state = cartViewModel.state;
+
+    val focusManager = LocalFocusManager.current
 
     val couponString = stringResource(id = R.string.coupon)
     val tipString = stringResource(id = R.string.tip)
@@ -85,7 +90,6 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
         tableList.clear()
         tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
         tableList.add(CoffeeCart(tipString, valuePropina, null))
-        tableList.add(CoffeeCart(couponString, 0, "cupon"))
         tableList.add(CoffeeCart("Total", valorTotal, null))
     }
 
@@ -111,9 +115,17 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     }
 
     LaunchedEffect(subTotalProduct, valuePropina) {
-        valorTotal = listOf(subTotalProduct, valuePropina).sum()
-        tableList[1] = CoffeeCart(tipString, valuePropina, null)
-        tableList[3] = CoffeeCart(tipString, valorTotal, null)
+        if(isCuponValid){
+            valorTotal = subTotalProduct - valueCupon + valuePropina
+            tableList[1] = CoffeeCart(tipString, valuePropina, null)
+            tableList[2] = CoffeeCart(tipString, valueCupon, "cupon")
+            tableList[3] = CoffeeCart(tipString, valorTotal, null)
+        }else{
+            valorTotal = listOf(subTotalProduct, valuePropina).sum()
+            tableList[1] = CoffeeCart(tipString, valuePropina, null)
+            tableList[2] = CoffeeCart(tipString, valorTotal, null)
+        }
+
     }
 
     LaunchedEffect(valorTotal){
@@ -239,8 +251,13 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                     Spacer(modifier = Modifier.height(5.dp))
                     Button(
                         onClick = {
-
-                            valorTotal += 35
+                            isCuponValid = true
+                            valueCupon = 35
+                            tableList.clear()
+                            tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
+                            tableList.add(CoffeeCart(tipString, valuePropina, null))
+                            tableList.add(CoffeeCart(couponString, valueCupon, "cupon"))
+                            tableList.add(CoffeeCart("Total", valorTotal, null))
                             Toast.makeText(context, "Cupón Valido", Toast.LENGTH_SHORT).show()
                         },
                         modifier = Modifier
