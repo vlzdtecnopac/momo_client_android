@@ -110,6 +110,11 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
 
             else -> 0
         }
+
+        if(isCuponValid){
+            valorTotal = subTotalProduct - valueCupon + valuePropina
+            tableList[3] = CoffeeCart("Total", valorTotal, null)
+        }
     }
 
 
