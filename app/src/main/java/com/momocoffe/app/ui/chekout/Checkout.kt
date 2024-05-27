@@ -73,9 +73,8 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     var tableList = remember { mutableStateListOf<CoffeeCart>() }
     val focusManager = LocalFocusManager.current
     val state = cartViewModel.state;
-    val valorTotal by derivedStateOf {
-        listOf(subTotalProduct, valuePropina).sum()
-    }
+    var valorTotal by remember { mutableStateOf(0) }
+
 
     val couponString = stringResource(id = R.string.coupon)
     val tipString = stringResource(id = R.string.tip)
@@ -83,6 +82,11 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     LaunchedEffect(Unit) {
         cartViewModel.priceSubTotal()
         cartViewModel.countTotal()
+        tableList.clear()
+        tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
+        tableList.add(CoffeeCart(tipString, valuePropina, null))
+        tableList.add(CoffeeCart(couponString, 0, "cupon"))
+        tableList.add(CoffeeCart("Total", valorTotal, null))
     }
 
     LaunchedEffect(key1 = propina, key2 = typePropina) {
@@ -102,11 +106,18 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
         }
     }
 
-    LaunchedEffect(key1 = tableList) {
-        tableList.clear()
-        tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
-        tableList.add(CoffeeCart(tipString, valuePropina, null))
-        tableList.add(CoffeeCart("Total", valorTotal, null))
+    LaunchedEffect(tableList) {
+
+    }
+
+    LaunchedEffect(subTotalProduct, valuePropina) {
+        valorTotal = listOf(subTotalProduct, valuePropina).sum()
+        tableList[1] = CoffeeCart(tipString, valuePropina, null)
+        tableList[3] = CoffeeCart(tipString, valorTotal, null)
+    }
+
+    LaunchedEffect(valorTotal){
+
     }
 
 
@@ -228,7 +239,8 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                     Spacer(modifier = Modifier.height(5.dp))
                     Button(
                         onClick = {
-                            tableList.add(2, CoffeeCart(couponString, 35, "cupon"))
+
+                            valorTotal += 35
                             Toast.makeText(context, "Cupón Valido", Toast.LENGTH_SHORT).show()
                         },
                         modifier = Modifier
@@ -657,6 +669,9 @@ fun ContentPropinas(
                     colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 1) OrangeDark else BlueLight),
                     onClick = {
                         typePropina = 1
+                        onSelectPropina(0)
+                        onTypePropina(0)
+                        onSelectValue(0)
                     }
                 ) {
                     Text(
@@ -682,6 +697,9 @@ fun ContentPropinas(
                     colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 2) OrangeDark else BlueLight),
                     onClick = {
                         typePropina = 2
+                        onSelectPropina(0)
+                        onTypePropina(0)
+                        onSelectValue(0)
                     }
                 ) {
                     Text(
