@@ -42,8 +42,6 @@ import androidx.compose.ui.unit.*
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.momocoffe.app.ui.components.Category
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
@@ -84,13 +82,17 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     val couponString = stringResource(id = R.string.coupon)
     val tipString = stringResource(id = R.string.tip)
 
-    LaunchedEffect(Unit) {
-        cartViewModel.priceSubTotal()
-        cartViewModel.countTotal()
+    fun initTable(){
         tableList.clear()
         tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
         tableList.add(CoffeeCart(tipString, valuePropina, null))
         tableList.add(CoffeeCart("Total", valorTotal, null))
+    }
+
+    LaunchedEffect(Unit) {
+        cartViewModel.priceSubTotal()
+        cartViewModel.countTotal()
+        initTable()
     }
 
     LaunchedEffect(key1 = propina, key2 = typePropina) {
@@ -111,8 +113,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     }
 
 
-
-    LaunchedEffect(subTotalProduct, valuePropina) {
+    LaunchedEffect(subTotalProduct, valuePropina, isCuponValid) {
         if(isCuponValid){
             tableList[1] = CoffeeCart(tipString, valuePropina, null)
             tableList[2] = CoffeeCart(tipString, valueCupon, "cupon")
@@ -122,7 +123,6 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
             tableList[1] = CoffeeCart(tipString, valuePropina, null)
             tableList[2] = CoffeeCart(tipString, valorTotal, null)
         }
-
     }
 
 
@@ -247,9 +247,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                             isCuponValid = true
                             valueCupon = 35
                             tableList.clear()
-
                             valorTotal = subTotalProduct - valueCupon + valuePropina
-
                             tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
                             tableList.add(CoffeeCart(tipString, valuePropina, null))
                             tableList.add(CoffeeCart(couponString, valueCupon, "cupon"))
@@ -293,7 +291,12 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                                         color = Color.White
                                     )
                                     Button(
-                                        onClick = {},
+                                        onClick = {
+                                            isCuponValid = false
+                                            valueCupon = 0
+                                            initTable()
+                                            Toast.makeText(context, "Se ha eliminado cúpon", Toast.LENGTH_SHORT).show()
+                                        },
                                         modifier = Modifier
                                             .weight(0.4f)
                                             .padding(horizontal = 2.dp),
