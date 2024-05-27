@@ -352,8 +352,10 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                                     "com.momocoffe.izettlemomo",
                                     "com.momocoffe.izettlemomo.MainActivity"
                                 )
-                                intent.putExtra("parametro1", "New Invoice")
-                                intent.putExtra("parametro2", 300)
+                                intent.putExtra("zettleSubTotal", subTotalProduct)
+                                intent.putExtra("zettleMountCupon", valueCupon)
+                                intent.putExtra("zettleMountPropina", valuePropina)
+                                intent.putExtra("zettleMountTotal", valorTotal)
                                 context.startActivity(intent)
                             } catch (e: Exception) {
                                 Log.e("TAG", "Error al abrir la aplicación", e)
