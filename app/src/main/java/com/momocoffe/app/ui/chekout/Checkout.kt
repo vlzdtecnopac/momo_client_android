@@ -110,13 +110,10 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
         }
     }
 
-    LaunchedEffect(tableList) {
 
-    }
 
     LaunchedEffect(subTotalProduct, valuePropina) {
         if(isCuponValid){
-            valorTotal = subTotalProduct - valueCupon + valuePropina
             tableList[1] = CoffeeCart(tipString, valuePropina, null)
             tableList[2] = CoffeeCart(tipString, valueCupon, "cupon")
             tableList[3] = CoffeeCart(tipString, valorTotal, null)
@@ -125,10 +122,6 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
             tableList[1] = CoffeeCart(tipString, valuePropina, null)
             tableList[2] = CoffeeCart(tipString, valorTotal, null)
         }
-
-    }
-
-    LaunchedEffect(valorTotal){
 
     }
 
@@ -254,6 +247,9 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                             isCuponValid = true
                             valueCupon = 35
                             tableList.clear()
+
+                            valorTotal = subTotalProduct - valueCupon + valuePropina
+
                             tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
                             tableList.add(CoffeeCart(tipString, valuePropina, null))
                             tableList.add(CoffeeCart(couponString, valueCupon, "cupon"))
