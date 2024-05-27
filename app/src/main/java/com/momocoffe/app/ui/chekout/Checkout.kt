@@ -116,12 +116,12 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     LaunchedEffect(subTotalProduct, valuePropina, isCuponValid) {
         if(isCuponValid){
             tableList[1] = CoffeeCart(tipString, valuePropina, null)
-            tableList[2] = CoffeeCart(tipString, valueCupon, "cupon")
-            tableList[3] = CoffeeCart(tipString, valorTotal, null)
+            tableList[2] = CoffeeCart(couponString, valueCupon, "cupon")
+            tableList[3] = CoffeeCart("Total", valorTotal, null)
         }else{
             valorTotal = listOf(subTotalProduct, valuePropina).sum()
             tableList[1] = CoffeeCart(tipString, valuePropina, null)
-            tableList[2] = CoffeeCart(tipString, valorTotal, null)
+            tableList[2] = CoffeeCart("Total", valorTotal, null)
         }
     }
 
