@@ -92,10 +92,10 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
 
 
     val tableList: MutableList<CoffeeCart> =  mutableListOf()
-    val valorTotal = listOf<Int>(subTotalProduct,  valuePropina).sum()
+    val valorTotal = listOf(subTotalProduct,  valuePropina).sum()
     tableList.add( CoffeeCart( "Subtotal", subTotalProduct))
-    tableList.add( CoffeeCart( "${stringResource(id = R.string.tip)}", valuePropina))
-    tableList.add( CoffeeCart("${stringResource(id = R.string.coupon)}", 35))
+    tableList.add( CoffeeCart(stringResource(id = R.string.tip), valuePropina))
+    tableList.add( CoffeeCart(stringResource(id = R.string.coupon), 35))
     tableList.add( CoffeeCart("Total", valorTotal))
 
 
