@@ -39,6 +39,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.momocoffe.app.ui.components.Category
 import com.momocoffe.app.ui.components.Header
 import com.momocoffe.app.ui.theme.BlueDark
@@ -89,15 +90,13 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
         }
     }
 
-    val json = """
-        [
-            {"name": "Subtotal  (${cartViewModel.countCartState.value} productos)", "price": ${subTotalProduct}},
-            {"name": "${stringResource(id = R.string.tip)}", "price": ${valuePropina}},
-            {"name": "${stringResource(id = R.string.coupon)}",  "price": 15}
-        ]
-    """.trimIndent()
 
-    val table_list = Gson().fromJson(json, Array<CoffeeCart>::class.java)
+    val tableList: MutableList<CoffeeCart> =  mutableListOf()
+    val valorTotal = listOf<Int>(subTotalProduct,  valuePropina).sum()
+    tableList.add( CoffeeCart( "Subtotal", subTotalProduct))
+    tableList.add( CoffeeCart( "${stringResource(id = R.string.tip)}", valuePropina))
+    tableList.add( CoffeeCart("${stringResource(id = R.string.coupon)}", 35))
+    tableList.add( CoffeeCart("Total", valorTotal))
 
 
     Column(
@@ -240,7 +239,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
 
                 Column {
                     Column {
-                        table_list.forEach { coffee ->
+                        tableList.forEach { coffee ->
                             Row(
                                 modifier = Modifier.padding(horizontal = 10.dp)
                             ) {
