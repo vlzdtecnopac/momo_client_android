@@ -303,7 +303,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                                 ) {
                                     if (coffee.type == "cupon") {
                                         Text(
-                                            "${coffee.name}",
+                                            coffee.name,
                                             modifier = Modifier.weight(0.5f),
                                             fontFamily = redhatFamily,
                                             fontSize = 12.sp,
@@ -340,7 +340,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                                         }
                                         Spacer(modifier = Modifier.width(10.dp))
                                         Text(
-                                            "$ ${coffee.price}",
+                                            "$ -${coffee.price}",
                                             modifier = Modifier.weight(0.2f),
                                             fontFamily = redhatFamily,
                                             fontSize = 16.sp,
