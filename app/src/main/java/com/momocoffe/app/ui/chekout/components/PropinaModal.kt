@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -50,8 +51,13 @@ import com.momocoffe.app.R
 @Composable
 fun PropinaModal(
     title: String,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    onSelect: (Int) -> Unit
 ) {
+    var textState by remember { mutableStateOf(value = "") }
+    val focusManager = LocalFocusManager.current
+
+
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -76,8 +82,6 @@ fun PropinaModal(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                var textState by rememberSaveable { mutableStateOf(value = "") }
-                val focusManager = LocalFocusManager.current
 
                 Image(
                     painter = painterResource(id = R.drawable.momo_coffe_mug),
@@ -104,7 +108,7 @@ fun PropinaModal(
                         label = stringResource(id = R.string.writing_here),
                         placeholder = stringResource(id = R.string.writing_here),
                         icon = null,
-                        keyboardType = KeyboardType.Text,
+                        keyboardType = KeyboardType.Number,
                         textValue = textState,
                         onValueChange = { textState = it },
                         onClickButton = { textState = "" },
@@ -154,7 +158,7 @@ fun PropinaModal(
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
-                            onClick = {},
+                            onClick = {onSelect(textState.toInt())},
                             modifier = Modifier
                                 .weight(0.5f)
                                 .height(60.dp)

@@ -60,6 +60,11 @@ data class CoffeeCart(val name: String, val price: Int)
 fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     val context = LocalContext.current
     var textState by rememberSaveable { mutableStateOf(value = "") }
+    val subTotalProduct = cartViewModel.stateTotalSub.value
+    var propina by rememberSaveable { mutableStateOf(value = 0) }
+    var typePropina by rememberSaveable { mutableStateOf(value = 0) }
+    var valuePropinaPerson by remember { mutableStateOf(value = 0) }
+    var valuePropina by remember { mutableStateOf(value = 0) }
     val focusManager = LocalFocusManager.current
     val state = cartViewModel.state;
 
@@ -68,10 +73,26 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
         cartViewModel.countTotal()
     }
 
+    LaunchedEffect(key1 = propina, key2 = typePropina) {
+        valuePropina = when (propina) {
+            1 -> (subTotalProduct * 5) / 100
+            2 -> (subTotalProduct * 10) / 100
+            3 -> (subTotalProduct * 15) / 100
+            4 -> {
+                when (typePropina) {
+                    1 -> (subTotalProduct * valuePropinaPerson) / 100
+                    2 -> valuePropinaPerson
+                    else -> 0
+                }
+            }
+            else -> 0
+        }
+    }
+
     val json = """
         [
-            {"name": "Subtotal  (${cartViewModel.countCartState.value} productos)", "price": ${cartViewModel.stateTotalSub.value}},
-            {"name": "${stringResource(id = R.string.tip)}", "price": 15},
+            {"name": "Subtotal  (${cartViewModel.countCartState.value} productos)", "price": ${subTotalProduct}},
+            {"name": "${stringResource(id = R.string.tip)}", "price": ${valuePropina}},
             {"name": "${stringResource(id = R.string.coupon)}",  "price": 15}
         ]
     """.trimIndent()
@@ -145,7 +166,11 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                     }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
-                ContentPropinas()
+                ContentPropinas(
+                    onSelectValue = {valuePropinaPerson = it},
+                    onSelectPropina = { propina = it },
+                    onTypePropina = { typePropina = it }
+                )
             }
             Spacer(modifier = Modifier.width(5.dp))
             Column(
@@ -279,7 +304,9 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
 }
 
 @Composable
-fun ProductCartChekout(product: Cart) {
+fun ProductCartChekout(
+    product: Cart,
+) {
     val optionsSize = mutableListOf<String?>()
     val itemsModifiersOptions = parseItemModifiers(product.modifiersOptions)
     val itemsModifiersList = parseObject(product.modifiersList)
@@ -393,11 +420,14 @@ data class ListItemPropina(
     val title: String,
     val percentage: String,
     val active: Boolean
-
 )
 
 @Composable
-fun ContentPropinas() {
+fun ContentPropinas(
+    onSelectValue:(Int) -> Unit,
+    onSelectPropina: (Int) -> Unit,
+    onTypePropina: (Int) -> Unit
+) {
 
     var typePropina by remember { mutableStateOf(0) }
     var mountPropinaSelected by remember { mutableStateOf(0) }
@@ -405,13 +435,23 @@ fun ContentPropinas() {
     if (typePropina == 1) {
         PropinaModal(
             title = stringResource(id = R.string.write_percent),
-            onCancel = { typePropina = 0 })
+            onCancel = { typePropina = 0 },
+            onSelect = {
+                onSelectPropina(4)
+                onTypePropina(1)
+                onSelectValue(it)
+            })
     }
 
     if (typePropina == 2) {
         PropinaModal(
             title = stringResource(id = R.string.write_amount_peso),
-            onCancel = { typePropina = 0 })
+            onCancel = { typePropina = 0 },
+            onSelect = {
+                onSelectPropina(4)
+                onTypePropina(2)
+                onSelectValue(it)
+            })
     }
 
     val optionsPropinas = listOf(
@@ -453,17 +493,21 @@ fun ContentPropinas() {
                         modifier = Modifier.fillMaxWidth(0.5f),
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                         shape = RoundedCornerShape(5.dp),
-                        border = BorderStroke(width = 0.dp, color = if (mountPropinaSelected == index)  OrangeDark  else  BlueLight),
-                        colors =  ButtonDefaults.buttonColors(backgroundColor = if (mountPropinaSelected == index)  OrangeDark  else  BlueLight),
+                        border = BorderStroke(
+                            width = 0.dp,
+                            color = if (mountPropinaSelected == index) OrangeDark else BlueLight
+                        ),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = if (mountPropinaSelected == index) OrangeDark else BlueLight),
                         onClick = {
                             mountPropinaSelected = index
+                            onSelectPropina(index)
                         }) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 optionsPropinas[index].percentage,
-                                color = if (mountPropinaSelected == index)  Color.White  else  BlueDark,
+                                color = if (mountPropinaSelected == index) Color.White else BlueDark,
                                 fontFamily = redhatFamily,
                                 fontSize = 18.sp
                             )
@@ -471,7 +515,7 @@ fun ContentPropinas() {
                             Box(modifier = Modifier.weight(0.5f)) {
                                 Text(
                                     optionsPropinas[index].title,
-                                    color = if (mountPropinaSelected == index)  Color.White  else  BlueDark,
+                                    color = if (mountPropinaSelected == index) Color.White else BlueDark,
                                     fontFamily = redhatFamily,
                                     fontSize = 10.sp,
                                     lineHeight = 12.sp
@@ -481,7 +525,7 @@ fun ContentPropinas() {
                             Icon(
                                 painterResource(id = R.drawable.dollar_circle_icon),
                                 contentDescription = stringResource(id = R.string.momo_coffe),
-                                tint = if (mountPropinaSelected == index)  Color.White  else  BlueDark,
+                                tint = if (mountPropinaSelected == index) Color.White else BlueDark,
                                 modifier = Modifier.size(width = 18.dp, height = 18.dp)
                             )
                         }
@@ -500,8 +544,11 @@ fun ContentPropinas() {
             modifier = Modifier.fillMaxWidth(0.5f),
             contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
             shape = RoundedCornerShape(5.dp),
-            border = BorderStroke(width = 0.dp, color = if (mountPropinaSelected == 4)  OrangeDark  else  BlueLight),
-            colors =  ButtonDefaults.buttonColors(backgroundColor = if (mountPropinaSelected == 4)  OrangeDark  else  BlueLight),
+            border = BorderStroke(
+                width = 0.dp,
+                color = if (mountPropinaSelected == 4) OrangeDark else BlueLight
+            ),
+            colors = ButtonDefaults.buttonColors(backgroundColor = if (mountPropinaSelected == 4) OrangeDark else BlueLight),
             onClick = {
                 mountPropinaSelected = 4
             }) {
@@ -510,7 +557,7 @@ fun ContentPropinas() {
             ) {
                 Text(
                     stringResource(id = R.string.other),
-                    color = if (mountPropinaSelected == 4)  Color.White  else  BlueDark,
+                    color = if (mountPropinaSelected == 4) Color.White else BlueDark,
                     fontFamily = redhatFamily,
                     fontSize = 18.sp
                 )
@@ -518,7 +565,7 @@ fun ContentPropinas() {
                 Box(modifier = Modifier.weight(0.5f)) {
                     Text(
                         stringResource(id = R.string.yuo_decided),
-                        color = if (mountPropinaSelected == 4)  Color.White  else  BlueDark,
+                        color = if (mountPropinaSelected == 4) Color.White else BlueDark,
                         fontFamily = redhatFamily,
                         fontSize = 10.sp,
                         lineHeight = 12.sp
@@ -528,12 +575,12 @@ fun ContentPropinas() {
                 Icon(
                     painterResource(id = R.drawable.dollar_circle_icon),
                     contentDescription = stringResource(id = R.string.momo_coffe),
-                    tint = if (mountPropinaSelected == 4)  Color.White  else  BlueDark,
+                    tint = if (mountPropinaSelected == 4) Color.White else BlueDark,
                     modifier = Modifier.size(width = 18.dp, height = 18.dp)
                 )
             }
         }
-        if(mountPropinaSelected == 4) {
+        if (mountPropinaSelected == 4) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -547,7 +594,10 @@ fun ContentPropinas() {
                         .height(41.dp),
                     contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                     shape = RoundedCornerShape(5.dp),
-                    border = BorderStroke(width = 0.dp, color = if (typePropina == 1) OrangeDark else BlueLight),
+                    border = BorderStroke(
+                        width = 0.dp,
+                        color = if (typePropina == 1) OrangeDark else BlueLight
+                    ),
                     colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 1) OrangeDark else BlueLight),
                     onClick = {
                         typePropina = 1
@@ -569,7 +619,10 @@ fun ContentPropinas() {
                         .height(41.dp),
                     contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                     shape = RoundedCornerShape(5.dp),
-                    border = BorderStroke(width = 0.dp, color = if (typePropina == 2) OrangeDark else BlueLight),
+                    border = BorderStroke(
+                        width = 0.dp,
+                        color = if (typePropina == 2) OrangeDark else BlueLight
+                    ),
                     colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 2) OrangeDark else BlueLight),
                     onClick = {
                         typePropina = 2
