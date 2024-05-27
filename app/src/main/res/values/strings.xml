@@ -99,5 +99,7 @@
     <string name="extra_us_hero">¡An extra for our heroes!</string>
     <string name="excelent_choice">¡Excellent \n choice!</string>
     <string name="gesture_incredible">!A gesture\n incredible!</string>
+    <string name="delete">Eliminar</string>
+
 
 </resources>

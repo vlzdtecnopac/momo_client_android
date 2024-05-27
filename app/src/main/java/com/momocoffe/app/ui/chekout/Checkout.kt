@@ -3,6 +3,7 @@ package com.momocoffe.app.ui.chekout
 import android.content.ComponentName
 import android.content.Intent
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,7 +17,10 @@ import androidx.compose.material.*
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -55,7 +59,7 @@ import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.stacionFamily
 import com.momocoffe.app.viewmodel.CartViewModel
 
-data class CoffeeCart(val name: String, val price: Int)
+data class CoffeeCart(val name: String, val price: Int, val type: String?)
 
 @Composable
 fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
@@ -66,8 +70,15 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     var typePropina by rememberSaveable { mutableStateOf(value = 0) }
     var valuePropinaPerson by remember { mutableStateOf(value = 0) }
     var valuePropina by remember { mutableStateOf(value = 0) }
+    var tableList = remember { mutableStateListOf<CoffeeCart>() }
     val focusManager = LocalFocusManager.current
     val state = cartViewModel.state;
+    val valorTotal by derivedStateOf {
+        listOf(subTotalProduct, valuePropina).sum()
+    }
+
+    val couponString = stringResource(id = R.string.coupon)
+    val tipString = stringResource(id = R.string.tip)
 
     LaunchedEffect(Unit) {
         cartViewModel.priceSubTotal()
@@ -86,17 +97,17 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                     else -> 0
                 }
             }
+
             else -> 0
         }
     }
 
-
-    val tableList: MutableList<CoffeeCart> =  mutableListOf()
-    val valorTotal = listOf(subTotalProduct,  valuePropina).sum()
-    tableList.add( CoffeeCart( "Subtotal", subTotalProduct))
-    tableList.add( CoffeeCart(stringResource(id = R.string.tip), valuePropina))
-    tableList.add( CoffeeCart(stringResource(id = R.string.coupon), 35))
-    tableList.add( CoffeeCart("Total", valorTotal))
+    LaunchedEffect(key1 = tableList) {
+        tableList.clear()
+        tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
+        tableList.add(CoffeeCart(tipString, valuePropina, null))
+        tableList.add(CoffeeCart("Total", valorTotal, null))
+    }
 
 
     Column(
@@ -166,7 +177,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 ContentPropinas(
-                    onSelectValue = {valuePropinaPerson = it},
+                    onSelectValue = { valuePropinaPerson = it },
                     onSelectPropina = { propina = it },
                     onTypePropina = { typePropina = it }
                 )
@@ -216,7 +227,10 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                     )
                     Spacer(modifier = Modifier.height(5.dp))
                     Button(
-                        onClick = {},
+                        onClick = {
+                            tableList.add(2, CoffeeCart(couponString, 35, "cupon"))
+                            Toast.makeText(context, "Cupón Valido", Toast.LENGTH_SHORT).show()
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 5.dp),
@@ -241,22 +255,63 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                     Column {
                         tableList.forEach { coffee ->
                             Row(
-                                modifier = Modifier.padding(horizontal = 10.dp)
+                                modifier = Modifier.padding(horizontal = 10.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(
-                                    "${coffee.name}",
-                                    modifier = Modifier.weight(0.9f),
-                                    fontFamily = redhatFamily,
-                                    fontSize = 12.sp,
-                                    color = Color.White
-                                )
-                                Text(
-                                    "$ ${coffee.price}",
-                                    modifier = Modifier.weight(0.2f),
-                                    fontFamily = redhatFamily,
-                                    fontSize = 16.sp,
-                                    color = Color.White
-                                )
+                                if (coffee.type == "cupon") {
+                                    Text(
+                                        "${coffee.name}",
+                                        modifier = Modifier.weight(0.5f),
+                                        fontFamily = redhatFamily,
+                                        fontSize = 12.sp,
+                                        color = Color.White
+                                    )
+                                    Button(
+                                        onClick = {},
+                                        modifier = Modifier
+                                            .weight(0.4f)
+                                            .padding(horizontal = 2.dp),
+                                        shape = RoundedCornerShape(50.dp),
+                                        colors = ButtonDefaults.buttonColors(
+                                            backgroundColor = OrangeDark,
+                                            disabledBackgroundColor = OrangeDark,
+                                            disabledContentColor = OrangeDark
+                                        ),
+                                        elevation = ButtonDefaults.elevation(0.dp)
+                                    ) {
+                                        Text(
+                                            text = stringResource(id = R.string.delete),
+                                            fontSize = 14.sp,
+                                            color = Color.White,
+                                            fontFamily = redhatFamily,
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Text(
+                                        "$ ${coffee.price}",
+                                        modifier = Modifier.weight(0.2f),
+                                        fontFamily = redhatFamily,
+                                        fontSize = 16.sp,
+                                        color = Color.White
+                                    )
+                                } else {
+                                    Text(
+                                        "${coffee.name}",
+                                        modifier = Modifier.weight(0.9f),
+                                        fontFamily = redhatFamily,
+                                        fontSize = 12.sp,
+                                        color = Color.White
+                                    )
+                                    Text(
+                                        "$ ${coffee.price}",
+                                        modifier = Modifier.weight(0.2f),
+                                        fontFamily = redhatFamily,
+                                        fontSize = 16.sp,
+                                        color = Color.White
+                                    )
+                                }
+
                             }
                         }
                     }
@@ -423,7 +478,7 @@ data class ListItemPropina(
 
 @Composable
 fun ContentPropinas(
-    onSelectValue:(Int) -> Unit,
+    onSelectValue: (Int) -> Unit,
     onSelectPropina: (Int) -> Unit,
     onTypePropina: (Int) -> Unit
 ) {
