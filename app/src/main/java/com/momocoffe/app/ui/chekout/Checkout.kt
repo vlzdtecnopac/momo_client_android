@@ -71,8 +71,8 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     val json = """
         [
             {"name": "Subtotal  (${cartViewModel.countCartState.value} productos)", "price": ${cartViewModel.stateTotalSub.value}},
-            {"name": "Propina", "price": 15},
-            {"name": "Cupón", "price": 15}
+            {"name": "${stringResource(id = R.string.tip)}", "price": 15},
+            {"name": "${stringResource(id = R.string.coupon)}",  "price": 15}
         ]
     """.trimIndent()
 
@@ -391,7 +391,8 @@ fun ProductCartChekout(product: Cart) {
 
 data class ListItemPropina(
     val title: String,
-    val percentage: String
+    val percentage: String,
+    val active: Boolean
 
 )
 
@@ -399,6 +400,8 @@ data class ListItemPropina(
 fun ContentPropinas() {
 
     var typePropina by remember { mutableStateOf(0) }
+    var mountPropinaSelected by remember { mutableStateOf(0) }
+
     if (typePropina == 1) {
         PropinaModal(
             title = stringResource(id = R.string.write_percent),
@@ -413,22 +416,24 @@ fun ContentPropinas() {
 
     val optionsPropinas = listOf(
         ListItemPropina(
-            title = "Hoy no quiero dejar propina",
-            percentage = "0%"
+            title = stringResource(id = R.string.propina_never),
+            percentage = "0%",
+            active = true
         ),
         ListItemPropina(
-            title = "¡Un extra para nuestros héroes!",
-            percentage = "5%"
+            title = stringResource(id = R.string.extra_us_hero),
+            percentage = "5%",
+            active = false
         ),
         ListItemPropina(
-            title = "¡Excelente\n" +
-                    "elección!",
-            percentage = "10%"
+            title = stringResource(id = R.string.extra_us_hero),
+            percentage = "10%",
+            active = false
         ),
         ListItemPropina(
-            title = "¡Un gesto\n" +
-                    "increíble!",
-            percentage = "15%"
+            title = stringResource(id = R.string.gesture_incredible),
+            percentage = "15%",
+            active = false
         )
     )
 
@@ -448,17 +453,17 @@ fun ContentPropinas() {
                         modifier = Modifier.fillMaxWidth(0.5f),
                         contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                         shape = RoundedCornerShape(5.dp),
-                        border = BorderStroke(width = 0.dp, color = BlueLight),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = BlueLight),
+                        border = BorderStroke(width = 0.dp, color = if (mountPropinaSelected == index)  OrangeDark  else  BlueLight),
+                        colors =  ButtonDefaults.buttonColors(backgroundColor = if (mountPropinaSelected == index)  OrangeDark  else  BlueLight),
                         onClick = {
-
+                            mountPropinaSelected = index
                         }) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 optionsPropinas[index].percentage,
-                                color = BlueDark,
+                                color = if (mountPropinaSelected == index)  Color.White  else  BlueDark,
                                 fontFamily = redhatFamily,
                                 fontSize = 18.sp
                             )
@@ -466,7 +471,7 @@ fun ContentPropinas() {
                             Box(modifier = Modifier.weight(0.5f)) {
                                 Text(
                                     optionsPropinas[index].title,
-                                    color = BlueDark,
+                                    color = if (mountPropinaSelected == index)  Color.White  else  BlueDark,
                                     fontFamily = redhatFamily,
                                     fontSize = 10.sp,
                                     lineHeight = 12.sp
@@ -476,7 +481,7 @@ fun ContentPropinas() {
                             Icon(
                                 painterResource(id = R.drawable.dollar_circle_icon),
                                 contentDescription = stringResource(id = R.string.momo_coffe),
-                                tint = BlueDark,
+                                tint = if (mountPropinaSelected == index)  Color.White  else  BlueDark,
                                 modifier = Modifier.size(width = 18.dp, height = 18.dp)
                             )
                         }
@@ -492,28 +497,28 @@ fun ContentPropinas() {
     ) {
         Button(
             elevation = ButtonDefaults.elevation(0.dp),
-            modifier = Modifier.width(165.dp),
+            modifier = Modifier.fillMaxWidth(0.5f),
             contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
             shape = RoundedCornerShape(5.dp),
-            border = BorderStroke(width = 0.dp, color = BlueLight),
-            colors = ButtonDefaults.buttonColors(backgroundColor = BlueLight),
+            border = BorderStroke(width = 0.dp, color = if (mountPropinaSelected == 4)  OrangeDark  else  BlueLight),
+            colors =  ButtonDefaults.buttonColors(backgroundColor = if (mountPropinaSelected == 4)  OrangeDark  else  BlueLight),
             onClick = {
-
+                mountPropinaSelected = 4
             }) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Otra",
-                    color = BlueDark,
+                    stringResource(id = R.string.other),
+                    color = if (mountPropinaSelected == 4)  Color.White  else  BlueDark,
                     fontFamily = redhatFamily,
                     fontSize = 18.sp
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Box(modifier = Modifier.weight(0.5f)) {
                     Text(
-                        "¡Tú decides!",
-                        color = BlueDark,
+                        stringResource(id = R.string.yuo_decided),
+                        color = if (mountPropinaSelected == 4)  Color.White  else  BlueDark,
                         fontFamily = redhatFamily,
                         fontSize = 10.sp,
                         lineHeight = 12.sp
@@ -523,60 +528,61 @@ fun ContentPropinas() {
                 Icon(
                     painterResource(id = R.drawable.dollar_circle_icon),
                     contentDescription = stringResource(id = R.string.momo_coffe),
-                    tint = BlueDark,
+                    tint = if (mountPropinaSelected == 4)  Color.White  else  BlueDark,
                     modifier = Modifier.size(width = 18.dp, height = 18.dp)
                 )
             }
         }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 8.dp),
-        ) {
-            Button(
-                elevation = ButtonDefaults.elevation(0.dp),
+        if(mountPropinaSelected == 4) {
+            Row(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(4.dp)
-                    .height(41.dp),
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
-                shape = RoundedCornerShape(5.dp),
-                border = BorderStroke(width = 0.dp, color = BlueLight),
-                colors = ButtonDefaults.buttonColors(backgroundColor = BlueLight),
-                onClick = {
-                    typePropina = 1
-                }
+                    .fillMaxWidth()
+                    .padding(start = 8.dp),
             ) {
-                Text(
-                    "%",
-                    color = BlueDark,
-                    fontFamily = redhatFamily,
-                    fontSize = 10.sp,
-                    lineHeight = 12.sp
-                )
-            }
-            Button(
-                elevation = ButtonDefaults.elevation(0.dp),
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(4.dp)
-                    .height(41.dp),
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
-                shape = RoundedCornerShape(5.dp),
-                border = BorderStroke(width = 0.dp, color = BlueLight),
-                colors = ButtonDefaults.buttonColors(backgroundColor = BlueLight),
-                onClick = {
-                    typePropina = 2
+                Button(
+                    elevation = ButtonDefaults.elevation(0.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(4.dp)
+                        .height(41.dp),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                    shape = RoundedCornerShape(5.dp),
+                    border = BorderStroke(width = 0.dp, color = if (typePropina == 1) OrangeDark else BlueLight),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 1) OrangeDark else BlueLight),
+                    onClick = {
+                        typePropina = 1
+                    }
+                ) {
+                    Text(
+                        "%",
+                        color = if (typePropina == 1) Color.White else BlueDark,
+                        fontFamily = redhatFamily,
+                        fontSize = 20.sp,
+                        lineHeight = 12.sp
+                    )
                 }
-            ) {
-                Text(
-                    "$",
-                    color = BlueDark,
-                    fontFamily = redhatFamily,
-                    fontSize = 10.sp,
-                    lineHeight = 12.sp
-                )
+                Button(
+                    elevation = ButtonDefaults.elevation(0.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(4.dp)
+                        .height(41.dp),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                    shape = RoundedCornerShape(5.dp),
+                    border = BorderStroke(width = 0.dp, color = if (typePropina == 2) OrangeDark else BlueLight),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 2) OrangeDark else BlueLight),
+                    onClick = {
+                        typePropina = 2
+                    }
+                ) {
+                    Text(
+                        "$",
+                        color = if (typePropina == 2) Color.White else BlueDark,
+                        fontFamily = redhatFamily,
+                        fontSize = 20.sp,
+                        lineHeight = 12.sp
+                    )
+                }
             }
         }
 

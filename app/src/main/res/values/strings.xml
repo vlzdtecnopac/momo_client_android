@@ -78,6 +78,8 @@
     <string name="add_cart_product_new">New product has been added</string>
     <string name="error_cart_product_new">Error and entry of the new product</string>
     <string name="add_cupon">Add Coupon</string>
+    <string name="coupon">Coupon</string>
+    <string name="tip">Tip</string>
     <string name="add_tip">Add Tip</string>
     <string name="start_barista_working">Baristas are the stars \n of our work.</string>
     <string name="payment">Payment</string>
@@ -90,5 +92,12 @@
     <string name="intend">Intend</string>
     <string name="write_percent">¡Wtite a percent!</string>
     <string name="write_amount_peso">¡Write an amount in pesos!</string>
-    <string name="add_propina">Adjuntar Propina</string>
+    <string name="add_propina">Add Tip</string>
+    <string name="other">Other</string>
+    <string name="yuo_decided">Up to yuo</string>
+    <string name="propina_never">Today I dont want to leave a tip</string>
+    <string name="extra_us_hero">¡An extra for our heroes!</string>
+    <string name="excelent_choice">¡Excellent \n choice!</string>
+    <string name="gesture_incredible">!A gesture\n incredible!</string>
+
 </resources>
