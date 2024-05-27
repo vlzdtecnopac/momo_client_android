@@ -331,7 +331,7 @@ fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
                 .background(GrayLight)
                 .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
             Text(
@@ -350,7 +350,7 @@ fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
             )
 
         }
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.height(15.dp))
         Button(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
@@ -359,7 +359,7 @@ fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
             onClick = {
                 navController.navigate(Destination.Checkout.route)
             }) {
-            Text(stringResource(id = R.string.continue_payment), fontSize = 18.sp ,color = Color.White, fontFamily = stacionFamily)
+            Text(stringResource(id = R.string.continue_payment), fontSize = 20.sp ,color = Color.White, fontFamily = stacionFamily)
         }
     }
 

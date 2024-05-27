@@ -1,0 +1,273 @@
+package com.momocoffe.app.ui.chekout.section
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.Text
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.momocoffe.app.R
+import com.momocoffe.app.ui.chekout.components.PropinaModal
+import com.momocoffe.app.ui.theme.BlueDark
+import com.momocoffe.app.ui.theme.BlueLight
+import com.momocoffe.app.ui.theme.OrangeDark
+import com.momocoffe.app.ui.theme.redhatFamily
+
+
+data class ListItemPropina(
+    val title: String,
+    val percentage: String,
+    val active: Boolean
+)
+
+@Composable
+fun ContentPropinas(
+    onSelectValue: (Int) -> Unit,
+    onSelectPropina: (Int) -> Unit,
+    onTypePropina: (Int) -> Unit
+) {
+
+    var typePropina by remember { mutableStateOf(0) }
+    var mountPropinaSelected by remember { mutableStateOf(0) }
+
+    if (typePropina == 1) {
+        PropinaModal(
+            title = stringResource(id = R.string.write_percent),
+            onCancel = { typePropina = 10 },
+            onSelect = {
+                onSelectPropina(4)
+                onTypePropina(1)
+                onSelectValue(it)
+                typePropina = 10
+            })
+    }
+
+    if (typePropina == 2) {
+        PropinaModal(
+            title = stringResource(id = R.string.write_amount_peso),
+            onCancel = { typePropina = 10 },
+            onSelect = {
+                onSelectPropina(4)
+                onTypePropina(2)
+                onSelectValue(it)
+                typePropina = 10
+            })
+    }
+
+    val optionsPropinas = listOf(
+        ListItemPropina(
+            title = stringResource(id = R.string.propina_never),
+            percentage = "0%",
+            active = true
+        ),
+        ListItemPropina(
+            title = stringResource(id = R.string.extra_us_hero),
+            percentage = "5%",
+            active = false
+        ),
+        ListItemPropina(
+            title = stringResource(id = R.string.extra_us_hero),
+            percentage = "10%",
+            active = false
+        ),
+        ListItemPropina(
+            title = stringResource(id = R.string.gesture_incredible),
+            percentage = "15%",
+            active = false
+        )
+    )
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(0.dp),
+        content = {
+            items(optionsPropinas.size) { index ->
+                Card(
+                    backgroundColor = Color.Transparent,
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .fillMaxWidth(),
+                ) {
+                    Button(
+                        elevation = ButtonDefaults.elevation(0.dp),
+                        modifier = Modifier.fillMaxWidth(0.5f),
+                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                        shape = RoundedCornerShape(5.dp),
+                        border = BorderStroke(
+                            width = 0.dp,
+                            color = if (mountPropinaSelected == index) OrangeDark else BlueLight
+                        ),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = if (mountPropinaSelected == index) OrangeDark else BlueLight),
+                        onClick = {
+                            mountPropinaSelected = index
+                            onSelectPropina(index)
+                        }) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                optionsPropinas[index].percentage,
+                                color = if (mountPropinaSelected == index) Color.White else BlueDark,
+                                fontFamily = redhatFamily,
+                                fontSize = 18.sp
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Box(modifier = Modifier.weight(0.5f)) {
+                                Text(
+                                    optionsPropinas[index].title,
+                                    color = if (mountPropinaSelected == index) Color.White else BlueDark,
+                                    fontFamily = redhatFamily,
+                                    fontSize = 10.sp,
+                                    lineHeight = 12.sp
+                                )
+                            }
+
+                            Icon(
+                                painterResource(id = R.drawable.dollar_circle_icon),
+                                contentDescription = stringResource(id = R.string.momo_coffe),
+                                tint = if (mountPropinaSelected == index) Color.White else BlueDark,
+                                modifier = Modifier.size(width = 18.dp, height = 18.dp)
+                            )
+                        }
+                    }
+                }
+
+            }
+        }
+    )
+
+    Row(
+        modifier = Modifier.padding(start = 3.dp, end = 3.dp)
+    ) {
+        Button(
+            elevation = ButtonDefaults.elevation(0.dp),
+            modifier = Modifier.fillMaxWidth(0.5f),
+            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+            shape = RoundedCornerShape(5.dp),
+            border = BorderStroke(
+                width = 0.dp,
+                color = if (mountPropinaSelected == 4) OrangeDark else BlueLight
+            ),
+            colors = ButtonDefaults.buttonColors(backgroundColor = if (mountPropinaSelected == 4) OrangeDark else BlueLight),
+            onClick = {
+                mountPropinaSelected = 4
+            }) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    stringResource(id = R.string.other),
+                    color = if (mountPropinaSelected == 4) Color.White else BlueDark,
+                    fontFamily = redhatFamily,
+                    fontSize = 18.sp
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Box(modifier = Modifier.weight(0.5f)) {
+                    Text(
+                        stringResource(id = R.string.yuo_decided),
+                        color = if (mountPropinaSelected == 4) Color.White else BlueDark,
+                        fontFamily = redhatFamily,
+                        fontSize = 10.sp,
+                        lineHeight = 12.sp
+                    )
+                }
+
+                Icon(
+                    painterResource(id = R.drawable.dollar_circle_icon),
+                    contentDescription = stringResource(id = R.string.momo_coffe),
+                    tint = if (mountPropinaSelected == 4) Color.White else BlueDark,
+                    modifier = Modifier.size(width = 18.dp, height = 18.dp)
+                )
+            }
+        }
+        if (mountPropinaSelected == 4) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp),
+            ) {
+                Button(
+                    elevation = ButtonDefaults.elevation(0.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(4.dp)
+                        .height(41.dp),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                    shape = RoundedCornerShape(5.dp),
+                    border = BorderStroke(
+                        width = 0.dp,
+                        color = if (typePropina == 1) OrangeDark else BlueLight
+                    ),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 1) OrangeDark else BlueLight),
+                    onClick = {
+                        typePropina = 1
+                        onSelectPropina(0)
+                        onTypePropina(0)
+                        onSelectValue(0)
+                    }
+                ) {
+                    Text(
+                        "%",
+                        color = if (typePropina == 1) Color.White else BlueDark,
+                        fontFamily = redhatFamily,
+                        fontSize = 20.sp,
+                        lineHeight = 12.sp
+                    )
+                }
+                Button(
+                    elevation = ButtonDefaults.elevation(0.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(4.dp)
+                        .height(41.dp),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                    shape = RoundedCornerShape(5.dp),
+                    border = BorderStroke(
+                        width = 0.dp,
+                        color = if (typePropina == 2) OrangeDark else BlueLight
+                    ),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 2) OrangeDark else BlueLight),
+                    onClick = {
+                        typePropina = 2
+                        onSelectPropina(0)
+                        onTypePropina(0)
+                        onSelectValue(0)
+                    }
+                ) {
+                    Text(
+                        "$",
+                        color = if (typePropina == 2) Color.White else BlueDark,
+                        fontFamily = redhatFamily,
+                        fontSize = 20.sp,
+                        lineHeight = 12.sp
+                    )
+                }
+            }
+        }
+
+    }
+}
