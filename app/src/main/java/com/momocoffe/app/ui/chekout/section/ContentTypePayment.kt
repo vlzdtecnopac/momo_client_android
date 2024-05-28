@@ -4,7 +4,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,10 +11,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.ButtonElevation
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,7 +45,9 @@ import com.momocoffe.app.ui.theme.redhatFamily
 @Composable
 fun ContentTypePayment(
     shoppingItems: List<ItemShopping>,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    onSelect: (Int) -> Unit,
+    onSelectName: MutableState<String>
 ) {
     var invite by remember { mutableStateOf(value = "") }
     var validTypePayment by remember { mutableStateOf(value = 0) }
@@ -58,7 +59,10 @@ fun ContentTypePayment(
 
             OutTextField(
                 textValue = invite,
-                onValueChange = { invite = it },
+                onValueChange = {
+                    onSelectName.value = it
+                    invite = it
+                },
                 onClickButton = { invite = "" },
                 keyboardType = KeyboardType.Text,
                 icon = painterResource(R.drawable.user),
@@ -80,7 +84,8 @@ fun ContentTypePayment(
             if (it.first().card) {
                 Button(
                     onClick = {
-                              validTypePayment = 1
+                        onSelect(1)
+                        validTypePayment = 1
                     },
                     modifier = Modifier
                         .width(320.dp)
@@ -89,8 +94,8 @@ fun ContentTypePayment(
                     shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = if (validTypePayment == 1) OrangeDark else BlueLight,
-                        disabledBackgroundColor =  if (validTypePayment == 1) OrangeDark else BlueLight,
-                        disabledContentColor =  if (validTypePayment == 1) OrangeDark else BlueLight
+                        disabledBackgroundColor = if (validTypePayment == 1) OrangeDark else BlueLight,
+                        disabledContentColor = if (validTypePayment == 1) OrangeDark else BlueLight
                     )
                 ) {
                     Column(
@@ -119,6 +124,7 @@ fun ContentTypePayment(
             if (it.first().effecty) {
                 Button(
                     onClick = {
+                        onSelect(2)
                         validTypePayment = 2
                     },
                     modifier = Modifier
@@ -127,9 +133,9 @@ fun ContentTypePayment(
                         .padding(horizontal = 5.dp),
                     shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor =  if (validTypePayment == 2) OrangeDark else BlueLight,
-                        disabledBackgroundColor =  if (validTypePayment == 2) OrangeDark else BlueLight,
-                        disabledContentColor =  if (validTypePayment == 2) OrangeDark else BlueLight
+                        backgroundColor = if (validTypePayment == 2) OrangeDark else BlueLight,
+                        disabledBackgroundColor = if (validTypePayment == 2) OrangeDark else BlueLight,
+                        disabledContentColor = if (validTypePayment == 2) OrangeDark else BlueLight
                     )
                 ) {
                     Column(
@@ -139,7 +145,7 @@ fun ContentTypePayment(
                         Icon(
                             painterResource(id = R.drawable.effecty_icon),
                             contentDescription = stringResource(id = R.string.momo_coffe),
-                            tint =  if (validTypePayment == 2) Color.White else BlueDark,
+                            tint = if (validTypePayment == 2) Color.White else BlueDark,
                             modifier = Modifier.size(width = 35.dp, height = 35.dp)
                         )
                         Spacer(modifier = Modifier.width(15.dp))

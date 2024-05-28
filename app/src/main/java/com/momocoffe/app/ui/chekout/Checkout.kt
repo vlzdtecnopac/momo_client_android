@@ -5,15 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,10 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.*
@@ -43,7 +38,6 @@ import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.R
 import com.momocoffe.app.network.response.ItemShopping
-import com.momocoffe.app.network.response.ProductsItem
 import com.momocoffe.app.ui.chekout.components.OutlineTextField
 import com.momocoffe.app.ui.chekout.section.ProductCartCheckout
 import com.momocoffe.app.ui.chekout.section.ContentPropinas
@@ -56,7 +50,11 @@ import com.momocoffe.app.viewmodel.ShoppingViewModel
 data class CoffeeCart(val name: String, val price: Int, val type: String?)
 
 @Composable
-fun Checkout(navController: NavHostController, cartViewModel: CartViewModel, shoppingViewModel: ShoppingViewModel = viewModel()) {
+fun Checkout(
+    navController: NavHostController,
+    cartViewModel: CartViewModel,
+    shoppingViewModel: ShoppingViewModel = viewModel()) {
+
     val context = LocalContext.current
     var optionsColumn by remember { mutableStateOf("") }
     var shoppingItems by remember { mutableStateOf<List<ItemShopping>>(emptyList()) }
@@ -72,7 +70,8 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel, sho
     var valueCupon by remember { mutableStateOf(value = 0) }
     var valuePropinaPerson by remember { mutableStateOf(value = 0) }
     var valuePropina by remember { mutableStateOf(value = 0) }
-
+    var valueTypePayment by remember { mutableStateOf(value = 0) }
+    var valueNameAuthor = remember { mutableStateOf(value = "") }
     var isCuponValid by remember { mutableStateOf(false) }
     var contentTypePropinaState by remember { mutableStateOf(false) }
 
@@ -85,7 +84,6 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel, sho
     val tipString = stringResource(id = R.string.tip)
     val couponValidMessage = stringResource(id = R.string.coupon_valid)
     val couponDeleteMessage = stringResource(id = R.string.delete_cupon)
-
 
     fun initTable() {
         tableList.clear()
@@ -217,7 +215,11 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel, sho
                         shoppingItems,
                         onCancel = {
                         contentTypePropinaState = false
-                    })
+                    }, onSelect = {
+                        valueTypePayment = it
+                        },
+                        onSelectName = valueNameAuthor
+                    )
                 }
             }
             Spacer(modifier = Modifier.width(5.dp))
@@ -399,21 +401,34 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel, sho
 
                     Button(
                         onClick = {
-                            try {
-                                val intent = Intent()
-                                intent.component = ComponentName(
-                                    "com.momocoffe.izettlemomo",
-                                    "com.momocoffe.izettlemomo.MainActivity"
-                                )
-                                intent.putExtra("zettleSubTotal", subTotalProduct)
-                                intent.putExtra("zettleMountCupon", valueCupon)
-                                intent.putExtra("zettleMountPropina", valuePropina)
-                                intent.putExtra("zettleMountTotal", valorTotal)
-                                context.startActivity(intent)
-                            } catch (e: Exception) {
-                                Log.e("TAG", "Error al abrir la aplicación", e)
+                            if(valueTypePayment == 0){
+                                Toast.makeText(context, "Ingresa el medio de pago", Toast.LENGTH_SHORT).show()
+                            }else if(valueNameAuthor.value.isEmpty()){
+                                Toast.makeText(context, "Ingresa el nombre del invitado", Toast.LENGTH_SHORT).show()
+                            }else{
+                                if(valueTypePayment == 1) {
+                                    try {
+                                        val intent = Intent()
+                                        intent.component = ComponentName(
+                                            "com.momocoffe.izettlemomo",
+                                            "com.momocoffe.izettlemomo.MainActivity"
+                                        )
+                                        intent.putExtra("zettleSubTotal", subTotalProduct)
+                                        intent.putExtra("zettleMountCupon", valueCupon)
+                                        intent.putExtra("zettleMountPropina", valuePropina)
+                                        intent.putExtra("zettleMountTotal", valorTotal)
+                                        context.startActivity(intent)
+                                    } catch (e: Exception) {
+                                        Log.e("TAG", "Error al abrir la aplicación", e)
+                                        Toast.makeText(
+                                            context,
+                                            "Falta por instalar MOMO Zettle Payment en tu dispositivo.",
+                                            Toast.LENGTH_LONG
+                                        )
+                                            .show()
+                                    }
+                                }
                             }
-
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -427,7 +442,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel, sho
                     ) {
                         Text(
                             text = stringResource(id = R.string.payment),
-                            fontSize = 16.sp,
+                            fontSize = 20.sp,
                             color = Color.White,
                             fontFamily = redhatFamily,
                         )
