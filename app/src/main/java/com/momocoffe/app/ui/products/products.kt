@@ -57,13 +57,16 @@ fun Products(
             productsViewModel.products(
                 shopping_id = preference_shopping_id,
                 categorys = category,
-                subcategory = subcategory
+                subcategory = subcategory,
+                state = true
+
             )
         } else {
             if (category != null) {
                 productsViewModel.products(
                     shopping_id = preference_shopping_id,
-                    categorys = category
+                    categorys = category,
+                    state = true
                 )
             }
         }

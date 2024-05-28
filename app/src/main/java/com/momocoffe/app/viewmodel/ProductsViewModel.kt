@@ -61,7 +61,7 @@ class ProductsViewModel : ViewModel() {
         }
     }
 
-    fun products(shopping_id: String = "", categorys: String = "", subcategory: String = "") {
+    fun products(shopping_id: String = "", categorys: String = "", subcategory: String = "", state: Boolean = true) {
         loadingState.value = true
         viewModelScope.launch {
             try {
@@ -74,7 +74,7 @@ class ProductsViewModel : ViewModel() {
                         subcategory
                     )
                 } else {
-                    response = apiService.getProductsCategory(shopping_id, category = categorys)
+                    response = apiService.getProductsCategory(shopping_id, category = categorys, state)
                 }
 
                 if (response.isSuccessful) {

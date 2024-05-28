@@ -73,7 +73,7 @@ interface ApiService {
     suspend fun getProductsCategoryAndSubcategory( @Query("shopping_id") shoppingId: String,  @Query("categorys") category: String, @Query("subcategory") subcategory: String): Response<ProductsResponse>
 
     @GET("/product/")
-    suspend fun getProductsCategory( @Query("shopping_id") shoppingId: String,  @Query("categorys") category: String): Response<ProductsResponse>
+    suspend fun getProductsCategory( @Query("shopping_id") shoppingId: String,  @Query("categorys") category: String,  @Query("state") state: Boolean): Response<ProductsResponse>
 
     @GET("/product/")
     suspend fun getProductByID( @Query("product_id") productId: String, @Query("shopping_id") shoppingId: String): Response<ProductsResponse>
