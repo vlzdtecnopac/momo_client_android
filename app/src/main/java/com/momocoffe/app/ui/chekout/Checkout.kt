@@ -88,6 +88,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
         initTable()
     }
 
+
     LaunchedEffect(key1 = propina, key2 = typePropina) {
         valuePropina = when (propina) {
             1 -> (subTotalProduct * 5) / 100
@@ -154,14 +155,18 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                     .fillMaxHeight()
                     .padding(vertical = 5.dp, horizontal = 5.dp)
             ) {
-                if (contentTypePropinaState) {
+                if (!contentTypePropinaState) {
                     ContentPropinas(
                         onSelectValue = { valuePropinaPerson = it },
-                        onSelectPropina = { propina = it },
+                        onSelectPropina = {
+                            contentTypePropinaState = true
+                            propina = it },
                         onTypePropina = { typePropina = it }
                     )
                 } else {
-                    ContentTypePayment()
+                    ContentTypePayment(onCancel = {
+                        contentTypePropinaState = false
+                    })
                 }
             }
             Spacer(modifier = Modifier.width(5.dp))

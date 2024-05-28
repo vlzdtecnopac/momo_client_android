@@ -43,7 +43,9 @@ import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 
 @Composable
-fun ContentTypePayment() {
+fun ContentTypePayment(
+    onCancel: () -> Unit
+) {
     var invite by remember { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
 
@@ -144,9 +146,7 @@ fun ContentTypePayment() {
         }
         Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = {
-
-            },
+            onClick = onCancel,
             modifier = Modifier
                 .width(320.dp)
                 .height(60.dp)
