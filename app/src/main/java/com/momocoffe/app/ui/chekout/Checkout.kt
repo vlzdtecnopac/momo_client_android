@@ -42,6 +42,7 @@ import com.momocoffe.app.R
 import com.momocoffe.app.ui.chekout.components.OutlineTextField
 import com.momocoffe.app.ui.chekout.section.ProductCartCheckout
 import com.momocoffe.app.ui.chekout.section.ContentPropinas
+import com.momocoffe.app.ui.chekout.section.ContentTypePayment
 import com.momocoffe.app.ui.components.DashedDivider
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.viewmodel.CartViewModel
@@ -191,6 +192,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                     onSelectPropina = { propina = it },
                     onTypePropina = { typePropina = it }
                 )
+                ContentTypePayment()
             }
             Spacer(modifier = Modifier.width(5.dp))
             Column(
