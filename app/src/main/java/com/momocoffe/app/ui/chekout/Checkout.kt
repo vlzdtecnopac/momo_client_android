@@ -83,6 +83,8 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel, sho
 
     val couponString = stringResource(id = R.string.coupon)
     val tipString = stringResource(id = R.string.tip)
+    val couponValidMessage = stringResource(id = R.string.coupon_valid)
+    val couponDeleteMessage = stringResource(id = R.string.delete_cupon)
 
 
     fun initTable() {
@@ -272,7 +274,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel, sho
                             tableList.add(CoffeeCart(tipString, valuePropina, null))
                             tableList.add(CoffeeCart(couponString, valueCupon, "cupon"))
                             tableList.add(CoffeeCart("Total", valorTotal, null))
-                            Toast.makeText(context, "Cupón Valido", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, couponValidMessage, Toast.LENGTH_SHORT).show()
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -342,7 +344,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel, sho
                                                 initTable()
                                                 Toast.makeText(
                                                     context,
-                                                    "Se ha eliminado cúpon",
+                                                    couponDeleteMessage,
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                             },

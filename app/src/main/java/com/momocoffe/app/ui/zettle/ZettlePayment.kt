@@ -5,6 +5,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -52,18 +53,18 @@ fun ZettlePayment(navController: NavHostController){
         )
         Spacer(modifier = Modifier.height(10.dp))
         Spacer(modifier = Modifier.height(10.dp))
-        Text("Antes de comenzar comnprueba el estado del sistema de pagos con Zettle.", color = Color.White, fontFamily = redhatFamily, fontSize = 18.sp)
+        Text("Antes de comenzar comnprueba el estado del sistema de pagos con Zettle MOMO.", color = Color.White, fontFamily = redhatFamily, fontSize = 18.sp)
         Spacer(modifier = Modifier.height(10.dp))
         Button(
             onClick = {
                 try {
                     val intent = Intent()
                     intent.component = ComponentName("com.momocoffe.izettlemomo", "com.momocoffe.izettlemomo.MainActivity")
-                    intent.putExtra("parametro1", "New Invoice")
-                    intent.putExtra("parametro2", 300)
                     context.startActivity(intent)
                 } catch (e: Exception) {
                     Log.e("TAG", "Error al abrir la aplicación", e)
+                    Toast.makeText(context, "Falta por instalar MOMO Zettle Payment en tu dispositivo.", Toast.LENGTH_LONG)
+                        .show()
                 }
 
             },

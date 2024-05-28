@@ -106,4 +106,6 @@
     <string name="select_yuo_payment">Select your payment method</string>
     <string name="not_authorize_admin">Admin account is not authorized.</string>
     <string name="account_inactive">This account is inactive.</string>
+    <string name="coupon_valid">This coupon is valid</string>
+    <string name="delete_cupon">Coupon has been removed</string>
 </resources>

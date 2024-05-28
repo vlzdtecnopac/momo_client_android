@@ -49,6 +49,7 @@ fun ContentTypePayment(
     onCancel: () -> Unit
 ) {
     var invite by remember { mutableStateOf(value = "") }
+    var validTypePayment by remember { mutableStateOf(value = 0) }
     val focusManager = LocalFocusManager.current
     shoppingItems.let {
         Column(
@@ -78,16 +79,18 @@ fun ContentTypePayment(
             Spacer(modifier = Modifier.height(10.dp))
             if (it.first().card) {
                 Button(
-                    onClick = {},
+                    onClick = {
+                              validTypePayment = 1
+                    },
                     modifier = Modifier
                         .width(320.dp)
                         .height(100.dp)
                         .padding(horizontal = 5.dp),
                     shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = BlueLight,
-                        disabledBackgroundColor = BlueLight,
-                        disabledContentColor = BlueLight
+                        backgroundColor = if (validTypePayment == 1) OrangeDark else BlueLight,
+                        disabledBackgroundColor =  if (validTypePayment == 1) OrangeDark else BlueLight,
+                        disabledContentColor =  if (validTypePayment == 1) OrangeDark else BlueLight
                     )
                 ) {
                     Column(
@@ -97,14 +100,14 @@ fun ContentTypePayment(
                         Icon(
                             painterResource(id = R.drawable.credicard_icon),
                             contentDescription = stringResource(id = R.string.momo_coffe),
-                            tint = BlueDark,
+                            tint = if (validTypePayment == 1) Color.White else BlueDark,
                             modifier = Modifier.size(width = 43.dp, height = 43.dp)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
                             text = stringResource(id = R.string.credicard),
                             fontSize = 18.sp,
-                            color = BlueDark,
+                            color = if (validTypePayment == 1) Color.White else BlueDark,
                             fontFamily = redhatFamily,
                             fontWeight = FontWeight(700)
                         )
@@ -116,7 +119,7 @@ fun ContentTypePayment(
             if (it.first().effecty) {
                 Button(
                     onClick = {
-
+                        validTypePayment = 2
                     },
                     modifier = Modifier
                         .width(320.dp)
@@ -124,9 +127,9 @@ fun ContentTypePayment(
                         .padding(horizontal = 5.dp),
                     shape = RoundedCornerShape(14.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = BlueLight,
-                        disabledBackgroundColor = BlueLight,
-                        disabledContentColor = BlueLight
+                        backgroundColor =  if (validTypePayment == 2) OrangeDark else BlueLight,
+                        disabledBackgroundColor =  if (validTypePayment == 2) OrangeDark else BlueLight,
+                        disabledContentColor =  if (validTypePayment == 2) OrangeDark else BlueLight
                     )
                 ) {
                     Column(
@@ -136,14 +139,14 @@ fun ContentTypePayment(
                         Icon(
                             painterResource(id = R.drawable.effecty_icon),
                             contentDescription = stringResource(id = R.string.momo_coffe),
-                            tint = BlueDark,
+                            tint =  if (validTypePayment == 2) Color.White else BlueDark,
                             modifier = Modifier.size(width = 35.dp, height = 35.dp)
                         )
                         Spacer(modifier = Modifier.width(15.dp))
                         Text(
                             text = stringResource(id = R.string.efecty),
                             fontSize = 18.sp,
-                            color = BlueDark,
+                            color = if (validTypePayment == 2) Color.White else BlueDark,
                             fontFamily = redhatFamily,
                             fontWeight = FontWeight(700)
                         )
