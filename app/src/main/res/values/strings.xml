@@ -101,6 +101,9 @@
     <string name="gesture_incredible">!A gesture\n incredible!</string>
     <string name="delete">Eliminar</string>
     <string name="invited">Invited</string>
+    <string name="credicard">Credicard</string>
+    <string name="efecty">Efecty</string>
+    <string name="select_yuo_payment">Select your payment method</string>
 
 
 </resources>

@@ -102,6 +102,9 @@
     <string name="gesture_incredible">!Un gesto\n increible!</string>
     <string name="delete">Delete</string>
     <string name="invited">Invitado</string>
+    <string name="credicard">Credito</string>
+    <string name="efecty">Efectivo</string>
+    <string name="select_yuo_payment">Seleccione tu método de pago</string>
 
 
 </resources>

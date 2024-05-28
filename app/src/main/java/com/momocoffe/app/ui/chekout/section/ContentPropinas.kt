@@ -1,10 +1,14 @@
 package com.momocoffe.app.ui.chekout.section
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -53,6 +58,43 @@ fun ContentPropinas(
 
     var typePropina by remember { mutableStateOf(0) }
     var mountPropinaSelected by remember { mutableStateOf(0) }
+
+    Row(modifier = Modifier.height(110.dp)) {
+        Image(
+            painter = painterResource(id = R.drawable.barista),
+            contentDescription = stringResource(id = R.string.momo_coffe),
+            modifier = Modifier.width(105.dp),
+            contentScale = ContentScale.Crop,
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 10.dp),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Text(
+                stringResource(id = R.string.start_barista_working),
+                color = Color.White
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            Row {
+                Icon(
+                    painterResource(id = R.drawable.dollar_circle_icon),
+                    contentDescription = stringResource(id = R.string.momo_coffe),
+                    tint = Color.White,
+                    modifier = Modifier.size(width = 20.dp, height = 20.dp)
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    stringResource(id = R.string.add_tip),
+                    color = Color.White,
+                    fontFamily = redhatFamily,
+                    fontSize = 14.sp
+                )
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(10.dp))
 
     if (typePropina == 1) {
         PropinaModal(

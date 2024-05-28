@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -63,6 +64,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     var valuePropina by remember { mutableStateOf(value = 0) }
 
     var isCuponValid by remember { mutableStateOf(false) }
+    var contentTypePropinaState by remember { mutableStateOf(false) }
 
     var tableList = remember { mutableStateListOf<CoffeeCart>() }
     val state = cartViewModel.state;
@@ -71,6 +73,7 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
 
     val couponString = stringResource(id = R.string.coupon)
     val tipString = stringResource(id = R.string.tip)
+
 
     fun initTable() {
         tableList.clear()
@@ -151,48 +154,15 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                     .fillMaxHeight()
                     .padding(vertical = 5.dp, horizontal = 5.dp)
             ) {
-                Row(modifier = Modifier.height(110.dp)) {
-                    Image(
-                        painter = painterResource(id = R.drawable.barista),
-                        contentDescription = stringResource(id = R.string.momo_coffe),
-                        modifier = Modifier.width(105.dp),
-                        contentScale = ContentScale.Crop,
+                if (contentTypePropinaState) {
+                    ContentPropinas(
+                        onSelectValue = { valuePropinaPerson = it },
+                        onSelectPropina = { propina = it },
+                        onTypePropina = { typePropina = it }
                     )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(start = 10.dp),
-                        verticalArrangement = Arrangement.Bottom
-                    ) {
-                        Text(
-                            stringResource(id = R.string.start_barista_working),
-                            color = Color.White
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
-                        Row {
-                            Icon(
-                                painterResource(id = R.drawable.dollar_circle_icon),
-                                contentDescription = stringResource(id = R.string.momo_coffe),
-                                tint = Color.White,
-                                modifier = Modifier.size(width = 20.dp, height = 20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                stringResource(id = R.string.add_tip),
-                                color = Color.White,
-                                fontFamily = redhatFamily,
-                                fontSize = 14.sp
-                            )
-                        }
-                    }
+                } else {
+                    ContentTypePayment()
                 }
-                Spacer(modifier = Modifier.height(10.dp))
-                ContentPropinas(
-                    onSelectValue = { valuePropinaPerson = it },
-                    onSelectPropina = { propina = it },
-                    onTypePropina = { typePropina = it }
-                )
-                ContentTypePayment()
             }
             Spacer(modifier = Modifier.width(5.dp))
             Column(
