@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
@@ -101,7 +102,7 @@ fun Products(
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Box(modifier = Modifier.fillMaxWidth(0.9f)) {
+            Box(modifier =  Modifier.widthIn(0.dp, 950.dp)) {
                 if (!loading) {
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(200.dp),
