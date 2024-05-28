@@ -45,6 +45,12 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
             when {
                 result.isSuccess -> {
                     val loginResponse = result.getOrThrow()
+                    if(!loginResponse.state){
+                        Toast.makeText(context, R.string.account_inactive, Toast.LENGTH_LONG)
+                            .show()
+                        loginViewModel.loginResultState.value = null
+                        return@LaunchedEffect
+                    }
                     if(loginResponse.role == "1"){
                         Toast.makeText(
                             context,
@@ -53,7 +59,7 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
                         )
                             .show()
                         loginViewModel.loginResultState.value = null
-                        navController.navigate(Destination.Login.route)
+                        return@LaunchedEffect
                     }
 
                     val sharedPreferences =

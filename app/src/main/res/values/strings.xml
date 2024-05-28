@@ -104,5 +104,6 @@
     <string name="credicard">Credicard</string>
     <string name="efecty">Efecty</string>
     <string name="select_yuo_payment">Select your payment method</string>
-    <string name="not_authorize_admin">Una cuenta en admin no esta autorizado.</string>
+    <string name="not_authorize_admin">Admin account is not authorized.</string>
+    <string name="account_inactive">This account is inactive.</string>
 </resources>

@@ -13,10 +13,6 @@ import com.momocoffe.app.network.response.ProductsResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-data class SelectModifiers(
-    var options: ItemModifier?,
-    var list: ItemModifier?
-)
 data class ItemModifier(
     val name: String,
     val price: String

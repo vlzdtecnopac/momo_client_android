@@ -106,4 +106,5 @@
     <string name="efecty">Efectivo</string>
     <string name="select_yuo_payment">Seleccione tu método de pago</string>
     <string name="not_authorize_admin">An admin account is not authorized.</string>
+    <string name="account_inactive">Esta cuenta se encuentra inactiva.</string>
 </resources>
