@@ -31,6 +31,7 @@ android {
         defaultConfig {
             buildConfigField("String", "API_BASE_URL", "\"http://momocoffe-lb-1774679013.us-east-1.elb.amazonaws.com\"")
             buildConfigField("String", "API_BASE_URL_LAMBDA", "\"https://qgxpiwrc14.execute-api.us-east-1.amazonaws.com\"")
+            buildConfigField("String", "API_URL_CURRENCY", "\"https://open.er-api.com\"")
         }
 
         release {
@@ -41,7 +42,7 @@ android {
             )
             buildConfigField("String", "API_BASE_URL", "\"http://momocoffe-lb-1774679013.us-east-1.elb.amazonaws.com\"")
             buildConfigField("String", "API_BASE_URL_LAMBDA", "\"https://qgxpiwrc14.execute-api.us-east-1.amazonaws.com\"")
-
+            buildConfigField("String", "API_URL_CURRENCY", "\"https://open.er-api.com\"")
         }
 
     }

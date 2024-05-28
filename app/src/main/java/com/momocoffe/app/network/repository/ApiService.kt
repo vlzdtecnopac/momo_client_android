@@ -1,5 +1,6 @@
 package com.momocoffe.app.network.repository
 
+import com.momocoffe.app.network.data.ExchangeRateResponse
 import com.momocoffe.app.network.dto.ClientReceptorEmailRequest
 import com.momocoffe.app.network.dto.ClientReceptorSMSRequest
 import com.momocoffe.app.network.dto.ClientRequest
@@ -30,6 +31,11 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
+    @GET("/v6/latest")
+    suspend fun getExchangeRate(
+        @Query("base") baseCurrency: String,
+        @Query("symbols") targetCurrency: String
+    ): ExchangeRateResponse
     @POST("/users/update_token")
     suspend fun getRefreshToken(@Body refreshDto: RefreshToken) : Response<RefreshTokenResponse>
 

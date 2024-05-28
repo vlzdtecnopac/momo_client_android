@@ -37,6 +37,7 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.R
+import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.response.ItemShopping
 import com.momocoffe.app.ui.chekout.components.OutlineTextField
 import com.momocoffe.app.ui.chekout.section.ProductCartCheckout
@@ -45,7 +46,11 @@ import com.momocoffe.app.ui.chekout.section.ContentTypePayment
 import com.momocoffe.app.ui.components.DashedDivider
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.viewmodel.CartViewModel
+import com.momocoffe.app.viewmodel.CheckoutViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
+import kotlinx.coroutines.delay
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 data class CoffeeCart(val name: String, val price: Int, val type: String?)
 
@@ -53,7 +58,9 @@ data class CoffeeCart(val name: String, val price: Int, val type: String?)
 fun Checkout(
     navController: NavHostController,
     cartViewModel: CartViewModel,
-    shoppingViewModel: ShoppingViewModel = viewModel()) {
+    shoppingViewModel: ShoppingViewModel = viewModel(),
+    checkoutViewModel: CheckoutViewModel = viewModel(),
+) {
 
     val context = LocalContext.current
     var optionsColumn by remember { mutableStateOf("") }
@@ -93,6 +100,7 @@ fun Checkout(
     }
 
     LaunchedEffect(Unit) {
+        checkoutViewModel.convertAmount(subTotalProduct)
         shoppingViewModel.getShopping(preference_shopping_id)
         shoppingViewModel.getConfigShopping(preference_shopping_id)
         cartViewModel.priceSubTotal()
@@ -125,6 +133,7 @@ fun Checkout(
 
 
     LaunchedEffect(subTotalProduct, valuePropina, isCuponValid) {
+        checkoutViewModel.convertAmount(subTotalProduct)
         if (isCuponValid) {
             tableList[1] = CoffeeCart(tipString, valuePropina, null)
             tableList[2] = CoffeeCart(couponString, valueCupon, "cupon")
@@ -137,12 +146,13 @@ fun Checkout(
     }
 
     LaunchedEffect(shoppingViewModel.shoppingResultState.value) {
-        shoppingViewModel.shoppingResultState.value?.let {result ->
+        shoppingViewModel.shoppingResultState.value?.let { result ->
             when {
                 result.isSuccess -> {
                     val shoppingResponse = result.getOrThrow()
-                    shoppingItems =  shoppingResponse.items
+                    shoppingItems = shoppingResponse.items
                 }
+
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
                     Log.d("Result.ShoppingModel", exception.toString())
@@ -156,20 +166,23 @@ fun Checkout(
     }
 
 
-    LaunchedEffect(shoppingViewModel.shoppingConfigState.value){
-            shoppingViewModel.shoppingConfigState.value?.let{ result ->
-                when{
-                    result.isSuccess -> {
-                        val configResponse = result.getOrThrow()
-                        optionsColumn =  configResponse.typeColumn
-                    }
-                    result.isFailure -> {
-                        val exception = result.exceptionOrNull()
-                        Log.e("Result.ShoppingModel", exception.toString())
-                    }
+    LaunchedEffect(shoppingViewModel.shoppingConfigState.value) {
+        shoppingViewModel.shoppingConfigState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val configResponse = result.getOrThrow()
+                    optionsColumn = configResponse.typeColumn
+                }
+
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.e("Result.ShoppingModel", exception.toString())
                 }
             }
+        }
     }
+
+
 
 
     Column(
@@ -207,16 +220,17 @@ fun Checkout(
                         onSelectValue = { valuePropinaPerson = it },
                         onSelectPropina = {
                             contentTypePropinaState = true
-                            propina = it },
+                            propina = it
+                        },
                         onTypePropina = { typePropina = it }
                     )
                 } else {
                     ContentTypePayment(
                         shoppingItems,
                         onCancel = {
-                        contentTypePropinaState = false
-                    }, onSelect = {
-                        valueTypePayment = it
+                            contentTypePropinaState = false
+                        }, onSelect = {
+                            valueTypePayment = it
                         },
                         onSelectName = valueNameAuthor
                     )
@@ -401,19 +415,30 @@ fun Checkout(
 
                     Button(
                         onClick = {
-                            if(valueTypePayment == 0){
-                                Toast.makeText(context, "Ingresa el medio de pago", Toast.LENGTH_SHORT).show()
-                            }else if(valueNameAuthor.value.isEmpty()){
-                                Toast.makeText(context, "Ingresa el nombre del invitado", Toast.LENGTH_SHORT).show()
-                            }else{
-                                if(valueTypePayment == 1) {
+                            if (valueTypePayment == 0) {
+                                Toast.makeText(
+                                    context,
+                                    "Ingresa el medio de pago",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else if (valueNameAuthor.value.isEmpty()) {
+                                Toast.makeText(
+                                    context,
+                                    "Ingresa el nombre del invitado",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                if (valueTypePayment == 1) {
                                     try {
+                                        val subTotalConvert =
+                                            checkoutViewModel.convertMoneyState.value;
+
                                         val intent = Intent()
                                         intent.component = ComponentName(
                                             "com.momocoffe.izettlemomo",
                                             "com.momocoffe.izettlemomo.MainActivity"
                                         )
-                                        intent.putExtra("zettleSubTotal", subTotalProduct)
+                                        intent.putExtra("zettleSubTotal", subTotalConvert)
                                         intent.putExtra("zettleMountCupon", valueCupon)
                                         intent.putExtra("zettleMountPropina", valuePropina)
                                         intent.putExtra("zettleMountTotal", valorTotal)

@@ -67,9 +67,33 @@ class MainActivity : ComponentActivity() {
             }
         } else {
             setContent {
+                MomoCoffeClientTheme {
+                    // A surface container using the 'background' color from the theme
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        val database =
+                            Room.databaseBuilder(applicationContext, CartDataBase::class.java, "momo_db")
+                                .build()
+                        val dao = database.dao
+                        val viewModelDb by viewModels<CartViewModel>(factoryProducer = {
+                            object : ViewModelProvider.Factory {
+                                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                                    return CartViewModel(dao) as T
+                                }
+                            }
+                        })
+                        LaunchedEffect(Unit) {
+                            // Set up and establish socket connection
+                            SocketHandler.setSocket()
+                            SocketHandler.establishConnection()
+                        }
 
+                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)
+                    }
+                }
             }
-            //finish()
         }
     }
 
