@@ -47,7 +47,7 @@ import com.momocoffe.app.ui.theme.OrangeDarkLight
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.ProductsViewModel
 import com.momocoffe.app.R
-import com.momocoffe.app.viewmodel.CartProduct
+import com.momocoffe.app.network.data.CartProduct
 import com.momocoffe.app.viewmodel.CartViewModel
 
 @Composable

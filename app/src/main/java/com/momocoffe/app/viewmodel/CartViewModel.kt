@@ -6,31 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.momocoffe.app.network.data.CartProduct
+import com.momocoffe.app.network.data.CartProductEdit
+import com.momocoffe.app.network.data.CartState
 import com.momocoffe.app.network.database.Cart
 import com.momocoffe.app.network.database.CartDao
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
-data class CartState(
-    val carts: List<Cart> = listOfNotNull(),
-)
-
-data class CartProduct(
-    val id: Int,
-    val titleProduct: String,
-    val imageProduct: String,
-    val priceProduct: String,
-    val priceProductMod: String,
-    val countProduct: Int,
-    val modifiersOptions: MutableMap<String, ItemModifier>,
-    val modifiersList: MutableMap<String, ItemModifier>
-)
-
-data class CartProductEdit(
-    val id: Int,
-    val countProduct: Int,
-    val priceProduct: Int,
-)
 
 class CartViewModel(
     private val dao: CartDao

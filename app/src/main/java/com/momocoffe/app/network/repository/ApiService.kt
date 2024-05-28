@@ -13,6 +13,7 @@ import com.momocoffe.app.network.response.ClientEmailSMSResponse
 import com.momocoffe.app.network.response.ClientGeneralResponse
 import com.momocoffe.app.network.response.ClientResponse
 import com.momocoffe.app.network.response.ClientSessionResponse
+import com.momocoffe.app.network.response.ConfigShoppingResponse
 import com.momocoffe.app.network.response.DataKiosko
 import com.momocoffe.app.network.response.EmployeeResponse
 import com.momocoffe.app.network.response.KioskoResponse
@@ -79,4 +80,7 @@ interface ApiService {
 
     @GET("/product/options/{product_id}")
     suspend fun getProductsOptions( @Path("product_id") productId: String?): Response<ProductOptionsResponse>
+
+    @GET("/config/{shopping_id}")
+    suspend fun getConfigShopping(@Path("shopping_id") shoppingId: String?): Response<ArrayList<ConfigShoppingResponse>>
 }

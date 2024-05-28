@@ -45,6 +45,17 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
             when {
                 result.isSuccess -> {
                     val loginResponse = result.getOrThrow()
+                    if(loginResponse.role == "1"){
+                        Toast.makeText(
+                            context,
+                            R.string.not_authorize_admin,
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                        loginViewModel.loginResultState.value = null
+                        navController.navigate(Destination.Login.route)
+                    }
+
                     val sharedPreferences =
                         context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
                     sharedPreferences.edit().putString("token", loginResponse.token).apply()

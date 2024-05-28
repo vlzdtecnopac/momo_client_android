@@ -29,11 +29,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.network.data.CartProductEdit
+import com.momocoffe.app.network.data.CartState
 import com.momocoffe.app.network.database.Cart
 import com.momocoffe.app.ui.components.SolidLineDivider
 import com.momocoffe.app.ui.theme.*
-import com.momocoffe.app.viewmodel.CartProductEdit
-import com.momocoffe.app.viewmodel.CartState
+
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.ItemModifier
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator

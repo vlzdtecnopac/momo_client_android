@@ -8,6 +8,7 @@ data class LoginResponse(
     @SerializedName("shopping_id")
     val shoppingID: String,
     val state: Boolean,
+    val role: String,
     val token: String
 )
 

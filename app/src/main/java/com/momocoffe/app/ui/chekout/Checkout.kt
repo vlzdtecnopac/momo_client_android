@@ -1,6 +1,7 @@
 package com.momocoffe.app.ui.chekout
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.momocoffe.app.ui.components.Category
 import com.momocoffe.app.ui.components.Header
@@ -40,6 +42,8 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.R
+import com.momocoffe.app.network.response.ItemShopping
+import com.momocoffe.app.network.response.ProductsItem
 import com.momocoffe.app.ui.chekout.components.OutlineTextField
 import com.momocoffe.app.ui.chekout.section.ProductCartCheckout
 import com.momocoffe.app.ui.chekout.section.ContentPropinas
@@ -47,12 +51,18 @@ import com.momocoffe.app.ui.chekout.section.ContentTypePayment
 import com.momocoffe.app.ui.components.DashedDivider
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.viewmodel.CartViewModel
+import com.momocoffe.app.viewmodel.ShoppingViewModel
 
 data class CoffeeCart(val name: String, val price: Int, val type: String?)
 
 @Composable
-fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
+fun Checkout(navController: NavHostController, cartViewModel: CartViewModel, shoppingViewModel: ShoppingViewModel = viewModel()) {
     val context = LocalContext.current
+    var optionsColumn by remember { mutableStateOf("") }
+    var shoppingItems by remember { mutableStateOf<List<ItemShopping>>(emptyList()) }
+    val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
+
     var textState by rememberSaveable { mutableStateOf(value = "") }
     val subTotalProduct = cartViewModel.stateTotalSub.value
     var propina by rememberSaveable { mutableStateOf(value = 0) }
@@ -83,6 +93,8 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
     }
 
     LaunchedEffect(Unit) {
+        shoppingViewModel.getShopping(preference_shopping_id)
+        shoppingViewModel.getConfigShopping(preference_shopping_id)
         cartViewModel.priceSubTotal()
         cartViewModel.countTotal()
         initTable()
@@ -122,6 +134,41 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
             tableList[1] = CoffeeCart(tipString, valuePropina, null)
             tableList[2] = CoffeeCart("Total", valorTotal, "total")
         }
+    }
+
+    LaunchedEffect(shoppingViewModel.shoppingResultState.value) {
+        shoppingViewModel.shoppingResultState.value?.let {result ->
+            when {
+                result.isSuccess -> {
+                    val shoppingResponse = result.getOrThrow()
+                    shoppingItems =  shoppingResponse.items
+                }
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.d("Result.ShoppingModel", exception.toString())
+                }
+
+                else -> {
+                    Log.d("Result.ShoppingModel", "Error")
+                }
+            }
+        }
+    }
+
+
+    LaunchedEffect(shoppingViewModel.shoppingConfigState.value){
+            shoppingViewModel.shoppingConfigState.value?.let{ result ->
+                when{
+                    result.isSuccess -> {
+                        val configResponse = result.getOrThrow()
+                        optionsColumn =  configResponse.typeColumn
+                    }
+                    result.isFailure -> {
+                        val exception = result.exceptionOrNull()
+                        Log.e("Result.ShoppingModel", exception.toString())
+                    }
+                }
+            }
     }
 
 
@@ -164,7 +211,9 @@ fun Checkout(navController: NavHostController, cartViewModel: CartViewModel) {
                         onTypePropina = { typePropina = it }
                     )
                 } else {
-                    ContentTypePayment(onCancel = {
+                    ContentTypePayment(
+                        shoppingItems,
+                        onCancel = {
                         contentTypePropinaState = false
                     })
                 }

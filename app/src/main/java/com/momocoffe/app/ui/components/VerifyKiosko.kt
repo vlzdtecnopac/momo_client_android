@@ -48,7 +48,6 @@ fun VerifyKiosko(navController: NavController,  kioskoViewModel: KioskoViewModel
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
                     Log.e("Result.KioskoModel", exception.toString())
-
                 }
             }
 

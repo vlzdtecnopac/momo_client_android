@@ -27,7 +27,6 @@ fun OutTextField(
     textValue: String,
     onValueChange: (String) -> Unit,
     onClickButton: () -> Unit,
-    text: String,
     keyboardType: KeyboardType,
     onNext: KeyboardActionScope.() -> Unit,
     icon: Painter
