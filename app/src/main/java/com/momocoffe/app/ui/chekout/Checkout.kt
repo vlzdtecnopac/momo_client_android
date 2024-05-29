@@ -101,6 +101,16 @@ fun Checkout(
         tableList.add(CoffeeCart("Total", valorTotal, null))
     }
 
+
+    fun initTableCupon() {
+        tableList.clear()
+        valorTotal = subTotalProduct - valueCupon + valuePropina
+        tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
+        tableList.add(CoffeeCart(tipString, valuePropina, null))
+        tableList.add(CoffeeCart(couponString, valueCupon, "cupon"))
+        tableList.add(CoffeeCart("Total", valorTotal, null))
+    }
+
     LaunchedEffect(Unit) {
         checkoutViewModel.convertAmount(subTotalProduct)
         shoppingViewModel.getShopping(preference_shopping_id)
@@ -195,15 +205,13 @@ fun Checkout(
                             val cuponItem = response.items.first()
                             isCuponValid = true
                             valueCupon = cuponItem.discount.toInt()
-                            tableList.clear()
-                            valorTotal = subTotalProduct - valueCupon + valuePropina
-                            tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
-                            tableList.add(CoffeeCart(tipString, valuePropina, null))
-                            tableList.add(CoffeeCart(couponString, valueCupon, "cupon"))
-                            tableList.add(CoffeeCart("Total", valorTotal, null))
+                            initTableCupon()
                             Toast.makeText(context, couponValidMessage, Toast.LENGTH_SHORT).show()
                         }else{
-                            Toast.makeText(context, "Este número de cupon no es válido", Toast.LENGTH_SHORT).show()
+                            isCuponValid = false
+                            valueCupon = 0
+                            initTable()
+                            Toast.makeText(context, "Este número de cúpon no es válido", Toast.LENGTH_SHORT).show()
                         }
                     }
 
