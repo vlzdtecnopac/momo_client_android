@@ -152,6 +152,7 @@ fun Product(
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Button(
                                     onClick = {
+
                                         product?.get(0)?.let { firstProduct->
                                             try {
                                                 cartViewModel.createProduct(

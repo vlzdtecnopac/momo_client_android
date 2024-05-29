@@ -45,7 +45,8 @@ fun Header(navController: NavController) {
             border = BorderStroke(width = 0.dp, color = Color.Transparent),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
             onClick = {
-                navController.popBackStack()
+                //navController.popBackStack()
+                navController.navigate(Destination.OrderHere.route)
             },
             elevation = ButtonDefaults.elevation(0.dp)
         ) {
@@ -75,9 +76,7 @@ fun Header(navController: NavController) {
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = stringResource(id = R.string.momo_coffe),
-                modifier = Modifier.width(135.dp).clickable {
-                    navController.navigate(Destination.OrderHere.route)
-                }
+                modifier = Modifier.width(135.dp)
             )
         }
 

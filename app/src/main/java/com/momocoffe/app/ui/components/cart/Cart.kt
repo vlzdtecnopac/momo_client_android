@@ -34,6 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
+import com.momocoffe.app.network.data.CartState
 import com.momocoffe.app.ui.theme.BlueDarkTransparent
 import com.momocoffe.app.ui.theme.OrangeDarkLight
 import com.momocoffe.app.viewmodel.CartViewModel
@@ -54,7 +55,8 @@ fun Cart(navController: NavController, cartViewModel: CartViewModel) {
             text = stringResource(id = R.string.show_cart),
             onclick = { showPopup = true },
             cartViewModel = cartViewModel,
-            icon = R.drawable.cart_icon)
+            icon = R.drawable.cart_icon,
+            state = state)
 
         if (showPopup) {
             PopupBox() {
@@ -100,9 +102,10 @@ fun BtnCartMomo(
     text: String,
     icon: Int,
     onclick: () -> Unit,
-    cartViewModel: CartViewModel
+    cartViewModel: CartViewModel,
+    state: CartState
 ) {
-    LaunchedEffect(Unit){
+    LaunchedEffect(state){
         cartViewModel.countTotal()
     }
 
@@ -123,12 +126,6 @@ fun BtnCartMomo(
             modifier = modifierCard.clickable { onclick() },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                painterResource(id = icon),
-                contentDescription = stringResource(id = R.string.momo_coffe),
-                tint = Color.White,
-                modifier = Modifier.size(width = 30.dp, height = 30.dp)
-            )
             Text(
                 text,
                 color = Color.White,
@@ -138,11 +135,17 @@ fun BtnCartMomo(
                 textAlign = TextAlign.Center,
                 lineHeight = 16.sp
             )
+            Icon(
+                painterResource(id = icon),
+                contentDescription = stringResource(id = R.string.momo_coffe),
+                tint = Color.White,
+                modifier = Modifier.size(width = 30.dp, height = 30.dp)
+            )
         }
 
         Box(
           modifier = Modifier
-              .offset(x = 23.dp, y = 2.dp)
+              .offset(x = 106.dp, y = 2.dp)
               .clip(RoundedCornerShape(14.dp))
               .background(OrangeDarkLight)
               .padding(1.dp)
