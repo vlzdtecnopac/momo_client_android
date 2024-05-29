@@ -74,7 +74,7 @@ fun OutlineTextField(
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Done
         ),
         keyboardActions = KeyboardActions(
             onDone = {

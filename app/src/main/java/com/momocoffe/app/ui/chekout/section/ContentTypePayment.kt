@@ -65,12 +65,7 @@ fun ContentTypePayment(
                 },
                 onClickButton = { invite = "" },
                 keyboardType = KeyboardType.Text,
-                icon = painterResource(R.drawable.user),
-                onNext = {
-                    focusManager.moveFocus(
-                        FocusDirection.Down
-                    )
-                }
+                icon = painterResource(R.drawable.user)
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(

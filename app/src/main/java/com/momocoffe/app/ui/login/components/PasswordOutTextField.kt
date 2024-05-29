@@ -15,7 +15,9 @@ import androidx.compose.material.icons.outlined.DoNotDisturb
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,10 +30,10 @@ import com.momocoffe.app.R
 fun PasswordOutTextField(
     textValue: String,
     onValueChange: (String) -> Unit,
-    onDone: (KeyboardActionScope.() -> Unit),
 ) {
 
     var visibilityPassword by rememberSaveable { mutableStateOf(value = false) }
+    val focusManager: FocusManager = LocalFocusManager.current
 
     OutlinedTextField(
         value = textValue,
@@ -77,7 +79,9 @@ fun PasswordOutTextField(
             imeAction = ImeAction.Done
         ),
         keyboardActions = KeyboardActions(
-            onDone = onDone
+            onDone = {
+                focusManager.clearFocus()
+            }
         ),
         shape = RoundedCornerShape(20),
         colors = TextFieldDefaults.outlinedTextFieldColors(

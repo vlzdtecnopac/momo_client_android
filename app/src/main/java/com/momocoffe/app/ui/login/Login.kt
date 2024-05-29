@@ -151,9 +151,6 @@ fun Login(navController: NavHostController, loginViewModel: LoginViewModel = vie
                         PasswordOutTextField(
                             textValue = password,
                             onValueChange = { password = it },
-                            onDone = {
-                                focusManager.clearFocus()
-                            }
                         )
                         Spacer(modifier = Modifier.height(25.dp))
                         ButtonField(
