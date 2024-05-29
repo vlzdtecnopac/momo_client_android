@@ -25,6 +25,7 @@ import com.momocoffe.app.ui.category.components.BtnOutlineCategory
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.category.ListItem
+import com.momocoffe.app.ui.components.Header
 
 
 @Composable
@@ -54,6 +55,7 @@ fun Food(navController: NavController,
                 .zIndex(88f),
             color = BlueDark
         ) {
+            Header(navController = navController)
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,

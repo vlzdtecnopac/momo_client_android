@@ -3,6 +3,7 @@ package com.momocoffe.app.ui.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +39,7 @@ fun Header(navController: NavController) {
 
     ) {
         Button(
-            modifier = Modifier.width(180.dp),
+            modifier = Modifier.width(180.dp).border(0.dp, Color.Transparent, shape = RoundedCornerShape(10.dp)) ,
             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 20.dp),
             shape = RoundedCornerShape(10.dp),
             border = BorderStroke(width = 0.dp, color = Color.Transparent),

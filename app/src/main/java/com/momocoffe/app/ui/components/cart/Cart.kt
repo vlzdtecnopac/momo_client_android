@@ -35,6 +35,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.momocoffe.app.ui.theme.BlueDarkTransparent
+import com.momocoffe.app.ui.theme.OrangeDarkLight
 import com.momocoffe.app.viewmodel.CartViewModel
 
 @Composable
@@ -49,12 +50,14 @@ fun Cart(navController: NavController, cartViewModel: CartViewModel) {
     Spacer(modifier = Modifier.width(10.dp))
 
     Box {
-        BtnCartMomo(text = stringResource(id = R.string.show_cart), onclick = {
-            showPopup = true
-        }, icon = R.drawable.cart_icon)
+        BtnCartMomo(
+            text = stringResource(id = R.string.show_cart),
+            onclick = { showPopup = true },
+            cartViewModel = cartViewModel,
+            icon = R.drawable.cart_icon)
 
         if (showPopup) {
-            PopupBox( onClickOutside = { showPopup = false }) {
+            PopupBox() {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.3f)
@@ -71,7 +74,8 @@ fun Cart(navController: NavController, cartViewModel: CartViewModel) {
 }
 
 @Composable
-fun PopupBox(onClickOutside: () -> Unit, content: @Composable () -> Unit) {
+fun PopupBox(
+    content: @Composable () -> Unit) {
     // full screen background
     Dialog(
         onDismissRequest = {},
@@ -95,8 +99,13 @@ fun PopupBox(onClickOutside: () -> Unit, content: @Composable () -> Unit) {
 fun BtnCartMomo(
     text: String,
     icon: Int,
-    onclick: () -> Unit
+    onclick: () -> Unit,
+    cartViewModel: CartViewModel
 ) {
+    LaunchedEffect(Unit){
+        cartViewModel.countTotal()
+    }
+
     val modifierCard = Modifier
         .width(130.dp)
         .height(45.dp)
@@ -109,24 +118,50 @@ fun BtnCartMomo(
         )
         .padding(8.dp)
 
-    Row(
-        modifier = modifierCard.clickable { onclick() },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painterResource(id = icon),
-            contentDescription = stringResource(id = R.string.momo_coffe),
-            tint = Color.White,
-            modifier = Modifier.size(width = 30.dp, height = 30.dp)
-        )
-        Text(
-            text,
-            color = Color.White,
-            fontSize = 14.sp,
-            fontFamily = stacionFamily,
-            fontWeight = FontWeight.Normal,
-            textAlign = TextAlign.Center,
-            lineHeight = 16.sp
-        )
+    Box {
+        Row(
+            modifier = modifierCard.clickable { onclick() },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painterResource(id = icon),
+                contentDescription = stringResource(id = R.string.momo_coffe),
+                tint = Color.White,
+                modifier = Modifier.size(width = 30.dp, height = 30.dp)
+            )
+            Text(
+                text,
+                color = Color.White,
+                fontSize = 14.sp,
+                fontFamily = stacionFamily,
+                fontWeight = FontWeight.Normal,
+                textAlign = TextAlign.Center,
+                lineHeight = 16.sp
+            )
+        }
+
+        Box(
+          modifier = Modifier
+              .offset(x = 23.dp, y = 2.dp)
+              .clip(RoundedCornerShape(14.dp))
+              .background(OrangeDarkLight)
+              .padding(1.dp)
+              .width(20.dp)
+              .height(20.dp),
+            contentAlignment = Alignment.Center
+        ){
+            cartViewModel.countCartState.value.let {
+                Text(
+                    it.toString(),
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    fontFamily = stacionFamily,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Center,
+                    lineHeight = 11.sp
+                )
+            }
+
+        }
     }
 }
