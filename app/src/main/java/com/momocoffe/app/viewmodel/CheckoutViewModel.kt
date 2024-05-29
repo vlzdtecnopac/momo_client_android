@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.momocoffe.app.BuildConfig
 import com.momocoffe.app.network.repository.ApiService
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
@@ -13,7 +14,7 @@ class CheckoutViewModel  : ViewModel() {
     var convertMoneyState = mutableStateOf(0f)
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://open.er-api.com")
+        .baseUrl(BuildConfig.API_URL_CURRENCY)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
