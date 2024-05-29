@@ -98,7 +98,7 @@ fun Checkout(
         tableList.clear()
         tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
         tableList.add(CoffeeCart(tipString, valuePropina, null))
-        tableList.add(CoffeeCart("Total", valorTotal, null))
+        tableList.add(CoffeeCart("Total", valorTotal, "total"))
     }
 
 
