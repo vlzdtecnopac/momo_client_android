@@ -86,7 +86,7 @@ fun PropinaModal(
                 Image(
                     painter = painterResource(id = R.drawable.momo_coffe_mug),
                     contentDescription = stringResource(id = R.string.momo_coffe),
-                    modifier = Modifier.width(230.dp),
+                    modifier = Modifier.width(160.dp),
                     contentScale = ContentScale.Crop,
                 )
 

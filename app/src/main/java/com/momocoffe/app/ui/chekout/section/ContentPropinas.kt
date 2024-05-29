@@ -267,7 +267,6 @@ fun ContentPropinas(
                     colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 1) OrangeDark else BlueLight),
                     onClick = {
                         typePropina = 1
-                        onSelectPropina(0)
                         onTypePropina(0)
                         onSelectValue(0)
                     }
@@ -295,7 +294,6 @@ fun ContentPropinas(
                     colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 2) OrangeDark else BlueLight),
                     onClick = {
                         typePropina = 2
-                        onSelectPropina(0)
                         onTypePropina(0)
                         onSelectValue(0)
                     }
