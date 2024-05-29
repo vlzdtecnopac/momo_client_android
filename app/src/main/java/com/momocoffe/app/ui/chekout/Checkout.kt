@@ -273,10 +273,8 @@ fun Checkout(
                         onValueChange = { textState = it },
                         onClickButton = { textState = "" },
                         borderColor = Color.White,
-                        onNext = {
-                            focusManager.moveFocus(
-                                FocusDirection.Down
-                            )
+                        onDone = {
+                            focusManager.clearFocus()
                         }
                     )
                     Spacer(modifier = Modifier.height(5.dp))

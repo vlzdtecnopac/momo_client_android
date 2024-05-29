@@ -113,10 +113,8 @@ fun PropinaModal(
                         onValueChange = { textState = it },
                         onClickButton = { textState = "" },
                         borderColor = BlueDark,
-                        onNext = {
-                            focusManager.moveFocus(
-                                FocusDirection.Down
-                            )
+                        onDone = {
+                            focusManager.clearFocus()
                         }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
