@@ -54,10 +54,11 @@ fun ContentPropinas(
     onSelectValue: (Int) -> Unit,
     onSelectPropina: (Int) -> Unit,
     onTypePropina: (Int) -> Unit
+
 ) {
 
     var typePropina by remember { mutableStateOf(0) }
-    var mountPropinaSelected by remember { mutableStateOf(0) }
+    var mountPropinaSelected by remember { mutableStateOf(10) }
 
     Row(modifier = Modifier.height(110.dp)) {
         Image(

@@ -30,7 +30,6 @@ class ClientViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = apiService.getRegisterClient(clientDto);
-                Log.e("Result.ClientViewModel", response.toString())
                 if (response.isSuccessful) {
                     val clientResponse: ClientResponse? = response.body()
                     if (clientResponse != null) {

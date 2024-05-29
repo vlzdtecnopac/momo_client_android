@@ -47,6 +47,7 @@ import com.momocoffe.app.ui.components.DashedDivider
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.CheckoutViewModel
+import com.momocoffe.app.viewmodel.CuponesViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import kotlinx.coroutines.delay
 import retrofit2.Retrofit
@@ -60,6 +61,7 @@ fun Checkout(
     cartViewModel: CartViewModel,
     shoppingViewModel: ShoppingViewModel = viewModel(),
     checkoutViewModel: CheckoutViewModel = viewModel(),
+    cuponesViewModel: CuponesViewModel = viewModel(),
 ) {
 
     val context = LocalContext.current
@@ -68,7 +70,7 @@ fun Checkout(
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
 
-    var textState by rememberSaveable { mutableStateOf(value = "") }
+    var textCuponCodeState by rememberSaveable { mutableStateOf(value = "") }
     val subTotalProduct = cartViewModel.stateTotalSub.value
     var propina by rememberSaveable { mutableStateOf(value = 0) }
     var typePropina by rememberSaveable { mutableStateOf(value = 0) }
@@ -182,8 +184,39 @@ fun Checkout(
         }
     }
 
+    LaunchedEffect(cuponesViewModel.cuponResultState.value) {
+        cuponesViewModel.cuponResultState.value.let { result ->
+            if (result != null) {
+                when {
+                    result.isSuccess -> {
+                        val response = result.getOrThrow()
+                        if (response.items.isNotEmpty()) {
+                            Log.d("Result.CuponesViewModel", response.items.first().toString())
+                            val cuponItem = response.items.first()
+                            isCuponValid = true
+                            valueCupon = cuponItem.discount.toInt()
+                            tableList.clear()
+                            valorTotal = subTotalProduct - valueCupon + valuePropina
+                            tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
+                            tableList.add(CoffeeCart(tipString, valuePropina, null))
+                            tableList.add(CoffeeCart(couponString, valueCupon, "cupon"))
+                            tableList.add(CoffeeCart("Total", valorTotal, null))
+                            Toast.makeText(context, couponValidMessage, Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(context, "Este número de cupon no es válido", Toast.LENGTH_SHORT).show()
+                        }
+                    }
 
-
+                    result.isFailure -> {
+                        val exception = result.exceptionOrNull()
+                        Log.e("Result.CuponViewModel", exception.toString())
+                        Toast.makeText(context, "Servicio de cupones fallando.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier.background(BlueLight),
@@ -269,9 +302,9 @@ fun Checkout(
                         placeholder = stringResource(id = R.string.add_cupon),
                         icon = R.drawable.procent_cupon_icon,
                         keyboardType = KeyboardType.Text,
-                        textValue = textState,
-                        onValueChange = { textState = it },
-                        onClickButton = { textState = "" },
+                        textValue = textCuponCodeState,
+                        onValueChange = { textCuponCodeState = it },
+                        onClickButton = { textCuponCodeState = "" },
                         borderColor = Color.White,
                         onDone = {
                             focusManager.clearFocus()
@@ -280,15 +313,7 @@ fun Checkout(
                     Spacer(modifier = Modifier.height(5.dp))
                     Button(
                         onClick = {
-                            isCuponValid = true
-                            valueCupon = 35
-                            tableList.clear()
-                            valorTotal = subTotalProduct - valueCupon + valuePropina
-                            tableList.add(CoffeeCart("Subtotal", subTotalProduct, null))
-                            tableList.add(CoffeeCart(tipString, valuePropina, null))
-                            tableList.add(CoffeeCart(couponString, valueCupon, "cupon"))
-                            tableList.add(CoffeeCart("Total", valorTotal, null))
-                            Toast.makeText(context, couponValidMessage, Toast.LENGTH_SHORT).show()
+                            cuponesViewModel.cuponValidate(textCuponCodeState)
                         },
                         modifier = Modifier
                             .fillMaxWidth()

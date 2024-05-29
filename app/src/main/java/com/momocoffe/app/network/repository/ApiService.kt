@@ -15,6 +15,7 @@ import com.momocoffe.app.network.response.ClientGeneralResponse
 import com.momocoffe.app.network.response.ClientResponse
 import com.momocoffe.app.network.response.ClientSessionResponse
 import com.momocoffe.app.network.response.ConfigShoppingResponse
+import com.momocoffe.app.network.response.CuponesResponse
 import com.momocoffe.app.network.response.DataKiosko
 import com.momocoffe.app.network.response.EmployeeResponse
 import com.momocoffe.app.network.response.KioskoResponse
@@ -89,4 +90,9 @@ interface ApiService {
 
     @GET("/config/{shopping_id}")
     suspend fun getConfigShopping(@Path("shopping_id") shoppingId: String?): Response<ArrayList<ConfigShoppingResponse>>
+
+    @GET("/cupones/")
+    suspend fun getCuponMomo(@Query("cupon_code") cuponCode: String): Response<CuponesResponse>
+
+
 }

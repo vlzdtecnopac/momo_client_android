@@ -35,7 +35,6 @@ import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.ui.theme.stacionFamily
 
-
 @Composable
 fun ProductCartCheckout(
     product: Cart,
