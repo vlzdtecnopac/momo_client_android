@@ -1,5 +1,7 @@
 package com.momocoffe.app.ui.components
 
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.core.content.ContextCompat.startActivity
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
@@ -47,8 +51,6 @@ fun AlertInvoiceState(stateInvoice: String){
         "failed" -> ErrorPaymentModal()
         else -> {}
     }
-
-
 }
 
 @Composable
@@ -64,7 +66,7 @@ fun SuccessPaymentModal() {
                 .clip(RoundedCornerShape(14.dp))
                 .padding(0.dp)
                 .widthIn(min = 460.dp, max = 830.dp)
-                .heightIn(min = 610.dp, max = 620.dp)
+                .heightIn(min = 410.dp, max = 420.dp)
                 .zIndex(88f),
             color = BlueLight
         ) {
@@ -78,43 +80,31 @@ fun SuccessPaymentModal() {
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.momo_coffe_mug),
+                    painter = painterResource(id = R.drawable.clock_icon),
                     contentDescription = stringResource(id = R.string.momo_coffe),
-                    modifier = Modifier.width(230.dp),
-                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.width(145.dp),
+                    contentScale = ContentScale.Fit,
                 )
                 Text(
-                    stringResource(id = R.string.something_went_wrong),
+                    stringResource(id = R.string.payment_receive_success_order),
                     fontFamily = redhatFamily,
                     fontSize = 28.sp,
-                    fontWeight = FontWeight(700)
+                    fontWeight = FontWeight(700),
+                    textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
-                    stringResource(id = R.string.text_try_again),
+                    stringResource(id = R.string.profile_you_receive),
                     fontFamily = redhatFamily,
                     fontSize = 22.sp,
-                    fontWeight = FontWeight(700)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text( stringResource(id = R.string.yuo_payment_could_error),
-                    fontFamily = redhatFamily,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight(400),
+                    fontWeight = FontWeight(700),
                     textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    stringResource(id = R.string.there_problem_helping),
-                    fontFamily = redhatFamily,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight(400),
-                    textAlign = TextAlign.Center
+
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 Row(
                     modifier = Modifier
-                        .widthIn(0.dp, 700.dp),
+                        .widthIn(0.dp, 400.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
@@ -144,9 +134,10 @@ fun SuccessPaymentModal() {
                         )
                     ) {
                         Text(
-                            stringResource(id = R.string.cancel),
+                            stringResource(id = R.string.txt_print),
                             color = BlueDark,
-                            fontSize = 22.sp
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight(700)
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
@@ -176,10 +167,11 @@ fun SuccessPaymentModal() {
                         )
                     ) {
                         Text(
-                            text = stringResource(id = R.string.intend),
+                            stringResource(id = R.string.txt_virtual),
                             fontSize = 22.sp,
                             color = Color.White,
                             fontFamily = redhatFamily,
+                            fontWeight = FontWeight(700)
                         )
                     }
 
@@ -192,6 +184,8 @@ fun SuccessPaymentModal() {
 
 @Composable
 fun ErrorPaymentModal() {
+    val context = LocalContext.current
+
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -203,7 +197,7 @@ fun ErrorPaymentModal() {
                 .clip(RoundedCornerShape(14.dp))
                 .padding(0.dp)
                 .widthIn(min = 460.dp, max = 830.dp)
-                .heightIn(min = 610.dp, max = 620.dp)
+                .heightIn(min = 510.dp, max = 520.dp)
                 .zIndex(88f),
             color = BlueLight
         ) {
@@ -219,7 +213,7 @@ fun ErrorPaymentModal() {
                 Image(
                     painter = painterResource(id = R.drawable.momo_coffe_mug),
                     contentDescription = stringResource(id = R.string.momo_coffe),
-                    modifier = Modifier.width(230.dp),
+                    modifier = Modifier.width(150.dp),
                     contentScale = ContentScale.Crop,
                 )
                 Text(
@@ -238,7 +232,7 @@ fun ErrorPaymentModal() {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text( stringResource(id = R.string.yuo_payment_could_error),
                     fontFamily = redhatFamily,
-                    fontSize = 22.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight(400),
                     textAlign = TextAlign.Center
                 )
@@ -246,7 +240,7 @@ fun ErrorPaymentModal() {
                 Text(
                     stringResource(id = R.string.there_problem_helping),
                     fontFamily = redhatFamily,
-                    fontSize = 22.sp,
+                    fontSize = 18.sp,
                     fontWeight = FontWeight(400),
                     textAlign = TextAlign.Center
                 )
@@ -268,7 +262,15 @@ fun ErrorPaymentModal() {
                             )
                             .weight(0.5f)
                             .height(60.dp),
-                        onClick = {},
+                        onClick = {
+                            val pm: PackageManager = context.packageManager
+                            val intent: Intent? = pm.getLaunchIntentForPackage(context.packageName)
+                            intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            if (intent != null) {
+                                startActivity(context, intent, null)
+                            }
+                        },
                         colors = ButtonDefaults.buttonColors(
                             disabledContentColor = Color.Transparent,
                             contentColor = Color.Transparent,

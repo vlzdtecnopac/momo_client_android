@@ -32,7 +32,7 @@ data class StateInvoice(val state: String, val idInvoice: String)
 
 class MainActivity : ComponentActivity() {
     private val viewModelLogin: LoginViewModel by viewModels()
-    private var stateInvoice by mutableStateOf("completed")
+    private var stateInvoice by mutableStateOf("init")
 
     override fun attachBaseContext(newBase: Context?) {
         val localeToSwitchTo = Locale("es")
@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity() {
                             SocketHandler.establishConnection()
                         }
 
-                        if (stateInvoice == "completed") {
+                        if (stateInvoice.isNotEmpty()) {
                             AlertInvoiceState(stateInvoice)
                         }
 

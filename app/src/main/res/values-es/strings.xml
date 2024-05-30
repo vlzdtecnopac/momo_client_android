@@ -110,4 +110,8 @@
     <string name="coupon_valid">Este cupón es valido</string>
     <string name="delete_cupon">Se ha eliminado cúpon</string>
     <string name="cupon_not_validate_store">Este cúpon no es válido para esta tienda</string>
+    <string name="payment_receive_success_order">¡Pago recibido con éxito! \n Tu orden está en proceso.</string>
+    <string name="profile_you_receive">¿Cómo prefieres \n tu recibo?</string>
+    <string name="txt_print">Impreso</string>
+    <string name="txt_virtual">Virtual</string>
 </resources>

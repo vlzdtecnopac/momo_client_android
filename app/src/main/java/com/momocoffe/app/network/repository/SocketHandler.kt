@@ -1,4 +1,5 @@
 import android.util.Log
+import com.momocoffe.app.BuildConfig
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -11,7 +12,7 @@ object SocketHandler {
     @Synchronized
     fun setSocket() {
         try {
-            mSocket = IO.socket("http://momocoffe-lb-1774679013.us-east-1.elb.amazonaws.com/")
+            mSocket = IO.socket(BuildConfig.API_BASE_URL)
             mSocket.on(Socket.EVENT_CONNECT, Emitter.Listener {
                 Log.d("Socket.IO", "Conectado")
                 // Aquí puedes enviar mensajes al servidor o realizar otras acciones al conectarte
