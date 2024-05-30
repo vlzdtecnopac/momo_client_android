@@ -211,7 +211,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         },
-                        defaultSelect = "Sin azucar|Original")
+                        defaultSelect = "Sin Azucar|Original|Sin azucar")
                 }
             }
         }
