@@ -33,7 +33,6 @@ fun OrderHere(navController: NavController,) {
 
     var isModalVisible by remember { mutableStateOf(false) }
 
-
     if(isModalVisible) {
         ContentNotEffecty(navController)
     }
