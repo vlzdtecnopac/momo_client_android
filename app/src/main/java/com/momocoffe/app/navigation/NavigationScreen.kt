@@ -21,7 +21,7 @@ import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.LoginViewModel
 
 @Composable
-fun NavigationScreen(viewModel: LoginViewModel, viewModelCart: CartViewModel, stateInvoice: StateInvoice) {
+fun NavigationScreen(viewModel: LoginViewModel, viewModelCart: CartViewModel) {
 
     val navController = rememberNavController()
     val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)

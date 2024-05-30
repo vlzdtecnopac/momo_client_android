@@ -24,6 +24,7 @@ import com.momocoffe.app.viewmodel.LoginViewModel
 import com.momocoffe.app.viewmodel.RegionInternational
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.momocoffe.app.ui.components.AlertInvoiceState
 import java.util.Locale
 
 
@@ -31,7 +32,7 @@ data class StateInvoice(val state: String, val idInvoice: String)
 
 class MainActivity : ComponentActivity() {
     private val viewModelLogin: LoginViewModel by viewModels()
-    private var stateInvoice by mutableStateOf(StateInvoice("", ""))
+    private var stateInvoice by mutableStateOf("completed")
 
     override fun attachBaseContext(newBase: Context?) {
         val localeToSwitchTo = Locale("es")
@@ -47,19 +48,12 @@ class MainActivity : ComponentActivity() {
         val intent = intent
 
         if (intent.hasExtra("zettleStatus")) {
-            val zettleStatus = intent.getStringExtra("zettleStatus")
-            val zettleIdInvoice = intent.getStringExtra("zettleIdInvoice")
-            when (zettleStatus) {
-                "completed" -> {
-                    stateInvoice = zettleIdInvoice?.let { StateInvoice("completed", it) }!!
-                }
-                "cancelled" -> {
-                    stateInvoice = zettleIdInvoice?.let { StateInvoice("cancelled", it) }!!
-                }
-                "failed" -> {
-                    stateInvoice = zettleIdInvoice?.let { StateInvoice("failed", it) }!!
-                }
-                else -> Log.d("RESULT.ZettlePaymentMomo", "State Disconnect")
+            val zettleStatus: String? = intent.getStringExtra("zettleStatus")
+            stateInvoice = when (zettleStatus) {
+                "completed" -> "completed"
+                "cancelled" -> "cancelled"
+                "failed" -> "failed"
+                else -> "init"
             }
         } else {
             Log.d("RESULT.ZettlePaymentMomo", "Not output data in ZettlePaymentMomo")
@@ -74,7 +68,11 @@ class MainActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         val database =
-                            Room.databaseBuilder(applicationContext, CartDataBase::class.java, "momo_db")
+                            Room.databaseBuilder(
+                                applicationContext,
+                                CartDataBase::class.java,
+                                "momo_db"
+                            )
                                 .build()
                         val dao = database.dao
                         val viewModelDb by viewModels<CartViewModel>(factoryProducer = {
@@ -90,7 +88,11 @@ class MainActivity : ComponentActivity() {
                             SocketHandler.establishConnection()
                         }
 
-                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb, stateInvoice)
+                        if (stateInvoice == "completed") {
+                            AlertInvoiceState(stateInvoice)
+                        }
+
+                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)
                     }
                 }
             }
@@ -103,7 +105,11 @@ class MainActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         val database =
-                            Room.databaseBuilder(applicationContext, CartDataBase::class.java, "momo_db")
+                            Room.databaseBuilder(
+                                applicationContext,
+                                CartDataBase::class.java,
+                                "momo_db"
+                            )
                                 .build()
                         val dao = database.dao
                         val viewModelDb by viewModels<CartViewModel>(factoryProducer = {
@@ -119,7 +125,7 @@ class MainActivity : ComponentActivity() {
                             SocketHandler.establishConnection()
                         }
 
-                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb,  stateInvoice)
+                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)
                     }
                 }
             }
