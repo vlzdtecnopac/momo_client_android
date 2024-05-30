@@ -1,7 +1,6 @@
 package com.momocoffe.app.ui.components
 
-import android.content.Intent
-import android.content.pm.PackageManager
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,7 +35,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
-import androidx.core.content.ContextCompat.startActivity
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
@@ -263,13 +261,7 @@ fun ErrorPaymentModal() {
                             .weight(0.5f)
                             .height(60.dp),
                         onClick = {
-                            val pm: PackageManager = context.packageManager
-                            val intent: Intent? = pm.getLaunchIntentForPackage(context.packageName)
-                            intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                            intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            if (intent != null) {
-                                startActivity(context, intent, null)
-                            }
+
                         },
                         colors = ButtonDefaults.buttonColors(
                             disabledContentColor = Color.Transparent,

@@ -2,6 +2,9 @@ package com.momocoffe.app.ui.client
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DoDisturbOn
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
@@ -46,6 +49,8 @@ fun Client(navController: NavController){
                 .fillMaxSize()
                 .weight(4f),
         ) {
+
+
             Image(
                 painter = painterResource(id = R.drawable.client_session),
                 contentDescription = stringResource(id = R.string.momo_coffe),
@@ -62,6 +67,21 @@ fun Client(navController: NavController){
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 40.dp),
+                horizontalArrangement = Arrangement.End
+            ){
+                Image(
+                    painter =  painterResource(id = R.drawable.close_icon),
+                    contentDescription = stringResource(id = R.string.momo_coffe),
+                    modifier = Modifier.size(width = 60.dp, height = 60.dp).clickable {
+                        navController.navigate(Destination.OrderHere.route)
+                    }
+                )
+
+            }
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = stringResource(id = R.string.momo_coffe),
