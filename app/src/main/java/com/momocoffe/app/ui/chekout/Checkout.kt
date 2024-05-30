@@ -45,6 +45,7 @@ import com.momocoffe.app.ui.components.DashedDivider
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.CheckoutViewModel
+import com.momocoffe.app.viewmodel.ClientViewModel
 import com.momocoffe.app.viewmodel.CuponesViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import org.json.JSONArray
@@ -59,6 +60,7 @@ fun Checkout(
     shoppingViewModel: ShoppingViewModel = viewModel(),
     checkoutViewModel: CheckoutViewModel = viewModel(),
     cuponesViewModel: CuponesViewModel = viewModel(),
+    clientViewModel: ClientViewModel = viewModel()
 ) {
 
     val context = LocalContext.current
@@ -66,6 +68,7 @@ fun Checkout(
     var shoppingItems by remember { mutableStateOf<List<ItemShopping>>(emptyList()) }
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
+    val client_id = sharedPreferences.getString("clientId", null) ?: ""
 
     var textCuponCodeState by rememberSaveable { mutableStateOf(value = "") }
     val subTotalProduct = cartViewModel.stateTotalSub.value
@@ -111,12 +114,32 @@ fun Checkout(
     }
 
     LaunchedEffect(Unit) {
+        if(client_id.isNotBlank()) {
+            clientViewModel.getClient("", "", client_id)
+        }
         checkoutViewModel.convertAmount(subTotalProduct)
         shoppingViewModel.getShopping(preference_shopping_id)
         shoppingViewModel.getConfigShopping(preference_shopping_id)
         cartViewModel.priceSubTotal()
         cartViewModel.countTotal()
         initTable()
+    }
+
+    LaunchedEffect(clientViewModel.clientResultCheckEmailState.value) {
+        clientViewModel.clientResultCheckEmailState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val userResponse = result.getOrThrow()
+                    if(userResponse.items.isNotEmpty()){
+                        valueNameAuthor.value = "${userResponse.items[0].firstName} ${userResponse.items[0].lastName}"
+                    }
+                }
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.e("Result.ClientViewModel", exception.toString())
+                }
+            }
+        }
     }
 
 
@@ -138,7 +161,6 @@ fun Checkout(
 
 
     }
-
 
     LaunchedEffect(subTotalProduct, valuePropina, isCuponValid) {
         checkoutViewModel.convertAmount(subTotalProduct)
@@ -498,6 +520,7 @@ fun Checkout(
                                         intent.putExtra("zettleMountCupon", valueCupon)
                                         intent.putExtra("zettleMountPropina", valuePropina)
                                         intent.putExtra("zettleMountTotal", valorTotal)
+                                        intent.putExtra("zettleAuthorName", valueNameAuthor.value)
                                         context.startActivity(intent)
                                     } catch (e: Exception) {
                                         Log.e("TAG", "Error al abrir la aplicación", e)

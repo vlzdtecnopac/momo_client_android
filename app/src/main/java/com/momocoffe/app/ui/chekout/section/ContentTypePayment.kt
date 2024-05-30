@@ -1,9 +1,11 @@
 package com.momocoffe.app.ui.chekout.section
 
+import android.content.Context
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,24 +52,35 @@ fun ContentTypePayment(
     onSelect: (Int) -> Unit,
     onSelectName: MutableState<String>
 ) {
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val client_id = sharedPreferences.getString("clientId", null) ?: ""
+
     var invite by remember { mutableStateOf(value = "") }
     var validTypePayment by remember { mutableStateOf(value = 0) }
-    val focusManager = LocalFocusManager.current
+
     shoppingItems.let {
         Column(
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            OutTextField(
-                textValue = invite,
-                onValueChange = {
-                    onSelectName.value = it
-                    invite = it
-                },
-                onClickButton = { invite = "" },
-                keyboardType = KeyboardType.Text,
-                icon = painterResource(R.drawable.user)
-            )
+            if (client_id.isEmpty()) {
+                OutTextField(
+                    textValue = invite,
+                    onValueChange = {
+                        onSelectName.value = it
+                        invite = it
+                    },
+                    onClickButton = { invite = "" },
+                    keyboardType = KeyboardType.Text,
+                    icon = painterResource(R.drawable.user)
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 stringResource(id = R.string.select_yuo_payment),
