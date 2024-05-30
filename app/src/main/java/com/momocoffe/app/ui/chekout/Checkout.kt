@@ -22,7 +22,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -37,7 +36,6 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.R
-import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.response.ItemShopping
 import com.momocoffe.app.ui.chekout.components.OutlineTextField
 import com.momocoffe.app.ui.chekout.section.ProductCartCheckout
@@ -49,11 +47,10 @@ import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.CheckoutViewModel
 import com.momocoffe.app.viewmodel.CuponesViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
-import kotlinx.coroutines.delay
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import org.json.JSONArray
 
 data class CoffeeCart(val name: String, val price: Int, val type: String?)
+
 
 @Composable
 fun Checkout(
@@ -93,6 +90,7 @@ fun Checkout(
     val tipString = stringResource(id = R.string.tip)
     val couponValidMessage = stringResource(id = R.string.coupon_valid)
     val couponDeleteMessage = stringResource(id = R.string.delete_cupon)
+    val couponNotValidStore =  stringResource(id = R.string.cupon_not_validate_store)
 
     fun initTable() {
         tableList.clear()
@@ -137,10 +135,7 @@ fun Checkout(
             else -> 0
         }
 
-        if (isCuponValid) {
-            valorTotal = subTotalProduct - valueCupon + valuePropina
-            tableList[3] = CoffeeCart("Total", valorTotal, null)
-        }
+
     }
 
 
@@ -201,24 +196,47 @@ fun Checkout(
                     result.isSuccess -> {
                         val response = result.getOrThrow()
                         if (response.items.isNotEmpty()) {
-                            Log.d("Result.CuponesViewModel", response.items.first().toString())
-                            val cuponItem = response.items.first()
-                            isCuponValid = true
-                            valueCupon = cuponItem.discount.toInt()
                             initTableCupon()
-                            Toast.makeText(context, couponValidMessage, Toast.LENGTH_SHORT).show()
+                         
+                            val cuponItem = response.items.first()
+
+                            val jsonArray = JSONArray(cuponItem.shopping)
+                            var containValor = false
+
+                            for (i in 0 until jsonArray.length()) {
+                                if (jsonArray.getJSONObject(i).getString("value") == preference_shopping_id) {
+                                    containValor = true
+                                    break
+                                }
+                            }
+                            if(containValor){
+                                if(cuponItem.typeDiscount == "1"){
+                                    valueCupon = cuponItem.discount.toInt()
+                                    val montoDescuento = subTotalProduct * (valueCupon / 100)
+                                    valorTotal = subTotalProduct - montoDescuento + valuePropina
+                                    tableList[3] = CoffeeCart("Total", valorTotal, null)
+                                }else{
+                                    valueCupon = cuponItem.discount.toInt()
+                                    valorTotal = subTotalProduct - valueCupon + valuePropina
+                                    tableList[3] = CoffeeCart("Total", valorTotal, null)
+                                }
+                                Toast.makeText(context, couponValidMessage, Toast.LENGTH_SHORT).show()
+                            }else{
+                                Toast.makeText(context, couponNotValidStore, Toast.LENGTH_SHORT).show()
+                            }
+
                         }else{
                             isCuponValid = false
                             valueCupon = 0
                             initTable()
-                            Toast.makeText(context, "Este número de cúpon no es válido", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, couponNotValidStore, Toast.LENGTH_SHORT).show()
                         }
                     }
 
                     result.isFailure -> {
                         val exception = result.exceptionOrNull()
                         Log.e("Result.CuponViewModel", exception.toString())
-                        Toast.makeText(context, "Servicio de cupones fallando.", Toast.LENGTH_SHORT)
+                        Toast.makeText(context, couponNotValidStore, Toast.LENGTH_SHORT)
                             .show()
                     }
                 }

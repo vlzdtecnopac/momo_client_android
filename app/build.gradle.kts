@@ -1,10 +1,8 @@
-import org.jetbrains.kotlin.base.kapt3.KaptOptions
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.21"
 }
 
 android {
@@ -73,7 +71,7 @@ dependencies {
     implementation ("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
     implementation ("androidx.room:room-runtime:$room_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation("com.github.MahboubehSeyedpour:jetpack-loading:1.1.0")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")

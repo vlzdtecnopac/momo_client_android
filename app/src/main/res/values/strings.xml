@@ -108,4 +108,5 @@
     <string name="account_inactive">This account is inactive.</string>
     <string name="coupon_valid">This coupon is valid</string>
     <string name="delete_cupon">Coupon has been removed</string>
+    <string name="cupon_not_validate_store">This coupon is not valid for this store</string>
 </resources>
