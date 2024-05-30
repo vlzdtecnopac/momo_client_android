@@ -1,8 +1,6 @@
 package com.momocoffe.app
 
-import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
@@ -43,16 +41,14 @@ class MainActivity : ComponentActivity() {
 
         if (intent.hasExtra("zettleStatus")) {
             val zettleStatus = intent.getStringExtra("zettleStatus")
-            Log.d("RESULT.ZettlePaymentMomo", "Datos recibidos: $zettleStatus")
-            // Maneja el zettleStatus como necesites
             when (zettleStatus) {
                 "completed" -> handleCompleted()
                 "cancelled" -> handleCancelled()
                 "failed" -> handleFailed()
-                else -> Log.d("RESULT.ZettlePaymentMomo", "Estado desconocido")
+                else -> Log.d("RESULT.ZettlePaymentMomo", "State Disconnect")
             }
         } else {
-            Log.d("RESULT.ZettlePaymentMomo", "No se recibieron datos")
+            Log.d("RESULT.ZettlePaymentMomo", "Not output data in ZettlePaymentMomo")
         }
 
         if (isTablet()) {
