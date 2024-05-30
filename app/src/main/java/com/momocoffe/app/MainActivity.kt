@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.room.Room
 import com.momocoffe.app.navigation.NavigationScreen
@@ -23,8 +26,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import java.util.Locale
 
+
+data class StateInvoice(val state: String, val idInvoice: String)
+
 class MainActivity : ComponentActivity() {
     private val viewModelLogin: LoginViewModel by viewModels()
+    private var stateInvoice by mutableStateOf(StateInvoice("", ""))
 
     override fun attachBaseContext(newBase: Context?) {
         val localeToSwitchTo = Locale("es")
@@ -41,10 +48,17 @@ class MainActivity : ComponentActivity() {
 
         if (intent.hasExtra("zettleStatus")) {
             val zettleStatus = intent.getStringExtra("zettleStatus")
+            val zettleIdInvoice = intent.getStringExtra("zettleIdInvoice")
             when (zettleStatus) {
-                "completed" -> handleCompleted()
-                "cancelled" -> handleCancelled()
-                "failed" -> handleFailed()
+                "completed" -> {
+                    stateInvoice = zettleIdInvoice?.let { StateInvoice("completed", it) }!!
+                }
+                "cancelled" -> {
+                    stateInvoice = zettleIdInvoice?.let { StateInvoice("cancelled", it) }!!
+                }
+                "failed" -> {
+                    stateInvoice = zettleIdInvoice?.let { StateInvoice("failed", it) }!!
+                }
                 else -> Log.d("RESULT.ZettlePaymentMomo", "State Disconnect")
             }
         } else {
@@ -76,7 +90,7 @@ class MainActivity : ComponentActivity() {
                             SocketHandler.establishConnection()
                         }
 
-                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)
+                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb, stateInvoice)
                     }
                 }
             }
@@ -105,7 +119,7 @@ class MainActivity : ComponentActivity() {
                             SocketHandler.establishConnection()
                         }
 
-                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)
+                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb,  stateInvoice)
                     }
                 }
             }
@@ -122,21 +136,6 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
-private fun handleCompleted() {
-    // Maneja el estado completado
-    Log.d("RESULT.ZettlePaymentMomo", "Pago completado")
-}
-
-private fun handleCancelled() {
-    // Maneja el estado cancelado
-    Log.d("RESULT.ZettlePaymentMomo", "Pago cancelado")
-}
-
-private fun handleFailed() {
-    // Maneja el estado fallido
-    Log.d("RESULT.ZettlePaymentMomo", "Pago fallido")
-}
 
 
 

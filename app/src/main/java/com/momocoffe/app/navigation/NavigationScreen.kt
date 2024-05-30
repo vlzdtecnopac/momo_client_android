@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.momocoffe.app.App
+import com.momocoffe.app.StateInvoice
 import com.momocoffe.app.ui.category.Category
 import com.momocoffe.app.ui.chekout.Checkout
 import com.momocoffe.app.ui.client.Client
@@ -20,7 +21,7 @@ import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.LoginViewModel
 
 @Composable
-fun NavigationScreen(viewModel: LoginViewModel, viewModelCart: CartViewModel) {
+fun NavigationScreen(viewModel: LoginViewModel, viewModelCart: CartViewModel, stateInvoice: StateInvoice) {
 
     val navController = rememberNavController()
     val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
