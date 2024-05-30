@@ -20,6 +20,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,11 +36,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
+import com.momocoffe.app.viewmodel.PedidoViewModel
 
 @Composable
 fun AlertInvoiceState(stateInvoice: String){
@@ -52,7 +55,14 @@ fun AlertInvoiceState(stateInvoice: String){
 }
 
 @Composable
-fun SuccessPaymentModal() {
+fun SuccessPaymentModal(
+    pedidoViewModel: PedidoViewModel = viewModel()
+) {
+
+    LaunchedEffect(Unit){
+        pedidoViewModel.create()
+    }
+
     Dialog(
         onDismissRequest = {},
         DialogProperties(

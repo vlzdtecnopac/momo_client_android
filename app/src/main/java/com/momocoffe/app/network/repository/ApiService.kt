@@ -1,5 +1,6 @@
 package com.momocoffe.app.network.repository
 
+import com.momocoffe.app.network.data.CreatePedidoResponse
 import com.momocoffe.app.network.data.ExchangeRateResponse
 import com.momocoffe.app.network.dto.ClientReceptorEmailRequest
 import com.momocoffe.app.network.dto.ClientReceptorSMSRequest
@@ -7,6 +8,7 @@ import com.momocoffe.app.network.dto.ClientRequest
 import com.momocoffe.app.network.dto.ClientSessionEmailRequest
 import com.momocoffe.app.network.dto.ClientSessionPhoneRequest
 import com.momocoffe.app.network.dto.LoginRequest
+import com.momocoffe.app.network.dto.PedidoRequest
 import com.momocoffe.app.network.dto.RefreshToken
 import com.momocoffe.app.network.dto.VerifyKioskoRequest
 import com.momocoffe.app.network.response.CategoriesResponse
@@ -94,5 +96,6 @@ interface ApiService {
     @GET("/cupones/")
     suspend fun getCuponMomo(@Query("cupon_code") cuponCode: String): Response<CuponesResponse>
 
-
+    @POST("/pedido/create")
+    suspend fun createPedido(@Body requestBody: PedidoRequest): Response<CreatePedidoResponse>
 }

@@ -32,7 +32,7 @@ data class StateInvoice(val state: String, val idInvoice: String)
 
 class MainActivity : ComponentActivity() {
     private val viewModelLogin: LoginViewModel by viewModels()
-    private var stateInvoice by mutableStateOf("init")
+    private var stateInvoice by mutableStateOf("completed")
 
     override fun attachBaseContext(newBase: Context?) {
         val localeToSwitchTo = Locale("es")
