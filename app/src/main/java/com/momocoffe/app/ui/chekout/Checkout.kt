@@ -73,6 +73,7 @@ fun Checkout(
     var typePropina by rememberSaveable { mutableStateOf(value = 0) }
 
     var valorTotal by remember { mutableStateOf(0) }
+    var montoDescuento by remember { mutableStateOf(0) }
     var valueCupon by remember { mutableStateOf(value = 0) }
     var valuePropinaPerson by remember { mutableStateOf(value = 0) }
     var valuePropina by remember { mutableStateOf(value = 0) }
@@ -90,7 +91,7 @@ fun Checkout(
     val tipString = stringResource(id = R.string.tip)
     val couponValidMessage = stringResource(id = R.string.coupon_valid)
     val couponDeleteMessage = stringResource(id = R.string.delete_cupon)
-    val couponNotValidStore =  stringResource(id = R.string.cupon_not_validate_store)
+    val couponNotValidStore = stringResource(id = R.string.cupon_not_validate_store)
 
     fun initTable() {
         tableList.clear()
@@ -142,6 +143,7 @@ fun Checkout(
     LaunchedEffect(subTotalProduct, valuePropina, isCuponValid) {
         checkoutViewModel.convertAmount(subTotalProduct)
         if (isCuponValid) {
+            valorTotal = subTotalProduct - montoDescuento + valuePropina
             tableList[1] = CoffeeCart(tipString, valuePropina, null)
             tableList[2] = CoffeeCart(couponString, valueCupon, "cupon")
             tableList[3] = CoffeeCart("Total", valorTotal, "total")
@@ -197,35 +199,38 @@ fun Checkout(
                         val response = result.getOrThrow()
                         if (response.items.isNotEmpty()) {
                             initTableCupon()
-                         
+
                             val cuponItem = response.items.first()
 
                             val jsonArray = JSONArray(cuponItem.shopping)
                             var containValor = false
 
                             for (i in 0 until jsonArray.length()) {
-                                if (jsonArray.getJSONObject(i).getString("value") == preference_shopping_id) {
+                                if (jsonArray.getJSONObject(i)
+                                        .getString("value") == preference_shopping_id
+                                ) {
                                     containValor = true
                                     break
                                 }
                             }
-                            if(containValor){
-                                if(cuponItem.typeDiscount == "1"){
+                            if (containValor) {
+                                isCuponValid = true
+                                if (cuponItem.typeDiscount == "1") {
                                     valueCupon = cuponItem.discount.toInt()
-                                    val montoDescuento = subTotalProduct * (valueCupon / 100)
-                                    valorTotal = subTotalProduct - montoDescuento + valuePropina
-                                    tableList[3] = CoffeeCart("Total", valorTotal, null)
-                                }else{
+                                    montoDescuento = subTotalProduct * (valueCupon / 100)
+                                } else {
                                     valueCupon = cuponItem.discount.toInt()
-                                    valorTotal = subTotalProduct - valueCupon + valuePropina
-                                    tableList[3] = CoffeeCart("Total", valorTotal, null)
+                                    montoDescuento = subTotalProduct - valueCupon
                                 }
-                                Toast.makeText(context, couponValidMessage, Toast.LENGTH_SHORT).show()
-                            }else{
-                                Toast.makeText(context, couponNotValidStore, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, couponValidMessage, Toast.LENGTH_SHORT)
+                                    .show()
+                            } else {
+                                isCuponValid = false
+                                Toast.makeText(context, couponNotValidStore, Toast.LENGTH_SHORT)
+                                    .show()
                             }
-
-                        }else{
+                            initTableCupon()
+                        } else {
                             isCuponValid = false
                             valueCupon = 0
                             initTable()
@@ -276,7 +281,9 @@ fun Checkout(
             ) {
                 if (!contentTypePropinaState) {
                     ContentPropinas(
-                        onSelectValue = { valuePropinaPerson = it },
+                        onSelectValue = {
+                            valuePropinaPerson = it
+                        },
                         onSelectPropina = {
                             contentTypePropinaState = true
                             propina = it
