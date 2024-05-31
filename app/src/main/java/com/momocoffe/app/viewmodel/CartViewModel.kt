@@ -21,7 +21,7 @@ class CartViewModel(
 
     val countCartState = mutableStateOf(0)
 
-    var stateTotalSub = mutableStateOf(0)
+    var stateTotalSub = mutableStateOf(0f)
     var state by mutableStateOf(CartState())
         private set
 
@@ -81,7 +81,7 @@ class CartViewModel(
                 loadingCartState.value = true
                 viewModelScope.launch {
                     dao.getAllSumTotal().collectLatest { sumTotal ->
-                        stateTotalSub.value = sumTotal ?: 0
+                        stateTotalSub.value = sumTotal ?: 0f
                         loadingCartState.value = false
                     }
                 }

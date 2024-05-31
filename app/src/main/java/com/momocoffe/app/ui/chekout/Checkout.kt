@@ -50,7 +50,7 @@ import com.momocoffe.app.viewmodel.CuponesViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import org.json.JSONArray
 
-data class CoffeeCart(val name: String, val price: Int, val type: String?)
+data class CoffeeCart(val name: String, val price: Float, val type: String?)
 
 @Composable
 fun Checkout(
@@ -74,11 +74,12 @@ fun Checkout(
     var propina by rememberSaveable { mutableStateOf(value = 0) }
     var typePropina by rememberSaveable { mutableStateOf(value = 0) }
 
-    var valorTotal by remember { mutableStateOf(0) }
-    var montoDescuento by remember { mutableStateOf(0) }
-    var valueCupon by remember { mutableStateOf(value = 0) }
-    var valuePropinaPerson by remember { mutableStateOf(value = 0) }
-    var valuePropina by remember { mutableStateOf(value = 0) }
+    var valorTotal by remember { mutableStateOf(0f) }
+    var montoDescuento by remember { mutableStateOf(0f) }
+    var valueCupon by remember { mutableStateOf(value = 0f) }
+    var valuePropinaPerson by remember { mutableStateOf(value = 0f) }
+    var valuePropina by remember { mutableStateOf(value = 0f) }
+
     var valueTypePayment by remember { mutableStateOf(value = 0) }
     var valueNameAuthor = remember { mutableStateOf(value = "") }
     var isCuponValid by remember { mutableStateOf(false) }
@@ -153,11 +154,11 @@ fun Checkout(
                 when (typePropina) {
                     1 -> (subTotalProduct * valuePropinaPerson) / 100
                     2 -> valuePropinaPerson
-                    else -> 0
+                    else -> 0f
                 }
             }
 
-            else -> 0
+            else -> 0f
         }
 
 
@@ -176,6 +177,7 @@ fun Checkout(
             tableList[2] = CoffeeCart("Total", valorTotal, "total")
         }
     }
+
 
     LaunchedEffect(shoppingViewModel.shoppingResultState.value) {
         shoppingViewModel.shoppingResultState.value?.let { result ->
@@ -236,14 +238,17 @@ fun Checkout(
                                     break
                                 }
                             }
+
                             if (containValor) {
                                 isCuponValid = true
                                 if (cuponItem.typeDiscount == "1") {
-                                    valueCupon = cuponItem.discount.toInt()
-                                    montoDescuento = subTotalProduct * (valueCupon / 100)
+                                    valueCupon = cuponItem.discount.toFloat()
+                                    montoDescuento = subTotalProduct * valueCupon / 100
+                                    Log.d("Result.CuponesViewModel", montoDescuento.toString())
                                 } else {
-                                    valueCupon = cuponItem.discount.toInt()
+                                    valueCupon = cuponItem.discount.toFloat()
                                     montoDescuento = subTotalProduct - valueCupon
+                                    Log.d("Result.CuponesViewModel", montoDescuento.toString())
                                 }
                                 Toast.makeText(context, couponValidMessage, Toast.LENGTH_SHORT)
                                     .show()
@@ -255,7 +260,7 @@ fun Checkout(
                             initTableCupon()
                         } else {
                             isCuponValid = false
-                            valueCupon = 0
+                            valueCupon = 0f
                             initTable()
                             Toast.makeText(context, couponNotValidStore, Toast.LENGTH_SHORT).show()
                         }
@@ -305,7 +310,7 @@ fun Checkout(
                 if (!contentTypePropinaState) {
                     ContentPropinas(
                         onSelectValue = {
-                            valuePropinaPerson = it
+                            valuePropinaPerson = it.toFloat()
                         },
                         onSelectPropina = {
                             contentTypePropinaState = true
@@ -435,7 +440,7 @@ fun Checkout(
                                         Button(
                                             onClick = {
                                                 isCuponValid = false
-                                                valueCupon = 0
+                                                valueCupon = 0f
                                                 initTable()
                                                 Toast.makeText(
                                                     context,

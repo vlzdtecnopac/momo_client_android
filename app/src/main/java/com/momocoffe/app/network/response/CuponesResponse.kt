@@ -1,4 +1,7 @@
 package com.momocoffe.app.network.response
+
+import com.google.gson.annotations.SerializedName
+
 data class CuponesResponse (
     val items: List<CuponesItem>,
     val page: Long,
@@ -8,16 +11,25 @@ data class CuponesResponse (
 
 data class CuponesItem (
     val id: Long,
+    @SerializedName("cupon_id")
     val cuponID: String,
     val shopping: String,
+    @SerializedName("name_cupon")
     val nameCupon: String,
+    @SerializedName("cupon_code")
     val cuponCode: String,
+    @SerializedName("type_discount")
     val typeDiscount: String,
     val discount: String,
+    @SerializedName("cupon_consume")
     val cuponConsume: String,
+    @SerializedName("type_vigente")
     val typeVigente: String,
     val vigencia: String,
+    @SerializedName("count_cupon")
     val countCupon: Any? = null,
+    @SerializedName("create_at")
     val createAt: String,
+    @SerializedName("update_at")
     val updateAt: Any? = null
 )

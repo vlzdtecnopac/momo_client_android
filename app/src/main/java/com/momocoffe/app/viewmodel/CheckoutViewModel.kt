@@ -1,9 +1,6 @@
 package com.momocoffe.app.viewmodel
 
-import android.content.ComponentName
-import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,7 +19,7 @@ class CheckoutViewModel  : ViewModel() {
         .build()
 
     private val service = retrofit.create(ApiService::class.java)
-    fun convertAmount(valor: Int) {
+    fun convertAmount(valor: Float) {
         viewModelScope.launch {
             val fromCurrency = "MXN"
             val toCurrency = "USD"

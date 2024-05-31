@@ -29,7 +29,7 @@ import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     private val viewModelLogin: LoginViewModel by viewModels()
-    private var stateInvoice by mutableStateOf("completed")
+    private var stateInvoice by mutableStateOf("init")
 
     override fun attachBaseContext(newBase: Context?) {
         val localeToSwitchTo = Locale("es")
