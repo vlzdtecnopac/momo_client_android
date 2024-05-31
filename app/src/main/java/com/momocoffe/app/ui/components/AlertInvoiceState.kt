@@ -56,8 +56,8 @@ import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.PedidoViewModel
 
 @Composable
-fun AlertInvoiceState(stateInvoice: String, viewCartModel: CartViewModel, resetState: () -> Unit){
-    when(stateInvoice){
+fun AlertInvoiceState(stateInvoice: String, viewCartModel: CartViewModel, resetState: () -> Unit) {
+    when (stateInvoice) {
         "completed" -> SuccessPaymentModal(viewCartModel = viewCartModel, resetState)
         "cancelled" -> CancelPaymentModal(viewCartModel = viewCartModel, resetState)
         "failed" -> ErrorPaymentModal(resetState)
@@ -76,33 +76,35 @@ fun SuccessPaymentModal(
     Log.d("RESULT.ZettlePaymentMomo", cart.toString())
 
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         val pedidoData = PedidoRequest(
             name_client = "Andres Gonzales",
             shopping_id = "de86589e-255f-4987-8f6b-53845acfd154",
             kiosko_id = "eae76186-6702-4216-8225-cee64e380f38",
             columns_pending = 4,
-            product = productosToString(listOf(
-                Producto(
-                    id = "3caccd2e-9842-4239-aae2-a2a3d3cced5e",
-                    name_product = "Flat white",
-                    price = 40,
-                    image = "https://lh3.googleusercontent.com/q7eTMbvJ6FDmdCr24yHaA2Vgr4A62HTSUMPQ2A5hL3U4_oHM2KZyQ7OyhYz7cMm16kuIHBc3afRVw-lRRj01kjUD9G3Sh_TcKQ",
-                    extra = Extra(
-                        size = Size("Chico", 0),
-                        milk = Milk("Deslactosada", 5),
-                        sugar = Sugar("Blanca", 0),
-                        extra_coffee = listOf(ExtraCoffee("Extra shot No", "0")),
-                        lid = listOf(Lid("Sin Tapa", 0)),
-                        sauce = listOf(),
-                        temperature = Temperature("", 0),
-                        color = "",
-                        coffee_type = ""
+            product = productosToString(
+                listOf(
+                    Producto(
+                        id = "3caccd2e-9842-4239-aae2-a2a3d3cced5e",
+                        name_product = "Flat white",
+                        price = 40,
+                        image = "https://lh3.googleusercontent.com/q7eTMbvJ6FDmdCr24yHaA2Vgr4A62HTSUMPQ2A5hL3U4_oHM2KZyQ7OyhYz7cMm16kuIHBc3afRVw-lRRj01kjUD9G3Sh_TcKQ",
+                        extra = Extra(
+                            size = Size("Chico", 0),
+                            milk = Milk("Deslactosada", 5),
+                            sugar = Sugar("Blanca", 0),
+                            extra_coffee = listOf(ExtraCoffee("Extra shot No", "0")),
+                            lid = listOf(Lid("Sin Tapa", 0)),
+                            sauce = listOf(),
+                            temperature = Temperature("", 0),
+                            color = "",
+                            coffee_type = ""
+                        ),
+                        quanty = 1,
+                        subtotal = 40
                     ),
-                    quanty = 1,
-                    subtotal = 40
-                ),
-            ))
+                )
+            )
         )
         //pedidoViewModel.create(pedidoData)
     }
@@ -282,7 +284,8 @@ fun ErrorPaymentModal(
                     fontWeight = FontWeight(700)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text( stringResource(id = R.string.yuo_payment_could_error),
+                Text(
+                    stringResource(id = R.string.yuo_payment_could_error),
                     fontFamily = redhatFamily,
                     fontSize = 18.sp,
                     fontWeight = FontWeight(400),
@@ -385,7 +388,7 @@ fun CancelPaymentModal(
     resetState: () -> Unit
 ) {
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         viewCartModel.clearAllCart()
     }
 
@@ -433,7 +436,8 @@ fun CancelPaymentModal(
                     fontWeight = FontWeight(700)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text( stringResource(id = R.string.txt_cancel_payment_success),
+                Text(
+                    stringResource(id = R.string.txt_cancel_payment_success),
                     fontFamily = redhatFamily,
                     fontSize = 18.sp,
                     fontWeight = FontWeight(400),
@@ -441,80 +445,42 @@ fun CancelPaymentModal(
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
-                Row(
-                    modifier = Modifier
-                        .widthIn(0.dp, 700.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Button(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .clip(RoundedCornerShape(14.dp))
-                            .border(
-                                width = 0.6.dp,
-                                color = BlueDark,
-                                shape = RoundedCornerShape(14.dp)
-                            )
-                            .weight(0.5f)
-                            .height(60.dp),
-                        onClick = {
-                            resetState()
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            disabledContentColor = Color.Transparent,
-                            contentColor = Color.Transparent,
-                            backgroundColor = Color.Transparent
-                        ),
-                        elevation = ButtonDefaults.elevation(
-                            defaultElevation = 0.dp,
-                            pressedElevation = 0.dp,
-                            disabledElevation = 0.dp,
-                            hoveredElevation = 0.dp,
-                            focusedElevation = 0.dp
-                        )
-                    ) {
-                        Text(
-                            stringResource(id = R.string.cancel),
-                            color = BlueDark,
-                            fontSize = 22.sp
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(
-                        onClick = {},
-                        modifier = Modifier
-                            .weight(0.5f)
-                            .height(60.dp)
-                            .padding(horizontal = 5.dp)
-                            .border(
-                                width = 0.6.dp,
-                                color = OrangeDark,
-                                shape = RoundedCornerShape(14.dp)
-                            ),
-                        shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = OrangeDark,
-                            disabledBackgroundColor = OrangeDark,
-                            disabledContentColor = OrangeDark
-                        ),
-                        elevation = ButtonDefaults.elevation(
-                            defaultElevation = 0.dp,
-                            pressedElevation = 0.dp,
-                            disabledElevation = 0.dp,
-                            hoveredElevation = 0.dp,
-                            focusedElevation = 0.dp
-                        )
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.intend),
-                            fontSize = 22.sp,
-                            color = Color.White,
-                            fontFamily = redhatFamily,
-                        )
-                    }
 
+                Button(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .clip(RoundedCornerShape(14.dp))
+                        .border(
+                            width = 0.6.dp,
+                            color = BlueDark,
+                            shape = RoundedCornerShape(14.dp)
+                        )
+                        .width(180.dp)
+                        .height(45.dp),
+                    onClick = {
+                        resetState()
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        disabledContentColor = Color.Transparent,
+                        contentColor = Color.Transparent,
+                        backgroundColor = Color.Transparent
+                    ),
+                    elevation = ButtonDefaults.elevation(
+                        defaultElevation = 0.dp,
+                        pressedElevation = 0.dp,
+                        disabledElevation = 0.dp,
+                        hoveredElevation = 0.dp,
+                        focusedElevation = 0.dp
+                    )
+                ) {
+                    Text(
+                        stringResource(id = R.string.cancel),
+                        color = BlueDark,
+                        fontSize = 22.sp
+                    )
                 }
+
+
             }
         }
 
