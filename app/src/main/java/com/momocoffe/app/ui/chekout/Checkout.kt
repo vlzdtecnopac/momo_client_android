@@ -94,6 +94,8 @@ fun Checkout(
     val couponValidMessage = stringResource(id = R.string.coupon_valid)
     val couponDeleteMessage = stringResource(id = R.string.delete_cupon)
     val couponNotValidStore = stringResource(id = R.string.cupon_not_validate_store)
+    val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
+    val enterPaymentMethod = stringResource(id = R.string.enter_payment_method)
 
     fun initTable() {
         tableList.clear()
@@ -495,13 +497,13 @@ fun Checkout(
                             if (valueTypePayment == 0) {
                                 Toast.makeText(
                                     context,
-                                    "Ingresa el medio de pago",
+                                    enterPaymentMethod,
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else if (valueNameAuthor.value.isEmpty()) {
                                 Toast.makeText(
                                     context,
-                                    "Ingresa el nombre del invitado",
+                                    enterNameInvited,
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {

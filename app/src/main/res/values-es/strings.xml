@@ -117,4 +117,6 @@
     <string name="txt_cancel_payment">Cancelado Pedido</string>
     <string name="come_back_soom">Vuelva Pronto</string>
     <string name="txt_cancel_payment_success">Tu pedido se ha cancelado satisfactoreamente.</string>
+    <string name="enter_name_invitado">Ingresa el nombre del invitado</string>
+    <string name="enter_payment_method">Ingrese el metodo de pago</string>
 </resources>
