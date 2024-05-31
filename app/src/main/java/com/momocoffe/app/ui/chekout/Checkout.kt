@@ -52,7 +52,6 @@ import org.json.JSONArray
 
 data class CoffeeCart(val name: String, val price: Int, val type: String?)
 
-
 @Composable
 fun Checkout(
     navController: NavHostController,
@@ -506,6 +505,10 @@ fun Checkout(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
+                                val editor = sharedPreferences.edit()
+                                editor.putString("nameClient", valueNameAuthor.value)
+                                editor.apply()
+
                                 if (valueTypePayment == 1) {
                                     try {
                                         val subTotalConvert =
