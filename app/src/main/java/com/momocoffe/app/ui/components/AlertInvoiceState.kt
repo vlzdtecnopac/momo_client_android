@@ -23,7 +23,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,6 +62,7 @@ import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.PedidoViewModel
+import com.momocoffe.app.viewmodel.ShoppingViewModel
 
 @Composable
 fun AlertInvoiceState(stateInvoice: String, viewCartModel: CartViewModel, resetState: () -> Unit) {
@@ -74,8 +78,10 @@ fun AlertInvoiceState(stateInvoice: String, viewCartModel: CartViewModel, resetS
 fun SuccessPaymentModal(
     viewCartModel: CartViewModel,
     resetState: () -> Unit,
-    pedidoViewModel: PedidoViewModel = viewModel()
+    pedidoViewModel: PedidoViewModel = viewModel(),
+    shoppingViewModel: ShoppingViewModel = viewModel()
 ) {
+    var optionsColumn by remember { mutableStateOf("") }
     val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val shoppingId = sharedPreferences.getString("shoppingId", null) ?: ""
     val kioskoId = sharedPreferences.getString("kioskoId", null) ?: ""
@@ -84,7 +90,24 @@ fun SuccessPaymentModal(
     var cart = viewCartModel.state;
 
     LaunchedEffect(cart) {
-        if(cart.carts.isNotEmpty()) {
+        shoppingViewModel.getConfigShopping(shoppingId)
+        if (cart.carts.isNotEmpty()) {
+
+            shoppingViewModel.shoppingConfigState.value?.let { result ->
+                when {
+                    result.isSuccess -> {
+                        val configResponse = result.getOrThrow()
+                        optionsColumn = configResponse.typeColumn
+                    }
+                    result.isFailure -> {
+                        val exception = result.exceptionOrNull()
+                        Log.e("Result.ShoppingModel", exception.toString())
+                    }
+
+                    else -> {}
+                }
+            }
+
             val newProducts = cart.carts.mapIndexed { index, item ->
                 val itemsModifiersOptions = parseItemModifiers(item.modifiersOptions)
                 Producto(
@@ -135,7 +158,7 @@ fun SuccessPaymentModal(
                 name_client = nameClient,
                 shopping_id = shoppingId,
                 kiosko_id = kioskoId,
-                columns_pending = 4,
+                columns_pending = optionsColumn.toInt(),
                 product = productosToString(newProducts)
             )
 
