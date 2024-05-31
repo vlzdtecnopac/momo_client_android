@@ -80,6 +80,7 @@ fun Checkout(
     var valuePropinaPerson by remember { mutableStateOf(value = 0f) }
     var valuePropina by remember { mutableStateOf(value = 0f) }
 
+    var valueTypeDiscount by remember { mutableStateOf(value = 0) }
     var valueTypePayment by remember { mutableStateOf(value = 0) }
     var valueNameAuthor = remember { mutableStateOf(value = "") }
     var isCuponValid by remember { mutableStateOf(false) }
@@ -241,6 +242,7 @@ fun Checkout(
 
                             if (containValor) {
                                 isCuponValid = true
+                                valueTypeDiscount = cuponItem.typeDiscount.toInt()
                                 if (cuponItem.typeDiscount == "1") {
                                     valueCupon = cuponItem.discount.toFloat()
                                     montoDescuento = subTotalProduct * valueCupon / 100
@@ -467,13 +469,24 @@ fun Checkout(
                                             )
                                         }
                                         Spacer(modifier = Modifier.width(10.dp))
-                                        Text(
-                                            "$ -${coffee.price}",
-                                            modifier = Modifier.weight(0.2f),
-                                            fontFamily = redhatFamily,
-                                            fontSize = 16.sp,
-                                            color = Color.White
-                                        )
+                                        if(valueTypeDiscount == 1){
+                                            Text(
+                                                "${coffee.price}%",
+                                                modifier = Modifier.weight(0.2f),
+                                                fontFamily = redhatFamily,
+                                                fontSize = 16.sp,
+                                                color = Color.White
+                                            )
+                                        }else{
+                                            Text(
+                                                "$ -${coffee.price}",
+                                                modifier = Modifier.weight(0.2f),
+                                                fontFamily = redhatFamily,
+                                                fontSize = 16.sp,
+                                                color = Color.White
+                                            )
+                                        }
+                                      
                                     } else {
 
                                         Text(
