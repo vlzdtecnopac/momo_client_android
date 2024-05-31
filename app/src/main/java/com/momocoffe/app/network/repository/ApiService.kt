@@ -48,8 +48,6 @@ interface ApiService {
     @GET("/users/employee/")
     suspend fun getEmployee(@Query("employee_id") employeeID: String): Response<EmployeeResponse>
 
-    @GET("/shopping/")
-    suspend fun getShopping(@Query("shopping_id") shoppingID: String): Response<ShoppingResponse>
 
     @GET("/kioskos/activate/")
     suspend fun activateKiosko(@Query("shopping_id") shoppingID: String, @Query("state") state: Boolean): Response<KioskoResponse>
@@ -90,8 +88,11 @@ interface ApiService {
     @GET("/product/options/{product_id}")
     suspend fun getProductsOptions( @Path("product_id") productId: String?): Response<ProductOptionsResponse>
 
-    @GET("/config/{shopping_id}")
-    suspend fun getConfigShopping(@Path("shopping_id") shoppingId: String?): Response<ArrayList<ConfigShoppingResponse>>
+    @GET("/config/")
+    suspend fun getConfigShopping(@Query("shopping_id") shoppingId: String): Response<ArrayList<ConfigShoppingResponse>>
+
+    @GET("/shopping/")
+    suspend fun getShopping(@Query("shopping_id") shoppingID: String): Response<ShoppingResponse>
 
     @GET("/cupones/")
     suspend fun getCuponMomo(@Query("cupon_code") cuponCode: String): Response<CuponesResponse>

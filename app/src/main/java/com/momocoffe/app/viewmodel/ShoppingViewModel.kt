@@ -30,7 +30,7 @@ class ShoppingViewModel : ViewModel() {
                         shoppingConfigState.value = Result.failure(Exception("Empty response body"))
                     }
                 }else{
-                    shoppingConfigState.value = Result.failure(Exception("Shopping failed"))
+                    shoppingConfigState.value = Result.failure(Exception("Shopping Config failed"))
                 }
             }catch (e: Exception){
                 Log.e("Result.ShoppingModel", e.message.toString())

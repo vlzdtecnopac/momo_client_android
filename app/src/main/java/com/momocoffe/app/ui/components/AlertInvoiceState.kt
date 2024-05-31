@@ -87,12 +87,14 @@ fun SuccessPaymentModal(
     val kioskoId = sharedPreferences.getString("kioskoId", null) ?: ""
     val nameClient = sharedPreferences.getString("nameClient", null) ?: ""
 
-    var cart = viewCartModel.state;
+    var cart = viewCartModel.state
 
-    LaunchedEffect(cart) {
+    LaunchedEffect(Unit){
         shoppingViewModel.getConfigShopping(shoppingId)
-        if (cart.carts.isNotEmpty()) {
+    }
 
+    LaunchedEffect(shoppingViewModel.shoppingConfigState.value) {
+        if (cart.carts.isNotEmpty()) {
             shoppingViewModel.shoppingConfigState.value?.let { result ->
                 when {
                     result.isSuccess -> {
@@ -107,62 +109,68 @@ fun SuccessPaymentModal(
                     else -> {}
                 }
             }
+            if(optionsColumn.isNotEmpty()){
+                val newProducts = cart.carts.mapIndexed { index, item ->
+                    val itemsModifiersOptions = parseItemModifiers(item.modifiersOptions)
+                    Producto(
+                        id = item.id.toString(),
+                        name_product = item.titleProduct,
+                        price = item.priceProduct.toInt(),
+                        image = item.imageProduct,
+                        extra = Extra(
+                            size = Size(
+                                itemsModifiersOptions["size"]?.name ?: "",
+                                itemsModifiersOptions["size"]?.price?.toInt() ?: 0
+                            ),
+                            milk = Milk(
+                                itemsModifiersOptions["milk"]?.name ?: "",
+                                itemsModifiersOptions["milk"]?.price?.toInt() ?: 0
+                            ),
+                            sugar = Sugar(
+                                itemsModifiersOptions["sugar"]?.name ?: "",
+                                itemsModifiersOptions["sugar"]?.price?.toInt() ?: 0
+                            ),
+                            extra_coffee = itemsModifiersOptions["extra_coffee"]?.let {
+                                listOf(
+                                    ExtraCoffee(
+                                        it.name,
+                                        it.price
+                                    )
+                                )
+                            } ?: listOf(),
+                            lid = itemsModifiersOptions["libTapa"]?.let {
+                                listOf(
+                                    Lid(
+                                        it.name,
+                                        it.price.toInt()
+                                    )
+                                )
+                            } ?: listOf(),
+                            sauce = listOf(Sauce("", 0)),
+                            temperature = Temperature("", 0),
+                            color = "",
+                            coffee_type = Any()
+                        ),
+                        quanty = item.countProduct,
+                        subtotal = item.priceProductMod.toInt()
+                    )
+                }
+                if(optionsColumn.toInt() <= 1){
+                    optionsColumn = "8"
+                }else{
+                    optionsColumn = "4"
+                }
 
-            val newProducts = cart.carts.mapIndexed { index, item ->
-                val itemsModifiersOptions = parseItemModifiers(item.modifiersOptions)
-                Producto(
-                    id = item.id.toString(),
-                    name_product = item.titleProduct,
-                    price = item.priceProduct.toInt(),
-                    image = item.imageProduct,
-                    extra = Extra(
-                        size = Size(
-                            itemsModifiersOptions["size"]?.name ?: "",
-                            itemsModifiersOptions["size"]?.price?.toInt() ?: 0
-                        ),
-                        milk = Milk(
-                            itemsModifiersOptions["milk"]?.name ?: "",
-                            itemsModifiersOptions["milk"]?.price?.toInt() ?: 0
-                        ),
-                        sugar = Sugar(
-                            itemsModifiersOptions["sugar"]?.name ?: "",
-                            itemsModifiersOptions["sugar"]?.price?.toInt() ?: 0
-                        ),
-                        extra_coffee = itemsModifiersOptions["extra_coffee"]?.let {
-                            listOf(
-                                ExtraCoffee(
-                                    it.name,
-                                    it.price
-                                )
-                            )
-                        } ?: listOf(),
-                        lid = itemsModifiersOptions["libTapa"]?.let {
-                            listOf(
-                                Lid(
-                                    it.name,
-                                    it.price.toInt()
-                                )
-                            )
-                        } ?: listOf(),
-                        sauce = listOf(Sauce("", 0)),
-                        temperature = Temperature("", 0),
-                        color = "",
-                        coffee_type = Any()
-                    ),
-                    quanty = item.countProduct,
-                    subtotal = item.priceProductMod.toInt()
+                val pedidoData = PedidoRequest(
+                    name_client = nameClient,
+                    shopping_id = shoppingId,
+                    kiosko_id = kioskoId,
+                    columns_pending = optionsColumn.toInt(),
+                    product = productosToString(newProducts)
                 )
+
+                pedidoViewModel.create(pedidoData)
             }
-
-            val pedidoData = PedidoRequest(
-                name_client = nameClient,
-                shopping_id = shoppingId,
-                kiosko_id = kioskoId,
-                columns_pending = optionsColumn.toInt(),
-                product = productosToString(newProducts)
-            )
-
-            pedidoViewModel.create(pedidoData)
         }
 
     }
