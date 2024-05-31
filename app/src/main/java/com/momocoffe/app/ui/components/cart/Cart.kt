@@ -42,7 +42,7 @@ import com.momocoffe.app.viewmodel.CartViewModel
 @Composable
 fun Cart(navController: NavController, cartViewModel: CartViewModel) {
 
-    val state = cartViewModel.state;
+    val state = cartViewModel.state
 
     var showPopup by rememberSaveable {
         mutableStateOf(false)

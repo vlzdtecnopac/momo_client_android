@@ -28,9 +28,9 @@ class PedidoViewModel: ViewModel(){
         loadingState.value = true
         viewModelScope.launch {
             try{
-                Log.e("Result.PedidoViewModel", pedidoData.toString() )
+                Log.d("Result.PedidoViewModel", pedidoData.toString() )
                 val response =  apiService.createPedido(pedidoData)
-                Log.e("Result.PedidoViewModel", response.toString() )
+                Log.d("Result.PedidoViewModel", response.toString() )
                 if(response.isSuccessful){
                     val pedidoResponse: CreatePedidoResponse? = response.body()
                     if(pedidoResponse != null){

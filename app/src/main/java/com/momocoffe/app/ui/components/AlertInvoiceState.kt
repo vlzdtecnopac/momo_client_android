@@ -1,6 +1,7 @@
 package com.momocoffe.app.ui.components
 
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,6 +23,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +39,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.momocoffe.app.App
 import com.momocoffe.app.R
 import com.momocoffe.app.network.dto.Extra
 import com.momocoffe.app.network.dto.ExtraCoffee
@@ -44,10 +47,12 @@ import com.momocoffe.app.network.dto.Lid
 import com.momocoffe.app.network.dto.Milk
 import com.momocoffe.app.network.dto.PedidoRequest
 import com.momocoffe.app.network.dto.Producto
+import com.momocoffe.app.network.dto.Sauce
 import com.momocoffe.app.network.dto.Size
 import com.momocoffe.app.network.dto.Sugar
 import com.momocoffe.app.network.dto.Temperature
 import com.momocoffe.app.network.dto.productosToString
+import com.momocoffe.app.ui.components.cart.parseItemModifiers
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
@@ -71,42 +76,68 @@ fun SuccessPaymentModal(
     resetState: () -> Unit,
     pedidoViewModel: PedidoViewModel = viewModel()
 ) {
+    val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val shoppingId = sharedPreferences.getString("shoppingId", null) ?: ""
+    val kioskoId = sharedPreferences.getString("kioskoId", null) ?: ""
 
     var cart = viewCartModel.state;
-    Log.d("RESULT.ZettlePaymentMomo", cart.toString())
 
+    LaunchedEffect(cart) {
+        val newProducts = cart.carts.mapIndexed { index, item ->
+            val itemsModifiersOptions = parseItemModifiers(item.modifiersOptions)
+            Producto(
+                id = item.id.toString(),
+                name_product = item.titleProduct,
+                price = item.priceProduct.toInt(),
+                image = item.imageProduct,
+                extra = Extra(
+                    size = Size(
+                        itemsModifiersOptions["size"]?.name ?: "",
+                        itemsModifiersOptions["size"]?.price?.toInt() ?: 0
+                    ),
+                    milk = Milk(
+                        itemsModifiersOptions["milk"]?.name ?: "",
+                        itemsModifiersOptions["milk"]?.price?.toInt() ?: 0
+                    ),
+                    sugar = Sugar(
+                        itemsModifiersOptions["sugar"]?.name ?: "",
+                        itemsModifiersOptions["sugar"]?.price?.toInt() ?: 0
+                    ),
+                    extra_coffee = itemsModifiersOptions["extra_coffee"]?.let {
+                        listOf(
+                            ExtraCoffee(
+                                it.name,
+                                it.price
+                            )
+                        )
+                    } ?: listOf(),
+                    lid = itemsModifiersOptions["libTapa"]?.let {
+                        listOf(
+                            Lid(
+                                it.name,
+                                it.price.toInt()
+                            )
+                        )
+                    } ?: listOf(),
+                    sauce = listOf(Sauce("", 0)),
+                    temperature = Temperature("", 0),
+                    color = "",
+                    coffee_type = Any()
+                ),
+                quanty = item.countProduct,
+                subtotal = item.priceProductMod.toInt()
+            )
+        }
 
-    LaunchedEffect(Unit) {
         val pedidoData = PedidoRequest(
             name_client = "Andres Gonzales",
-            shopping_id = "de86589e-255f-4987-8f6b-53845acfd154",
-            kiosko_id = "eae76186-6702-4216-8225-cee64e380f38",
+            shopping_id = shoppingId,
+            kiosko_id = kioskoId,
             columns_pending = 4,
-            product = productosToString(
-                listOf(
-                    Producto(
-                        id = "3caccd2e-9842-4239-aae2-a2a3d3cced5e",
-                        name_product = "Flat white",
-                        price = 40,
-                        image = "https://lh3.googleusercontent.com/q7eTMbvJ6FDmdCr24yHaA2Vgr4A62HTSUMPQ2A5hL3U4_oHM2KZyQ7OyhYz7cMm16kuIHBc3afRVw-lRRj01kjUD9G3Sh_TcKQ",
-                        extra = Extra(
-                            size = Size("Chico", 0),
-                            milk = Milk("Deslactosada", 5),
-                            sugar = Sugar("Blanca", 0),
-                            extra_coffee = listOf(ExtraCoffee("Extra shot No", "0")),
-                            lid = listOf(Lid("Sin Tapa", 0)),
-                            sauce = listOf(),
-                            temperature = Temperature("", 0),
-                            color = "",
-                            coffee_type = ""
-                        ),
-                        quanty = 1,
-                        subtotal = 40
-                    ),
-                )
-            )
+            product = productosToString(newProducts)
         )
-        //pedidoViewModel.create(pedidoData)
+        
+        pedidoViewModel.create(pedidoData)
     }
 
     Dialog(
