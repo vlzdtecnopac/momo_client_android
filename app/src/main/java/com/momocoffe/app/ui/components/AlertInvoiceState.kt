@@ -427,7 +427,7 @@ fun CancelPaymentModal(
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
-                    stringResource(id = R.string.text_try_again),
+                    stringResource(id = R.string.come_back_soom),
                     fontFamily = redhatFamily,
                     fontSize = 22.sp,
                     fontWeight = FontWeight(700)

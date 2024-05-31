@@ -114,5 +114,6 @@
     <string name="txt_print">Print</string>
     <string name="txt_virtual">Virtual</string>
     <string name="txt_cancel_payment">Cancelado Pedido</string>
-    <string name="txt_cancel_payment_success">Tu pedido se ha cancelado satisfactoreamente, vuelva pronto.</string>
+    <string name="come_back_soom">Come back some</string>
+    <string name="txt_cancel_payment_success">Tu pedido se ha cancelado satisfactoreamente.</string>
 </resources>
