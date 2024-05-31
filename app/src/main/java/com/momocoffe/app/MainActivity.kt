@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         if (stateInvoice.isNotEmpty()) {
-                            AlertInvoiceState(stateInvoice)
+                            AlertInvoiceState(stateInvoice, viewCartModel = viewModelDb)
                         }
 
                         NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)

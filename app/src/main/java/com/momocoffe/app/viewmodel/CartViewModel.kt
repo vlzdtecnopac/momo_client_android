@@ -107,4 +107,11 @@ class CartViewModel(
             Log.e("Result.CartViewModel", e.message.toString())
         }
     }
+
+    fun clearAllCart() {
+        // Obtén una instancia de un hilo de ejecución en segundo plano
+        viewModelScope.launch {
+            dao.deleteAllCart()
+        }
+    }
 }

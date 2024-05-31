@@ -1,6 +1,7 @@
 package com.momocoffe.app.ui.components
 
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -52,12 +53,13 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
+import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.PedidoViewModel
 
 @Composable
-fun AlertInvoiceState(stateInvoice: String){
+fun AlertInvoiceState(stateInvoice: String, viewCartModel: CartViewModel){
     when(stateInvoice){
-        "completed" -> SuccessPaymentModal()
+        "completed" -> SuccessPaymentModal(viewCartModel = viewCartModel)
         "cancelled" -> ErrorPaymentModal()
         "failed" -> ErrorPaymentModal()
         else -> {}
@@ -66,8 +68,13 @@ fun AlertInvoiceState(stateInvoice: String){
 
 @Composable
 fun SuccessPaymentModal(
-    pedidoViewModel: PedidoViewModel = viewModel()
+    pedidoViewModel: PedidoViewModel = viewModel(),
+    viewCartModel: CartViewModel
 ) {
+
+    var cart = viewCartModel.state;
+    Log.d("RESULT.ZettlePaymentMomo", cart.toString())
+    viewCartModel.clearAllCart()
 
     LaunchedEffect(Unit){
         val pedidoData = PedidoRequest(
@@ -90,14 +97,14 @@ fun SuccessPaymentModal(
                         sauce = listOf(),
                         temperature = Temperature("", 0),
                         color = "",
-                        coffee_type = Any()
+                        coffee_type = ""
                     ),
                     quanty = 1,
                     subtotal = 40
                 ),
             ))
         )
-        pedidoViewModel.create(pedidoData)
+        //pedidoViewModel.create(pedidoData)
     }
 
     Dialog(
