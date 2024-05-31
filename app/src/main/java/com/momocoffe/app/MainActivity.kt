@@ -27,12 +27,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.momocoffe.app.ui.components.AlertInvoiceState
 import java.util.Locale
 
-
-data class StateInvoice(val state: String, val idInvoice: String)
-
 class MainActivity : ComponentActivity() {
     private val viewModelLogin: LoginViewModel by viewModels()
-    private var stateInvoice by mutableStateOf("completed")
+    private var stateInvoice by mutableStateOf("init")
 
     override fun attachBaseContext(newBase: Context?) {
         val localeToSwitchTo = Locale("es")
@@ -89,7 +86,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         if (stateInvoice.isNotEmpty()) {
-                            AlertInvoiceState(stateInvoice, viewCartModel = viewModelDb)
+                            AlertInvoiceState(stateInvoice, viewCartModel = viewModelDb, ::resetState)
                         }
 
                         NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)
@@ -140,8 +137,14 @@ class MainActivity : ComponentActivity() {
         // No hacer nada al presionar el botón de "volver atrás"
         // Esto bloquea el comportamiento predeterminado
     }
+
+    private fun resetState() {
+        stateInvoice = "init"
+    }
+
+
+
+
 }
-
-
 
 

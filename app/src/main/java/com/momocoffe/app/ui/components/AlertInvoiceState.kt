@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -57,24 +56,25 @@ import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.PedidoViewModel
 
 @Composable
-fun AlertInvoiceState(stateInvoice: String, viewCartModel: CartViewModel){
+fun AlertInvoiceState(stateInvoice: String, viewCartModel: CartViewModel, resetState: () -> Unit){
     when(stateInvoice){
-        "completed" -> SuccessPaymentModal(viewCartModel = viewCartModel)
-        "cancelled" -> ErrorPaymentModal()
-        "failed" -> ErrorPaymentModal()
+        "completed" -> SuccessPaymentModal(viewCartModel = viewCartModel, resetState)
+        "cancelled" -> CancelPaymentModal(viewCartModel = viewCartModel, resetState)
+        "failed" -> ErrorPaymentModal(resetState)
         else -> {}
     }
 }
 
 @Composable
 fun SuccessPaymentModal(
-    pedidoViewModel: PedidoViewModel = viewModel(),
-    viewCartModel: CartViewModel
+    viewCartModel: CartViewModel,
+    resetState: () -> Unit,
+    pedidoViewModel: PedidoViewModel = viewModel()
 ) {
 
     var cart = viewCartModel.state;
     Log.d("RESULT.ZettlePaymentMomo", cart.toString())
-    viewCartModel.clearAllCart()
+
 
     LaunchedEffect(Unit){
         val pedidoData = PedidoRequest(
@@ -235,9 +235,9 @@ fun SuccessPaymentModal(
 }
 
 @Composable
-fun ErrorPaymentModal() {
-    val context = LocalContext.current
-
+fun ErrorPaymentModal(
+    resetState: () -> Unit
+) {
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -315,7 +315,151 @@ fun ErrorPaymentModal() {
                             .weight(0.5f)
                             .height(60.dp),
                         onClick = {
+                            resetState()
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            disabledContentColor = Color.Transparent,
+                            contentColor = Color.Transparent,
+                            backgroundColor = Color.Transparent
+                        ),
+                        elevation = ButtonDefaults.elevation(
+                            defaultElevation = 0.dp,
+                            pressedElevation = 0.dp,
+                            disabledElevation = 0.dp,
+                            hoveredElevation = 0.dp,
+                            focusedElevation = 0.dp
+                        )
+                    ) {
+                        Text(
+                            stringResource(id = R.string.cancel),
+                            color = BlueDark,
+                            fontSize = 22.sp
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Button(
+                        onClick = {},
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .height(60.dp)
+                            .padding(horizontal = 5.dp)
+                            .border(
+                                width = 0.6.dp,
+                                color = OrangeDark,
+                                shape = RoundedCornerShape(14.dp)
+                            ),
+                        shape = RoundedCornerShape(14.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = OrangeDark,
+                            disabledBackgroundColor = OrangeDark,
+                            disabledContentColor = OrangeDark
+                        ),
+                        elevation = ButtonDefaults.elevation(
+                            defaultElevation = 0.dp,
+                            pressedElevation = 0.dp,
+                            disabledElevation = 0.dp,
+                            hoveredElevation = 0.dp,
+                            focusedElevation = 0.dp
+                        )
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.intend),
+                            fontSize = 22.sp,
+                            color = Color.White,
+                            fontFamily = redhatFamily,
+                        )
+                    }
 
+                }
+            }
+        }
+
+    }
+
+}
+
+
+@Composable
+fun CancelPaymentModal(
+    viewCartModel: CartViewModel,
+    resetState: () -> Unit
+) {
+
+    LaunchedEffect(Unit){
+        viewCartModel.clearAllCart()
+    }
+
+    Dialog(
+        onDismissRequest = {},
+        DialogProperties(
+            usePlatformDefaultWidth = true
+        )
+    ) {
+        Surface(
+            modifier = Modifier
+                .clip(RoundedCornerShape(14.dp))
+                .padding(0.dp)
+                .widthIn(min = 460.dp, max = 830.dp)
+                .heightIn(min = 510.dp, max = 520.dp)
+                .zIndex(88f),
+            color = BlueLight
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp)
+                    .background(BlueLight),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+
+                Image(
+                    painter = painterResource(id = R.drawable.momo_coffe_mug),
+                    contentDescription = stringResource(id = R.string.momo_coffe),
+                    modifier = Modifier.width(150.dp),
+                    contentScale = ContentScale.Crop,
+                )
+                Text(
+                    stringResource(id = R.string.txt_cancel_payment),
+                    fontFamily = redhatFamily,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight(700)
+                )
+                Spacer(modifier = Modifier.height(15.dp))
+                Text(
+                    stringResource(id = R.string.text_try_again),
+                    fontFamily = redhatFamily,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight(700)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text( stringResource(id = R.string.txt_cancel_payment_success),
+                    fontFamily = redhatFamily,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight(400),
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+                Row(
+                    modifier = Modifier
+                        .widthIn(0.dp, 700.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .clip(RoundedCornerShape(14.dp))
+                            .border(
+                                width = 0.6.dp,
+                                color = BlueDark,
+                                shape = RoundedCornerShape(14.dp)
+                            )
+                            .weight(0.5f)
+                            .height(60.dp),
+                        onClick = {
+                            resetState()
                         },
                         colors = ButtonDefaults.buttonColors(
                             disabledContentColor = Color.Transparent,
