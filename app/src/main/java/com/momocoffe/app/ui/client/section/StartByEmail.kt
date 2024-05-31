@@ -139,10 +139,8 @@ fun StartByEmail(navController: NavController, clientViewModel: ClientViewModel 
                                     text = stringResource(id = R.string.mail),
                                     keyboardType = KeyboardType.Email,
                                     icon = painterResource(R.drawable.mail_icon),
-                                    onNext = {
-                                        focusManager.moveFocus(
-                                            FocusDirection.Down
-                                        )
+                                    onDone = {
+                                        focusManager.clearFocus()
                                     }
                                 )
                             }

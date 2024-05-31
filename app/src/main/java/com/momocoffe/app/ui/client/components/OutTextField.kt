@@ -14,6 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,9 +27,10 @@ fun OutTextField(
     onClickButton: () -> Unit,
     text: String,
     keyboardType: KeyboardType,
-    onNext: KeyboardActionScope.() -> Unit,
+    onDone: () -> Unit,
     icon: Painter
 ) {
+    val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
         value = textValue,
@@ -60,10 +62,13 @@ fun OutTextField(
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
-            imeAction = ImeAction.Next
+            imeAction = ImeAction.Done
         ),
         keyboardActions = KeyboardActions(
-            onNext = onNext
+            onDone = {
+                onDone()
+                focusManager.clearFocus()
+            }
         ),
         shape = RoundedCornerShape(20),
         colors = TextFieldDefaults.outlinedTextFieldColors(

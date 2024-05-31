@@ -158,10 +158,8 @@ fun StartByPhone(navController: NavController, clientViewModel: ClientViewModel 
                                         text = stringResource(id = R.string.phone),
                                         keyboardType = KeyboardType.Phone,
                                         icon = painterResource(R.drawable.phone),
-                                        onNext = {
-                                            focusManager.moveFocus(
-                                                FocusDirection.Down
-                                            )
+                                        onDone = {
+                                            focusManager.clearFocus()
                                         }
                                     )
                                 }
