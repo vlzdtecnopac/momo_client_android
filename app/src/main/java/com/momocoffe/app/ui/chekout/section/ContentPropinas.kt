@@ -58,7 +58,8 @@ fun ContentPropinas(
 ) {
 
     var typePropina by remember { mutableStateOf(0) }
-    var mountPropinaSelected by remember { mutableStateOf(10) }
+    var mountPropinaSelected by remember { mutableStateOf(0) }
+    var showModal by remember { mutableStateOf(false) }
 
     Row(modifier = Modifier.height(110.dp)) {
         Image(
@@ -97,27 +98,27 @@ fun ContentPropinas(
     }
     Spacer(modifier = Modifier.height(10.dp))
 
-    if (typePropina == 1) {
+    if (showModal && typePropina == 1) {
         PropinaModal(
             title = stringResource(id = R.string.write_percent),
-            onCancel = { typePropina = 0 },
+            onCancel = { showModal = false },
             onSelect = {
                 onSelectPropina(4)
                 onTypePropina(1)
                 onSelectValue(it)
-                typePropina = 0
+                showModal = false
             })
     }
 
-    if (typePropina == 2) {
+    if (showModal && typePropina == 2) {
         PropinaModal(
             title = stringResource(id = R.string.write_amount_peso),
-            onCancel = { typePropina = 0 },
+            onCancel = { showModal = false },
             onSelect = {
                 onSelectPropina(4)
                 onTypePropina(2)
                 onSelectValue(it)
-                typePropina = 0
+                showModal = false
 
             })
     }
@@ -268,6 +269,7 @@ fun ContentPropinas(
                     ),
                     colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 1) OrangeDark else BlueLight),
                     onClick = {
+                        showModal = true
                         typePropina = 1
                         onTypePropina(0)
                         onSelectValue(0)
@@ -295,6 +297,7 @@ fun ContentPropinas(
                     ),
                     colors = ButtonDefaults.buttonColors(backgroundColor = if (typePropina == 2) OrangeDark else BlueLight),
                     onClick = {
+                        showModal = true
                         typePropina = 2
                         onTypePropina(0)
                         onSelectValue(0)
