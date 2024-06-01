@@ -105,7 +105,7 @@ fun ContentPropinas(
                 onSelectPropina(4)
                 onTypePropina(1)
                 onSelectValue(it)
-
+                typePropina = 0
             })
     }
 
@@ -117,6 +117,7 @@ fun ContentPropinas(
                 onSelectPropina(4)
                 onTypePropina(2)
                 onSelectValue(it)
+                typePropina = 0
 
             })
     }

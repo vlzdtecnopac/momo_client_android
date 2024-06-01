@@ -156,7 +156,9 @@ fun PropinaModal(
                         }
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(
-                            onClick = {onSelect(textState.toInt())},
+                            onClick = {
+                                onSelect(textState.toInt())
+                                      },
                             modifier = Modifier
                                 .weight(0.5f)
                                 .height(60.dp)

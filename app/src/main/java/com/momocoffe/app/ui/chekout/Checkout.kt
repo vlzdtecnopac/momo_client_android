@@ -487,15 +487,7 @@ fun Checkout(
 
                     Button(
                         onClick = {
-                            if (valueTypePayment == 0) {
-                                Toast.makeText(
-                                    context,
-                                    enterPaymentMethod,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-
-                            }
+                            contentTypePropinaState = true
                         },
                         modifier = Modifier
                             .fillMaxWidth()
