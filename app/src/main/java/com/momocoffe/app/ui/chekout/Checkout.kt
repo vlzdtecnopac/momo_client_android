@@ -388,16 +388,16 @@ fun Checkout(
                                 ) {
                                     Text(
                                         coffee.name,
-                                        modifier = Modifier.weight(0.9f),
+                                        modifier = Modifier.weight(0.8f),
                                         fontFamily = redhatFamily,
                                         fontSize = 16.sp,
                                         color = Color.White
                                     )
                                     Text(
-                                        String.format("%.2f", coffee.price.toFloat()),
-                                        modifier = Modifier.weight(0.2f),
+                                        "$ ${String.format("%.2f", coffee.price.toFloat())}",
+                                        modifier = Modifier.weight(0.3f),
                                         fontFamily = redhatFamily,
-                                        fontSize = 20.sp,
+                                        fontSize = 18.sp,
                                         color = Color.White
                                     )
                                 }
