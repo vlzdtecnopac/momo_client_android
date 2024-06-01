@@ -45,7 +45,6 @@ import com.momocoffe.app.ui.components.DashedDivider
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.CheckoutViewModel
-import com.momocoffe.app.viewmodel.ClientViewModel
 import com.momocoffe.app.viewmodel.CuponesViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import org.json.JSONArray
@@ -59,8 +58,7 @@ fun Checkout(
     cartViewModel: CartViewModel,
     shoppingViewModel: ShoppingViewModel = viewModel(),
     checkoutViewModel: CheckoutViewModel = viewModel(),
-    cuponesViewModel: CuponesViewModel = viewModel(),
-    clientViewModel: ClientViewModel = viewModel()
+    cuponesViewModel: CuponesViewModel = viewModel()
 ) {
 
     val context = LocalContext.current
@@ -68,7 +66,6 @@ fun Checkout(
     var shoppingItems by remember { mutableStateOf<List<ItemShopping>>(emptyList()) }
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
-    val client_id = sharedPreferences.getString("clientId", null) ?: ""
 
     var textCuponCodeState by rememberSaveable { mutableStateOf(value = "") }
     val subTotalProduct = cartViewModel.stateTotalSub.value
@@ -83,7 +80,7 @@ fun Checkout(
 
     var valueTypeDiscount by remember { mutableStateOf(value = 0) }
     var valueTypePayment by remember { mutableStateOf(value = 0) }
-    var valueNameAuthor = remember { mutableStateOf(value = "") }
+
     var isCuponValid by remember { mutableStateOf(false) }
     var contentTypePropinaState by remember { mutableStateOf(false) }
 
@@ -97,7 +94,6 @@ fun Checkout(
     val couponValidMessage = stringResource(id = R.string.coupon_valid)
     val couponDeleteMessage = stringResource(id = R.string.delete_cupon)
     val couponNotValidStore = stringResource(id = R.string.cupon_not_validate_store)
-    val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
     val enterPaymentMethod = stringResource(id = R.string.enter_payment_method)
 
     fun initTable() {
@@ -118,9 +114,6 @@ fun Checkout(
     }
 
     LaunchedEffect(Unit) {
-        if(client_id.isNotBlank()) {
-            clientViewModel.getClient("", "", client_id)
-        }
         checkoutViewModel.convertAmount(subTotalProduct)
         shoppingViewModel.getShopping(preference_shopping_id)
         shoppingViewModel.getConfigShopping(preference_shopping_id)
@@ -128,24 +121,6 @@ fun Checkout(
         cartViewModel.countTotal()
         initTable()
     }
-
-    LaunchedEffect(clientViewModel.clientResultCheckEmailState.value) {
-        clientViewModel.clientResultCheckEmailState.value?.let { result ->
-            when {
-                result.isSuccess -> {
-                    val userResponse = result.getOrThrow()
-                    if(userResponse.items.isNotEmpty()){
-                        valueNameAuthor.value = "${userResponse.items[0].firstName} ${userResponse.items[0].lastName}"
-                    }
-                }
-                result.isFailure -> {
-                    val exception = result.exceptionOrNull()
-                    Log.e("Result.ClientViewModel", exception.toString())
-                }
-            }
-        }
-    }
-
 
     LaunchedEffect(key1 = propina, key2 = typePropina) {
         valuePropina = when (propina) {
@@ -162,8 +137,6 @@ fun Checkout(
 
             else -> 0f
         }
-
-
     }
 
     LaunchedEffect(subTotalProduct, valuePropina, isCuponValid) {
@@ -318,7 +291,6 @@ fun Checkout(
                             valuePropinaPerson = it.toFloat()
                         },
                         onSelectPropina = {
-                            contentTypePropinaState = true
                             propina = it
                         },
                         onTypePropina = { typePropina = it }
@@ -328,10 +300,11 @@ fun Checkout(
                         shoppingItems,
                         onCancel = {
                             contentTypePropinaState = false
-                        }, onSelect = {
-                            valueTypePayment = it
                         },
-                        onSelectName = valueNameAuthor
+                        valueSubTotal = subTotalProduct,
+                        valueCupon = valueCupon,
+                        valuePropina = valuePropina,
+                        valueTotal = valorTotal
                     )
                 }
             }
@@ -520,43 +493,8 @@ fun Checkout(
                                     enterPaymentMethod,
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            } else if (valueNameAuthor.value.isEmpty()) {
-                                Toast.makeText(
-                                    context,
-                                    enterNameInvited,
-                                    Toast.LENGTH_SHORT
-                                ).show()
                             } else {
-                                val editor = sharedPreferences.edit()
-                                editor.putString("nameClient", valueNameAuthor.value)
-                                editor.apply()
 
-                                if (valueTypePayment == 1) {
-                                    try {
-                                        val subTotalConvert =
-                                            checkoutViewModel.convertMoneyState.value;
-
-                                        val intent = Intent()
-                                        intent.component = ComponentName(
-                                            "com.momocoffe.izettlemomo",
-                                            "com.momocoffe.izettlemomo.MainActivity"
-                                        )
-                                        intent.putExtra("zettleSubTotal", subTotalConvert)
-                                        intent.putExtra("zettleMountCupon", valueCupon)
-                                        intent.putExtra("zettleMountPropina", valuePropina)
-                                        intent.putExtra("zettleMountTotal", valorTotal)
-                                        intent.putExtra("zettleAuthorName", valueNameAuthor.value)
-                                        context.startActivity(intent)
-                                    } catch (e: Exception) {
-                                        Log.e("TAG", "Error al abrir la aplicación", e)
-                                        Toast.makeText(
-                                            context,
-                                            "Falta por instalar MOMO Zettle Payment en tu dispositivo.",
-                                            Toast.LENGTH_LONG
-                                        )
-                                            .show()
-                                    }
-                                }
                             }
                         },
                         modifier = Modifier

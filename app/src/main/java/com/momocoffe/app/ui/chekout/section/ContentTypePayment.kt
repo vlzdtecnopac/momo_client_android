@@ -1,6 +1,10 @@
 package com.momocoffe.app.ui.chekout.section
 
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +20,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +41,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.response.ItemShopping
@@ -44,13 +50,18 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
+import com.momocoffe.app.viewmodel.ClientViewModel
 
 @Composable
 fun ContentTypePayment(
     shoppingItems: List<ItemShopping>,
     onCancel: () -> Unit,
-    onSelect: (Int) -> Unit,
-    onSelectName: MutableState<String>
+    valueSubTotal: Float,
+    valueCupon: Float,
+    valuePropina: Float,
+    valueTotal: Float,
+    clientViewModel: ClientViewModel = viewModel()
+
 ) {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
@@ -58,6 +69,31 @@ fun ContentTypePayment(
 
     var invite by remember { mutableStateOf(value = "") }
     var validTypePayment by remember { mutableStateOf(value = 0) }
+    val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
+    
+    LaunchedEffect(Unit){
+        if(client_id.isNotBlank()) {
+            clientViewModel.getClient("", "", client_id)
+        }
+    }
+
+
+    LaunchedEffect(clientViewModel.clientResultCheckEmailState.value) {
+        clientViewModel.clientResultCheckEmailState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val userResponse = result.getOrThrow()
+                    if(userResponse.items.isNotEmpty()){
+                        invite = "${userResponse.items[0].firstName} ${userResponse.items[0].lastName}"
+                    }
+                }
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.e("Result.ClientViewModel", exception.toString())
+                }
+            }
+        }
+    }
 
     shoppingItems.let {
         Column(
@@ -68,7 +104,6 @@ fun ContentTypePayment(
                 OutTextField(
                     textValue = invite,
                     onValueChange = {
-                        onSelectName.value = it
                         invite = it
                     },
                     onClickButton = { invite = "" },
@@ -93,8 +128,35 @@ fun ContentTypePayment(
             if (it.first().card) {
                 Button(
                     onClick = {
-                        onSelect(1)
-                        validTypePayment = 1
+                        if (invite.isEmpty()) {
+                            Toast.makeText(
+                                context,
+                                enterNameInvited,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }else {
+                            try {
+                                val intent = Intent()
+                                intent.component = ComponentName(
+                                    "com.momocoffe.izettlemomo",
+                                    "com.momocoffe.izettlemomo.MainActivity"
+                                )
+                                intent.putExtra("zettleSubTotal", valueSubTotal)
+                                intent.putExtra("zettleMountCupon", valueCupon)
+                                intent.putExtra("zettleMountPropina", valuePropina)
+                                intent.putExtra("zettleMountTotal", valueTotal)
+                                intent.putExtra("zettleAuthorName", invite)
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                Log.e("TAG", "Error al abrir la aplicación", e)
+                                Toast.makeText(
+                                    context,
+                                    "Falta por instalar MOMO Zettle Payment en tu dispositivo.",
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
+                            }
+                        }
                     },
                     modifier = Modifier
                         .width(320.dp)
@@ -133,8 +195,8 @@ fun ContentTypePayment(
             if (it.first().effecty) {
                 Button(
                     onClick = {
-                        onSelect(2)
-                        validTypePayment = 2
+
+
                     },
                     modifier = Modifier
                         .width(320.dp)

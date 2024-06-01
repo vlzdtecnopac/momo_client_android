@@ -100,24 +100,24 @@ fun ContentPropinas(
     if (typePropina == 1) {
         PropinaModal(
             title = stringResource(id = R.string.write_percent),
-            onCancel = { typePropina = 10 },
+            onCancel = { typePropina = 0 },
             onSelect = {
                 onSelectPropina(4)
                 onTypePropina(1)
                 onSelectValue(it)
-                typePropina = 10
+
             })
     }
 
     if (typePropina == 2) {
         PropinaModal(
             title = stringResource(id = R.string.write_amount_peso),
-            onCancel = { typePropina = 10 },
+            onCancel = { typePropina = 0 },
             onSelect = {
                 onSelectPropina(4)
                 onTypePropina(2)
                 onSelectValue(it)
-                typePropina = 10
+
             })
     }
 
