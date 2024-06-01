@@ -49,8 +49,7 @@ import com.momocoffe.app.viewmodel.ClientViewModel
 import com.momocoffe.app.viewmodel.CuponesViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import org.json.JSONArray
-import java.math.BigDecimal
-import java.math.RoundingMode
+
 
 data class CoffeeCart(val name: String, val price: Float, val type: String?)
 
@@ -248,15 +247,11 @@ fun Checkout(
                                 valueTypeDiscount = cuponItem.typeDiscount.toInt()
                                 Log.d("Result.CuponesViewModel", "TYPE: " + valueTypeDiscount)
                                 if (valueTypeDiscount == 1) {
-                                    val valueCupon = cuponItem.discount.toInt()
-                                    Log.d("Result.CuponesViewModel", "CUPON_1: " + valueCupon)
-                                    Log.d("Result.CuponesViewModel", "Subtotal_1: " + subTotalProduct)
-                                    montoDescuento = subTotalProduct * valueCupon / 100
+                                    valueCupon = cuponItem.discount.toFloat()
+                                    montoDescuento = subTotalProduct * cuponItem.discount.toInt() / 100
                                     Log.d("Result.CuponesViewModel", montoDescuento.toString())
                                 } else {
-                                    val valueCupon = cuponItem.discount.toFloat()
-                                    Log.d("Result.CuponesViewModel", "CUPON_2: " + cuponItem.discount.toFloat())
-                                    Log.d("Result.CuponesViewModel", "Subtotal_2: " + subTotalProduct)
+                                    valueCupon = cuponItem.discount.toFloat()
                                     montoDescuento = valueCupon
                                     Log.d("Result.CuponesViewModel", montoDescuento.toString())
                                 }
@@ -478,8 +473,7 @@ fun Checkout(
                                         }
                                         Spacer(modifier = Modifier.width(10.dp))
                                         if(valueTypeDiscount == 1){
-                                            Text(
-                                                "${coffee.price}%",
+                                            Text("${String.format("%.0f", coffee.price)} %",
                                                 modifier = Modifier.weight(0.2f),
                                                 fontFamily = redhatFamily,
                                                 fontSize = 16.sp,
@@ -487,7 +481,7 @@ fun Checkout(
                                             )
                                         }else{
                                             Text(
-                                                "$ -${coffee.price}",
+                                                "$ -${String.format("%.0f", coffee.price)} ",
                                                 modifier = Modifier.weight(0.2f),
                                                 fontFamily = redhatFamily,
                                                 fontSize = 16.sp,
