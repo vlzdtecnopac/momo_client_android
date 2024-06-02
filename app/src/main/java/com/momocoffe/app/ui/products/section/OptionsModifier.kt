@@ -71,11 +71,11 @@ fun OptionsModifier(productsItem: ProductsItem,
             .padding(horizontal = 8.dp)
             .verticalScroll(state)
     ) {
-        if(optionsItems?.temperaturaDeAlimentos?.isNotEmpty() == true) {
+        if(optionsItems?.temperatura?.isNotEmpty() == true) {
             optionsItems?.let { options ->
                 var newsItems = mutableListOf<ItemBox>()
-                if (options.temperaturaDeAlimentos.isNotEmpty()) {
-                    options.temperaturaDeAlimentos.map { product ->
+                if (options.temperatura.isNotEmpty()) {
+                    options.temperatura.map { product ->
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemBox(
@@ -289,41 +289,7 @@ fun OptionsModifier(productsItem: ProductsItem,
             }
         }
 
-        if(optionsItems?.temperaturaDeBebidas?.isNotEmpty() == true) {
-            optionsItems?.let { options ->
 
-                var newsItems = mutableListOf<ItemBox>()
-
-                if (options.temperaturaDeBebidas.isNotEmpty()) {
-                    options.temperaturaDeBebidas.map { product ->
-                        if (newsItems.none { it.name == product.name }) {
-                            newsItems.add(
-                                ItemBox(
-                                    product.id.toInt(),
-                                    product.name,
-                                    product.price.toInt()
-                                )
-                            )
-                        }
-                    }
-                }
-                if (newsItems.size > 0) {
-                    BoxOptions(
-                        iconResource = R.drawable.temp_icon,
-                        textResource = R.string.txt_temp,
-                        onSelectPrice = { price, name ->
-                            selectedOptions = selectedOptions.copy(temperatureDrink = price)
-                            val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
-                            updatedMap["temp"] = ItemModifier(name, price.toString())
-                            productsViewModel.selectModifiersOptions = updatedMap
-                        },
-                        items = newsItems.map { product ->
-                            ItemBox(product.id, product.name, product.price)
-                        },
-                        defaultSelect = "Al tiempo")
-                }
-            }
-        }
 
         if(optionsItems?.salsas?.isNotEmpty() == true) {
             optionsItems?.let { options ->

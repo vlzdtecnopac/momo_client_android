@@ -21,7 +21,7 @@ data class ProductOptionsResponse (
     val tapa: List<ItemProductModifier>,
 
     @SerializedName("temperatura")
-    val temperaturaDeBebidas: List<ItemProductModifier>,
+    val temperatura: List<ItemProductModifier>,
 
     @SerializedName("salsas")
     val salsas: List<ItemProductModifier>
