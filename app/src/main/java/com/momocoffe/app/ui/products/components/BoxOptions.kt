@@ -56,7 +56,6 @@ fun BoxOptions(
     LaunchedEffect(Unit){
         val parts = defaultSelect.split("|")
         for (part in parts) {
-            Log.d("Result.ProductsViewModel", items.toString())
             val selected = items.find { it.name == part}
             if (selected != null) {
                 onSelectPrice(selected.price, selected.name)

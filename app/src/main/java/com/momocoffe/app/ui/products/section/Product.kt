@@ -105,8 +105,9 @@ fun Product(
 
         productsItems.let { product ->
 
-
-
+            if( product?.get(0)?.productModifier?.tamaño ==  null){
+                productsViewModel.calculatePriceResult.value = product?.get(0)?.price?.toInt() ?: 0
+            }
             Box(
                 modifier = Modifier
                     .widthIn(0.dp, 900.dp)

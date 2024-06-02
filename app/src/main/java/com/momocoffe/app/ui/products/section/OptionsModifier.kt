@@ -53,7 +53,6 @@ fun OptionsModifier(productsItem: ProductsItem,
             when{
                 result.isSuccess ->{
                     val optionsResponse = result.getOrThrow()
-                    Log.d("Result.ProductsViewModel", optionsResponse.toString())
                     optionsItems = optionsResponse
                 }
             }
@@ -70,7 +69,6 @@ fun OptionsModifier(productsItem: ProductsItem,
             when{
                 result.isSuccess ->{
                     val optionsResponse = result.getOrThrow()
-                    Log.d("Result.ProductsViewModel", optionsResponse.toString())
                     optionsSizeItems = optionsResponse
                 }
             }
@@ -115,7 +113,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         },
-                        defaultSelect = "chico  12oz"
+                        defaultSelect = "chico  2oz|chico  8oz|chico  12oz|chico  16oz f"
                     )
                 }
             }
