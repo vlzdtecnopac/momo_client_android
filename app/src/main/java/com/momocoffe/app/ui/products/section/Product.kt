@@ -155,11 +155,13 @@ fun Product(
 
                                         product?.get(0)?.let { firstProduct->
                                             try {
+                                                val image = firstProduct.image ?: "http://momocoffe-lb-885579517.us-east-1.elb.amazonaws.com:83/assets/no_found.png"
+
                                                 cartViewModel.createProduct(
                                                     CartProduct(
                                                         0,
                                                         titleProduct = firstProduct.nameProduct,
-                                                        imageProduct = firstProduct.image,
+                                                        imageProduct = image,
                                                         priceProduct = productsViewModel.calculatePriceResult.value.toString(),
                                                         priceProductMod = productsViewModel.calculatePriceResult.value.toString(),
                                                         countProduct = 1,
