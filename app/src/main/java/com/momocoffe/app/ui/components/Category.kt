@@ -47,7 +47,7 @@ fun Category(navController: NavController,
     if (subCategorySelected.isNotEmpty()) {
 
         if (subCategorySelected.count() <= 2) {
-            if (subCategorySelected.contains("Caliente")) {
+            if (subCategorySelected.contains("caliente")) {
                 ColAndHot(navController, categoryViewModel.selectCategory.value, list = subCategorySelected, onCloseDialog = { showDialog = false })
             } else {
                 Store(navController, categoryViewModel.selectCategory.value, list = subCategorySelected, onCloseDialog = { showDialog = false })
