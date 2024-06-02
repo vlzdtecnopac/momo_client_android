@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.components.cart
 
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -321,7 +322,7 @@ fun ProductCart(
 
 @Composable
 fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
-
+    val context = LocalContext.current
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -358,7 +359,16 @@ fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
                 .height(55.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = OrangeDark),
             onClick = {
-                navController.navigate(Destination.Checkout.route)
+                if(cartViewModel.countCartState.value > 0){
+                    navController.navigate(Destination.Checkout.route)
+                }else{
+                    Toast.makeText(
+                        context,
+                        R.string.required_cart_not_null,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
             }) {
             Text(stringResource(id = R.string.continue_payment), fontSize = 20.sp ,color = Color.White, fontFamily = stacionFamily)
         }

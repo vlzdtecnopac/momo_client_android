@@ -119,4 +119,5 @@
     <string name="txt_cancel_payment_success">Tu pedido se ha cancelado satisfactoreamente.</string>
     <string name="enter_name_invitado">Ingresa el nombre del invitado</string>
     <string name="enter_payment_method">Ingrese el metodo de pago</string>
+    <string name="required_cart_not_null">Ingresa productos al carrito</string>
 </resources>

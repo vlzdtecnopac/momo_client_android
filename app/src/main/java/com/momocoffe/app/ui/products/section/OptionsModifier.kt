@@ -289,8 +289,6 @@ fun OptionsModifier(productsItem: ProductsItem,
             }
         }
 
-
-
         if(optionsItems?.salsas?.isNotEmpty() == true) {
             optionsItems?.let { options ->
 
