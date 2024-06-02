@@ -69,3 +69,10 @@ data class ItemProductModifier (
     val subCategory: JsonElement? = null
 )
 
+
+data class ProductOptionsSizeResponse (
+    val name: String,
+    val sizes: List<String>,
+    val ids: List<String>
+)
+

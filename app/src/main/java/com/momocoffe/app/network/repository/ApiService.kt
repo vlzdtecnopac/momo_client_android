@@ -23,6 +23,7 @@ import com.momocoffe.app.network.response.EmployeeResponse
 import com.momocoffe.app.network.response.KioskoResponse
 import com.momocoffe.app.network.response.LoginResponse
 import com.momocoffe.app.network.response.ProductOptionsResponse
+import com.momocoffe.app.network.response.ProductOptionsSizeResponse
 import com.momocoffe.app.network.response.ProductsResponse
 import com.momocoffe.app.network.response.RefreshTokenResponse
 import com.momocoffe.app.network.response.ShoppingResponse
@@ -81,6 +82,9 @@ interface ApiService {
 
     @GET("/product/")
     suspend fun getProductsCategory( @Query("shopping_id") shoppingId: String,  @Query("categorys") category: String,  @Query("state") state: Boolean): Response<ProductsResponse>
+
+    @GET("/product/size/{name_product}")
+    suspend fun getProductOptionsSize(  @Path("name_product") nameProduct: String?): Response<ProductOptionsSizeResponse>
 
     @GET("/product/")
     suspend fun getProductByID( @Query("product_id") productId: String, @Query("shopping_id") shoppingId: String): Response<ProductsResponse>

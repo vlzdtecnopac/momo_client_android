@@ -54,6 +54,7 @@ fun ListOptions(
 ) {
     val isItemActive = remember { mutableStateOf(0) }
     val selectOption = remember { mutableStateOf("") }
+    val checked = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit){
         val selected = items.find { it.name == defaultSelect}
@@ -114,9 +115,16 @@ fun ListOptions(
                         Checkbox(
                             checked = isItemActive.value == item.id,
                             onCheckedChange = {
-                                onSelectPrice(item.price, item.name)
-                                isItemActive.value = item.id
-                                selectOption.value = item.name
+                                checked.value = it
+                                if (checked.value) {
+                                    onSelectPrice(item.price, item.name)
+                                    isItemActive.value = item.id
+                                    selectOption.value = item.name
+                                }else{
+                                    onSelectPrice(0, "")
+                                    isItemActive.value = 0
+                                    selectOption.value = ""
+                                }
                             },
                             colors = CheckboxDefaults.colors(
                                 checkedColor = OrangeDark,

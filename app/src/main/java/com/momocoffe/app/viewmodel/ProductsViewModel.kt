@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
 import com.momocoffe.app.network.response.ProductOptionsResponse
+import com.momocoffe.app.network.response.ProductOptionsSizeResponse
 import com.momocoffe.app.network.response.ProductsResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -20,6 +21,7 @@ data class ItemModifier(
 class ProductsViewModel : ViewModel() {
     private val apiService: ApiService = RetrofitHelper.apiService()
     val productsResultState = mutableStateOf<Result<ProductsResponse>?>(null)
+    val productsOptionsSizeResultState = mutableStateOf<Result<ProductOptionsSizeResponse>?>(null)
     val productsOptionsResultState = mutableStateOf<Result<ProductOptionsResponse>?>(null)
     val calculatePriceResult = mutableStateOf(0)
     var selectModifiersOptions by mutableStateOf(mutableMapOf<String,ItemModifier>())
@@ -112,6 +114,32 @@ class ProductsViewModel : ViewModel() {
 
             }catch (e: Exception){
                 productsOptionsResultState.value = Result.failure(e)
+                Log.e("Result.ProductsModelView", e.message.toString())
+            }finally {
+                loadingState.value = false
+                Log.d("Result.ProductsModelView", "Finally")
+            }
+        }
+    }
+
+
+    fun productOptionsSize(nameProduct: String){
+        loadingState.value = true
+        viewModelScope.launch {
+            try {
+                var response = apiService.getProductOptionsSize(nameProduct)
+                if(response.isSuccessful){
+                    val optionsResponse: ProductOptionsSizeResponse? = response.body()
+                    if (optionsResponse != null) {
+                        productsOptionsSizeResultState.value = Result.success(optionsResponse)
+                    }else{
+                        productsOptionsSizeResultState.value = Result.failure(Exception("Empty response body"))
+                    }
+                } else {
+                    productsOptionsSizeResultState.value = Result.failure(Exception("Products Options Size failed"))
+                }
+            } catch (e: Exception){
+                productsOptionsSizeResultState.value = Result.failure(e)
                 Log.e("Result.ProductsModelView", e.message.toString())
             }finally {
                 loadingState.value = false

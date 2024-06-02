@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -22,6 +23,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
 import com.momocoffe.app.network.data.SelectedOptions
 import com.momocoffe.app.network.response.ProductOptionsResponse
+import com.momocoffe.app.network.response.ProductOptionsSizeResponse
 
 import com.momocoffe.app.network.response.ProductsItem
 import com.momocoffe.app.ui.products.components.BoxOptions
@@ -38,11 +40,13 @@ fun OptionsModifier(productsItem: ProductsItem,
 ) {
     val state = rememberScrollState()
     var optionsItems: ProductOptionsResponse? by remember { mutableStateOf(null) }
+    var optionsSizeItems: ProductOptionsSizeResponse? by remember { mutableStateOf(null) }
     var selectedOptions by remember { mutableStateOf(SelectedOptions()) }
 
     LaunchedEffect(Unit) {
         Log.d("Result.ProductsViewModel", productsItem.productID)
         productsViewModel.productOptions(product_id = productsItem.productID)
+        productsViewModel.productOptionsSize(nameProduct = productsItem.nameProduct)
     }
 
     LaunchedEffect(productsViewModel.productsOptionsResultState.value){
@@ -57,10 +61,21 @@ fun OptionsModifier(productsItem: ProductsItem,
         }
     }
 
-
     LaunchedEffect(selectedOptions) {
         val totalPrice = selectedOptions.calculatePrice()
         productsViewModel.calculatePriceResult.value =  totalPrice + productsItem.price.toInt()
+    }
+
+    LaunchedEffect(productsViewModel.productsOptionsSizeResultState.value){
+        productsViewModel.productsOptionsSizeResultState.value?.let {result ->
+            when{
+                result.isSuccess ->{
+                    val optionsResponse = result.getOrThrow()
+                    Log.d("Result.ProductsViewModel", optionsResponse.toString())
+                    optionsSizeItems = optionsResponse
+                }
+            }
+        }
     }
 
     Column(
