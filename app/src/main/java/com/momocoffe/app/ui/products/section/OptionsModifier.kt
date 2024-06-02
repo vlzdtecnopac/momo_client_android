@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.products.section
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -40,6 +41,7 @@ fun OptionsModifier(productsItem: ProductsItem,
     var selectedOptions by remember { mutableStateOf(SelectedOptions()) }
 
     LaunchedEffect(Unit) {
+        Log.d("Result.ProductsViewModel", productsItem.productID)
         productsViewModel.productOptions(product_id = productsItem.productID)
     }
 
@@ -48,6 +50,7 @@ fun OptionsModifier(productsItem: ProductsItem,
             when{
                 result.isSuccess ->{
                     val optionsResponse = result.getOrThrow()
+                    Log.d("Result.ProductsViewModel", optionsResponse.toString())
                     optionsItems = optionsResponse
                 }
             }

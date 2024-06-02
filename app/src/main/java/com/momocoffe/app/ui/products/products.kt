@@ -77,10 +77,6 @@ fun Products(
             when {
                 result.isSuccess -> {
                     val response = result.getOrThrow()
-                    Log.d("Result.ProductsViewModel", preference_shopping_id.toString())
-                    Log.d("Result.ProductsViewModel", category.toString())
-                    Log.d("Result.ProductsViewModel", subcategory.toString())
-                    Log.d("Result.ProductsViewModel", response.items.toString())
                     productsItems = response.items.toList()
                 }
 

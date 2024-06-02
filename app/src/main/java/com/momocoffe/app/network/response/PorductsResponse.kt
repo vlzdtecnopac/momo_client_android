@@ -45,14 +45,8 @@ data class ProductModifier (
 )
 
 data class ItemModifier (
-    val category: Category,
+    val category: Any,
     val name: String
 )
 
-enum class Category {
-    Azúcar,
-    ExtraShotDeCafé,
-    Leche,
-    Tamaño,
-    Tapa
-}
+

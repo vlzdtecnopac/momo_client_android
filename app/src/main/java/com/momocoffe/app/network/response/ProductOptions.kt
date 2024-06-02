@@ -4,28 +4,26 @@ import com.google.gson.JsonElement
 import com.google.gson.annotations.SerializedName
 
 data class ProductOptionsResponse (
-    @SerializedName("Azúcar")
+
+    @SerializedName("azúcar")
     val azúcar: List<ItemProductModifier>,
 
-    @SerializedName("Leche")
+    @SerializedName("leche")
     val leche: List<ItemProductModifier>,
 
-    @SerializedName("Tamaño")
+    @SerializedName("tamaño")
     val tamaño: List<ItemProductModifier>,
 
-    @SerializedName("Extra  Shot de Café")
+    @SerializedName("extra")
     val extraShotDeCafé: List<ItemProductModifier>,
 
-    @SerializedName("Tapa")
+    @SerializedName("tapa")
     val tapa: List<ItemProductModifier>,
 
-    @SerializedName("Temperatura de bebidas")
+    @SerializedName("temperatura")
     val temperaturaDeBebidas: List<ItemProductModifier>,
 
-    @SerializedName("Temperatura de Alimento")
-    val temperaturaDeAlimentos: List<ItemProductModifier>,
-
-    @SerializedName("Salsas")
+    @SerializedName("salsas")
     val salsas: List<ItemProductModifier>
 )
 
