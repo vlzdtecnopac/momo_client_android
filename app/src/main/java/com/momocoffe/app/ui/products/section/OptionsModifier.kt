@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -86,6 +85,43 @@ fun OptionsModifier(productsItem: ProductsItem,
             .padding(horizontal = 8.dp)
             .verticalScroll(state)
     ) {
+        if(optionsSizeItems?.sizes?.isNotEmpty() == true){
+            optionsSizeItems?.let { options ->
+                var newsItems = mutableListOf<ItemBox>()
+                if(options.sizes.isNotEmpty()){
+                    options.sizes.mapIndexed { index, product ->
+                        if(newsItems.none {it.name == product}){
+                            newsItems.add(
+                                ItemBox(
+                                    options.ids[index],
+                                    product,
+                                    0
+                                )
+                            )
+                        }
+                    }
+                }
+
+                if (newsItems.size > 0) {
+                    BoxOptions(
+                        iconResource = R.drawable.tamano_icon,
+                        textResource = R.string.size,
+                        onSelectPrice = { price, name ->
+                            selectedOptions = selectedOptions.copy(temperatureFood = price)
+                            val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
+                            updatedMap["size"] = ItemModifier(name, price.toString())
+                            productsViewModel.selectModifiersOptions = updatedMap
+                        },
+                        items = newsItems.map { product ->
+                            ItemBox(product.id, product.name, product.price)
+                        },
+                        defaultSelect = ""
+                    )
+                }
+            }
+        }
+
+
         if(optionsItems?.temperatura?.isNotEmpty() == true) {
             optionsItems?.let { options ->
                 var newsItems = mutableListOf<ItemBox>()
@@ -94,7 +130,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemBox(
-                                    product.id.toInt(),
+                                    product.id.toString(),
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -123,41 +159,6 @@ fun OptionsModifier(productsItem: ProductsItem,
             }
         }
 
-        if(optionsItems?.tamaño?.isNotEmpty() == true) {
-            optionsItems?.let { options ->
-                var newsItems = mutableListOf<ItemBox>()
-                if (options.tamaño.isNotEmpty()) {
-                    options.tamaño.map { product ->
-                        if (newsItems.none { it.name == product.name }) {
-                            newsItems.add(
-                                ItemBox(
-                                    product.id.toInt(),
-                                    product.name,
-                                    product.price.toInt()
-                                )
-                            )
-                        }
-                    }
-                }
-
-                if (newsItems.size > 0) {
-                    BoxOptions(
-                        iconResource = R.drawable.tamano_icon,
-                        textResource = R.string.size,
-                        onSelectPrice = { price, name ->
-                            selectedOptions = selectedOptions.copy(size = price)
-                            val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
-                            updatedMap["size"] = ItemModifier(name, price.toString())
-                            productsViewModel.selectModifiersOptions = updatedMap
-                        },
-                        items = newsItems.map { product ->
-                            ItemBox(product.id, product.name, product.price)
-                        },
-                        defaultSelect = "Chico"
-                        )
-                }
-            }
-        }
 
 
         if(optionsItems?.leche?.isNotEmpty() == true) {
@@ -173,7 +174,7 @@ fun OptionsModifier(productsItem: ProductsItem,
 
                             newsItems.add(
                                 ItemBox(
-                                    product.id.toInt(),
+                                    product.id.toString(),
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -207,7 +208,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemBox(
-                                    product.id.toInt(),
+                                    product.id.toString(),
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -242,7 +243,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemList(
-                                    product.id.toInt(),
+                                    product.id.toString(),
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -278,7 +279,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemList(
-                                    product.id.toInt(),
+                                    product.id.toString(),
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -314,7 +315,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemBox(
-                                    product.id.toInt(),
+                                    product.id.toString(),
                                     product.name,
                                     product.price.toInt()
                                 )

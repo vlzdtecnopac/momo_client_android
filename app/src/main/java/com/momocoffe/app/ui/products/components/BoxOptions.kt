@@ -40,7 +40,7 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 
-data class ItemBox(val id: Int, val name: String, val price: Int)
+data class ItemBox(val id: String, val name: String, val price: Int)
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BoxOptions(
@@ -50,7 +50,7 @@ fun BoxOptions(
     items: List<ItemBox>,
     defaultSelect: String
 ) {
-    val isItemActive = remember { mutableStateOf(0) }
+    val isItemActive = remember { mutableStateOf("") }
     val selectOption = remember { mutableStateOf("") }
 
     LaunchedEffect(Unit){

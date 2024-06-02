@@ -43,7 +43,7 @@ import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.ProductsViewModel
 
-data class ItemList(val id: Int, val name: String, val price: Int)
+data class ItemList(val id: String, val name: String, val price: Int)
 
 @Composable
 fun ListOptions(
@@ -52,7 +52,7 @@ fun ListOptions(
     items: List<ItemList>,
     defaultSelect: String
 ) {
-    val isItemActive = remember { mutableStateOf(0) }
+    val isItemActive = remember { mutableStateOf("") }
     val selectOption = remember { mutableStateOf("") }
     val checked = remember { mutableStateOf(false) }
 
@@ -122,7 +122,7 @@ fun ListOptions(
                                     selectOption.value = item.name
                                 }else{
                                     onSelectPrice(0, "")
-                                    isItemActive.value = 0
+                                    isItemActive.value = ""
                                     selectOption.value = ""
                                 }
                             },
