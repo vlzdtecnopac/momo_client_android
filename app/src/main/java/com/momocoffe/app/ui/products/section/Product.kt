@@ -159,7 +159,7 @@ fun Product(
 
                                                 cartViewModel.createProduct(
                                                     CartProduct(
-                                                        0,
+                                                        "MOO1",
                                                         titleProduct = firstProduct.nameProduct,
                                                         imageProduct = image,
                                                         priceProduct = productsViewModel.calculatePriceResult.value.toString(),

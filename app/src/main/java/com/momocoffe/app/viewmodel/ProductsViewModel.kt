@@ -67,7 +67,8 @@ class ProductsViewModel : ViewModel() {
                     response = apiService.getProductsCategoryAndSubcategory(
                         shopping_id,
                         category = categorys,
-                        subcategory
+                        subcategory,
+                        state
                     )
                 } else {
                     response = apiService.getProductsCategory(shopping_id, category = categorys, state)

@@ -9,7 +9,7 @@ data class CartState(
 )
 
 data class CartProduct(
-    val id: Int,
+    val id: String,
     val titleProduct: String,
     val imageProduct: String,
     val priceProduct: String,
