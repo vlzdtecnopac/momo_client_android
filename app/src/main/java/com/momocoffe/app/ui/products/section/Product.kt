@@ -105,9 +105,7 @@ fun Product(
 
         productsItems.let { product ->
 
-            product?.get(0)?.let {
-                productsViewModel.calculatePriceResult.value = it.price.toInt()
-            }
+
 
             Box(
                 modifier = Modifier

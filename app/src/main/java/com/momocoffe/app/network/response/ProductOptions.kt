@@ -73,6 +73,7 @@ data class ItemProductModifier (
 data class ProductOptionsSizeResponse (
     val name: String,
     val sizes: List<String>,
-    val ids: List<String>
+    val ids: List<String>,
+    val price: List<String>
 )
 

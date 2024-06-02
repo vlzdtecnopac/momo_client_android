@@ -62,7 +62,7 @@ fun OptionsModifier(productsItem: ProductsItem,
 
     LaunchedEffect(selectedOptions) {
         val totalPrice = selectedOptions.calculatePrice()
-        productsViewModel.calculatePriceResult.value =  totalPrice + productsItem.price.toInt()
+        productsViewModel.calculatePriceResult.value =  totalPrice
     }
 
     LaunchedEffect(productsViewModel.productsOptionsSizeResultState.value){
@@ -95,7 +95,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                                 ItemBox(
                                     options.ids[index],
                                     product,
-                                    0
+                                    options.price[index].toInt()
                                 )
                             )
                         }
@@ -107,7 +107,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         iconResource = R.drawable.tamano_icon,
                         textResource = R.string.size,
                         onSelectPrice = { price, name ->
-                            selectedOptions = selectedOptions.copy(temperatureFood = price)
+                            selectedOptions = selectedOptions.copy(size = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["size"] = ItemModifier(name, price.toString())
                             productsViewModel.selectModifiersOptions = updatedMap
@@ -115,7 +115,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         },
-                        defaultSelect = ""
+                        defaultSelect = "chico  12oz"
                     )
                 }
             }
@@ -158,7 +158,6 @@ fun OptionsModifier(productsItem: ProductsItem,
                 }
             }
         }
-
 
 
         if(optionsItems?.leche?.isNotEmpty() == true) {
