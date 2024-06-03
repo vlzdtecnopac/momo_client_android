@@ -35,7 +35,7 @@ import com.momocoffe.app.viewmodel.CategoryViewModel
 fun Category(navController: NavController,
              cartViewModel: CartViewModel,
              categoryViewModel: CategoryViewModel = viewModel()) {
-
+    var selectCategory by remember { mutableStateOf(value = "" ) }
     var subCategorySelected by rememberSaveable { mutableStateOf(listOf<String>()) }
     var showDialog by remember { mutableStateOf(false) }
     val textLabel = listOf(R.string.coffe, R.string.tea, R.string.coffe_with_tea, R.string.specials_momo, R.string.combos, R.string.foods, R.string.others_drinks, R.string.our_store)
@@ -47,14 +47,23 @@ fun Category(navController: NavController,
     if (subCategorySelected.isNotEmpty()) {
 
         if (subCategorySelected.count() <= 2) {
-            if (subCategorySelected.contains("caliente")) {
                 ColAndHot(navController, categoryViewModel.selectCategory.value, list = subCategorySelected, onCloseDialog = { showDialog = false })
-            } else {
-                Store(navController, categoryViewModel.selectCategory.value, list = subCategorySelected, onCloseDialog = { showDialog = false })
+        } else {
+            if(selectCategory == "tienda") {
+                Store(
+                    navController,
+                    categoryViewModel.selectCategory.value,
+                    list = subCategorySelected,
+                    onCloseDialog = { showDialog = false })
+            }else{
+                Food(
+                    navController,
+                    categoryViewModel.selectCategory.value,
+                    list = subCategorySelected,
+                    onCloseDialog = { showDialog = false })
+
             }
 
-        } else {
-            Food(navController, categoryViewModel.selectCategory.value, list = subCategorySelected, onCloseDialog = { showDialog = false })
         }
 
     }
@@ -70,6 +79,7 @@ fun Category(navController: NavController,
                         items(categoriesResponse.size) { index ->
                             Spacer(modifier = Modifier.width(2.dp))
                             BtnOutlineCategory(text = stringResource(id = textLabel[index]), onclick = {
+                                selectCategory = categoriesResponse[index].nameCategory
                                 if(categoriesResponse[index].subCategory.isNotEmpty()) {
                                     val newSubcategory = categoriesResponse[index].subCategory
                                         .removeSurrounding("[", "]")

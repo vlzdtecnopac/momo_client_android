@@ -37,14 +37,13 @@ fun Store(navController: NavController,
           list: List<String>,
           onCloseDialog: () -> Unit){
 
-    val image = listOf(R.drawable.metch_icon, R.drawable.coffe_granel_icon)
-    val textLabel = listOf(R.string.text_merch, R.string.text_coffe_granel)
+    val image = listOf(R.drawable.metch_icon, R.drawable.coffe_granel_icon, R.drawable.woof_icon)
+    val textLabel = listOf(R.string.text_merch, R.string.text_coffe_granel, R.string.txt_woof)
     val newList = mutableListOf<ListItem>()
 
     list.forEachIndexed { index, item ->
         newList.add(ListItem(image[index], stringResource(id =  textLabel[index])))
     }
-
 
     Dialog(
         onDismissRequest = onCloseDialog,
@@ -68,9 +67,9 @@ fun Store(navController: NavController,
                     horizontalArrangement = Arrangement.Center,
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
-                        .widthIn(0.dp, 600.dp),
+                        .widthIn(0.dp, 800.dp),
                     contentPadding = PaddingValues(vertical = 20.dp, horizontal = 20.dp),
-                    columns = GridCells.Fixed(2),
+                    columns = GridCells.Fixed(3),
                     content = {
                         items(newList.size) { index ->
                             Box(
@@ -83,6 +82,7 @@ fun Store(navController: NavController,
                                     text = newList[index].name,
                                     onclick = {
                                         navController.navigate("products/$selectCategory/${list[index]}")
+
                                     }
                                 )
                             }

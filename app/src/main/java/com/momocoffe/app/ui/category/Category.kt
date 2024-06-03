@@ -48,15 +48,17 @@ fun Category(navController: NavController,
 
     if (subCategorySelected.isNotEmpty() && showDialog) {
         if (subCategorySelected.count() <= 2) {
-            Log.d("Result.CategoryViewModel", subCategorySelected.toString())
-            if (subCategorySelected.contains("caliente")) {
-                ColAndHot(navController, selectCategory, list = subCategorySelected, onCloseDialog = { showDialog = false })
-            } else {
-                Store(navController, selectCategory, list = subCategorySelected, onCloseDialog = { showDialog = false })
-            }
-
+            ColAndHot(navController, selectCategory, list = subCategorySelected, onCloseDialog = { showDialog = false })
         } else {
-            Food(navController, selectCategory ,list = subCategorySelected, onCloseDialog = { showDialog = false })
+            if(selectCategory == "tienda"){
+                Store(navController, selectCategory, list = subCategorySelected, onCloseDialog = { showDialog = false })
+            }else {
+                Food(
+                    navController,
+                    selectCategory,
+                    list = subCategorySelected,
+                    onCloseDialog = { showDialog = false })
+            }
         }
     }
 
