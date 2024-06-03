@@ -114,7 +114,6 @@ fun OptionsModifier(productsItem: ProductsItem,
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["size"] = ItemModifier(name, price.toString())
                             productsViewModel.selectModifiersOptions = updatedMap
-                            Log.d("Result.ProductsViewModel", "Select: " + id)
                             onSelectID(id)
                         },
                         items = newsItems.map { product ->

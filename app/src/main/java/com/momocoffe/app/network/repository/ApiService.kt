@@ -2,6 +2,7 @@ package com.momocoffe.app.network.repository
 
 import com.momocoffe.app.network.data.CreatePedidoResponse
 import com.momocoffe.app.network.data.ExchangeRateResponse
+import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.ClientReceptorEmailRequest
 import com.momocoffe.app.network.dto.ClientReceptorSMSRequest
 import com.momocoffe.app.network.dto.ClientRequest
@@ -103,4 +104,7 @@ interface ApiService {
 
     @POST("/pedido/create")
     suspend fun createPedido(@Body requestBody: PedidoRequest): Response<CreatePedidoResponse>
+
+    @POST("/pedido/create")
+    suspend fun createBuilding(@Body requestBody: BuildingRequest): Response<CreatePedidoResponse>
 }
