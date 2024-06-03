@@ -35,6 +35,7 @@ import com.momocoffe.app.viewmodel.ProductsViewModel
 
 @Composable
 fun OptionsModifier(productsItem: ProductsItem,
+                    onSelectID: (String) -> Unit,
                     productsViewModel: ProductsViewModel = viewModel()
 ) {
     val state = rememberScrollState()
@@ -43,9 +44,9 @@ fun OptionsModifier(productsItem: ProductsItem,
     var selectedOptions by remember { mutableStateOf(SelectedOptions()) }
 
     LaunchedEffect(Unit) {
-        Log.d("Result.ProductsViewModel", productsItem.productID)
         productsViewModel.productOptions(product_id = productsItem.productID)
         productsViewModel.productOptionsSize(nameProduct = productsItem.nameProduct)
+        onSelectID(productsItem.productID)
     }
 
     LaunchedEffect(productsViewModel.productsOptionsResultState.value){
@@ -108,11 +109,13 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.tamano_icon,
                         textResource = R.string.size,
-                        onSelectPrice = { price, name ->
+                        onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(size = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["size"] = ItemModifier(name, price.toString())
                             productsViewModel.selectModifiersOptions = updatedMap
+                            Log.d("Result.ProductsViewModel", "Select: " + id)
+                            onSelectID(id)
                         },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
@@ -145,7 +148,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.temp_icon,
                         textResource = R.string.txt_temp,
-                        onSelectPrice = { price, name ->
+                        onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(temperatureFood = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["temp"] = ItemModifier(name, price.toString())
@@ -187,7 +190,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.milk_icon,
                         textResource = R.string.txt_milk,
-                        onSelectPrice = { price, name ->
+                        onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(milk = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["milk"] = ItemModifier(name, price.toString())
@@ -222,7 +225,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                     BoxOptions(
                         iconResource = R.drawable.sugar_icon,
                         textResource = R.string.txt_sugar,
-                        onSelectPrice = { price, name ->
+                        onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(sugar = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["sugar"] = ItemModifier(name, price.toString())

@@ -63,8 +63,7 @@ fun Product(
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val preference_shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
     var productsItems: List<ProductsItem>? by remember { mutableStateOf(null) }
-
-
+    var selectProductID: String by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         productsViewModel.product(preference_shopping_id, product_id)
@@ -145,20 +144,22 @@ fun Product(
                             verticalArrangement = Arrangement.Top,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            (product?.get(0) ?: null)?.let { OptionsModifier(it) }
+                            (product?.get(0) ?: null)?.let { OptionsModifier(it, onSelectID = {
+                                selectProductID =  it
+                            }) }
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Spacer(modifier = Modifier.height(10.dp))
                                 Button(
                                     onClick = {
-
+                                        Log.d("Result.ProductsViewModel", selectProductID.toString())
                                         product?.get(0)?.let { firstProduct->
                                             try {
                                                 val image = firstProduct.image ?: ""
                                                 cartViewModel.createProduct(
                                                     CartProduct(
-                                                        "MOO1",
+                                                        selectProductID,
                                                         titleProduct = firstProduct.nameProduct,
                                                         imageProduct = image,
                                                         priceProduct = productsViewModel.calculatePriceResult.value.toString(),

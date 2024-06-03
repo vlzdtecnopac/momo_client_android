@@ -1,7 +1,5 @@
 package com.momocoffe.app.ui.products.components
 
-
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,7 +44,7 @@ data class ItemBox(val id: String, val name: String, val price: Int)
 fun BoxOptions(
     iconResource: Int,
     textResource: Int,
-    onSelectPrice: (Int, String) -> Unit,
+    onSelectPrice: (String, Int, String) -> Unit,
     items: List<ItemBox>,
     defaultSelect: String
 ) {
@@ -58,7 +56,7 @@ fun BoxOptions(
         for (part in parts) {
             val selected = items.find { it.name == part}
             if (selected != null) {
-                onSelectPrice(selected.price, selected.name)
+                onSelectPrice(selected.id, selected.price, selected.name)
                 isItemActive.value = selected.id
                 selectOption.value = selected.name
             }
@@ -105,7 +103,7 @@ fun BoxOptions(
                     ) {
                         Button(
                             onClick = {
-                                onSelectPrice(item.price, item.name)
+                                onSelectPrice(item.id, item.price, item.name)
                                 isItemActive.value = item.id
                                 selectOption.value = item.name
                             },
