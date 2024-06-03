@@ -118,55 +118,56 @@ fun ContentTypePayment(
         if (client_id.isNotBlank()) {
             clientViewModel.getClient("", "", client_id)
         }
-        if (!shoppingViewModel.loadingState.value) {
-            val newProducts = cartViewModel.state.carts.mapIndexed { index, item ->
-                val itemsModifiersOptions = parseItemModifiers(item.modifiersOptions)
-                Producto(
-                    id = item.id.toString(),
-                    name_product = item.titleProduct,
-                    price = item.priceProduct.toInt(),
-                    image = item.imageProduct,
-                    extra = Extra(
-                        size = Size(
-                            itemsModifiersOptions["size"]?.name ?: "",
-                            itemsModifiersOptions["size"]?.price?.toInt() ?: 0
-                        ),
-                        milk = Milk(
-                            itemsModifiersOptions["milk"]?.name ?: "",
-                            itemsModifiersOptions["milk"]?.price?.toInt() ?: 0
-                        ),
-                        sugar = Sugar(
-                            itemsModifiersOptions["sugar"]?.name ?: "",
-                            itemsModifiersOptions["sugar"]?.price?.toInt() ?: 0
-                        ),
-                        extra_coffee = itemsModifiersOptions["extra"]?.let {
-                            listOf(
-                                ExtraCoffee(
-                                    it.name,
-                                    it.price
-                                )
-                            )
-                        } ?: listOf(),
-                        lid = itemsModifiersOptions["libTapa"]?.let {
-                            listOf(
-                                Lid(
-                                    it.name,
-                                    it.price.toInt()
-                                )
-                            )
-                        } ?: listOf(),
-                        sauce = listOf(Sauce("", 0)),
-                        temperature = Temperature("", 0),
-                        color = "",
-                        coffee_type = Any()
-                    ),
-                    quanty = item.countProduct,
-                    subtotal = item.priceProductMod.toInt()
-                )
-            }
+    }
 
-            productListString = productosToString(newProducts)
+    LaunchedEffect(cartViewModel.state){
+        val newProducts = cartViewModel.state.carts.mapIndexed { index, item ->
+            val itemsModifiersOptions = parseItemModifiers(item.modifiersOptions)
+            Producto(
+                id = item.productId,
+                name_product = item.titleProduct,
+                price = item.priceProduct.toInt(),
+                image = item.imageProduct,
+                extra = Extra(
+                    size = Size(
+                        itemsModifiersOptions["size"]?.name ?: "",
+                        itemsModifiersOptions["size"]?.price?.toInt() ?: 0
+                    ),
+                    milk = Milk(
+                        itemsModifiersOptions["milk"]?.name ?: "",
+                        itemsModifiersOptions["milk"]?.price?.toInt() ?: 0
+                    ),
+                    sugar = Sugar(
+                        itemsModifiersOptions["sugar"]?.name ?: "",
+                        itemsModifiersOptions["sugar"]?.price?.toInt() ?: 0
+                    ),
+                    extra_coffee = itemsModifiersOptions["extra"]?.let {
+                        listOf(
+                            ExtraCoffee(
+                                it.name,
+                                it.price
+                            )
+                        )
+                    } ?: listOf(),
+                    lid = itemsModifiersOptions["libTapa"]?.let {
+                        listOf(
+                            Lid(
+                                it.name,
+                                it.price.toInt()
+                            )
+                        )
+                    } ?: listOf(),
+                    sauce = listOf(Sauce("", 0)),
+                    temperature = Temperature("", 0),
+                    color = "",
+                    coffee_type = Any()
+                ),
+                quanty = item.countProduct,
+                subtotal = item.priceProductMod.toInt()
+            )
         }
+
+        productListString = productosToString(newProducts)
     }
 
     LaunchedEffect(shoppingViewModel.shoppingResultState.value) {
@@ -210,6 +211,22 @@ fun ContentTypePayment(
         }
     }
 
+    LaunchedEffect(buildingViewModel.buildingResultState.value){
+        buildingViewModel.buildingResultState.value?.let{ result ->
+                when{
+                    result.isSuccess -> {
+                        val userResponse = result.getOrThrow()
+                        Log.d("Result.BuildingViewModel", userResponse.toString())
+                    }
+
+                    result.isFailure -> {
+                        val exception = result.exceptionOrNull()
+                        Log.e("Result.BuildingViewModel", exception.toString())
+                    }
+                }
+        }
+    }
+
     Box {
         shoppingItems.let {
             Column(
@@ -249,7 +266,7 @@ fun ContentTypePayment(
                                 buildingViewModel.payment(
                                     invoice = BuildingRequest(
                                         name = invite,
-                                        email = email,
+                                        email = "vlzdavid12@outlook.com",
                                         shoppingID = shopping_id,
                                         kioskoID = kiosko_id,
                                         typePayment = "card",
@@ -334,33 +351,41 @@ fun ContentTypePayment(
                 if (it.first().effecty) {
                     Button(
                         onClick = {
-                            buildingViewModel.payment(
-                                invoice = BuildingRequest(
-                                    name = invite,
-                                    email = email,
-                                    shoppingID = shopping_id,
-                                    kioskoID = kiosko_id,
-                                    typePayment = "effecty",
-                                    propina = valuePropina.toString(),
-                                    mountReceive = "",
-                                    mountDiscount = valueCupon.toString(),
-                                    cupon = "",
-                                    iva = "",
-                                    subtotal = valueTotal.toString(),
-                                    total = valueTotal.toString(),
-                                    state = "completed",
-                                    product = productListString,
-                                    toteat = Toteat(
-                                        toteatXir = toteat.toteatXir,
-                                        toteatXil = toteat.toteatXil,
-                                        toteatXiu = toteat.toteatXiu,
-                                        toteatApitoken = toteat.toteatApitoken,
-                                        toteatStatus = toteat.toteatStatus,
-                                        toteatType = toteat.toteatType,
-                                        toteatChanel = toteat.toteatChanel
+                            if (invite.isEmpty()) {
+                                Toast.makeText(
+                                    context,
+                                    enterNameInvited,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                buildingViewModel.payment(
+                                    invoice = BuildingRequest(
+                                        name = invite,
+                                        email = "vlzdavid12@outlook.com",
+                                        shoppingID = shopping_id,
+                                        kioskoID = kiosko_id,
+                                        typePayment = "effecty",
+                                        propina = valuePropina.toString(),
+                                        mountReceive = "",
+                                        mountDiscount = valueCupon.toString(),
+                                        cupon = "",
+                                        iva = "",
+                                        subtotal = valueTotal.toString(),
+                                        total = valueTotal.toString(),
+                                        state = "pending",
+                                        product = productListString,
+                                        toteat = Toteat(
+                                            toteatXir = toteat.toteatXir,
+                                            toteatXil = toteat.toteatXil,
+                                            toteatXiu = toteat.toteatXiu,
+                                            toteatApitoken = toteat.toteatApitoken,
+                                            toteatStatus = toteat.toteatStatus,
+                                            toteatType = toteat.toteatType,
+                                            toteatChanel = toteat.toteatChanel
+                                        )
                                     )
                                 )
-                            )
+                            }
                         },
                         modifier = Modifier
                             .width(320.dp)
@@ -444,9 +469,8 @@ fun ContentTypePayment(
                     verticalArrangement = Arrangement.Center
                 ){
                     BallClipRotatePulseIndicator()
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
                     Text(stringResource(id = R.string.process_payment), color = Color.White, fontSize = 14.sp, fontFamily = redhatFamily)
-
                 }
             }
         }

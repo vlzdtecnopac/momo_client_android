@@ -46,6 +46,7 @@ class CartViewModel(
         loadingCartState.value = true
         val cart = Cart(
             0,
+            product.productId,
             product.titleProduct,
             product.imageProduct,
             product.priceProduct,

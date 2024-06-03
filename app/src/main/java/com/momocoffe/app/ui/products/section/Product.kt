@@ -159,7 +159,8 @@ fun Product(
                                                 val image = firstProduct.image ?: ""
                                                 cartViewModel.createProduct(
                                                     CartProduct(
-                                                        selectProductID,
+                                                        "",
+                                                        productId = selectProductID,
                                                         titleProduct = firstProduct.nameProduct,
                                                         imageProduct = image,
                                                         priceProduct = productsViewModel.calculatePriceResult.value.toString(),
