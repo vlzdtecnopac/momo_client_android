@@ -60,6 +60,4 @@ data class Toteat (
     @SerialName("toteat_chanel")
     var toteatChanel: String,
 
-    @SerialName("toteat_state")
-    var toteatState: String
 )

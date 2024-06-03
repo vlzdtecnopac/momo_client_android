@@ -100,8 +100,7 @@ fun ContentTypePayment(
                 toteatType = "",
                 toteatStatus = "",
                 toteatApitoken = "",
-                toteatChanel = "",
-                toteatState = ""
+                toteatChanel = ""
             )
         )
     }
@@ -177,7 +176,6 @@ fun ContentTypePayment(
                         toteat.toteatStatus = "created"
                         toteat.toteatType = "takeaway"
                         toteat.toteatChanel = "pos"
-                        toteat.toteatState = "completed"
                     }
 
                 }
@@ -246,6 +244,34 @@ fun ContentTypePayment(
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
+                            buildingViewModel.payment(
+                                invoice = BuildingRequest(
+                                    name = invite,
+                                    email = email,
+                                    shoppingID = shopping_id,
+                                    kioskoID = kiosko_id,
+                                    typePayment = "effecty",
+                                    propina = valuePropina.toString(),
+                                    mountReceive = "",
+                                    mountDiscount = valueCupon.toString(),
+                                    cupon = "",
+                                    iva = "",
+                                    subtotal = valueTotal.toString(),
+                                    total = valueTotal.toString(),
+                                    state = "completed",
+                                    product = productListString,
+                                    toteat = Toteat(
+                                        toteatXir = toteat.toteatXir,
+                                        toteatXil = toteat.toteatXil,
+                                        toteatXiu = toteat.toteatXiu,
+                                        toteatApitoken = toteat.toteatApitoken,
+                                        toteatStatus = toteat.toteatStatus,
+                                        toteatType = toteat.toteatType,
+                                        toteatChanel = toteat.toteatChanel
+                                    )
+                                )
+                            )
+
                             try {
                                 val intent = Intent()
                                 intent.component = ComponentName(
@@ -320,7 +346,7 @@ fun ContentTypePayment(
                                 iva = "",
                                 subtotal = valueTotal.toString(),
                                 total = valueTotal.toString(),
-                                state = "pending",
+                                state = "completed",
                                 product = productListString,
                                 toteat = Toteat(
                                     toteatXir = toteat.toteatXir,
@@ -329,8 +355,7 @@ fun ContentTypePayment(
                                     toteatApitoken = toteat.toteatApitoken,
                                     toteatStatus = toteat.toteatStatus,
                                     toteatType = toteat.toteatType,
-                                    toteatChanel = toteat.toteatChanel,
-                                    toteatState = toteat.toteatState
+                                    toteatChanel = toteat.toteatChanel
                                 )
                             )
                         )
@@ -403,5 +428,9 @@ fun ContentTypePayment(
             }
 
         }
+    }
+
+    fun  buildingPaymentToteat(){
+
     }
 }
