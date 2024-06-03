@@ -40,23 +40,26 @@ data class BuildingRequest (
 @Serializable
 data class Toteat (
     @SerialName("toteat_xir")
-    val toteatXir: String,
+    var toteatXir: String,
 
     @SerialName("toteat_xil")
-    val toteatXil: String,
+    var toteatXil: String,
 
     @SerialName("toteat_xiu")
-    val toteatXiu: String,
+    var toteatXiu: String,
 
     @SerialName("toteat_apitoken")
-    val toteatApitoken: String,
+    var toteatApitoken: String,
 
     @SerialName("toteat_status")
-    val toteatStatus: String,
+    var toteatStatus: String,
 
     @SerialName("toteat_type")
-    val toteatType: String,
+    var toteatType: String,
 
     @SerialName("toteat_chanel")
-    val toteatChanel: String
+    var toteatChanel: String,
+
+    @SerialName("toteat_state")
+    var toteatState: String
 )

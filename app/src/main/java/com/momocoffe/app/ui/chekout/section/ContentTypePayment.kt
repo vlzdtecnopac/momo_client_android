@@ -54,6 +54,7 @@ import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.BuildingViewModel
 import com.momocoffe.app.viewmodel.ClientViewModel
+import com.momocoffe.app.viewmodel.ShoppingViewModel
 
 @Composable
 fun ContentTypePayment(
@@ -64,20 +65,42 @@ fun ContentTypePayment(
     valuePropina: Float,
     valueTotal: Float,
     clientViewModel: ClientViewModel = viewModel(),
+    shoppingViewModel: ShoppingViewModel = viewModel(),
     buildingViewModel: BuildingViewModel = viewModel()
 
 ) {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val client_id = sharedPreferences.getString("clientId", null) ?: ""
+    val shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
+    val kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
 
     var invite by remember { mutableStateOf(value = "") }
+    var email by remember { mutableStateOf(value = "") }
+    var toteat by remember { mutableStateOf<Toteat>(Toteat(toteatXir = "", toteatXiu = "", toteatXil = "", toteatType = "", toteatStatus = "", toteatApitoken = "", toteatChanel = "", toteatState = "")) }
     var validTypePayment by remember { mutableStateOf(value = 0) }
     val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
     
     LaunchedEffect(Unit){
+        shoppingViewModel.getShopping(shopping_id)
         if(client_id.isNotBlank()) {
             clientViewModel.getClient("", "", client_id)
+        }
+    }
+
+    LaunchedEffect(shoppingViewModel.shoppingResultState.value){
+        shoppingViewModel.shoppingResultState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val shoppingResponse = result.getOrThrow()
+                    if(shoppingResponse.items.isNotEmpty()){
+                        toteat.toteatApitoken = shoppingResponse.items.first().xapitoken
+                        toteat.toteatXil = shoppingResponse.items.first().xil
+                        toteat.toteatXir = shoppingResponse.items.first().xir
+                        toteat.toteatXiu = shoppingResponse.items.first().xiu
+                    }
+                }
+            }
         }
     }
 
@@ -89,6 +112,7 @@ fun ContentTypePayment(
                     val userResponse = result.getOrThrow()
                     if(userResponse.items.isNotEmpty()){
                         invite = "${userResponse.items[0].firstName} ${userResponse.items[0].lastName}"
+                        email = userResponse.items[0].email
                     }
                 }
                 result.isFailure -> {
@@ -155,7 +179,7 @@ fun ContentTypePayment(
                                 Log.e("TAG", "Error al abrir la aplicación", e)
                                 Toast.makeText(
                                     context,
-                                    "Falta por instalar MOMO Zettle Payment en tu dispositivo.",
+                                    R.string.zettle_info_install,
                                     Toast.LENGTH_LONG
                                 )
                                     .show()
@@ -200,28 +224,29 @@ fun ContentTypePayment(
                 Button(
                     onClick = {
                                 buildingViewModel.payment(invoice = BuildingRequest(
-                                    name = "",
-                                    email = "",
-                                    shoppingID = "",
-                                    kioskoID = "",
-                                    typePayment = "",
-                                    propina = "",
+                                    name = invite,
+                                    email = email,
+                                    shoppingID = shopping_id,
+                                    kioskoID = kiosko_id,
+                                    typePayment = "effecty",
+                                    propina = valuePropina.toString(),
                                     mountReceive = "",
-                                    mountDiscount = "",
+                                    mountDiscount = valueCupon.toString(),
                                     cupon = "",
                                     iva="",
-                                    subtotal="",
-                                    total="",
-                                    state="",
+                                    subtotal= valueTotal.toString(),
+                                    total= valueTotal.toString(),
+                                    state="pending",
                                     product="",
                                     toteat = Toteat(
-                                        toteatXir = "",
-                                        toteatXil = "",
-                                        toteatXiu = "",
-                                        toteatApitoken = "",
-                                        toteatStatus = "",
-                                        toteatType = "",
-                                        toteatChanel = ""
+                                        toteatXir = toteat.toteatXir,
+                                        toteatXil = toteat.toteatXil,
+                                        toteatXiu = toteat.toteatXiu,
+                                        toteatApitoken = toteat.toteatApitoken,
+                                        toteatStatus = "created",
+                                        toteatType = "takeaway",
+                                        toteatChanel = "pos",
+                                        toteatState = "completed"
                                     )
                                 ))
                     },

@@ -25,6 +25,10 @@ data class ItemShopping (
     val open: String,
     val effecty: Boolean,
     val card: Boolean,
+    val xir: String,
+    val xil: String,
+    val xiu: String,
+    val xapitoken: String,
     @SerializedName("create_at")
     val createAt: String,
     @SerializedName("update_at")
