@@ -12,6 +12,7 @@ import com.momocoffe.app.network.dto.LoginRequest
 import com.momocoffe.app.network.dto.PedidoRequest
 import com.momocoffe.app.network.dto.RefreshToken
 import com.momocoffe.app.network.dto.VerifyKioskoRequest
+import com.momocoffe.app.network.response.BuildingResponse
 import com.momocoffe.app.network.response.CategoriesResponse
 import com.momocoffe.app.network.response.ClientEmailSMSResponse
 import com.momocoffe.app.network.response.ClientGeneralResponse
@@ -105,6 +106,6 @@ interface ApiService {
     @POST("/pedido/create")
     suspend fun createPedido(@Body requestBody: PedidoRequest): Response<CreatePedidoResponse>
 
-    @POST("/pedido/create")
-    suspend fun createBuilding(@Body requestBody: BuildingRequest): Response<CreatePedidoResponse>
+    @POST("/payment/create")
+    suspend fun createBuilding(@Body requestBody: BuildingRequest): Response<BuildingResponse>
 }
