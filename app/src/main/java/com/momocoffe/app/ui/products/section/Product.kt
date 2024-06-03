@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.momocoffe.app.BuildConfig
 import com.momocoffe.app.network.response.ProductsItem
 import com.momocoffe.app.ui.components.Category
 import com.momocoffe.app.ui.components.Header
@@ -154,7 +155,7 @@ fun Product(
 
                                         product?.get(0)?.let { firstProduct->
                                             try {
-                                                val image = firstProduct.image ?: "http://momocoffe-lb-401505225.us-east-1.elb.amazonaws.com:82/assets/no_found.png"
+                                                val image = firstProduct.image ?: ""
                                                 cartViewModel.createProduct(
                                                     CartProduct(
                                                         "MOO1",
