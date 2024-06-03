@@ -61,7 +61,11 @@ fun OptionsModifier(productsItem: ProductsItem,
 
     LaunchedEffect(selectedOptions) {
         val totalPrice = selectedOptions.calculatePrice()
-        productsViewModel.calculatePriceResult.value =  totalPrice
+        if(optionsSizeItems?.sizes?.size != null){
+            productsViewModel.calculatePriceResult.value =  totalPrice
+        }else{
+            productsViewModel.calculatePriceResult.value = (totalPrice  +  productsItem.price).toInt()
+        }
     }
 
     LaunchedEffect(productsViewModel.productsOptionsSizeResultState.value){
