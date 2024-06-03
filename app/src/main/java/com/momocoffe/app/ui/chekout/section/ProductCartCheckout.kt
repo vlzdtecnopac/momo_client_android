@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.chekout.section
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,21 +55,35 @@ fun ProductCartCheckout(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(product.imageProduct)
-                            .crossfade(true)
-                            .build(),
-                        placeholder = painterResource(R.drawable.no_found),
-                        contentDescription = stringResource(R.string.momo_coffe),
-                        contentScale = ContentScale.FillWidth,
-                        modifier = Modifier
-                            .clip(
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                            .width(70.dp)
-                            .height(70.dp)
-                    )
+                    if(product.imageProduct.isNotEmpty()) {
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(product.imageProduct)
+                                .crossfade(true)
+                                .build(),
+                            placeholder = painterResource(R.drawable.no_found),
+                            contentDescription = stringResource(R.string.momo_coffe),
+                            contentScale = ContentScale.FillWidth,
+                            modifier = Modifier
+                                .clip(
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .width(70.dp)
+                                .height(70.dp)
+                        )
+                    }else{
+                        Image(
+                            painter = painterResource(id = R.drawable.no_found),
+                            contentDescription = stringResource(id = R.string.momo_coffe),
+                            modifier = Modifier
+                                .clip(
+                                    shape = RoundedCornerShape(8.dp)
+                                )
+                                .width(70.dp)
+                                .height(70.dp),
+                            contentScale = ContentScale.FillWidth,
+                        )
+                    }
                     Spacer(modifier = Modifier.height(8.dp))
                     Column(
                         modifier = Modifier.clip(shape = RoundedCornerShape(8.dp)),

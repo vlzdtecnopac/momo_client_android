@@ -120,4 +120,5 @@
     <string name="enter_payment_method">Enter payment method</string>
     <string name="required_cart_not_null">Add products to cart</string>
     <string name="zettle_info_install">Instalar MOMO Zettle Payment en tu dispositivo.</string>
+    <string name="process_payment">Processing Payment...</string>
 </resources>
