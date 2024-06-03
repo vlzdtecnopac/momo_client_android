@@ -101,7 +101,7 @@ interface ApiService {
     suspend fun getShopping(@Query("shopping_id") shoppingID: String): Response<ShoppingResponse>
 
     @GET("/cupones/")
-    suspend fun getCuponMomo(@Query("cupon_code") cuponCode: String): Response<CuponesResponse>
+    suspend fun getCuponMomo(@Query("name_cupon") cuponCode: String): Response<CuponesResponse>
 
     @POST("/pedido/create")
     suspend fun createPedido(@Body requestBody: PedidoRequest): Response<CreatePedidoResponse>

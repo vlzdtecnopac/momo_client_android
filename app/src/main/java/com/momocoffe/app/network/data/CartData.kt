@@ -3,7 +3,6 @@ package com.momocoffe.app.network.data
 import com.momocoffe.app.network.database.Cart
 import com.momocoffe.app.viewmodel.ItemModifier
 
-
 data class CartState(
     val carts: List<Cart> = listOfNotNull(),
 )

@@ -16,8 +16,6 @@ data class CuponesItem (
     val shopping: String,
     @SerializedName("name_cupon")
     val nameCupon: String,
-    @SerializedName("cupon_code")
-    val cuponCode: String,
     @SerializedName("type_discount")
     val typeDiscount: String,
     val discount: String,

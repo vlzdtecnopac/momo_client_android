@@ -45,14 +45,26 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.dto.BuildingRequest
+import com.momocoffe.app.network.dto.Extra
+import com.momocoffe.app.network.dto.ExtraCoffee
+import com.momocoffe.app.network.dto.Lid
+import com.momocoffe.app.network.dto.Milk
+import com.momocoffe.app.network.dto.Producto
+import com.momocoffe.app.network.dto.Sauce
+import com.momocoffe.app.network.dto.Size
+import com.momocoffe.app.network.dto.Sugar
+import com.momocoffe.app.network.dto.Temperature
 import com.momocoffe.app.network.dto.Toteat
+import com.momocoffe.app.network.dto.productosToString
 import com.momocoffe.app.network.response.ItemShopping
 import com.momocoffe.app.ui.chekout.components.OutTextField
+import com.momocoffe.app.ui.components.cart.parseItemModifiers
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.BuildingViewModel
+import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.ClientViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 
@@ -64,6 +76,7 @@ fun ContentTypePayment(
     valueCupon: Float,
     valuePropina: Float,
     valueTotal: Float,
+    cartViewModel: CartViewModel,
     clientViewModel: ClientViewModel = viewModel(),
     shoppingViewModel: ShoppingViewModel = viewModel(),
     buildingViewModel: BuildingViewModel = viewModel()
@@ -77,28 +90,96 @@ fun ContentTypePayment(
 
     var invite by remember { mutableStateOf(value = "") }
     var email by remember { mutableStateOf(value = "") }
-    var toteat by remember { mutableStateOf<Toteat>(Toteat(toteatXir = "", toteatXiu = "", toteatXil = "", toteatType = "", toteatStatus = "", toteatApitoken = "", toteatChanel = "", toteatState = "")) }
+    var productListString by remember { mutableStateOf(value = "") }
+    var toteat by remember {
+        mutableStateOf(
+            Toteat(
+                toteatXir = "",
+                toteatXiu = "",
+                toteatXil = "",
+                toteatType = "",
+                toteatStatus = "",
+                toteatApitoken = "",
+                toteatChanel = "",
+                toteatState = ""
+            )
+        )
+    }
     var validTypePayment by remember { mutableStateOf(value = 0) }
     val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
-    
-    LaunchedEffect(Unit){
+
+    LaunchedEffect(Unit) {
         shoppingViewModel.getShopping(shopping_id)
-        if(client_id.isNotBlank()) {
+        if (client_id.isNotBlank()) {
             clientViewModel.getClient("", "", client_id)
+        }
+        if (!shoppingViewModel.loadingState.value) {
+            val newProducts = cartViewModel.state.carts.mapIndexed { index, item ->
+                val itemsModifiersOptions = parseItemModifiers(item.modifiersOptions)
+                Producto(
+                    id = item.id.toString(),
+                    name_product = item.titleProduct,
+                    price = item.priceProduct.toInt(),
+                    image = item.imageProduct,
+                    extra = Extra(
+                        size = Size(
+                            itemsModifiersOptions["size"]?.name ?: "",
+                            itemsModifiersOptions["size"]?.price?.toInt() ?: 0
+                        ),
+                        milk = Milk(
+                            itemsModifiersOptions["milk"]?.name ?: "",
+                            itemsModifiersOptions["milk"]?.price?.toInt() ?: 0
+                        ),
+                        sugar = Sugar(
+                            itemsModifiersOptions["sugar"]?.name ?: "",
+                            itemsModifiersOptions["sugar"]?.price?.toInt() ?: 0
+                        ),
+                        extra_coffee = itemsModifiersOptions["extra"]?.let {
+                            listOf(
+                                ExtraCoffee(
+                                    it.name,
+                                    it.price
+                                )
+                            )
+                        } ?: listOf(),
+                        lid = itemsModifiersOptions["libTapa"]?.let {
+                            listOf(
+                                Lid(
+                                    it.name,
+                                    it.price.toInt()
+                                )
+                            )
+                        } ?: listOf(),
+                        sauce = listOf(Sauce("", 0)),
+                        temperature = Temperature("", 0),
+                        color = "",
+                        coffee_type = Any()
+                    ),
+                    quanty = item.countProduct,
+                    subtotal = item.priceProductMod.toInt()
+                )
+            }
+
+            productListString = productosToString(newProducts)
         }
     }
 
-    LaunchedEffect(shoppingViewModel.shoppingResultState.value){
+    LaunchedEffect(shoppingViewModel.shoppingResultState.value) {
         shoppingViewModel.shoppingResultState.value?.let { result ->
             when {
                 result.isSuccess -> {
                     val shoppingResponse = result.getOrThrow()
-                    if(shoppingResponse.items.isNotEmpty()){
+                    if (shoppingResponse.items.isNotEmpty()) {
                         toteat.toteatApitoken = shoppingResponse.items.first().xapitoken
                         toteat.toteatXil = shoppingResponse.items.first().xil
                         toteat.toteatXir = shoppingResponse.items.first().xir
                         toteat.toteatXiu = shoppingResponse.items.first().xiu
+                        toteat.toteatStatus = "created"
+                        toteat.toteatType = "takeaway"
+                        toteat.toteatChanel = "pos"
+                        toteat.toteatState = "completed"
                     }
+
                 }
             }
         }
@@ -110,11 +191,13 @@ fun ContentTypePayment(
             when {
                 result.isSuccess -> {
                     val userResponse = result.getOrThrow()
-                    if(userResponse.items.isNotEmpty()){
-                        invite = "${userResponse.items[0].firstName} ${userResponse.items[0].lastName}"
+                    if (userResponse.items.isNotEmpty()) {
+                        invite =
+                            "${userResponse.items[0].firstName} ${userResponse.items[0].lastName}"
                         email = userResponse.items[0].email
                     }
                 }
+
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
                     Log.e("Result.ClientViewModel", exception.toString())
@@ -162,7 +245,7 @@ fun ContentTypePayment(
                                 enterNameInvited,
                                 Toast.LENGTH_SHORT
                             ).show()
-                        }else {
+                        } else {
                             try {
                                 val intent = Intent()
                                 intent.component = ComponentName(
@@ -223,32 +306,34 @@ fun ContentTypePayment(
             if (it.first().effecty) {
                 Button(
                     onClick = {
-                                buildingViewModel.payment(invoice = BuildingRequest(
-                                    name = invite,
-                                    email = email,
-                                    shoppingID = shopping_id,
-                                    kioskoID = kiosko_id,
-                                    typePayment = "effecty",
-                                    propina = valuePropina.toString(),
-                                    mountReceive = "",
-                                    mountDiscount = valueCupon.toString(),
-                                    cupon = "",
-                                    iva="",
-                                    subtotal= valueTotal.toString(),
-                                    total= valueTotal.toString(),
-                                    state="pending",
-                                    product="",
-                                    toteat = Toteat(
-                                        toteatXir = toteat.toteatXir,
-                                        toteatXil = toteat.toteatXil,
-                                        toteatXiu = toteat.toteatXiu,
-                                        toteatApitoken = toteat.toteatApitoken,
-                                        toteatStatus = "created",
-                                        toteatType = "takeaway",
-                                        toteatChanel = "pos",
-                                        toteatState = "completed"
-                                    )
-                                ))
+                        buildingViewModel.payment(
+                            invoice = BuildingRequest(
+                                name = invite,
+                                email = email,
+                                shoppingID = shopping_id,
+                                kioskoID = kiosko_id,
+                                typePayment = "effecty",
+                                propina = valuePropina.toString(),
+                                mountReceive = "",
+                                mountDiscount = valueCupon.toString(),
+                                cupon = "",
+                                iva = "",
+                                subtotal = valueTotal.toString(),
+                                total = valueTotal.toString(),
+                                state = "pending",
+                                product = productListString,
+                                toteat = Toteat(
+                                    toteatXir = toteat.toteatXir,
+                                    toteatXil = toteat.toteatXil,
+                                    toteatXiu = toteat.toteatXiu,
+                                    toteatApitoken = toteat.toteatApitoken,
+                                    toteatStatus = toteat.toteatStatus,
+                                    toteatType = toteat.toteatType,
+                                    toteatChanel = toteat.toteatChanel,
+                                    toteatState = toteat.toteatState
+                                )
+                            )
+                        )
                     },
                     modifier = Modifier
                         .width(320.dp)

@@ -1,6 +1,5 @@
 package com.momocoffe.app.ui.components.cart
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
