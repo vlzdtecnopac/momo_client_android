@@ -250,7 +250,7 @@ fun ContentTypePayment(
                                     email = email,
                                     shoppingID = shopping_id,
                                     kioskoID = kiosko_id,
-                                    typePayment = "effecty",
+                                    typePayment = "card",
                                     propina = valuePropina.toString(),
                                     mountReceive = "",
                                     mountDiscount = valueCupon.toString(),
