@@ -133,7 +133,7 @@ fun SuccessPaymentModal(
                         itemsModifiersOptions["sugar"]?.name ?: "",
                         itemsModifiersOptions["sugar"]?.price?.toInt() ?: 0
                     ),
-                    extra_coffee = itemsModifiersOptions["extra_coffee"]?.let {
+                    extra_coffee = itemsModifiersOptions["extra"]?.let {
                         listOf(
                             ExtraCoffee(
                                 it.name,

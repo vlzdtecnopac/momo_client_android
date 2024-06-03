@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.components.cart
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -156,7 +157,6 @@ fun ProductCart(
     val optionsSize = mutableListOf<String?>()
     val itemsModifiersOptions = parseItemModifiers(product.modifiersOptions)
     val itemsModifiersList = parseObject(product.modifiersList)
-
     for ((key, value) in itemsModifiersOptions) {
         optionsSize.add(value.name)
     }
@@ -390,17 +390,14 @@ fun parseObject(input: String): List<ItemModifier> {
 }
 
 fun parseItemModifiers(input: String): Map<String, ItemModifier> {
-    val regex = """(\w+)=ItemModifier\(name=(\w+), price=(\d+)\)""".toRegex()
-    val matches = regex.findAll(input)
-    val result = mutableMapOf<String, ItemModifier>()
+    val itemModifiersRegex = Regex("([a-zA-Z]+)=ItemModifier\\(name=([^,]+), price=(\\d+)\\)")
+    val itemModifiers = mutableMapOf<String, ItemModifier>()
 
-    for (match in matches) {
-        val key = match.groupValues[1]
-        val name = match.groupValues[2]
-        val price = match.groupValues[3]
-        result[key] = ItemModifier(name, price)
+    itemModifiersRegex.findAll(input).forEach { matchResult ->
+        val (key, name, price) = matchResult.destructured
+        itemModifiers[key] = ItemModifier(name, price)
     }
 
-    return result
+    return itemModifiers
 }
 
