@@ -44,12 +44,15 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
+import com.momocoffe.app.network.dto.BuildingRequest
+import com.momocoffe.app.network.dto.Toteat
 import com.momocoffe.app.network.response.ItemShopping
 import com.momocoffe.app.ui.chekout.components.OutTextField
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
+import com.momocoffe.app.viewmodel.BuildingViewModel
 import com.momocoffe.app.viewmodel.ClientViewModel
 
 @Composable
@@ -60,7 +63,8 @@ fun ContentTypePayment(
     valueCupon: Float,
     valuePropina: Float,
     valueTotal: Float,
-    clientViewModel: ClientViewModel = viewModel()
+    clientViewModel: ClientViewModel = viewModel(),
+    buildingViewModel: BuildingViewModel = viewModel()
 
 ) {
     val context = LocalContext.current
@@ -195,8 +199,31 @@ fun ContentTypePayment(
             if (it.first().effecty) {
                 Button(
                     onClick = {
-
-
+                                buildingViewModel.payment(invoice = BuildingRequest(
+                                    name = "",
+                                    email = "",
+                                    shoppingID = "",
+                                    kioskoID = "",
+                                    typePayment = "",
+                                    propina = "",
+                                    mountReceive = "",
+                                    mountDiscount = "",
+                                    cupon = "",
+                                    iva="",
+                                    subtotal="",
+                                    total="",
+                                    state="",
+                                    product="",
+                                    toteat = Toteat(
+                                        toteatXir = "",
+                                        toteatXil = "",
+                                        toteatXiu = "",
+                                        toteatApitoken = "",
+                                        toteatStatus = "",
+                                        toteatType = "",
+                                        toteatChanel = ""
+                                    )
+                                ))
                     },
                     modifier = Modifier
                         .width(320.dp)
