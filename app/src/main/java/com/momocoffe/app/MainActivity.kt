@@ -78,7 +78,7 @@ class MainActivity : ComponentActivity() {
                             Room.databaseBuilder(
                                 applicationContext,
                                 InvoiceDatabase::class.java,
-                                "momo_db"
+                                "invoice_db"
                             )
                                 .build()
 
@@ -108,7 +108,7 @@ class MainActivity : ComponentActivity() {
                             AlertInvoiceState(stateInvoice, viewCartModel = viewModelDb, ::resetState)
                         }
 
-                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)
+                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb, viewModelInvoiceDb)
                     }
                 }
             }

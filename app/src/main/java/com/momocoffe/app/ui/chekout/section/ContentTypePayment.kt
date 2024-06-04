@@ -3,10 +3,8 @@ package com.momocoffe.app.ui.chekout.section
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -43,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
+import com.momocoffe.app.network.data.InvoiceProduct
+import com.momocoffe.app.network.database.Invoice
 import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.Extra
@@ -68,11 +68,10 @@ import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.BuildingViewModel
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.ClientViewModel
+import com.momocoffe.app.viewmodel.InvoiceViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
@@ -85,6 +84,7 @@ fun ContentTypePayment(
     valuePropina: Float,
     valueTotal: Float,
     cartViewModel: CartViewModel,
+    invoiceViewModel: InvoiceViewModel,
     clientViewModel: ClientViewModel = viewModel(),
     shoppingViewModel: ShoppingViewModel = viewModel(),
     buildingViewModel: BuildingViewModel = viewModel()
@@ -95,7 +95,7 @@ fun ContentTypePayment(
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val client_id = sharedPreferences.getString("clientId", null) ?: ""
     val shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
-    val kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
+
     var showModalConfirmEmail by remember { mutableStateOf(value = false) }
     var invite by remember { mutableStateOf(value = "") }
     var email by remember { mutableStateOf(value = "") }
@@ -219,9 +219,10 @@ fun ContentTypePayment(
             when {
                 result.isSuccess -> {
                     val userResponse = result.getOrThrow()
-                    if(userResponse.data[0].typePayment == "card"){
+                    if (userResponse.data[0].typePayment == "card") {
 
-                        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+                        val inputFormat =
+                            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
                         val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
                         val date = inputFormat.parse(userResponse.toteat.creationDate)
@@ -230,19 +231,19 @@ fun ContentTypePayment(
 
                         buildingViewModel.sendClientEmailInvoice(
                             ClientEmailInvoiceRequest(
-                            from = "Nueva Factura Momo Coffe <davidvalenzuela@tecnopac.com.co>",
-                            to = email,
-                            subject = "Tienes Un Nueva Pedido",
-                            orderID = userResponse.data[0].bildingID,
-                            restaurantID = userResponse.data[0].shoppingID,
-                            dateInvoice = formattedDate.toString(),
-                            typePayment = userResponse.data[0].typePayment,
-                            mountCupon = valueCupon.toString(),
-                            mountPropina = valuePropina.toString(),
-                            mountSubtotal = valueSubTotal.toString(),
-                            mountTotal =  valueTotal.toString(),
-                            line = userResponse.toteat.document.line
-                        )
+                                from = "Nueva Factura Momo Coffe <davidvalenzuela@tecnopac.com.co>",
+                                to = email,
+                                subject = "Tienes Un Nueva Pedido",
+                                orderID = userResponse.data[0].bildingID,
+                                restaurantID = userResponse.data[0].shoppingID,
+                                dateInvoice = formattedDate.toString(),
+                                typePayment = userResponse.data[0].typePayment,
+                                mountCupon = valueCupon.toString(),
+                                mountPropina = valuePropina.toString(),
+                                mountSubtotal = valueSubTotal.toString(),
+                                mountTotal = valueTotal.toString(),
+                                line = userResponse.toteat.document.line
+                            )
                         )
                     }
 
@@ -267,31 +268,18 @@ fun ContentTypePayment(
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
-                    buildingViewModel.payment(
-                        invoice = BuildingRequest(
+                    invoiceViewModel.createInvoice(
+                        InvoiceProduct(
+                            0,
                             name = invite,
                             email = email,
-                            shoppingID = shopping_id,
-                            kioskoID = kiosko_id,
-                            typePayment = "effecty",
                             propina = valuePropina.toString(),
-                            mountReceive = "",
-                            mountDiscount = valueCupon.toString(),
-                            cupon = "",
+                            type_payment = "effecty",
+                            mount_discount = valueCupon.toString(),
+                            cupon = 0,
                             iva = "",
-                            subtotal = valueTotal.toString(),
+                            sub_total = valueSubTotal.toString(),
                             total = valueTotal.toString(),
-                            state = "pending",
-                            product = productListString,
-                            toteat = Toteat(
-                                toteatXir = toteat.toteatXir,
-                                toteatXil = toteat.toteatXil,
-                                toteatXiu = toteat.toteatXiu,
-                                toteatApitoken = toteat.toteatApitoken,
-                                toteatStatus = toteat.toteatStatus,
-                                toteatType = toteat.toteatType,
-                                toteatChanel = toteat.toteatChanel
-                            )
                         )
                     )
                 }
@@ -334,31 +322,19 @@ fun ContentTypePayment(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-                                buildingViewModel.payment(
-                                    invoice = BuildingRequest(
+
+                                invoiceViewModel.createInvoice(
+                                    InvoiceProduct(
+                                        0,
                                         name = invite,
                                         email = email,
-                                        shoppingID = shopping_id,
-                                        kioskoID = kiosko_id,
-                                        typePayment = "card",
                                         propina = valuePropina.toString(),
-                                        mountReceive = "",
-                                        mountDiscount = valueCupon.toString(),
-                                        cupon = "",
+                                        type_payment = "card",
+                                        mount_discount = valueCupon.toString(),
+                                        cupon = 0,
                                         iva = "",
-                                        subtotal = valueTotal.toString(),
+                                        sub_total = valueSubTotal.toString(),
                                         total = valueTotal.toString(),
-                                        state = "completed",
-                                        product = productListString,
-                                        toteat = Toteat(
-                                            toteatXir = toteat.toteatXir,
-                                            toteatXil = toteat.toteatXil,
-                                            toteatXiu = toteat.toteatXiu,
-                                            toteatApitoken = toteat.toteatApitoken,
-                                            toteatStatus = toteat.toteatStatus,
-                                            toteatType = toteat.toteatType,
-                                            toteatChanel = toteat.toteatChanel
-                                        )
                                     )
                                 )
 

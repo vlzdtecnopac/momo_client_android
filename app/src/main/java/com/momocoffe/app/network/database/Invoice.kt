@@ -14,7 +14,6 @@ data class Invoice(
     @ColumnInfo(name = "mount_discount") val mount_discount: String,
     @ColumnInfo(name = "cupon") val cupon: Int,
     @ColumnInfo(name = "iva") val iva: String,
-    @ColumnInfo(name = "subtotal") val subTotal: String,
-    @ColumnInfo(name = "total") val total: String,
-    @ColumnInfo(name = "products") val products: String,
+    @ColumnInfo(name = "sub_total") val sub_total: String,
+    @ColumnInfo(name = "total") val total: String
 )
