@@ -60,6 +60,7 @@ import com.momocoffe.app.network.dto.Temperature
 import com.momocoffe.app.network.dto.Toteat
 import com.momocoffe.app.network.dto.productosToString
 import com.momocoffe.app.network.response.ItemShopping
+import com.momocoffe.app.ui.chekout.components.ConfirmEmailModal
 import com.momocoffe.app.ui.chekout.components.OutTextField
 import com.momocoffe.app.ui.components.cart.parseItemModifiers
 import com.momocoffe.app.ui.theme.BlueDark
@@ -93,7 +94,7 @@ fun ContentTypePayment(
     val client_id = sharedPreferences.getString("clientId", null) ?: ""
     val shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
     val kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
-
+    var showModalConfirmEmail by remember { mutableStateOf(value = false) }
     var invite by remember { mutableStateOf(value = "") }
     var email by remember { mutableStateOf(value = "") }
     var productListString by remember { mutableStateOf(value = "") }
@@ -120,7 +121,7 @@ fun ContentTypePayment(
         }
     }
 
-    LaunchedEffect(cartViewModel.state){
+    LaunchedEffect(cartViewModel.state) {
         val newProducts = cartViewModel.state.carts.mapIndexed { index, item ->
             val itemsModifiersOptions = parseItemModifiers(item.modifiersOptions)
             Producto(
@@ -211,20 +212,64 @@ fun ContentTypePayment(
         }
     }
 
-    LaunchedEffect(buildingViewModel.buildingResultState.value){
-        buildingViewModel.buildingResultState.value?.let{ result ->
-                when{
-                    result.isSuccess -> {
-                        val userResponse = result.getOrThrow()
-                        Log.d("Result.BuildingViewModel", userResponse.toString())
-                    }
-
-                    result.isFailure -> {
-                        val exception = result.exceptionOrNull()
-                        Log.e("Result.BuildingViewModel", exception.toString())
-                    }
+    LaunchedEffect(buildingViewModel.buildingResultState.value) {
+        buildingViewModel.buildingResultState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val userResponse = result.getOrThrow()
+                    Log.d("Result.BuildingViewModel", userResponse.toString())
                 }
+
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.e("Result.BuildingViewModel", exception.toString())
+                }
+            }
         }
+    }
+
+    if (showModalConfirmEmail) {
+        ConfirmEmailModal(
+            onCancel = {
+                showModalConfirmEmail = false
+            },
+            onSelect = { email ->
+                if (invite.isEmpty()) {
+                    Toast.makeText(
+                        context,
+                        enterNameInvited,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    buildingViewModel.payment(
+                        invoice = BuildingRequest(
+                            name = invite,
+                            email = email,
+                            shoppingID = shopping_id,
+                            kioskoID = kiosko_id,
+                            typePayment = "effecty",
+                            propina = valuePropina.toString(),
+                            mountReceive = "",
+                            mountDiscount = valueCupon.toString(),
+                            cupon = "",
+                            iva = "",
+                            subtotal = valueTotal.toString(),
+                            total = valueTotal.toString(),
+                            state = "pending",
+                            product = productListString,
+                            toteat = Toteat(
+                                toteatXir = toteat.toteatXir,
+                                toteatXil = toteat.toteatXil,
+                                toteatXiu = toteat.toteatXiu,
+                                toteatApitoken = toteat.toteatApitoken,
+                                toteatStatus = toteat.toteatStatus,
+                                toteatType = toteat.toteatType,
+                                toteatChanel = toteat.toteatChanel
+                            )
+                        )
+                    )
+                }
+            })
     }
 
     Box {
@@ -351,41 +396,7 @@ fun ContentTypePayment(
                 if (it.first().effecty) {
                     Button(
                         onClick = {
-                            if (invite.isEmpty()) {
-                                Toast.makeText(
-                                    context,
-                                    enterNameInvited,
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                buildingViewModel.payment(
-                                    invoice = BuildingRequest(
-                                        name = invite,
-                                        email = "vlzdavid12@outlook.com",
-                                        shoppingID = shopping_id,
-                                        kioskoID = kiosko_id,
-                                        typePayment = "effecty",
-                                        propina = valuePropina.toString(),
-                                        mountReceive = "",
-                                        mountDiscount = valueCupon.toString(),
-                                        cupon = "",
-                                        iva = "",
-                                        subtotal = valueTotal.toString(),
-                                        total = valueTotal.toString(),
-                                        state = "pending",
-                                        product = productListString,
-                                        toteat = Toteat(
-                                            toteatXir = toteat.toteatXir,
-                                            toteatXil = toteat.toteatXil,
-                                            toteatXiu = toteat.toteatXiu,
-                                            toteatApitoken = toteat.toteatApitoken,
-                                            toteatStatus = toteat.toteatStatus,
-                                            toteatType = toteat.toteatType,
-                                            toteatChanel = toteat.toteatChanel
-                                        )
-                                    )
-                                )
-                            }
+                            showModalConfirmEmail = true
                         },
                         modifier = Modifier
                             .width(320.dp)
@@ -467,10 +478,15 @@ fun ContentTypePayment(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
-                ){
+                ) {
                     BallClipRotatePulseIndicator()
                     Spacer(modifier = Modifier.height(20.dp))
-                    Text(stringResource(id = R.string.process_payment), color = Color.White, fontSize = 14.sp, fontFamily = redhatFamily)
+                    Text(
+                        stringResource(id = R.string.process_payment),
+                        color = Color.White,
+                        fontSize = 14.sp,
+                        fontFamily = redhatFamily
+                    )
                 }
             }
         }

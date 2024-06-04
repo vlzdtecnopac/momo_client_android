@@ -122,4 +122,6 @@
     <string name="zettle_info_install">Instalar MOMO Zettle Payment en tu dispositivo.</string>
     <string name="process_payment">Processing Payment...</string>
     <string name="txt_woof">Woof</string>
+    <string name="txt_continue">Continue</string>
+    <string name="email">Email</string>
 </resources>

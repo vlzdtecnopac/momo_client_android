@@ -1,5 +1,7 @@
 package com.momocoffe.app.ui.chekout.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -20,13 +22,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.redhatFamily
+import java.time.format.TextStyle
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun OutlineTextField(
     label: String,
@@ -47,8 +53,8 @@ fun OutlineTextField(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 4.dp, end = 4.dp),
-        label = { Text(text = label) },
-        placeholder = { Text(text = placeholder, fontSize = 12.sp, fontFamily = redhatFamily) },
+        label = { Text(text = label, fontSize = 18.sp) },
+        placeholder = { Text(text = placeholder, fontSize = 22.sp, fontFamily = redhatFamily, fontWeight = FontWeight(700)) },
         leadingIcon = {
             icon?.let { painterResource(it) }?.let {
                 Icon(
@@ -92,6 +98,11 @@ fun OutlineTextField(
             placeholderColor = borderColor,
             unfocusedLabelColor = borderColor
 
+        ),
+        textStyle = androidx.compose.ui.text.TextStyle(
+            fontSize = 22.sp,
+            fontFamily = redhatFamily,
+            fontWeight = FontWeight(700)
         )
     )
 }

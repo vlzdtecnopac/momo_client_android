@@ -218,12 +218,11 @@ fun Checkout(
                                 isCuponValid = true
                                 valueTypeDiscount = cuponItem.typeDiscount.toInt()
                                 Log.d("Result.CuponesViewModel", "TYPE: " + valueTypeDiscount)
+                                valueCupon = cuponItem.discount.toFloat()
                                 if (valueTypeDiscount == 1) {
-                                    valueCupon = cuponItem.discount.toFloat()
                                     montoDescuento = subTotalProduct * cuponItem.discount.toInt() / 100
                                     Log.d("Result.CuponesViewModel", montoDescuento.toString())
                                 } else {
-                                    valueCupon = cuponItem.discount.toFloat()
                                     montoDescuento = valueCupon
                                     Log.d("Result.CuponesViewModel", montoDescuento.toString())
                                 }
