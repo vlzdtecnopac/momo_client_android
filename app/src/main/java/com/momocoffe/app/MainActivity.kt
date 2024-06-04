@@ -24,7 +24,9 @@ import com.momocoffe.app.viewmodel.LoginViewModel
 import com.momocoffe.app.viewmodel.RegionInternational
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.momocoffe.app.network.database.InvoiceDatabase
 import com.momocoffe.app.ui.components.AlertInvoiceState
+import com.momocoffe.app.viewmodel.InvoiceViewModel
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -71,14 +73,31 @@ class MainActivity : ComponentActivity() {
                                 "momo_db"
                             )
                                 .build()
-                        val dao = database.dao
+
+                        val databaseInvoice =
+                            Room.databaseBuilder(
+                                applicationContext,
+                                InvoiceDatabase::class.java,
+                                "momo_db"
+                            )
+                                .build()
+
                         val viewModelDb by viewModels<CartViewModel>(factoryProducer = {
                             object : ViewModelProvider.Factory {
                                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                                    return CartViewModel(dao) as T
+                                    return CartViewModel(database.dao) as T
                                 }
                             }
                         })
+
+                        val viewModelInvoiceDb by viewModels<InvoiceViewModel>(factoryProducer = {
+                            object : ViewModelProvider.Factory {
+                                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                                    return InvoiceViewModel(databaseInvoice.dao) as T
+                                }
+                            }
+                        })
+
                         LaunchedEffect(Unit) {
                             // Set up and establish socket connection
                             SocketHandler.setSocket()
@@ -101,28 +120,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        val database =
-                            Room.databaseBuilder(
-                                applicationContext,
-                                CartDataBase::class.java,
-                                "momo_db"
-                            )
-                                .build()
-                        val dao = database.dao
-                        val viewModelDb by viewModels<CartViewModel>(factoryProducer = {
-                            object : ViewModelProvider.Factory {
-                                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                                    return CartViewModel(dao) as T
-                                }
-                            }
-                        })
-                        LaunchedEffect(Unit) {
-                            // Set up and establish socket connection
-                            SocketHandler.setSocket()
-                            SocketHandler.establishConnection()
-                        }
 
-                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)
                     }
                 }
             }
