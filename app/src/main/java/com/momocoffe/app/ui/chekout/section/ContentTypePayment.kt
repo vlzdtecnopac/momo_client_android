@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
 import com.momocoffe.app.network.data.InvoiceProduct
+import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.Extra
 import com.momocoffe.app.network.dto.ExtraCoffee
@@ -92,6 +93,7 @@ fun ContentTypePayment(
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val client_id = sharedPreferences.getString("clientId", null) ?: ""
     val shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
+    val kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
 
     var showModalConfirmEmail by remember { mutableStateOf(value = false) }
     var invite by remember { mutableStateOf(value = "") }
@@ -237,7 +239,25 @@ fun ContentTypePayment(
     }
 
     if (showModalConfirmEmail) {
-        ConfirmPayment(title = "Por favor acude con tu barista", subTitle = "para completar la transaccion", onSelect = {} )
+        buildingViewModel.payment(
+            invoice = BuildingRequest(
+                name = invite,
+                email = email,
+                shoppingID = shopping_id,
+                kioskoID = kiosko_id,
+                typePayment = "card",
+                propina = valuePropina.toString(),
+                mountReceive = "",
+                mountDiscount = valueCupon.toString(),
+                cupon = "",
+                iva = "",
+                subtotal = valueTotal.toString(),
+                total = valueTotal.toString(),
+                state = "completed",
+                product = productListString,
+            )
+        )
+        ConfirmPayment(title = "Por favor acude con tu barista", subTitle = "para completar la transacción", onSelect = {} )
     }
 
     Box {
