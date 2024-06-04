@@ -24,7 +24,6 @@ import com.momocoffe.app.viewmodel.LoginViewModel
 import com.momocoffe.app.viewmodel.RegionInternational
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.momocoffe.app.network.database.InvoiceDatabase
 import com.momocoffe.app.ui.components.AlertInvoiceState
 import com.momocoffe.app.viewmodel.InvoiceViewModel
 import java.util.Locale
@@ -74,13 +73,6 @@ class MainActivity : ComponentActivity() {
                             )
                                 .build()
 
-                        val databaseInvoice =
-                            Room.databaseBuilder(
-                                applicationContext,
-                                InvoiceDatabase::class.java,
-                                "invoice_db"
-                            )
-                                .build()
 
                         val viewModelDb by viewModels<CartViewModel>(factoryProducer = {
                             object : ViewModelProvider.Factory {
@@ -93,7 +85,7 @@ class MainActivity : ComponentActivity() {
                         val viewModelInvoiceDb by viewModels<InvoiceViewModel>(factoryProducer = {
                             object : ViewModelProvider.Factory {
                                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                                    return InvoiceViewModel(databaseInvoice.dao) as T
+                                    return InvoiceViewModel(database.invoiceDao) as T
                                 }
                             }
                         })

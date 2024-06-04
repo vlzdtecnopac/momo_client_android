@@ -58,6 +58,7 @@ import com.momocoffe.app.network.dto.Toteat
 import com.momocoffe.app.network.dto.productosToString
 import com.momocoffe.app.network.response.ItemShopping
 import com.momocoffe.app.ui.chekout.components.ConfirmEmailModal
+import com.momocoffe.app.ui.chekout.components.ConfirmPayment
 import com.momocoffe.app.ui.chekout.components.OutTextField
 import com.momocoffe.app.ui.components.cart.parseItemModifiers
 import com.momocoffe.app.ui.theme.BlueDark
@@ -259,31 +260,7 @@ fun ContentTypePayment(
     }
 
     if (showModalConfirmEmail) {
-        ConfirmEmailModal(
-            onSelect = { email ->
-                if (email.isEmpty()) {
-                    Toast.makeText(
-                        context,
-                        enterNameInvited,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    invoiceViewModel.createInvoice(
-                        InvoiceProduct(
-                            0,
-                            name = invite,
-                            email = email,
-                            propina = valuePropina.toString(),
-                            type_payment = "effecty",
-                            mount_discount = valueCupon.toString(),
-                            cupon = 0,
-                            iva = "",
-                            sub_total = valueSubTotal.toString(),
-                            total = valueTotal.toString(),
-                        )
-                    )
-                }
-            })
+        ConfirmPayment(title = "Por favor acude con tu barista", subTitle = "para completar la transaccion", onSelect = {} )
     }
 
     Box {

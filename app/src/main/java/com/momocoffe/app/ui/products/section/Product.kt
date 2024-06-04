@@ -145,6 +145,7 @@ fun Product(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             (product?.get(0) ?: null)?.let { OptionsModifier(it, onSelectID = {
+                                Log.d("Result.ProductsViewModel", it )
                                 selectProductID =  it
                             }) }
                             Column(

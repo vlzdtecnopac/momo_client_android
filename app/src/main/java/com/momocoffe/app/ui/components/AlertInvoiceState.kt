@@ -199,6 +199,8 @@ fun SuccessPaymentModal(
         ) {
             if (showModalConfirmEmail) {
                 ConfirmEmailModal(
+                    title =  stringResource(id = R.string.payment_success_received_processed),
+                    subTitle = stringResource(id = R.string.please_enter_email_send_invoice),
                     onSelect = {
 
                     })

@@ -48,6 +48,8 @@ import com.momocoffe.app.ui.theme.redhatFamily
 
 @Composable
 fun ConfirmEmailModal(
+    title: String,
+    subTitle: String,
     onSelect: (String) -> Unit
 ){
     var textEmailState by remember { mutableStateOf(value = "") }
@@ -86,13 +88,13 @@ fun ConfirmEmailModal(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    stringResource(id = R.string.payment_success_received_processed),
+                    title,
                     fontFamily = redhatFamily,
                     fontSize = 28.sp,
                     fontWeight = FontWeight(400)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(stringResource(id = R.string.please_enter_email_send_invoice),
+                Text(subTitle,
                     fontFamily = redhatFamily,
                     fontSize = 22.sp,
                     fontWeight = FontWeight(600)
@@ -123,6 +125,39 @@ fun ConfirmEmailModal(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
+                        Button(
+                            onClick = {},
+                            modifier = Modifier
+                                .weight(0.5f)
+                                .height(60.dp)
+                                .padding(horizontal = 5.dp)
+                                .border(
+                                    width = 0.6.dp,
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(14.dp)
+                                ),
+                            shape = RoundedCornerShape(14.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = BlueLight,
+                                disabledBackgroundColor =  BlueLight,
+                                disabledContentColor =  BlueLight
+                            ),
+                            elevation = ButtonDefaults.elevation(
+                                defaultElevation = 0.dp,
+                                pressedElevation = 0.dp,
+                                disabledElevation = 0.dp,
+                                hoveredElevation = 0.dp,
+                                focusedElevation = 0.dp
+                            )
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.cancel),
+                                fontSize = 22.sp,
+                                color = Color.White,
+                                fontFamily = redhatFamily,
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
                         Button(
                             onClick = {
                                 onSelect(textEmailState)
