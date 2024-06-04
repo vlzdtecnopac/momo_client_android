@@ -42,8 +42,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
 import com.momocoffe.app.network.data.InvoiceProduct
-import com.momocoffe.app.network.database.Invoice
-import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.Extra
 import com.momocoffe.app.network.dto.ExtraCoffee
@@ -54,10 +52,8 @@ import com.momocoffe.app.network.dto.Sauce
 import com.momocoffe.app.network.dto.Size
 import com.momocoffe.app.network.dto.Sugar
 import com.momocoffe.app.network.dto.Temperature
-import com.momocoffe.app.network.dto.Toteat
 import com.momocoffe.app.network.dto.productosToString
 import com.momocoffe.app.network.response.ItemShopping
-import com.momocoffe.app.ui.chekout.components.ConfirmEmailModal
 import com.momocoffe.app.ui.chekout.components.ConfirmPayment
 import com.momocoffe.app.ui.chekout.components.OutTextField
 import com.momocoffe.app.ui.components.cart.parseItemModifiers
@@ -101,19 +97,6 @@ fun ContentTypePayment(
     var invite by remember { mutableStateOf(value = "") }
     var email by remember { mutableStateOf(value = "") }
     var productListString by remember { mutableStateOf(value = "") }
-    var toteat by remember {
-        mutableStateOf(
-            Toteat(
-                toteatXir = "",
-                toteatXiu = "",
-                toteatXil = "",
-                toteatType = "",
-                toteatStatus = "",
-                toteatApitoken = "",
-                toteatChanel = ""
-            )
-        )
-    }
     var validTypePayment by remember { mutableStateOf(value = 0) }
     val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
 
@@ -179,15 +162,9 @@ fun ContentTypePayment(
             when {
                 result.isSuccess -> {
                     val shoppingResponse = result.getOrThrow()
-                    if (shoppingResponse.items.isNotEmpty()) {
-                        toteat.toteatApitoken = shoppingResponse.items.first().xapitoken
-                        toteat.toteatXil = shoppingResponse.items.first().xil
-                        toteat.toteatXir = shoppingResponse.items.first().xir
-                        toteat.toteatXiu = shoppingResponse.items.first().xiu
-                        toteat.toteatStatus = "created"
-                        toteat.toteatType = "takeaway"
-                        toteat.toteatChanel = "pos"
-                    }
+
+                }
+                result.isFailure -> {
 
                 }
             }
