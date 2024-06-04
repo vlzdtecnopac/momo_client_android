@@ -50,7 +50,7 @@ import com.momocoffe.app.ui.theme.redhatFamily
 fun ConfirmEmailModal(
     onSelect: (String) -> Unit
 ){
-    var textState by remember { mutableStateOf(value = "") }
+    var textEmailState by remember { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
 
     Dialog(
@@ -109,9 +109,9 @@ fun ConfirmEmailModal(
                         placeholder = stringResource(id = R.string.email),
                         icon = R.drawable.mail_icon,
                         keyboardType = KeyboardType.Email,
-                        textValue = textState,
-                        onValueChange = { textState = it },
-                        onClickButton = { textState = "" },
+                        textValue = textEmailState,
+                        onValueChange = { textEmailState = it },
+                        onClickButton = { textEmailState = "" },
                         borderColor = BlueDark,
                         onDone = {
                             focusManager.clearFocus()
@@ -125,7 +125,7 @@ fun ConfirmEmailModal(
                     ) {
                         Button(
                             onClick = {
-                                onSelect(textState)
+                                onSelect(textEmailState)
                             },
                             modifier = Modifier
                                 .weight(0.5f)

@@ -1,48 +1,47 @@
 package com.momocoffe.app.network.response
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 
-@Serializable
 data class BuildingResponse (
     val data: List<Datum>,
     val toteat: Toteat
 )
 
-@Serializable
 data class Datum (
-    @SerialName("bilding_id")
+    @SerializedName("bilding_id")
     val bildingID: String,
 
-    @SerialName("shopping_id")
+    @SerializedName("shopping_id")
     val shoppingID: String,
 
-    @SerialName("kiosko_id")
+    @SerializedName("kiosko_id")
     val kioskoID: String,
 
-    @SerialName("type_payment")
+    @SerializedName("type_payment")
     val typePayment: String,
 
     val state: String
 )
 
-@Serializable
+
 data class Toteat (
-    @SerialName("orderId")
+    @SerializedName("orderId")
     val orderID: Long,
 
     val status: String,
 
-    @SerialName("restaurantId")
+    @SerializedName("restaurantId")
     val restaurantID: Long,
 
     val document: Document,
     val orderReference: String,
     val operationDate: String,
 
-    @SerialName("tableId")
+    @SerializedName("tableId")
     val tableID: List<Long>,
 
     val localNumber: Long,
@@ -54,7 +53,7 @@ data class Toteat (
     val orderStatus: Long
 )
 
-@Serializable
+
 data class Document (
     val customer: Customer,
     val line: List<Line>,
@@ -62,7 +61,7 @@ data class Document (
     val dispatcher: Dispatcher
 )
 
-@Serializable
+
 data class Customer (
     val phoneNumber1: String,
     val phoneNumber2: String,
@@ -72,7 +71,7 @@ data class Customer (
     val email: String
 )
 
-@Serializable
+
 data class Delivery (
     val city: String,
     val deliveryZone: String,
@@ -83,10 +82,10 @@ data class Delivery (
     val postalCode: String
 )
 
-@Serializable
+
 class Dispatcher()
 
-@Serializable
+
 data class Line (
     val category: String,
     val productCode: String,
@@ -101,13 +100,13 @@ data class Line (
     val quantity: Long
 )
 
-@Serializable
+
 data class Tax (
     val name: String,
     val value: Double
 )
 
-@Serializable
+
 data class Payment (
     val commission: List<Tax>,
     val amountPaid: Long,

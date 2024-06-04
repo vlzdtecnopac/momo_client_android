@@ -30,6 +30,7 @@ class BuildingViewModel : ViewModel() {
                 if (response.isSuccessful) {
                     val buildingResponse: BuildingResponse? = response.body()
                     if (buildingResponse != null) {
+                        Log.w("Result.BuildingViewModel", buildingResponse.toString())
                         buildingResultState.value = Result.success(buildingResponse)
                     }else{
                         buildingResultState.value = Result.failure(Exception("Empty response body"))

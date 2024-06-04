@@ -1,8 +1,9 @@
 package com.momocoffe.app.network.dto
 
 import com.google.gson.annotations.SerializedName
+import com.momocoffe.app.network.response.Line
 
-data class ClientEmailInvoiceRequest (
+data class ClientEmailInvoiceRequest(
     val from: String,
     val to: String,
     val subject: String,
@@ -25,7 +26,7 @@ data class ClientEmailInvoiceRequest (
     val line: List<Line>
 )
 
-data class Line (
+data class LineProductToteat (
     val category: String,
     @SerializedName("product_code")
     val productCode: String,
