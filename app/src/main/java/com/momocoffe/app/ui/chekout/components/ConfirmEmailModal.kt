@@ -132,11 +132,11 @@ fun ConfirmEmailModal(
                                 .height(60.dp)
                                 .padding(horizontal = 5.dp)
                                 .border(
-                                    width = 0.6.dp,
-                                    color = Color.White,
-                                    shape = RoundedCornerShape(14.dp)
+                                    width = 2.dp,
+                                    color = BlueDark,
+                                    shape = RoundedCornerShape(44.dp)
                                 ),
-                            shape = RoundedCornerShape(14.dp),
+                            shape = RoundedCornerShape(44.dp),
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = BlueLight,
                                 disabledBackgroundColor =  BlueLight,
@@ -153,8 +153,9 @@ fun ConfirmEmailModal(
                             Text(
                                 text = stringResource(id = R.string.cancel),
                                 fontSize = 22.sp,
-                                color = Color.White,
+                                color = BlueDark,
                                 fontFamily = redhatFamily,
+                                fontWeight = FontWeight(700)
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))
@@ -167,11 +168,11 @@ fun ConfirmEmailModal(
                                 .height(60.dp)
                                 .padding(horizontal = 5.dp)
                                 .border(
-                                    width = 0.6.dp,
+                                    width = 2.dp,
                                     color = OrangeDark,
-                                    shape = RoundedCornerShape(14.dp)
+                                    shape = RoundedCornerShape(44.dp)
                                 ),
-                            shape = RoundedCornerShape(14.dp),
+                            shape = RoundedCornerShape(44.dp),
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = OrangeDark,
                                 disabledBackgroundColor = OrangeDark,
@@ -190,6 +191,7 @@ fun ConfirmEmailModal(
                                 fontSize = 22.sp,
                                 color = Color.White,
                                 fontFamily = redhatFamily,
+                                fontWeight = FontWeight(700)
                             )
                         }
                     }
