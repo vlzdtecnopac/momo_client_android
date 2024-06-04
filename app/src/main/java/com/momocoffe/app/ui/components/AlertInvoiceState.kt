@@ -56,7 +56,6 @@ import com.momocoffe.app.network.dto.Sauce
 import com.momocoffe.app.network.dto.Size
 import com.momocoffe.app.network.dto.Sugar
 import com.momocoffe.app.network.dto.Temperature
-import com.momocoffe.app.network.dto.Toteat
 import com.momocoffe.app.network.dto.productosToString
 import com.momocoffe.app.ui.chekout.components.ConfirmEmailModal
 import com.momocoffe.app.ui.components.cart.parseItemModifiers
@@ -200,15 +199,10 @@ fun SuccessPaymentModal(
         ) {
             if (showModalConfirmEmail) {
                 ConfirmEmailModal(
-                    onCancel = {
-                        showModalConfirmEmail = false
-                    },
                     onSelect = {
 
                     })
             }
-
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()

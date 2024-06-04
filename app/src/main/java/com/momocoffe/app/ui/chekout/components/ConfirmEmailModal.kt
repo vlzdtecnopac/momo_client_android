@@ -46,10 +46,8 @@ import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 
-
 @Composable
 fun ConfirmEmailModal(
-    onCancel: () -> Unit,
     onSelect: (String) -> Unit
 ){
     var textState by remember { mutableStateOf(value = "") }
@@ -125,38 +123,6 @@ fun ConfirmEmailModal(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                     ) {
-                        Button(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .clip(RoundedCornerShape(14.dp))
-                                .border(
-                                    width = 0.6.dp,
-                                    color = BlueDark,
-                                    shape = RoundedCornerShape(14.dp)
-                                )
-                                .weight(0.5f)
-                                .height(60.dp),
-                            onClick = onCancel,
-                            colors = ButtonDefaults.buttonColors(
-                                disabledContentColor = BlueLight,
-                                contentColor =  BlueLight,
-                                backgroundColor =  BlueLight
-                            ),
-                            elevation = ButtonDefaults.elevation(
-                                defaultElevation = 0.dp,
-                                pressedElevation = 0.dp,
-                                disabledElevation = 0.dp,
-                                hoveredElevation = 0.dp,
-                                focusedElevation = 0.dp
-                            )
-                        ) {
-                            Text(
-                                stringResource(id = R.string.cancel),
-                                color = BlueDark,
-                                fontSize = 22.sp
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
                         Button(
                             onClick = {
                                 onSelect(textState)

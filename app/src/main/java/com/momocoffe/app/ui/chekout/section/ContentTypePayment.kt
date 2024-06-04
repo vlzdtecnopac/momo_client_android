@@ -230,9 +230,6 @@ fun ContentTypePayment(
 
     if (showModalConfirmEmail) {
         ConfirmEmailModal(
-            onCancel = {
-                showModalConfirmEmail = false
-            },
             onSelect = { email ->
                 if (email.isEmpty()) {
                     Toast.makeText(
@@ -311,7 +308,7 @@ fun ContentTypePayment(
                                 buildingViewModel.payment(
                                     invoice = BuildingRequest(
                                         name = invite,
-                                        email = "vlzdavid12@outlook.com",
+                                        email = email,
                                         shoppingID = shopping_id,
                                         kioskoID = kiosko_id,
                                         typePayment = "card",

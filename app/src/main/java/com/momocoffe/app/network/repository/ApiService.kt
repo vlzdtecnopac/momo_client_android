@@ -3,6 +3,7 @@ package com.momocoffe.app.network.repository
 import com.momocoffe.app.network.data.CreatePedidoResponse
 import com.momocoffe.app.network.data.ExchangeRateResponse
 import com.momocoffe.app.network.dto.BuildingRequest
+import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.ClientReceptorEmailRequest
 import com.momocoffe.app.network.dto.ClientReceptorSMSRequest
 import com.momocoffe.app.network.dto.ClientRequest
@@ -42,6 +43,10 @@ interface ApiService {
         @Query("base") baseCurrency: String,
         @Query("symbols") targetCurrency: String
     ): ExchangeRateResponse
+
+    @POST("/invoice")
+    suspend fun sendEmailInvoice(@Body clientEmailDto: ClientEmailInvoiceRequest) : Response<ClientEmailSMSResponse>
+
     @POST("/users/update_token")
     suspend fun getRefreshToken(@Body refreshDto: RefreshToken) : Response<RefreshTokenResponse>
 
@@ -108,4 +113,6 @@ interface ApiService {
 
     @POST("/payment/create")
     suspend fun createBuilding(@Body requestBody: BuildingRequest): Response<BuildingResponse>
+
+
 }
