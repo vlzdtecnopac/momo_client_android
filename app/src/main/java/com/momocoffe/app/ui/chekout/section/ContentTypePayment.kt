@@ -72,6 +72,7 @@ import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 import io.socket.emitter.Emitter
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 
@@ -88,7 +89,6 @@ fun ContentTypePayment(
     clientViewModel: ClientViewModel = viewModel(),
     shoppingViewModel: ShoppingViewModel = viewModel(),
     buildingViewModel: BuildingViewModel = viewModel()
-
 ) {
     val context = LocalContext.current
     val loading = buildingViewModel.loadingState.value
@@ -104,6 +104,8 @@ fun ContentTypePayment(
     var productListString by remember { mutableStateOf(value = "") }
     var validTypePayment by remember { mutableStateOf(value = 0) }
     val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
+
+
     LaunchedEffect(key1 = true) {
         SocketHandler.getSocket().on("building_finish_socket_app", Emitter.Listener {
             showModalConfirmPayment = false
@@ -228,8 +230,14 @@ fun ContentTypePayment(
         ConfirmEmailModal(
             title =  stringResource(id = R.string.payment_success_received_processed),
             subTitle = stringResource(id = R.string.please_enter_email_send_invoice),
-            onSelect = {
-
+            onSelect = {it ->
+                buildingViewModel.sendClientEmailInvoice(
+                    ClientEmailInvoiceRequest(
+                        from = "Nueva Factura - Momo Coffe <davidvalenzuela@tecnopac.com.co>",
+                        to = it,
+                        subject = "Tienes Un Nueva Pedido"
+                    )
+                )
             })
     }
 

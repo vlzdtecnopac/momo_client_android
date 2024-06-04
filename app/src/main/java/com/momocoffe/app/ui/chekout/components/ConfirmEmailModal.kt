@@ -1,7 +1,6 @@
 package com.momocoffe.app.ui.chekout.components
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -119,7 +118,7 @@ fun ConfirmEmailModal(
                             focusManager.clearFocus()
                         }
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,

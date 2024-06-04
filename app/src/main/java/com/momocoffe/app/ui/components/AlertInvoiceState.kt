@@ -46,6 +46,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.App
 import com.momocoffe.app.R
 import com.momocoffe.app.network.dto.BuildingRequest
+import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.Extra
 import com.momocoffe.app.network.dto.ExtraCoffee
 import com.momocoffe.app.network.dto.Lid
@@ -63,6 +64,7 @@ import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
+import com.momocoffe.app.viewmodel.BuildingViewModel
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.PedidoViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
@@ -82,7 +84,8 @@ fun SuccessPaymentModal(
     viewCartModel: CartViewModel,
     resetState: () -> Unit,
     pedidoViewModel: PedidoViewModel = viewModel(),
-    shoppingViewModel: ShoppingViewModel = viewModel()
+    shoppingViewModel: ShoppingViewModel = viewModel(),
+    buildingViewModel: BuildingViewModel = viewModel()
 ) {
     var optionsColumn by remember { mutableStateOf("") }
     var showModalConfirmEmail by remember { mutableStateOf(value = false) }
@@ -201,8 +204,14 @@ fun SuccessPaymentModal(
                 ConfirmEmailModal(
                     title =  stringResource(id = R.string.payment_success_received_processed),
                     subTitle = stringResource(id = R.string.please_enter_email_send_invoice),
-                    onSelect = {
-
+                    onSelect = {email ->
+                        buildingViewModel.sendClientEmailInvoice(
+                            ClientEmailInvoiceRequest(
+                                from = "Nueva Factura - Momo Coffe <davidvalenzuela@tecnopac.com.co>",
+                                to = email,
+                                subject = "Tienes Un Nueva Pedido"
+                            )
+                        )
                     })
             }
             Column(
