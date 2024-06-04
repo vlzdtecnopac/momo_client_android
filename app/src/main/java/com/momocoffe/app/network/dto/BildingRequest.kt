@@ -9,23 +9,25 @@ import kotlinx.serialization.encoding.*
 
 data class BuildingRequest (
     val name: String,
+
     @SerializedName("email_payment")
-    val email: String,
+    val emailPayment: String,
+
     @SerializedName("shopping_id")
     val shoppingID: String,
 
-   @SerializedName("kiosko_id")
+    @SerializedName("kiosko_id")
     val kioskoID: String,
 
-   @SerializedName("type_payment")
+    @SerializedName("type_payment")
     val typePayment: String,
 
     val propina: String,
 
-   @SerializedName("mount_receive")
+    @SerializedName("mount_receive")
     val mountReceive: String,
 
-   @SerializedName("mount_discount")
+    @SerializedName("mount_discount")
     val mountDiscount: String,
 
     val cupon: String,
@@ -33,5 +35,5 @@ data class BuildingRequest (
     val subtotal: String,
     val total: String,
     val state: String,
-    val product: String,
+    val product: String
 )

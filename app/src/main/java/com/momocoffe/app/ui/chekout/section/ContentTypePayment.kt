@@ -55,6 +55,7 @@ import com.momocoffe.app.network.dto.Sugar
 import com.momocoffe.app.network.dto.Temperature
 import com.momocoffe.app.network.dto.productosToString
 import com.momocoffe.app.network.response.ItemShopping
+import com.momocoffe.app.ui.chekout.components.ConfirmEmailModal
 import com.momocoffe.app.ui.chekout.components.ConfirmPayment
 import com.momocoffe.app.ui.chekout.components.OutTextField
 import com.momocoffe.app.ui.components.cart.parseItemModifiers
@@ -69,6 +70,7 @@ import com.momocoffe.app.viewmodel.ClientViewModel
 import com.momocoffe.app.viewmodel.InvoiceViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
+import io.socket.emitter.Emitter
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -95,12 +97,19 @@ fun ContentTypePayment(
     val shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
     val kiosko_id = sharedPreferences.getString("kioskoId", null) ?: ""
 
+    var showModalConfirmPayment by remember { mutableStateOf(value = false) }
     var showModalConfirmEmail by remember { mutableStateOf(value = false) }
     var invite by remember { mutableStateOf(value = "") }
     var email by remember { mutableStateOf(value = "") }
     var productListString by remember { mutableStateOf(value = "") }
     var validTypePayment by remember { mutableStateOf(value = 0) }
     val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
+    LaunchedEffect(key1 = true) {
+        SocketHandler.getSocket().on("building_finish_socket_app", Emitter.Listener {
+            showModalConfirmPayment = false
+            showModalConfirmEmail = true
+        })
+    }
 
     LaunchedEffect(Unit) {
         shoppingViewModel.getShopping(shopping_id)
@@ -199,34 +208,6 @@ fun ContentTypePayment(
             when {
                 result.isSuccess -> {
                     val userResponse = result.getOrThrow()
-                    if (userResponse.data[0].typePayment == "card") {
-
-                        val inputFormat =
-                            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
-                        val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-
-                        val date = inputFormat.parse(userResponse.toteat.creationDate)
-
-                        val formattedDate = outputFormat.format(date)
-
-                        buildingViewModel.sendClientEmailInvoice(
-                            ClientEmailInvoiceRequest(
-                                from = "Nueva Factura Momo Coffe <davidvalenzuela@tecnopac.com.co>",
-                                to = email,
-                                subject = "Tienes Un Nueva Pedido",
-                                orderID = userResponse.data[0].bildingID,
-                                restaurantID = userResponse.data[0].shoppingID,
-                                dateInvoice = formattedDate.toString(),
-                                typePayment = userResponse.data[0].typePayment,
-                                mountCupon = valueCupon.toString(),
-                                mountPropina = valuePropina.toString(),
-                                mountSubtotal = valueSubTotal.toString(),
-                                mountTotal = valueTotal.toString(),
-                                line = userResponse.toteat.document.line
-                            )
-                        )
-                    }
-
                     Log.d("Result.BuildingViewModel", userResponse.toString())
                 }
 
@@ -238,26 +219,18 @@ fun ContentTypePayment(
         }
     }
 
-    if (showModalConfirmEmail) {
-        buildingViewModel.payment(
-            invoice = BuildingRequest(
-                name = invite,
-                email = email,
-                shoppingID = shopping_id,
-                kioskoID = kiosko_id,
-                typePayment = "card",
-                propina = valuePropina.toString(),
-                mountReceive = "",
-                mountDiscount = valueCupon.toString(),
-                cupon = "",
-                iva = "",
-                subtotal = valueTotal.toString(),
-                total = valueTotal.toString(),
-                state = "completed",
-                product = productListString,
-            )
-        )
+
+    if (showModalConfirmPayment) {
         ConfirmPayment(title = "Por favor acude con tu barista", subTitle = "para completar la transacción", onSelect = {} )
+    }
+
+    if (showModalConfirmEmail) {
+        ConfirmEmailModal(
+            title =  stringResource(id = R.string.payment_success_received_processed),
+            subTitle = stringResource(id = R.string.please_enter_email_send_invoice),
+            onSelect = {
+
+            })
     }
 
     Box {
@@ -379,7 +352,25 @@ fun ContentTypePayment(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-                                showModalConfirmEmail = true
+                                buildingViewModel.payment(
+                                    invoice = BuildingRequest(
+                                        name = invite,
+                                        emailPayment = email,
+                                        shoppingID = shopping_id,
+                                        kioskoID = kiosko_id,
+                                        typePayment = "effecty",
+                                        propina = valuePropina.toString(),
+                                        mountReceive = "",
+                                        mountDiscount = valueCupon.toString(),
+                                        cupon = "",
+                                        iva = "",
+                                        subtotal = valueTotal.toString(),
+                                        total = valueTotal.toString(),
+                                        state = "pending",
+                                        product = productListString,
+                                    )
+                                )
+                                showModalConfirmPayment = true
                             }
                         },
                         modifier = Modifier

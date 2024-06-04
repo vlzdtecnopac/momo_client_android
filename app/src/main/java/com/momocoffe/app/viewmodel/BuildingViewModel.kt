@@ -23,6 +23,7 @@ class BuildingViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = apiService.createBuilding(invoice);
+                Log.w("Result.BuildingViewModel", response.body().toString())
                 if (response.isSuccessful) {
                     val buildingResponse: BuildingResponse? = response.body()
                     if (buildingResponse != null) {
@@ -31,6 +32,8 @@ class BuildingViewModel : ViewModel() {
                     }else{
                         buildingResultState.value = Result.failure(Exception("Empty response body"))
                     }
+                }else{
+                    buildingResultState.value = Result.failure(Exception(response.body().toString()))
                 }
             } catch (e: Exception) {
                 Log.e("Result.BuildingViewModel", e.message.toString())
