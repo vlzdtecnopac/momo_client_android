@@ -3,6 +3,7 @@ package com.momocoffe.app.ui.components
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -44,6 +45,7 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.App
 import com.momocoffe.app.R
+import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.Extra
 import com.momocoffe.app.network.dto.ExtraCoffee
 import com.momocoffe.app.network.dto.Lid
@@ -54,7 +56,9 @@ import com.momocoffe.app.network.dto.Sauce
 import com.momocoffe.app.network.dto.Size
 import com.momocoffe.app.network.dto.Sugar
 import com.momocoffe.app.network.dto.Temperature
+import com.momocoffe.app.network.dto.Toteat
 import com.momocoffe.app.network.dto.productosToString
+import com.momocoffe.app.ui.chekout.components.ConfirmEmailModal
 import com.momocoffe.app.ui.components.cart.parseItemModifiers
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.BlueLight
@@ -82,6 +86,7 @@ fun SuccessPaymentModal(
     shoppingViewModel: ShoppingViewModel = viewModel()
 ) {
     var optionsColumn by remember { mutableStateOf("") }
+    var showModalConfirmEmail by remember { mutableStateOf(value = false) }
     val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val shoppingId = sharedPreferences.getString("shoppingId", null) ?: ""
     val kioskoId = sharedPreferences.getString("kioskoId", null) ?: ""
@@ -159,6 +164,7 @@ fun SuccessPaymentModal(
             )
         }
 
+
         if (optionsColumn.toInt() <= 1) {
             optionsColumn = "8"
         } else {
@@ -192,6 +198,17 @@ fun SuccessPaymentModal(
                 .zIndex(88f),
             color = BlueLight
         ) {
+            if (showModalConfirmEmail) {
+                ConfirmEmailModal(
+                    onCancel = {
+                        showModalConfirmEmail = false
+                    },
+                    onSelect = {
+
+                    })
+            }
+
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -241,7 +258,9 @@ fun SuccessPaymentModal(
                             )
                             .weight(0.5f)
                             .height(60.dp),
-                        onClick = {},
+                        onClick = {
+                            resetState()
+                        },
                         colors = ButtonDefaults.buttonColors(
                             disabledContentColor = Color.Transparent,
                             contentColor = Color.Transparent,
@@ -256,7 +275,7 @@ fun SuccessPaymentModal(
                         )
                     ) {
                         Text(
-                            stringResource(id = R.string.txt_print),
+                            stringResource(id = R.string.cancel),
                             color = BlueDark,
                             fontSize = 22.sp,
                             fontWeight = FontWeight(700)
@@ -264,7 +283,9 @@ fun SuccessPaymentModal(
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(
-                        onClick = {},
+                        onClick = {
+                            showModalConfirmEmail = true
+                        },
                         modifier = Modifier
                             .weight(0.5f)
                             .height(60.dp)
