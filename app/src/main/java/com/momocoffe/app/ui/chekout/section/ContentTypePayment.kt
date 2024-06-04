@@ -234,7 +234,7 @@ fun ContentTypePayment(
                 showModalConfirmEmail = false
             },
             onSelect = { email ->
-                if (invite.isEmpty()) {
+                if (email.isEmpty()) {
                     Toast.makeText(
                         context,
                         enterNameInvited,
@@ -396,7 +396,15 @@ fun ContentTypePayment(
                 if (it.first().effecty) {
                     Button(
                         onClick = {
-                            showModalConfirmEmail = true
+                            if (invite.isEmpty()) {
+                                Toast.makeText(
+                                    context,
+                                    enterNameInvited,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                showModalConfirmEmail = true
+                            }
                         },
                         modifier = Modifier
                             .width(320.dp)

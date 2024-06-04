@@ -124,4 +124,6 @@
     <string name="txt_woof">Woof</string>
     <string name="txt_continue">Continue</string>
     <string name="email">Email</string>
+    <string name="payment_success_received_processed">Payment received successfully! \n Your order is being processed.</string>
+    <string name="please_enter_email_send_invoice">Please enter your email address \n we can send you the receipt.</string>
 </resources>

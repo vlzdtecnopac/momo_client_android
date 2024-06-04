@@ -88,16 +88,13 @@ fun ConfirmEmailModal(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    "¡Pago recibido con éxito!\n" +
-                            "Tu orden está en proceso.",
+                    stringResource(id = R.string.payment_success_received_processed),
                     fontFamily = redhatFamily,
                     fontSize = 28.sp,
                     fontWeight = FontWeight(400)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    "Por favor, ingresa tu correo electrónico\n" +
-                            "para que podamos enviarte el recibo.",
+                Text(stringResource(id = R.string.please_enter_email_send_invoice),
                     fontFamily = redhatFamily,
                     fontSize = 22.sp,
                     fontWeight = FontWeight(600)
