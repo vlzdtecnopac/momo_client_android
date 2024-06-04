@@ -9,6 +9,7 @@ import kotlinx.serialization.encoding.*
 
 data class BuildingRequest (
     val name: String,
+    @SerializedName("email_payment")
     val email: String,
     @SerializedName("shopping_id")
     val shoppingID: String,

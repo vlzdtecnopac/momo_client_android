@@ -3,8 +3,10 @@ package com.momocoffe.app.ui.chekout.section
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -24,21 +26,16 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -46,8 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
-import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.dto.BuildingRequest
+import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.Extra
 import com.momocoffe.app.network.dto.ExtraCoffee
 import com.momocoffe.app.network.dto.Lid
@@ -73,6 +70,11 @@ import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.ClientViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
 
 @Composable
 fun ContentTypePayment(
@@ -217,6 +219,33 @@ fun ContentTypePayment(
             when {
                 result.isSuccess -> {
                     val userResponse = result.getOrThrow()
+                    if(userResponse.data[0].typePayment == "card"){
+
+                        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+                        val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+
+                        val date = inputFormat.parse(userResponse.toteat.creationDate)
+
+                        val formattedDate = outputFormat.format(date)
+
+                        buildingViewModel.sendClientEmailInvoice(
+                            ClientEmailInvoiceRequest(
+                            from = "Nueva Factura Momo Coffe <davidvalenzuela@tecnopac.com.co>",
+                            to = email,
+                            subject = "Tienes Un Nueva Pedido",
+                            orderID = userResponse.data[0].bildingID,
+                            restaurantID = userResponse.data[0].shoppingID,
+                            dateInvoice = formattedDate.toString(),
+                            typePayment = userResponse.data[0].typePayment,
+                            mountCupon = valueCupon.toString(),
+                            mountPropina = valuePropina.toString(),
+                            mountSubtotal = valueSubTotal.toString(),
+                            mountTotal =  valueTotal.toString(),
+                            line = userResponse.toteat.document.line
+                        )
+                        )
+                    }
+
                     Log.d("Result.BuildingViewModel", userResponse.toString())
                 }
 

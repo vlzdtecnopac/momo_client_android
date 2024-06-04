@@ -4,17 +4,13 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.momocoffe.app.BuildConfig
 import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
 import com.momocoffe.app.network.response.BuildingResponse
-import com.momocoffe.app.network.response.CategoriesResponse
 import com.momocoffe.app.network.response.ClientEmailSMSResponse
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class BuildingViewModel : ViewModel() {
     val loadingState = mutableStateOf(false)
