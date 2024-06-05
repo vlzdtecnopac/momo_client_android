@@ -82,13 +82,6 @@ class MainActivity : ComponentActivity() {
                             }
                         })
 
-                        val viewModelInvoiceDb by viewModels<InvoiceViewModel>(factoryProducer = {
-                            object : ViewModelProvider.Factory {
-                                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                                    return InvoiceViewModel(database.invoiceDao) as T
-                                }
-                            }
-                        })
 
                         LaunchedEffect(Unit) {
                             // Set up and establish socket connection
@@ -100,7 +93,7 @@ class MainActivity : ComponentActivity() {
                             AlertInvoiceState(stateInvoice, viewCartModel = viewModelDb, ::resetState)
                         }
 
-                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb, viewModelInvoiceDb)
+                        NavigationScreen(viewModel = viewModelLogin, viewModelCart = viewModelDb)
                     }
                 }
             }

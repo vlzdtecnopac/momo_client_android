@@ -21,7 +21,7 @@ import com.momocoffe.app.viewmodel.InvoiceViewModel
 import com.momocoffe.app.viewmodel.LoginViewModel
 
 @Composable
-fun NavigationScreen(viewModel: LoginViewModel, viewModelCart: CartViewModel, invoiceViewModel: InvoiceViewModel) {
+fun NavigationScreen(viewModel: LoginViewModel, viewModelCart: CartViewModel) {
 
     val navController = rememberNavController()
     val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
@@ -70,7 +70,7 @@ fun NavigationScreen(viewModel: LoginViewModel, viewModelCart: CartViewModel, in
         }
 
         composable(route = Destination.Checkout.route) {
-            Checkout(navController = navController, viewModelCart, invoiceViewModel)
+            Checkout(navController = navController, viewModelCart)
         }
 
         composable(route = Destination.Category.route) {

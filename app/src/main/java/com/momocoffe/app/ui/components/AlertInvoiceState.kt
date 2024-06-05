@@ -209,7 +209,8 @@ fun SuccessPaymentModal(
                             ClientEmailInvoiceRequest(
                                 from = "Nueva Factura - Momo Coffe <davidvalenzuela@tecnopac.com.co>",
                                 to = email,
-                                subject = "Tienes Un Nueva Pedido"
+                                subject = "Tienes Un Nueva Pedido",
+                                bilding_id = ""
                             )
                         )
                     })

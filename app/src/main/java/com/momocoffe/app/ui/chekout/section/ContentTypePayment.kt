@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.R
-import com.momocoffe.app.network.data.InvoiceProduct
 import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.Extra
@@ -67,7 +66,6 @@ import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.BuildingViewModel
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.ClientViewModel
-import com.momocoffe.app.viewmodel.InvoiceViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 import io.socket.emitter.Emitter
@@ -83,7 +81,6 @@ fun ContentTypePayment(
     valuePropina: Float,
     valueTotal: Float,
     cartViewModel: CartViewModel,
-    invoiceViewModel: InvoiceViewModel,
     clientViewModel: ClientViewModel = viewModel(),
     shoppingViewModel: ShoppingViewModel = viewModel(),
     buildingViewModel: BuildingViewModel = viewModel()
@@ -104,10 +101,6 @@ fun ContentTypePayment(
     val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
 
     LaunchedEffect(Unit) {
-        // Set up and establish socket connection
-        SocketHandler.setSocket()
-        SocketHandler.establishConnection()
-
         shoppingViewModel.getShopping(shopping_id)
         if (client_id.isNotBlank()) {
             clientViewModel.getClient("", "", client_id)
@@ -237,7 +230,8 @@ fun ContentTypePayment(
                     ClientEmailInvoiceRequest(
                         from = "Nueva Factura - Momo Coffe <davidvalenzuela@tecnopac.com.co>",
                         to = it,
-                        subject = "Tienes Un Nueva Pedido"
+                        subject = "Tienes Un Nueva Pedido",
+                        bilding_id = ""
                     )
                 )
             })
@@ -279,22 +273,6 @@ fun ContentTypePayment(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
-
-                                invoiceViewModel.createInvoice(
-                                    InvoiceProduct(
-                                        0,
-                                        name = invite,
-                                        email = email,
-                                        propina = valuePropina.toString(),
-                                        type_payment = "card",
-                                        mount_discount = valueCupon.toString(),
-                                        cupon = 0,
-                                        iva = "",
-                                        sub_total = valueSubTotal.toString(),
-                                        total = valueTotal.toString(),
-                                    )
-                                )
-
                                 try {
                                     val intent = Intent()
                                     intent.component = ComponentName(

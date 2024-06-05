@@ -57,7 +57,6 @@ data class CoffeeCart(val name: String, val price: Float, val type: String?)
 fun Checkout(
     navController: NavHostController,
     cartViewModel: CartViewModel,
-    invoiceViewModel: InvoiceViewModel,
     shoppingViewModel: ShoppingViewModel = viewModel(),
     checkoutViewModel: CheckoutViewModel = viewModel(),
     cuponesViewModel: CuponesViewModel = viewModel()
@@ -305,8 +304,7 @@ fun Checkout(
                         valueCupon = valueCupon,
                         valuePropina = valuePropina,
                         valueTotal = valorTotal,
-                        cartViewModel = cartViewModel,
-                        invoiceViewModel = invoiceViewModel
+                        cartViewModel = cartViewModel
                     )
                 }
             }
