@@ -26,14 +26,8 @@ import com.momocoffe.app.ui.theme.redhatFamily
 
 @Composable
 fun Header(navController: NavController, buttonExit: Boolean) {
-
-    val navBackStackEntry = navController.currentBackStackEntryAsState()
     var textButton =
         if (buttonExit) stringResource(id = R.string.txt_exit) else stringResource(id = R.string.txt_back)
-
-    if (navBackStackEntry.value?.destination?.route?.startsWith("checkout") == true) {
-        textButton = stringResource(id = R.string.txt_back)
-    }
 
     VerifyKiosko(navController)
     Row(
@@ -54,15 +48,12 @@ fun Header(navController: NavController, buttonExit: Boolean) {
             border = BorderStroke(width = 0.dp, color = Color.Transparent),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
             onClick = {
-                if (navBackStackEntry.value?.destination?.route?.startsWith("checkout") == true) {
-                    navController.navigate(Destination.Category.route)
-                } else {
                     if (buttonExit) {
                         navController.navigate(Destination.OrderHere.route)
                     } else {
                         navController.popBackStack()
                     }
-                }
+
             },
             elevation = ButtonDefaults.elevation(0.dp)
         ) {
