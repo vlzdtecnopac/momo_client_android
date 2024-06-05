@@ -45,6 +45,7 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.App
 import com.momocoffe.app.R
+import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.Extra
@@ -186,6 +187,26 @@ fun SuccessPaymentModal(
         }
     }
 
+    LaunchedEffect(buildingViewModel.emailResultState.value) {
+        buildingViewModel.emailResultState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val emailResponse = result.getOrThrow()
+                    showModalConfirmEmail = false
+                    viewCartModel.clearAllCart()
+                    Log.d("Result.EmailViewModel", emailResponse.message)
+                }
+
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.e("Result.ShoppingModel", exception.toString())
+                }
+
+                else -> {}
+            }
+        }
+    }
+
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -206,6 +227,7 @@ fun SuccessPaymentModal(
                     title = stringResource(id = R.string.payment_success_received_processed),
                     subTitle = stringResource(id = R.string.please_enter_email_send_invoice),
                     onCancel = {
+                        viewCartModel.clearAllCart()
                         showModalConfirmEmail = false
                     },
                     onSelect = { email ->
