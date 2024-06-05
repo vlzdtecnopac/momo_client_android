@@ -2,6 +2,7 @@ package com.momocoffe.app.ui.chekout.section
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -147,7 +148,10 @@ fun ProductCartCheckout(
                         }
 
                     }
-                    Column(modifier = Modifier.padding(start = 5.dp).weight(0.2f)) {
+                    Column(
+                        modifier = Modifier.padding(start = 5.dp).weight(0.2f),
+                        horizontalAlignment = Alignment.End
+                        ) {
                         BtnCart(
                             onClickButton = {
                                 cartViewModel.deleteProduct(product)
