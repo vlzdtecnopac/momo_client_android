@@ -158,8 +158,18 @@ fun SuccessPaymentModal(
                                 )
                             )
                         } ?: listOf(),
-                        sauce = listOf(Sauce("", 0)),
-                        temperature = Temperature("", 0),
+                        sauce = itemsModifiersOptions["sauce"]?.let {
+                            listOf(
+                                Sauce(
+                                    it.name,
+                                    it.price.toInt()
+                                )
+                            )
+                        } ?: listOf(),
+                        temperature = Temperature(
+                            itemsModifiersOptions["temp"]?.name ?: "",
+                            itemsModifiersOptions["temp"]?.price?.toInt() ?: 0
+                        ),
                         color = "",
                         coffee_type = Any()
                     ),
