@@ -209,12 +209,13 @@ fun SuccessPaymentModal(
                         showModalConfirmEmail = false
                     },
                     onSelect = { email ->
+                        val bilding_id = sharedPreferences.getString("bildingId", null) ?: ""
                         buildingViewModel.sendClientEmailInvoice(
                             ClientEmailInvoiceRequest(
                                 from = "Nueva Factura - Momo Coffe <davidvalenzuela@tecnopac.com.co>",
                                 to = email,
                                 subject = "Tienes Un Nueva Pedido",
-                                bilding_id = ""
+                                bilding_id = bilding_id
                             )
                         )
                     })
