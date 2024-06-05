@@ -304,7 +304,8 @@ fun Checkout(
                         valueCupon = valueCupon,
                         valuePropina = valuePropina,
                         valueTotal = valorTotal,
-                        cartViewModel = cartViewModel
+                        cartViewModel = cartViewModel,
+                        navController = navController
                     )
                 }
             }

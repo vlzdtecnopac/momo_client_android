@@ -40,7 +40,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.momocoffe.app.R
+import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.Extra
@@ -79,6 +81,7 @@ fun ContentTypePayment(
     valueCupon: Float,
     valuePropina: Float,
     valueTotal: Float,
+    navController: NavController,
     cartViewModel: CartViewModel,
     clientViewModel: ClientViewModel = viewModel(),
     shoppingViewModel: ShoppingViewModel = viewModel(),
@@ -219,6 +222,26 @@ fun ContentTypePayment(
         }
     }
 
+    LaunchedEffect(buildingViewModel.emailResultState.value){
+        buildingViewModel.emailResultState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val emailResponse = result.getOrThrow()
+                    showModalConfirmEmail = false
+                    cartViewModel.clearAllCart()
+                    navController.navigate(Destination.OrderHere.route)
+                    Log.d("Result.EmailViewModel", emailResponse.message)
+                }
+
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.e("Result.ShoppingModel", exception.toString())
+                }
+
+                else -> {}
+            }
+        }
+    }
 
     if (showModalConfirmPayment) {
         ConfirmPayment(title = stringResource(id = R.string.please_barista_go),
@@ -235,6 +258,8 @@ fun ContentTypePayment(
             subTitle = stringResource(id = R.string.please_enter_email_send_invoice),
             onCancel = {
                 showModalConfirmEmail = false
+                cartViewModel.clearAllCart()
+                navController.navigate(Destination.OrderHere.route)
             },
             onSelect = { it ->
                 buildingViewModel.sendClientEmailInvoice(
