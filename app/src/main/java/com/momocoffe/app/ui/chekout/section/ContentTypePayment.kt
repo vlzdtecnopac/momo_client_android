@@ -70,7 +70,6 @@ import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 import io.socket.emitter.Emitter
 
-
 @Composable
 fun ContentTypePayment(
     shoppingItems: List<ItemShopping>,
@@ -107,7 +106,7 @@ fun ContentTypePayment(
     }
 
     LaunchedEffect(key1 = true) {
-        SocketHandler.getSocket().on("building_finish_socket_app", Emitter.Listener {
+        SocketHandler.getSocket().on("building_finish_socket_app", Emitter.Listener { payload ->
             showModalConfirmPayment = false
             showModalConfirmEmail = true
         })

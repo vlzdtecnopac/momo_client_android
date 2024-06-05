@@ -25,7 +25,7 @@ import com.momocoffe.app.viewmodel.RegionInternational
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.momocoffe.app.ui.components.AlertInvoiceState
-import com.momocoffe.app.viewmodel.InvoiceViewModel
+
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
