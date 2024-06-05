@@ -204,6 +204,9 @@ fun SuccessPaymentModal(
                 ConfirmEmailModal(
                     title =  stringResource(id = R.string.payment_success_received_processed),
                     subTitle = stringResource(id = R.string.please_enter_email_send_invoice),
+                    onCancel = {
+                        showModalConfirmEmail = false
+                    },
                     onSelect = {email ->
                         buildingViewModel.sendClientEmailInvoice(
                             ClientEmailInvoiceRequest(

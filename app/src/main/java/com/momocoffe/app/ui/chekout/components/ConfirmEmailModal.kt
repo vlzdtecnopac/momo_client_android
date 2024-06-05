@@ -49,6 +49,7 @@ import com.momocoffe.app.ui.theme.redhatFamily
 fun ConfirmEmailModal(
     title: String,
     subTitle: String,
+    onCancel: () -> Unit,
     onSelect: (String) -> Unit
 ){
     var textEmailState by remember { mutableStateOf(value = "") }
@@ -125,7 +126,9 @@ fun ConfirmEmailModal(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Button(
-                            onClick = {},
+                            onClick = {
+                                      onCancel()
+                            },
                             modifier = Modifier
                                 .weight(0.5f)
                                 .height(60.dp)

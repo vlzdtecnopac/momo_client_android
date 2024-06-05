@@ -69,6 +69,7 @@ import com.momocoffe.app.viewmodel.ClientViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 import io.socket.emitter.Emitter
+import org.json.JSONObject
 
 @Composable
 fun ContentTypePayment(
@@ -106,7 +107,11 @@ fun ContentTypePayment(
     }
 
     LaunchedEffect(key1 = true) {
-        SocketHandler.getSocket().on("building_finish_socket_app", Emitter.Listener { payload ->
+        SocketHandler.getSocket().on("building_finish_socket_app", Emitter.Listener { args ->
+            val data = args[0] as JSONObject
+            val editor = sharedPreferences.edit()
+            editor.putString("bildingId", data.getString("bilding_id"))
+            editor.apply()
             showModalConfirmPayment = false
             showModalConfirmEmail = true
         })
@@ -168,11 +173,10 @@ fun ContentTypePayment(
             when {
                 result.isSuccess -> {
                     val shoppingResponse = result.getOrThrow()
-
                 }
-
                 result.isFailure -> {
-
+                    val exception = result.exceptionOrNull()
+                    Log.e("Result.BuildingViewModel", exception.toString())
                 }
             }
         }
@@ -225,16 +229,20 @@ fun ContentTypePayment(
     }
 
     if (showModalConfirmEmail) {
+        val bilding_id = sharedPreferences.getString("bildingId", null) ?: ""
         ConfirmEmailModal(
             title = stringResource(id = R.string.payment_success_received_processed),
             subTitle = stringResource(id = R.string.please_enter_email_send_invoice),
+            onCancel = {
+                showModalConfirmEmail = false
+            },
             onSelect = { it ->
                 buildingViewModel.sendClientEmailInvoice(
                     ClientEmailInvoiceRequest(
                         from = "Nueva Factura - Momo Coffe <davidvalenzuela@tecnopac.com.co>",
                         to = it,
                         subject = "Tienes Un Nueva Pedido",
-                        bilding_id = ""
+                        bilding_id = bilding_id
                     )
                 )
             })
@@ -355,7 +363,7 @@ fun ContentTypePayment(
                                         mountDiscount = valueCupon.toString(),
                                         cupon = "",
                                         iva = "",
-                                        subtotal = valueTotal.toString(),
+                                        subtotal = valueSubTotal.toString(),
                                         total = valueTotal.toString(),
                                         state = "pending",
                                         product = productListString,
