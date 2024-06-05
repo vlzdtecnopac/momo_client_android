@@ -45,6 +45,7 @@ class BuildingViewModel : ViewModel() {
     }
 
     fun sendClientEmailInvoice(clientEmail: ClientEmailInvoiceRequest){
+        loadingState.value = true
             viewModelScope.launch {
                 try {
                     val response = apiEmailSmsService.sendEmailInvoice(clientEmail)
@@ -61,6 +62,8 @@ class BuildingViewModel : ViewModel() {
                 } catch (e: Exception) {
                     e.printStackTrace()
                     Log.e("Result.BuildingViewModel", e.message.toString())
+                } finally {
+                    loadingState.value = false
                 }
             }
 

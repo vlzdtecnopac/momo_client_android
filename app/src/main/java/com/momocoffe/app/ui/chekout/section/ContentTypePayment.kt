@@ -516,7 +516,6 @@ fun ContentTypePayment(
 
             }
         }
-
         if (loading) {
             Box(
                 contentAlignment = Alignment.Center,

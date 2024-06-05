@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -63,6 +64,7 @@ import com.momocoffe.app.network.dto.productosToString
 import com.momocoffe.app.ui.chekout.components.ConfirmEmailModal
 import com.momocoffe.app.ui.components.cart.parseItemModifiers
 import com.momocoffe.app.ui.theme.BlueDark
+import com.momocoffe.app.ui.theme.BlueDarkTransparent
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
@@ -70,6 +72,7 @@ import com.momocoffe.app.viewmodel.BuildingViewModel
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.PedidoViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
+import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 import io.socket.emitter.Emitter
 import org.json.JSONObject
 
@@ -92,6 +95,7 @@ fun SuccessPaymentModal(
     shoppingViewModel: ShoppingViewModel = viewModel(),
     buildingViewModel: BuildingViewModel = viewModel()
 ) {
+    val loading = buildingViewModel.loadingState.value
     var optionsColumn by remember { mutableStateOf("") }
     var showModalConfirmEmail by remember { mutableStateOf(value = false) }
     val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
@@ -258,116 +262,130 @@ fun SuccessPaymentModal(
                         )
                     })
             }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp)
-                    .background(BlueLight),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
 
-                Image(
-                    painter = painterResource(id = R.drawable.clock_icon),
-                    contentDescription = stringResource(id = R.string.momo_coffe),
-                    modifier = Modifier.width(145.dp),
-                    contentScale = ContentScale.Fit,
-                )
-                Text(
-                    stringResource(id = R.string.payment_receive_success_order),
-                    fontFamily = redhatFamily,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight(700),
-                    textAlign = TextAlign.Center
-                )
-                Spacer(modifier = Modifier.height(15.dp))
-                Text(
-                    stringResource(id = R.string.profile_you_receive),
-                    fontFamily = redhatFamily,
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight(700),
-                    textAlign = TextAlign.Center
-
-                )
-                Spacer(modifier = Modifier.height(20.dp))
-                Row(
+            Box {
+                Column(
                     modifier = Modifier
-                        .widthIn(0.dp, 400.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                        .fillMaxSize()
+                        .padding(10.dp)
+                        .background(BlueLight),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Button(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .clip(RoundedCornerShape(14.dp))
-                            .border(
-                                width = 0.6.dp,
-                                color = BlueDark,
-                                shape = RoundedCornerShape(14.dp)
-                            )
-                            .weight(0.5f)
-                            .height(60.dp),
-                        onClick = {
-                            resetState()
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            disabledContentColor = Color.Transparent,
-                            contentColor = Color.Transparent,
-                            backgroundColor = Color.Transparent
-                        ),
-                        elevation = ButtonDefaults.elevation(
-                            defaultElevation = 0.dp,
-                            pressedElevation = 0.dp,
-                            disabledElevation = 0.dp,
-                            hoveredElevation = 0.dp,
-                            focusedElevation = 0.dp
-                        )
-                    ) {
-                        Text(
-                            stringResource(id = R.string.cancel),
-                            color = BlueDark,
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight(700)
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(
-                        onClick = {
-                            showModalConfirmEmail = true
-                        },
-                        modifier = Modifier
-                            .weight(0.5f)
-                            .height(60.dp)
-                            .padding(horizontal = 5.dp)
-                            .border(
-                                width = 0.6.dp,
-                                color = OrangeDark,
-                                shape = RoundedCornerShape(14.dp)
-                            ),
-                        shape = RoundedCornerShape(14.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = OrangeDark,
-                            disabledBackgroundColor = OrangeDark,
-                            disabledContentColor = OrangeDark
-                        ),
-                        elevation = ButtonDefaults.elevation(
-                            defaultElevation = 0.dp,
-                            pressedElevation = 0.dp,
-                            disabledElevation = 0.dp,
-                            hoveredElevation = 0.dp,
-                            focusedElevation = 0.dp
-                        )
-                    ) {
-                        Text(
-                            stringResource(id = R.string.txt_virtual),
-                            fontSize = 22.sp,
-                            color = Color.White,
-                            fontFamily = redhatFamily,
-                            fontWeight = FontWeight(700)
-                        )
-                    }
 
+                    Image(
+                        painter = painterResource(id = R.drawable.clock_icon),
+                        contentDescription = stringResource(id = R.string.momo_coffe),
+                        modifier = Modifier.width(145.dp),
+                        contentScale = ContentScale.Fit,
+                    )
+                    Text(
+                        stringResource(id = R.string.payment_receive_success_order),
+                        fontFamily = redhatFamily,
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight(700),
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                    Text(
+                        stringResource(id = R.string.profile_you_receive),
+                        fontFamily = redhatFamily,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight(700),
+                        textAlign = TextAlign.Center
+
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(
+                        modifier = Modifier
+                            .widthIn(0.dp, 400.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Button(
+                            modifier = Modifier
+                                .padding(16.dp)
+                                .clip(RoundedCornerShape(14.dp))
+                                .border(
+                                    width = 0.6.dp,
+                                    color = BlueDark,
+                                    shape = RoundedCornerShape(14.dp)
+                                )
+                                .weight(0.5f)
+                                .height(60.dp),
+                            onClick = {
+                                resetState()
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                disabledContentColor = Color.Transparent,
+                                contentColor = Color.Transparent,
+                                backgroundColor = Color.Transparent
+                            ),
+                            elevation = ButtonDefaults.elevation(
+                                defaultElevation = 0.dp,
+                                pressedElevation = 0.dp,
+                                disabledElevation = 0.dp,
+                                hoveredElevation = 0.dp,
+                                focusedElevation = 0.dp
+                            )
+                        ) {
+                            Text(
+                                stringResource(id = R.string.cancel),
+                                color = BlueDark,
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight(700)
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(
+                            onClick = {
+                                showModalConfirmEmail = true
+                            },
+                            modifier = Modifier
+                                .weight(0.5f)
+                                .height(60.dp)
+                                .padding(horizontal = 5.dp)
+                                .border(
+                                    width = 0.6.dp,
+                                    color = OrangeDark,
+                                    shape = RoundedCornerShape(14.dp)
+                                ),
+                            shape = RoundedCornerShape(14.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = OrangeDark,
+                                disabledBackgroundColor = OrangeDark,
+                                disabledContentColor = OrangeDark
+                            ),
+                            elevation = ButtonDefaults.elevation(
+                                defaultElevation = 0.dp,
+                                pressedElevation = 0.dp,
+                                disabledElevation = 0.dp,
+                                hoveredElevation = 0.dp,
+                                focusedElevation = 0.dp
+                            )
+                        ) {
+                            Text(
+                                stringResource(id = R.string.txt_virtual),
+                                fontSize = 22.sp,
+                                color = Color.White,
+                                fontFamily = redhatFamily,
+                                fontWeight = FontWeight(700)
+                            )
+                        }
+
+                    }
                 }
+                if (loading) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(BlueDarkTransparent)
+                    ) {
+                        BallClipRotatePulseIndicator()
+                    }
+                }
+
             }
         }
 
