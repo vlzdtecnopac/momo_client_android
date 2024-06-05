@@ -127,4 +127,6 @@
     <string name="email">Correo</string>
     <string name="payment_success_received_processed">¡Pago recibido con éxito!\nTu orden está en proceso.</string>
     <string name="please_enter_email_send_invoice">Por favor, ingresa tu correo electrónico\npara que podamos enviarte el recibo.</string>
+    <string name="please_barista_go">Por favor acude con tu barista.</string>
+    <string name="completed_transaccion">para completar la transacción"</string>
 </resources>

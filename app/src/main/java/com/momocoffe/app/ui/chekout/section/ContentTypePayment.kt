@@ -71,7 +71,6 @@ import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicato
 import io.socket.emitter.Emitter
 
 
-
 @Composable
 fun ContentTypePayment(
     shoppingItems: List<ItemShopping>,
@@ -172,6 +171,7 @@ fun ContentTypePayment(
                     val shoppingResponse = result.getOrThrow()
 
                 }
+
                 result.isFailure -> {
 
                 }
@@ -218,14 +218,18 @@ fun ContentTypePayment(
 
 
     if (showModalConfirmPayment) {
-        ConfirmPayment(title = "Por favor acude con tu barista", subTitle = "para completar la transacción", onSelect = {} )
+        ConfirmPayment(title = stringResource(id = R.string.please_barista_go),
+            subTitle = stringResource(
+                id = R.string.completed_transaccion
+            ),
+            onSelect = {})
     }
 
     if (showModalConfirmEmail) {
         ConfirmEmailModal(
-            title =  stringResource(id = R.string.payment_success_received_processed),
+            title = stringResource(id = R.string.payment_success_received_processed),
             subTitle = stringResource(id = R.string.please_enter_email_send_invoice),
-            onSelect = {it ->
+            onSelect = { it ->
                 buildingViewModel.sendClientEmailInvoice(
                     ClientEmailInvoiceRequest(
                         from = "Nueva Factura - Momo Coffe <davidvalenzuela@tecnopac.com.co>",
