@@ -114,5 +114,4 @@ interface ApiService {
     @POST("/payment/create")
     suspend fun createBuilding(@Body requestBody: BuildingRequest): Response<BuildingResponse>
 
-
 }

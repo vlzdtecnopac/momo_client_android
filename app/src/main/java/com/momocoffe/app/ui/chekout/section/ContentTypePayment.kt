@@ -71,9 +71,7 @@ import com.momocoffe.app.viewmodel.InvoiceViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 import io.socket.emitter.Emitter
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+
 
 
 @Composable
@@ -105,6 +103,16 @@ fun ContentTypePayment(
     var validTypePayment by remember { mutableStateOf(value = 0) }
     val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
 
+    LaunchedEffect(Unit) {
+        // Set up and establish socket connection
+        SocketHandler.setSocket()
+        SocketHandler.establishConnection()
+
+        shoppingViewModel.getShopping(shopping_id)
+        if (client_id.isNotBlank()) {
+            clientViewModel.getClient("", "", client_id)
+        }
+    }
 
     LaunchedEffect(key1 = true) {
         SocketHandler.getSocket().on("building_finish_socket_app", Emitter.Listener {
@@ -113,12 +121,6 @@ fun ContentTypePayment(
         })
     }
 
-    LaunchedEffect(Unit) {
-        shoppingViewModel.getShopping(shopping_id)
-        if (client_id.isNotBlank()) {
-            clientViewModel.getClient("", "", client_id)
-        }
-    }
 
     LaunchedEffect(cartViewModel.state) {
         val newProducts = cartViewModel.state.carts.mapIndexed { index, item ->
