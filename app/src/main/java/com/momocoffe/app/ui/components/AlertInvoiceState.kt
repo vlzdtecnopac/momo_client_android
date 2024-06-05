@@ -73,8 +73,7 @@ import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.PedidoViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
 import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
-import io.socket.emitter.Emitter
-import org.json.JSONObject
+
 
 @Composable
 fun AlertInvoiceState(stateInvoice: String, viewCartModel: CartViewModel, resetState: () -> Unit) {
@@ -217,6 +216,8 @@ fun SuccessPaymentModal(
                 }
 
                 result.isFailure -> {
+                    showModalConfirmEmail = false
+                    resetState()
                     val exception = result.exceptionOrNull()
                     Log.e("Result.ShoppingModel", exception.toString())
                 }
@@ -251,13 +252,13 @@ fun SuccessPaymentModal(
                         resetState()
                     },
                     onSelect = { email ->
-                        val bilding_id = sharedPreferences.getString("bildingId", null) ?: ""
+                        val bildingId = sharedPreferences.getString("bildingId", null) ?: ""
                         buildingViewModel.sendClientEmailInvoice(
                             ClientEmailInvoiceRequest(
                                 from = "Nueva Factura - Momo Coffe <davidvalenzuela@tecnopac.com.co>",
                                 to = email,
                                 subject = "Tienes Un Nueva Pedido",
-                                bilding_id = bilding_id
+                                bilding_id = bildingId
                             )
                         )
                     })

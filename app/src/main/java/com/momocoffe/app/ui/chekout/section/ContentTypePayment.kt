@@ -88,7 +88,6 @@ fun ContentTypePayment(
     buildingViewModel: BuildingViewModel = viewModel()
 ) {
     val context = LocalContext.current
-    val loading = buildingViewModel.loadingState.value
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val client_id = sharedPreferences.getString("clientId", null) ?: ""
     val shopping_id = sharedPreferences.getString("shoppingId", null) ?: ""
@@ -265,6 +264,7 @@ fun ContentTypePayment(
                 }
 
                 result.isFailure -> {
+                    showModalConfirmEmail = false
                     val exception = result.exceptionOrNull()
                     Log.e("Result.ShoppingModel", exception.toString())
                 }
@@ -304,8 +304,7 @@ fun ContentTypePayment(
             })
     }
 
-    Box {
-        shoppingItems.let {
+    shoppingItems.let {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -516,27 +515,4 @@ fun ContentTypePayment(
 
             }
         }
-        if (loading) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(BlueDarkTransparent)
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    BallClipRotatePulseIndicator()
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(
-                        stringResource(id = R.string.process_payment),
-                        color = Color.White,
-                        fontSize = 14.sp,
-                        fontFamily = redhatFamily
-                    )
-                }
-            }
-        }
-    }
 }

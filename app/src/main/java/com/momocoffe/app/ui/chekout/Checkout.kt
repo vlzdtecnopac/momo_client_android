@@ -42,12 +42,15 @@ import com.momocoffe.app.ui.chekout.section.ProductCartCheckout
 import com.momocoffe.app.ui.chekout.section.ContentPropinas
 import com.momocoffe.app.ui.chekout.section.ContentTypePayment
 import com.momocoffe.app.ui.components.DashedDivider
+import com.momocoffe.app.ui.theme.BlueDarkTransparent
 import com.momocoffe.app.ui.theme.OrangeDark
+import com.momocoffe.app.viewmodel.BuildingViewModel
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.CheckoutViewModel
 import com.momocoffe.app.viewmodel.CuponesViewModel
 
 import com.momocoffe.app.viewmodel.ShoppingViewModel
+import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 import org.json.JSONArray
 
 
@@ -59,10 +62,12 @@ fun Checkout(
     cartViewModel: CartViewModel,
     shoppingViewModel: ShoppingViewModel = viewModel(),
     checkoutViewModel: CheckoutViewModel = viewModel(),
-    cuponesViewModel: CuponesViewModel = viewModel()
+    cuponesViewModel: CuponesViewModel = viewModel(),
+    buildingViewModel: BuildingViewModel = viewModel()
 ) {
 
     val context = LocalContext.current
+    val loading = buildingViewModel.loadingState.value
     var optionsColumn by remember { mutableStateOf("") }
     var shoppingItems by remember { mutableStateOf<List<ItemShopping>>(emptyList()) }
     val sharedPreferences = context.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
@@ -80,7 +85,6 @@ fun Checkout(
     var valuePropina by remember { mutableStateOf(value = 0f) }
 
     var valueTypeDiscount by remember { mutableStateOf(value = 0) }
-    var valueTypePayment by remember { mutableStateOf(value = 0) }
 
     var isCuponValid by remember { mutableStateOf(false) }
     var contentTypePropinaState by remember { mutableStateOf(false) }
@@ -254,262 +258,278 @@ fun Checkout(
         }
     }
 
-    Column(
-        modifier = Modifier.background(BlueLight),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+    Box {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(BlueDark),
+            modifier = Modifier.background(BlueLight),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Header(navController, buttonExit = true)
-            Category(navController, cartViewModel)
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(
-            modifier = Modifier
-                .widthIn(0.dp, 1100.dp)
-                .padding(10.dp)
-        ) {
             Column(
                 modifier = Modifier
-                    .weight(0.4f)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(BlueDark)
-                    .fillMaxHeight()
-                    .padding(vertical = 5.dp, horizontal = 5.dp)
+                    .fillMaxWidth()
+                    .background(BlueDark),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (!contentTypePropinaState) {
-                    ContentPropinas(
-                        onSelectValue = {
-                            valuePropinaPerson = it.toFloat()
-                        },
-                        onSelectPropina = {
-                            propina = it
-                        },
-                        onTypePropina = { typePropina = it }
-                    )
-                } else {
-                    ContentTypePayment(
-                        shoppingItems,
-                        onCancel = {
-                            contentTypePropinaState = false
-                        },
-                        valueSubTotal = subTotalProduct,
-                        valueCupon = valueCupon,
-                        valuePropina = valuePropina,
-                        valueTotal = valorTotal,
-                        cartViewModel = cartViewModel,
-                        navController = navController
-                    )
-                }
+                Header(navController, buttonExit = true)
+                Category(navController, cartViewModel)
+                Spacer(modifier = Modifier.height(8.dp))
             }
-            Spacer(modifier = Modifier.width(5.dp))
-            Column(
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Row(
                 modifier = Modifier
-                    .weight(0.4f)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(BlueDark)
-                    .fillMaxHeight()
+                    .widthIn(0.dp, 1100.dp)
                     .padding(10.dp)
             ) {
-                LazyColumn(modifier = Modifier.fillMaxHeight()) {
-                    items(items = state.carts, itemContent = { item -> ProductCartCheckout(item) })
-                }
-
-            }
-            Spacer(modifier = Modifier.width(5.dp))
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .weight(0.4f)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(BlueDark)
-                    .fillMaxHeight()
-                    .padding(4.dp),
-            ) {
-
                 Column(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .weight(0.4f)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(BlueDark)
+                        .fillMaxHeight()
+                        .padding(vertical = 5.dp, horizontal = 5.dp)
                 ) {
-                    OutlineTextField(
-                        label = stringResource(id = R.string.add_cupon),
-                        placeholder = stringResource(id = R.string.add_cupon),
-                        icon = R.drawable.procent_cupon_icon,
-                        keyboardType = KeyboardType.Text,
-                        textValue = textCuponCodeState,
-                        onValueChange = { textCuponCodeState = it },
-                        onClickButton = { textCuponCodeState = "" },
-                        borderColor = Color.White,
-                        onDone = {
-                            focusManager.clearFocus()
-                        }
-                    )
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Button(
-                        onClick = {
-                            cuponesViewModel.cuponValidate(textCuponCodeState)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 5.dp),
-                        shape = RoundedCornerShape(4.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = BlueLight,
-                            disabledBackgroundColor = BlueLight,
-                            disabledContentColor = BlueLight
-                        ),
-                        elevation = ButtonDefaults.elevation(0.dp)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.txt_add),
-                            fontSize = 16.sp,
-                            color = BlueDark,
-                            fontFamily = redhatFamily,
+                    if (!contentTypePropinaState) {
+                        ContentPropinas(
+                            onSelectValue = {
+                                valuePropinaPerson = it.toFloat()
+                            },
+                            onSelectPropina = {
+                                propina = it
+                            },
+                            onTypePropina = { typePropina = it }
+                        )
+                    } else {
+                        ContentTypePayment(
+                            shoppingItems,
+                            onCancel = {
+                                contentTypePropinaState = false
+                            },
+                            valueSubTotal = subTotalProduct,
+                            valueCupon = valueCupon,
+                            valuePropina = valuePropina,
+                            valueTotal = valorTotal,
+                            cartViewModel = cartViewModel,
+                            navController = navController
                         )
                     }
                 }
+                Spacer(modifier = Modifier.width(5.dp))
+                Column(
+                    modifier = Modifier
+                        .weight(0.4f)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(BlueDark)
+                        .fillMaxHeight()
+                        .padding(10.dp)
+                ) {
+                    LazyColumn(modifier = Modifier.fillMaxHeight()) {
+                        items(
+                            items = state.carts,
+                            itemContent = { item -> ProductCartCheckout(item, cartViewModel) })
+                    }
 
-                Column {
+                }
+                Spacer(modifier = Modifier.width(5.dp))
+                Column(
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier
+                        .weight(0.4f)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(BlueDark)
+                        .fillMaxHeight()
+                        .padding(4.dp),
+                ) {
+
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlineTextField(
+                            label = stringResource(id = R.string.add_cupon),
+                            placeholder = stringResource(id = R.string.add_cupon),
+                            icon = R.drawable.procent_cupon_icon,
+                            keyboardType = KeyboardType.Text,
+                            textValue = textCuponCodeState,
+                            onValueChange = { textCuponCodeState = it },
+                            onClickButton = { textCuponCodeState = "" },
+                            borderColor = Color.White,
+                            onDone = {
+                                focusManager.clearFocus()
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Button(
+                            onClick = {
+                                cuponesViewModel.cuponValidate(textCuponCodeState)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 5.dp),
+                            shape = RoundedCornerShape(4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = BlueLight,
+                                disabledBackgroundColor = BlueLight,
+                                disabledContentColor = BlueLight
+                            ),
+                            elevation = ButtonDefaults.elevation(0.dp)
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.txt_add),
+                                fontSize = 16.sp,
+                                color = BlueDark,
+                                fontFamily = redhatFamily,
+                            )
+                        }
+                    }
+
                     Column {
-                        tableList.forEach { coffee ->
-                            if (coffee.type == "total") {
-                                Spacer(modifier = Modifier.height(5.dp))
-                                DashedDivider()
-                                Spacer(modifier = Modifier.height(5.dp))
-                                Row(
-                                    modifier = Modifier.padding(horizontal = 10.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    Text(
-                                        coffee.name,
-                                        modifier = Modifier.weight(0.8f),
-                                        fontFamily = redhatFamily,
-                                        fontSize = 16.sp,
-                                        color = Color.White
-                                    )
-                                    Text(
-                                        "$ ${String.format("%.2f", coffee.price.toFloat())}",
-                                        modifier = Modifier.weight(0.3f),
-                                        fontFamily = redhatFamily,
-                                        fontSize = 18.sp,
-                                        color = Color.White
-                                    )
-                                }
-                            } else {
-                                Row(
-                                    modifier = Modifier.padding(horizontal = 10.dp),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    if (coffee.type == "cupon") {
+                        Column {
+                            tableList.forEach { coffee ->
+                                if (coffee.type == "total") {
+                                    Spacer(modifier = Modifier.height(5.dp))
+                                    DashedDivider()
+                                    Spacer(modifier = Modifier.height(5.dp))
+                                    Row(
+                                        modifier = Modifier.padding(horizontal = 10.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
                                         Text(
                                             coffee.name,
-                                            modifier = Modifier.weight(0.5f),
-                                            fontFamily = redhatFamily,
-                                            fontSize = 12.sp,
-                                            color = Color.White
-                                        )
-                                        Button(
-                                            onClick = {
-                                                isCuponValid = false
-                                                valueCupon = 0f
-                                                initTable()
-                                                Toast.makeText(
-                                                    context,
-                                                    couponDeleteMessage,
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                            },
-                                            modifier = Modifier
-                                                .weight(0.4f)
-                                                .padding(horizontal = 2.dp),
-                                            shape = RoundedCornerShape(50.dp),
-                                            colors = ButtonDefaults.buttonColors(
-                                                backgroundColor = OrangeDark,
-                                                disabledBackgroundColor = OrangeDark,
-                                                disabledContentColor = OrangeDark
-                                            ),
-                                            elevation = ButtonDefaults.elevation(0.dp)
-                                        ) {
-                                            Text(
-                                                text = stringResource(id = R.string.delete),
-                                                fontSize = 14.sp,
-                                                color = Color.White,
-                                                fontFamily = redhatFamily,
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.width(10.dp))
-                                        if(valueTypeDiscount == 1){
-                                            Text("${String.format("%.0f", coffee.price)} %",
-                                                modifier = Modifier.weight(0.2f),
-                                                fontFamily = redhatFamily,
-                                                fontSize = 16.sp,
-                                                color = Color.White
-                                            )
-                                        }else{
-                                            Text(
-                                                "$ -${String.format("%.0f", coffee.price)} ",
-                                                modifier = Modifier.weight(0.2f),
-                                                fontFamily = redhatFamily,
-                                                fontSize = 16.sp,
-                                                color = Color.White
-                                            )
-                                        }
-                                      
-                                    } else {
-
-                                        Text(
-                                            coffee.name,
-                                            modifier = Modifier.weight(0.9f),
-                                            fontFamily = redhatFamily,
-                                            fontSize = 12.sp,
-                                            color = Color.White
-                                        )
-                                        Text(
-                                            "$ ${coffee.price}",
-                                            modifier = Modifier.weight(0.2f),
+                                            modifier = Modifier.weight(0.8f),
                                             fontFamily = redhatFamily,
                                             fontSize = 16.sp,
                                             color = Color.White
                                         )
+                                        Text(
+                                            "$ ${String.format("%.2f", coffee.price.toFloat())}",
+                                            modifier = Modifier.weight(0.3f),
+                                            fontFamily = redhatFamily,
+                                            fontSize = 18.sp,
+                                            color = Color.White
+                                        )
                                     }
-                                }
+                                } else {
+                                    Row(
+                                        modifier = Modifier.padding(horizontal = 10.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        if (coffee.type == "cupon") {
+                                            Text(
+                                                coffee.name,
+                                                modifier = Modifier.weight(0.5f),
+                                                fontFamily = redhatFamily,
+                                                fontSize = 12.sp,
+                                                color = Color.White
+                                            )
+                                            Button(
+                                                onClick = {
+                                                    isCuponValid = false
+                                                    valueCupon = 0f
+                                                    initTable()
+                                                    Toast.makeText(
+                                                        context,
+                                                        couponDeleteMessage,
+                                                        Toast.LENGTH_SHORT
+                                                    ).show()
+                                                },
+                                                modifier = Modifier
+                                                    .weight(0.4f)
+                                                    .padding(horizontal = 2.dp),
+                                                shape = RoundedCornerShape(50.dp),
+                                                colors = ButtonDefaults.buttonColors(
+                                                    backgroundColor = OrangeDark,
+                                                    disabledBackgroundColor = OrangeDark,
+                                                    disabledContentColor = OrangeDark
+                                                ),
+                                                elevation = ButtonDefaults.elevation(0.dp)
+                                            ) {
+                                                Text(
+                                                    text = stringResource(id = R.string.delete),
+                                                    fontSize = 14.sp,
+                                                    color = Color.White,
+                                                    fontFamily = redhatFamily,
+                                                )
+                                            }
+                                            Spacer(modifier = Modifier.width(10.dp))
+                                            if (valueTypeDiscount == 1) {
+                                                Text(
+                                                    "${String.format("%.0f", coffee.price)} %",
+                                                    modifier = Modifier.weight(0.2f),
+                                                    fontFamily = redhatFamily,
+                                                    fontSize = 16.sp,
+                                                    color = Color.White
+                                                )
+                                            } else {
+                                                Text(
+                                                    "$ -${String.format("%.0f", coffee.price)} ",
+                                                    modifier = Modifier.weight(0.2f),
+                                                    fontFamily = redhatFamily,
+                                                    fontSize = 16.sp,
+                                                    color = Color.White
+                                                )
+                                            }
 
+                                        } else {
+
+                                            Text(
+                                                coffee.name,
+                                                modifier = Modifier.weight(0.9f),
+                                                fontFamily = redhatFamily,
+                                                fontSize = 12.sp,
+                                                color = Color.White
+                                            )
+                                            Text(
+                                                "$ ${coffee.price}",
+                                                modifier = Modifier.weight(0.2f),
+                                                fontFamily = redhatFamily,
+                                                fontSize = 16.sp,
+                                                color = Color.White
+                                            )
+                                        }
+                                    }
+
+                                }
                             }
                         }
-                    }
 
-                    Button(
-                        onClick = {
-                            contentTypePropinaState = true
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 5.dp),
-                        shape = RoundedCornerShape(4.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = OrangeDark,
-                            disabledBackgroundColor = OrangeDark,
-                            disabledContentColor = BlueLight
-                        )
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.payment),
-                            fontSize = 20.sp,
-                            color = Color.White,
-                            fontFamily = redhatFamily,
-                        )
+                        Button(
+                            onClick = {
+                                contentTypePropinaState = true
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 5.dp),
+                            shape = RoundedCornerShape(4.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = OrangeDark,
+                                disabledBackgroundColor = OrangeDark,
+                                disabledContentColor = BlueLight
+                            )
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.payment),
+                                fontSize = 20.sp,
+                                color = Color.White,
+                                fontFamily = redhatFamily,
+                            )
+                        }
+
                     }
 
                 }
+            }
+        }
 
+        if (loading) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(BlueDarkTransparent)
+            ) {
+                BallClipRotatePulseIndicator()
             }
         }
     }

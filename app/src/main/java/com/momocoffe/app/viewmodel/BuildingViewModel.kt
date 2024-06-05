@@ -23,11 +23,9 @@ class BuildingViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = apiService.createBuilding(invoice);
-                Log.w("Result.BuildingViewModel", response.body().toString())
                 if (response.isSuccessful) {
                     val buildingResponse: BuildingResponse? = response.body()
                     if (buildingResponse != null) {
-                        Log.w("Result.BuildingViewModel", buildingResponse.toString())
                         buildingResultState.value = Result.success(buildingResponse)
                     }else{
                         buildingResultState.value = Result.failure(Exception("Empty response body"))
@@ -45,8 +43,9 @@ class BuildingViewModel : ViewModel() {
     }
 
     fun sendClientEmailInvoice(clientEmail: ClientEmailInvoiceRequest){
-        loadingState.value = true
+        Log.d("Result.EmailSmsViewModel", clientEmail.toString());
             viewModelScope.launch {
+                loadingState.value = true
                 try {
                     val response = apiEmailSmsService.sendEmailInvoice(clientEmail)
                     if (response.isSuccessful) {
@@ -65,6 +64,8 @@ class BuildingViewModel : ViewModel() {
                 } finally {
                     loadingState.value = false
                 }
+
+                Log.d("Result.EmailSmsViewModel", emailResultState.value.toString());
             }
 
     }
