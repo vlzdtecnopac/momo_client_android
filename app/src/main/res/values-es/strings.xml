@@ -6,7 +6,7 @@
     <string name="check_zettle">Comprobar</string>
     <string name="orderhere">Ordena Aquí</string>
     <string name="wellcome">Bienvenido</string>
-    <string name="txt_back">Salir</string>
+    <string name="txt_back">Regresar</string>
     <string name="reason_not_accepting_cash">No aceptamos efectivo.\nDescubre por qué.</string>
     <string name="text_payment">En MOMO Coffee, estamos comprometidos con la mejora continua de nuestros servicios y la seguridad de nuestros clientes y empleados.\n
         Por lo tanto, al no manejar efectivo:\n
@@ -129,4 +129,5 @@
     <string name="please_enter_email_send_invoice">Por favor, ingresa tu correo electrónico\npara que podamos enviarte el recibo.</string>
     <string name="please_barista_go">Por favor acude con tu barista.</string>
     <string name="completed_transaccion">para completar la transacción"</string>
+    <string name="txt_exit">Salir</string>
 </resources>

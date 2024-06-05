@@ -194,6 +194,7 @@ fun SuccessPaymentModal(
                     val emailResponse = result.getOrThrow()
                     showModalConfirmEmail = false
                     viewCartModel.clearAllCart()
+                    resetState()
                     Log.d("Result.EmailViewModel", emailResponse.message)
                 }
 
@@ -229,6 +230,7 @@ fun SuccessPaymentModal(
                     onCancel = {
                         viewCartModel.clearAllCart()
                         showModalConfirmEmail = false
+                        resetState()
                     },
                     onSelect = { email ->
                         val bilding_id = sharedPreferences.getString("bildingId", null) ?: ""

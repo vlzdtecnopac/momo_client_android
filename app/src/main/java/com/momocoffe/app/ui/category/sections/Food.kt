@@ -55,7 +55,7 @@ fun Food(navController: NavController,
                 .zIndex(88f),
             color = BlueDark
         ) {
-            Header(navController = navController)
+            Header(navController = navController, buttonExit = false)
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,

@@ -90,7 +90,7 @@ fun Product(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Header(navController)
+        Header(navController, buttonExit = false)
 
         Column(
             modifier = Modifier

@@ -74,7 +74,7 @@ fun Category(navController: NavController,
                     .background(BlueDark),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Header(navController)
+                Header(navController, buttonExit = true)
                 Spacer(modifier = Modifier.height(8.dp))
             }
             Column(

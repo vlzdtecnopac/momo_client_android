@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,16 +20,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.momocoffe.app.R
 import com.momocoffe.app.navigation.Destination
 import com.momocoffe.app.ui.theme.BlueDark
 import com.momocoffe.app.ui.theme.redhatFamily
 
 @Composable
-fun Header(navController: NavController) {
+fun Header(navController: NavController, buttonExit: Boolean) {
+
+    val navBackStackEntry = navController.currentBackStackEntryAsState()
+    var textButton =
+        if (buttonExit) stringResource(id = R.string.txt_exit) else stringResource(id = R.string.txt_back)
+
+    if (navBackStackEntry.value?.destination?.route?.startsWith("checkout") == true) {
+        textButton = stringResource(id = R.string.txt_back)
+    }
 
     VerifyKiosko(navController)
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -39,14 +48,23 @@ fun Header(navController: NavController) {
 
     ) {
         Button(
-            modifier = Modifier.width(180.dp).border(0.dp, Color.Transparent, shape = RoundedCornerShape(10.dp)) ,
+            modifier = Modifier
+                .width(180.dp)
+                .border(0.dp, Color.Transparent, shape = RoundedCornerShape(10.dp)),
             contentPadding = PaddingValues(horizontal = 10.dp, vertical = 20.dp),
             shape = RoundedCornerShape(10.dp),
             border = BorderStroke(width = 0.dp, color = Color.Transparent),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
             onClick = {
-                //navController.popBackStack()
-                navController.navigate(Destination.OrderHere.route)
+                if (navBackStackEntry.value?.destination?.route?.startsWith("checkout") == true) {
+                    navController.navigate(Destination.Category.route)
+                } else {
+                    if (buttonExit) {
+                        navController.navigate(Destination.OrderHere.route)
+                    } else {
+                        navController.popBackStack()
+                    }
+                }
             },
             elevation = ButtonDefaults.elevation(0.dp)
         ) {
@@ -61,7 +79,7 @@ fun Header(navController: NavController) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    stringResource(id = R.string.txt_back),
+                    textButton,
                     color = Color.White,
                     fontFamily = redhatFamily,
                     fontSize = 18.sp
@@ -70,9 +88,11 @@ fun Header(navController: NavController) {
 
         }
         Column(
-            modifier = Modifier.fillMaxWidth().weight(0.6f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.6f),
             horizontalAlignment = Alignment.CenterHorizontally
-        ){
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = stringResource(id = R.string.momo_coffe),

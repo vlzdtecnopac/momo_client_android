@@ -99,7 +99,7 @@ fun Products(
                     .background(BlueDark),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Header(navController)
+                Header(navController, buttonExit = false)
                 Category(navController, viewModelCart)
                 Spacer(modifier = Modifier.height(8.dp))
             }
