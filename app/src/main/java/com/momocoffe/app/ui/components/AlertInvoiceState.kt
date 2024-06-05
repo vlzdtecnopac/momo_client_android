@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -69,9 +70,12 @@ import com.momocoffe.app.viewmodel.BuildingViewModel
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.PedidoViewModel
 import com.momocoffe.app.viewmodel.ShoppingViewModel
+import io.socket.emitter.Emitter
+import org.json.JSONObject
 
 @Composable
 fun AlertInvoiceState(stateInvoice: String, viewCartModel: CartViewModel, resetState: () -> Unit) {
+
     when (stateInvoice) {
         "completed" -> SuccessPaymentModal(viewCartModel = viewCartModel, resetState)
         "cancelled" -> CancelPaymentModal(viewCartModel = viewCartModel, resetState)

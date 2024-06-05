@@ -110,8 +110,20 @@ fun ContentTypePayment(
     }
 
     LaunchedEffect(key1 = true) {
+        SocketHandler.getSocket().on("building_finish_socket_zettle", Emitter.Listener { args ->
+            val data = args[0] as JSONObject
+            if(data.getString("shopping_id") ==  shopping_id && data.getString("kiosko_id") == kiosko_id) {
+                val editor = sharedPreferences.edit()
+                editor.putString("bildingId", data.getString("bilding_id"))
+                editor.apply()
+            }
+        })
+    }
+
+    LaunchedEffect(key1 = true) {
         SocketHandler.getSocket().on("building_finish_socket_app", Emitter.Listener { args ->
             val data = args[0] as JSONObject
+
             if(data.getString("shopping_id") ==  shopping_id && data.getString("kiosko_id") == kiosko_id) {
                 val editor = sharedPreferences.edit()
                 editor.putString("bildingId", data.getString("bilding_id"))
