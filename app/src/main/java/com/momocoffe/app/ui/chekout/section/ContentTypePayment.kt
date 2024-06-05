@@ -110,13 +110,30 @@ fun ContentTypePayment(
     }
 
     LaunchedEffect(key1 = true) {
-        SocketHandler.getSocket().on("building_finish_socket_zettle", Emitter.Listener { args ->
+        SocketHandler.getSocket().on("buildings-socket", Emitter.Listener { args ->
             val data = args[0] as JSONObject
-            if(data.getString("shopping_id") ==  shopping_id && data.getString("kiosko_id") == kiosko_id) {
-                val editor = sharedPreferences.edit()
-                editor.putString("bildingId", data.getString("bilding_id"))
-                editor.apply()
+            if (data.has("resp")) {
+                val respObject = data.getJSONObject("resp")
+                if (respObject.has("data")) {
+                    val dataArray = respObject.getJSONArray("data")
+                    for (i in 0 until dataArray.length()) {
+                        val buildingObject = dataArray.getJSONObject(i)
+                        val bildingId = buildingObject.getString("bilding_id")
+                        val shoppingId = buildingObject.getString("shopping_id")
+                        val kioskoId = buildingObject.getString("kiosko_id")
+                        Log.d("Result.EmailViewModel", bildingId.toString())
+                        if (shoppingId == shopping_id && kioskoId == kiosko_id) {
+                            val editor = sharedPreferences.edit()
+                            editor.putString("bildingId", bildingId)
+                            editor.apply()
+                        }
+                    }
+                }
+            } else {
+                Log.d("Result.EmailViewModel", "No 'resp' key found in JSON data")
             }
+
+
         })
     }
 
@@ -124,7 +141,7 @@ fun ContentTypePayment(
         SocketHandler.getSocket().on("building_finish_socket_app", Emitter.Listener { args ->
             val data = args[0] as JSONObject
 
-            if(data.getString("shopping_id") ==  shopping_id && data.getString("kiosko_id") == kiosko_id) {
+            if (data.getString("shopping_id") == shopping_id && data.getString("kiosko_id") == kiosko_id) {
                 val editor = sharedPreferences.edit()
                 editor.putString("bildingId", data.getString("bilding_id"))
                 editor.apply()
@@ -245,7 +262,6 @@ fun ContentTypePayment(
                     showModalConfirmEmail = false
                     cartViewModel.clearAllCart()
                     navController.navigate(Destination.OrderHere.route)
-                    Log.d("Result.EmailViewModel", emailResponse.message)
                 }
 
                 result.isFailure -> {
