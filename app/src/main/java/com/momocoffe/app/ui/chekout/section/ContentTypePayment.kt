@@ -112,11 +112,13 @@ fun ContentTypePayment(
     LaunchedEffect(key1 = true) {
         SocketHandler.getSocket().on("building_finish_socket_app", Emitter.Listener { args ->
             val data = args[0] as JSONObject
-            val editor = sharedPreferences.edit()
-            editor.putString("bildingId", data.getString("bilding_id"))
-            editor.apply()
-            showModalConfirmPayment = false
-            showModalConfirmEmail = true
+            if(data.getString("shopping_id") ==  shopping_id && data.getString("kiosko_id") == kiosko_id) {
+                val editor = sharedPreferences.edit()
+                editor.putString("bildingId", data.getString("bilding_id"))
+                editor.apply()
+                showModalConfirmPayment = false
+                showModalConfirmEmail = true
+            }
         })
     }
 
@@ -177,6 +179,7 @@ fun ContentTypePayment(
                 result.isSuccess -> {
                     val shoppingResponse = result.getOrThrow()
                 }
+
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
                     Log.e("Result.BuildingViewModel", exception.toString())
@@ -222,7 +225,7 @@ fun ContentTypePayment(
         }
     }
 
-    LaunchedEffect(buildingViewModel.emailResultState.value){
+    LaunchedEffect(buildingViewModel.emailResultState.value) {
         buildingViewModel.emailResultState.value?.let { result ->
             when {
                 result.isSuccess -> {
@@ -309,6 +312,25 @@ fun ContentTypePayment(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
+
+                                buildingViewModel.payment(
+                                    invoice = BuildingRequest(
+                                        name = invite,
+                                        emailPayment = "",
+                                        shoppingID = shopping_id,
+                                        kioskoID = kiosko_id,
+                                        typePayment = "card",
+                                        propina = valuePropina.toString(),
+                                        mountReceive = "",
+                                        mountDiscount = valueCupon.toString(),
+                                        cupon = "",
+                                        iva = "",
+                                        subtotal = valueSubTotal.toString(),
+                                        total = valueTotal.toString(),
+                                        state = "pending",
+                                        product = productListString,
+                                    )
+                                )
                                 try {
                                     val intent = Intent()
                                     intent.component = ComponentName(

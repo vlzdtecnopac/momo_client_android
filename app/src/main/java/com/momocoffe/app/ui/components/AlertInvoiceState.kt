@@ -96,93 +96,94 @@ fun SuccessPaymentModal(
 
     var cart = viewCartModel.state
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         shoppingViewModel.getConfigShopping(shoppingId)
     }
 
     LaunchedEffect(shoppingViewModel.shoppingConfigState.value) {
-            shoppingViewModel.shoppingConfigState.value?.let { result ->
-                when {
-                    result.isSuccess -> {
-                        val configResponse = result.getOrThrow()
-                        optionsColumn = configResponse.typeColumn
-                    }
-
-                    result.isFailure -> {
-                        val exception = result.exceptionOrNull()
-                        Log.e("Result.ShoppingModel", exception.toString())
-                    }
-
-                    else -> {}
+        shoppingViewModel.shoppingConfigState.value?.let { result ->
+            when {
+                result.isSuccess -> {
+                    val configResponse = result.getOrThrow()
+                    optionsColumn = configResponse.typeColumn
                 }
+
+                result.isFailure -> {
+                    val exception = result.exceptionOrNull()
+                    Log.e("Result.ShoppingModel", exception.toString())
+                }
+
+                else -> {}
             }
+        }
     }
 
-    LaunchedEffect(shoppingViewModel.loadingState.value){
-    if (!shoppingViewModel.loadingState.value) {
-        val newProducts = cart.carts.mapIndexed { index, item ->
-            val itemsModifiersOptions = parseItemModifiers(item.modifiersOptions)
-            Producto(
-                id = item.id.toString(),
-                name_product = item.titleProduct,
-                price = item.priceProduct.toInt(),
-                image = item.imageProduct,
-                extra = Extra(
-                    size = Size(
-                        itemsModifiersOptions["size"]?.name ?: "",
-                        itemsModifiersOptions["size"]?.price?.toInt() ?: 0
-                    ),
-                    milk = Milk(
-                        itemsModifiersOptions["milk"]?.name ?: "",
-                        itemsModifiersOptions["milk"]?.price?.toInt() ?: 0
-                    ),
-                    sugar = Sugar(
-                        itemsModifiersOptions["sugar"]?.name ?: "",
-                        itemsModifiersOptions["sugar"]?.price?.toInt() ?: 0
-                    ),
-                    extra_coffee = itemsModifiersOptions["extra"]?.let {
-                        listOf(
-                            ExtraCoffee(
-                                it.name,
-                                it.price
+
+    LaunchedEffect(shoppingViewModel.loadingState.value) {
+        if (!shoppingViewModel.loadingState.value) {
+            val newProducts = cart.carts.mapIndexed { index, item ->
+                val itemsModifiersOptions = parseItemModifiers(item.modifiersOptions)
+                Producto(
+                    id = item.id.toString(),
+                    name_product = item.titleProduct,
+                    price = item.priceProduct.toInt(),
+                    image = item.imageProduct,
+                    extra = Extra(
+                        size = Size(
+                            itemsModifiersOptions["size"]?.name ?: "",
+                            itemsModifiersOptions["size"]?.price?.toInt() ?: 0
+                        ),
+                        milk = Milk(
+                            itemsModifiersOptions["milk"]?.name ?: "",
+                            itemsModifiersOptions["milk"]?.price?.toInt() ?: 0
+                        ),
+                        sugar = Sugar(
+                            itemsModifiersOptions["sugar"]?.name ?: "",
+                            itemsModifiersOptions["sugar"]?.price?.toInt() ?: 0
+                        ),
+                        extra_coffee = itemsModifiersOptions["extra"]?.let {
+                            listOf(
+                                ExtraCoffee(
+                                    it.name,
+                                    it.price
+                                )
                             )
-                        )
-                    } ?: listOf(),
-                    lid = itemsModifiersOptions["libTapa"]?.let {
-                        listOf(
-                            Lid(
-                                it.name,
-                                it.price.toInt()
+                        } ?: listOf(),
+                        lid = itemsModifiersOptions["libTapa"]?.let {
+                            listOf(
+                                Lid(
+                                    it.name,
+                                    it.price.toInt()
+                                )
                             )
-                        )
-                    } ?: listOf(),
-                    sauce = listOf(Sauce("", 0)),
-                    temperature = Temperature("", 0),
-                    color = "",
-                    coffee_type = Any()
-                ),
-                quanty = item.countProduct,
-                subtotal = item.priceProductMod.toInt()
+                        } ?: listOf(),
+                        sauce = listOf(Sauce("", 0)),
+                        temperature = Temperature("", 0),
+                        color = "",
+                        coffee_type = Any()
+                    ),
+                    quanty = item.countProduct,
+                    subtotal = item.priceProductMod.toInt()
+                )
+            }
+
+
+            if (optionsColumn.toInt() <= 1) {
+                optionsColumn = "8"
+            } else {
+                optionsColumn = "4"
+            }
+
+            val pedidoData = PedidoRequest(
+                name_client = nameClient,
+                shopping_id = shoppingId,
+                kiosko_id = kioskoId,
+                columns_pending = optionsColumn.toInt(),
+                product = productosToString(newProducts)
             )
+
+            pedidoViewModel.create(pedidoData)
         }
-
-
-        if (optionsColumn.toInt() <= 1) {
-            optionsColumn = "8"
-        } else {
-            optionsColumn = "4"
-        }
-
-        val pedidoData = PedidoRequest(
-            name_client = nameClient,
-            shopping_id = shoppingId,
-            kiosko_id = kioskoId,
-            columns_pending = optionsColumn.toInt(),
-            product = productosToString(newProducts)
-        )
-
-        pedidoViewModel.create(pedidoData)
-    }
     }
 
     Dialog(
@@ -202,12 +203,12 @@ fun SuccessPaymentModal(
         ) {
             if (showModalConfirmEmail) {
                 ConfirmEmailModal(
-                    title =  stringResource(id = R.string.payment_success_received_processed),
+                    title = stringResource(id = R.string.payment_success_received_processed),
                     subTitle = stringResource(id = R.string.please_enter_email_send_invoice),
                     onCancel = {
                         showModalConfirmEmail = false
                     },
-                    onSelect = {email ->
+                    onSelect = { email ->
                         buildingViewModel.sendClientEmailInvoice(
                             ClientEmailInvoiceRequest(
                                 from = "Nueva Factura - Momo Coffe <davidvalenzuela@tecnopac.com.co>",
