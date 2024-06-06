@@ -43,6 +43,8 @@ fun OptionsModifier(productsItem: ProductsItem,
     var optionsSizeItems: ProductOptionsSizeResponse? by remember { mutableStateOf(null) }
     var selectedOptions by remember { mutableStateOf(SelectedOptions()) }
 
+    Log.d("Result.ModifiersViewModel", selectedOptions.toString())
+
     LaunchedEffect(Unit) {
         productsViewModel.productOptions(product_id = productsItem.productID)
         productsViewModel.productOptionsSize(nameProduct = productsItem.nameProduct)
@@ -234,6 +236,41 @@ fun OptionsModifier(productsItem: ProductsItem,
                             ItemBox(product.id, product.name, product.price)
                         },
                         defaultSelect = "Sin Azucar|Original|Sin azucar")
+                }
+            }
+        }
+
+        if(optionsItems?.endulzante?.isNotEmpty() == true) {
+            optionsItems?.let { options ->
+                var newsItems = mutableListOf<ItemBox>()
+                if (options.endulzante.isNotEmpty()) {
+                    options.endulzante.map { product ->
+                        if (newsItems.none { it.name == product.name }) {
+                            newsItems.add(
+                                ItemBox(
+                                    product.id.toString(),
+                                    product.name,
+                                    product.price.toInt()
+                                )
+                            )
+                        }
+                    }
+                }
+
+                if (newsItems.size > 0) {
+                    BoxOptions(
+                        iconResource = R.drawable.sugar_icon,
+                        textResource = R.string.txt_sugar,
+                        onSelectPrice = { id, price, name ->
+                            selectedOptions = selectedOptions.copy(sugar = price)
+                            val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
+                            updatedMap["endulzante"] = ItemModifier(name, price.toString())
+                            productsViewModel.selectModifiersOptions = updatedMap
+                        },
+                        items = newsItems.map { product ->
+                            ItemBox(product.id, product.name, product.price)
+                        },
+                        defaultSelect = "")
                 }
             }
         }

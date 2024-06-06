@@ -8,6 +8,9 @@ data class ProductOptionsResponse (
     @SerializedName("azúcar")
     val azúcar: List<ItemProductModifier>,
 
+    @SerializedName("endulzante")
+    val endulzante: List<ItemProductModifier>,
+
     @SerializedName("leche")
     val leche: List<ItemProductModifier>,
 
