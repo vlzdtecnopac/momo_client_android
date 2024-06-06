@@ -63,7 +63,7 @@ jobs:
          with:
            name: app-bundle
            path: app/build/outputs/bundle/release/app-release.aab
-           retention-days: 5
+           retention-days: 2
 
       # Step 10 - Print out the Job Status
       -  run: echo Build status report=${{ job.status }}
