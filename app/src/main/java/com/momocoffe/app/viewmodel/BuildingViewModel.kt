@@ -48,6 +48,7 @@ class BuildingViewModel : ViewModel() {
                 loadingState.value = true
                 try {
                     val response = apiEmailSmsService.sendEmailInvoice(clientEmail)
+
                     if (response.isSuccessful) {
                         val emailResponse: ClientEmailSMSResponse? = response.body()
                         if (emailResponse != null) {

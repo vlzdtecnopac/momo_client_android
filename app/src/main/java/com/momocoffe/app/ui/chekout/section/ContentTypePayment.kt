@@ -120,7 +120,6 @@ fun ContentTypePayment(
                         val bildingId = buildingObject.getString("bilding_id")
                         val shoppingId = buildingObject.getString("shopping_id")
                         val kioskoId = buildingObject.getString("kiosko_id")
-                        Log.d("Result.EmailViewModel", bildingId.toString())
                         if (shoppingId == shopping_id && kioskoId == kiosko_id) {
                             val editor = sharedPreferences.edit()
                             editor.putString("bildingId", bildingId)

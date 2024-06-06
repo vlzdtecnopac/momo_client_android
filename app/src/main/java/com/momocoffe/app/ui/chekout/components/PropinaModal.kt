@@ -110,7 +110,7 @@ fun PropinaModal(
                         icon = null,
                         keyboardType = KeyboardType.Number,
                         textValue = textState,
-                        onValueChange = { textState = it },
+                        onValueChange = { textState = it.filter { char -> char.isDigit() } },
                         onClickButton = { textState = "" },
                         borderColor = BlueDark,
                         onDone = {
