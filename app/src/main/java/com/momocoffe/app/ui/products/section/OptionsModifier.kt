@@ -112,7 +112,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(size = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
-                            updatedMap["size"] = ItemModifier(name, price.toString())
+                            updatedMap["size"] = ItemModifier(id, name, price.toString())
                             productsViewModel.selectModifiersOptions = updatedMap
                             onSelectID(id)
                         },
@@ -134,7 +134,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemBox(
-                                    product.id.toString(),
+                                    product.localCode,
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -150,7 +150,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(temperatureFood = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
-                            updatedMap["temp"] = ItemModifier(name, price.toString())
+                            updatedMap["temp"] = ItemModifier(id, name, price.toString())
                             productsViewModel.selectModifiersOptions = updatedMap
                         },
                         items = newsItems.map { product ->
@@ -177,7 +177,7 @@ fun OptionsModifier(productsItem: ProductsItem,
 
                             newsItems.add(
                                 ItemBox(
-                                    product.id.toString(),
+                                    product.localCode,
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -192,7 +192,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(milk = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
-                            updatedMap["milk"] = ItemModifier(name, price.toString())
+                            updatedMap["milk"] = ItemModifier(id, name, price.toString())
                             productsViewModel.selectModifiersOptions = updatedMap
                         },
                         items = newsItems.map { product ->
@@ -211,7 +211,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemBox(
-                                    product.id.toString(),
+                                    product.localCode,
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -227,7 +227,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(sugar = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
-                            updatedMap["sugar"] = ItemModifier(name, price.toString())
+                            updatedMap["sugar"] = ItemModifier(id, name, price.toString())
                             productsViewModel.selectModifiersOptions = updatedMap
                         },
                         items = newsItems.map { product ->
@@ -246,7 +246,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemBox(
-                                    product.id.toString(),
+                                    product.localCode,
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -262,7 +262,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(endulzante = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
-                            updatedMap["endulzante"] = ItemModifier(name, price.toString())
+                            updatedMap["endulzante"] = ItemModifier(id, name, price.toString())
                             productsViewModel.selectModifiersOptions = updatedMap
                             Log.d("Result.ModifiersViewModel",  productsViewModel.selectModifiersOptions.toString())
                         },
@@ -282,7 +282,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemList(
-                                    product.id.toString(),
+                                    product.localCode,
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -293,10 +293,10 @@ fun OptionsModifier(productsItem: ProductsItem,
                 if (newsItems.size > 0) {
                     ListOptions(
                         iconResource = R.drawable.extra_icon,
-                        onSelectPrice = { price, name ->
+                        onSelectPrice = {id, price, name ->
                             selectedOptions = selectedOptions.copy(extraShot = price)
                             val updatedMap = productsViewModel.selectModifiersList.toMutableMap()
-                            updatedMap["extra"] =  ItemModifier(name, price.toString())
+                            updatedMap["extra"] =  ItemModifier(id, name, price.toString())
                             productsViewModel.selectModifiersList = updatedMap
                         },
                         items = newsItems.map { product ->
@@ -318,7 +318,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemList(
-                                    product.id.toString(),
+                                    product.localCode,
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -329,10 +329,10 @@ fun OptionsModifier(productsItem: ProductsItem,
 
                 if (newsItems.size > 0) {
                     ListOptions(iconResource = R.drawable.tapa_icon,
-                        onSelectPrice = { price, name ->
+                        onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(tapLib = price)
                             val updatedMap = productsViewModel.selectModifiersList.toMutableMap()
-                            updatedMap["libTapa"] =  ItemModifier(name, price.toString())
+                            updatedMap["libTapa"] =  ItemModifier(id, name, price.toString())
                             productsViewModel.selectModifiersList = updatedMap
                         },
                         items = newsItems.map { product ->
@@ -354,7 +354,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                         if (newsItems.none { it.name == product.name }) {
                             newsItems.add(
                                 ItemBox(
-                                    product.id.toString(),
+                                    product.localCode,
                                     product.name,
                                     product.price.toInt()
                                 )
@@ -365,10 +365,10 @@ fun OptionsModifier(productsItem: ProductsItem,
                 if (newsItems.size > 0) {
                     ListOptions(
                         iconResource = R.drawable.salsa_icon,
-                        onSelectPrice = { price, name ->
+                        onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(extraShot = price)
                             val updatedMap = productsViewModel.selectModifiersList.toMutableMap()
-                            updatedMap["sauce"] =  ItemModifier(name, price.toString())
+                            updatedMap["sauce"] =  ItemModifier(id, name, price.toString())
                             productsViewModel.selectModifiersList = updatedMap
                         },
                         items = newsItems.map { product ->

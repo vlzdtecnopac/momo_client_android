@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 data class ItemModifier(
+    val id: String,
     val name: String,
     val price: String
 )

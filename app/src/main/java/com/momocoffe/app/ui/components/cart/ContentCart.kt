@@ -1,5 +1,6 @@
 package com.momocoffe.app.ui.components.cart
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -377,24 +378,25 @@ fun TotalPayment(navController: NavController, cartViewModel: CartViewModel) {
 
 fun parseObject(input: String): List<ItemModifier> {
 
-    val regex = Regex("""ItemModifier\(name=(.*?), price=(\d+)\)""")
+    val regex = Regex("""ItemModifier\(id=(.*?), name=(.*?), price=(\d+)\)""")
 
     val matches = regex.findAll(input)
     val itemModifiers = matches.map { matchResult ->
-        val (name, price) = matchResult.destructured
-        ItemModifier(name.trim(), price)
+        val (id, name, price) = matchResult.destructured
+        ItemModifier(id, name.trim(), price)
     }.toList()
 
     return itemModifiers
 }
 
 fun parseItemModifiers(input: String): Map<String, ItemModifier> {
-    val itemModifiersRegex = Regex("([a-zA-Z]+)=ItemModifier\\(name=([^,]+), price=(\\d+)\\)")
+
+    val itemModifiersRegex = Regex("([a-zA-Z]+)=ItemModifier\\(id=([^\\s,]+), name=([^\\s,]+), price=(\\d+)\\)")
     val itemModifiers = mutableMapOf<String, ItemModifier>()
 
     itemModifiersRegex.findAll(input).forEach { matchResult ->
-        val (key, name, price) = matchResult.destructured
-        itemModifiers[key] = ItemModifier(name, price)
+        val (key, id, name, price) = matchResult.destructured
+        itemModifiers[key] = ItemModifier(id, name, price)
     }
 
     return itemModifiers

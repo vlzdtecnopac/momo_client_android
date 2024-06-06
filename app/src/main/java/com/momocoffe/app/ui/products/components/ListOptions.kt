@@ -48,7 +48,7 @@ data class ItemList(val id: String, val name: String, val price: Int)
 @Composable
 fun ListOptions(
     iconResource: Int,
-    onSelectPrice: (Int, String) -> Unit,
+    onSelectPrice: (String, Int, String) -> Unit,
     items: List<ItemList>,
     defaultSelect: String
 ) {
@@ -59,7 +59,7 @@ fun ListOptions(
     LaunchedEffect(Unit){
         val selected = items.find { it.name == defaultSelect}
         if (selected != null) {
-            onSelectPrice(selected.price, selected.name)
+            onSelectPrice(selected.id, selected.price, selected.name)
             isItemActive.value = selected.id
             selectOption.value = selected.name
         }
@@ -117,11 +117,11 @@ fun ListOptions(
                             onCheckedChange = {
                                 checked.value = it
                                 if (checked.value) {
-                                    onSelectPrice(item.price, item.name)
+                                    onSelectPrice(item.id,item.price, item.name)
                                     isItemActive.value = item.id
                                     selectOption.value = item.name
                                 }else{
-                                    onSelectPrice(0, "")
+                                    onSelectPrice("",0, "")
                                     isItemActive.value = ""
                                     selectOption.value = ""
                                 }
