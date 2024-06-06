@@ -116,7 +116,7 @@ interface ApiService {
     @POST("/payment/create")
     suspend fun createBuilding(@Body requestBody: BuildingRequest): Response<BuildingResponse>
 
-    @PUT("/payment/bilding/{bilding_id}")
-    suspend fun updateBilding( @Path("bilding_id") bildingId: String?, @Body() requestBody: UpdateBilingRequest ): Response<GeneralResponse>
+    @PUT("/payment/bilding/{building_id}")
+    suspend fun updateBilding( @Path("building_id") bildingId: String?, @Body() requestBody: UpdateBilingRequest ): Response<GeneralResponse>
 
 }
