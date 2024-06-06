@@ -4,17 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.momocoffe.app.network.data.CreatePedidoResponse
-import com.momocoffe.app.network.dto.Extra
-import com.momocoffe.app.network.dto.ExtraCoffee
-import com.momocoffe.app.network.dto.Lid
-import com.momocoffe.app.network.dto.Milk
+import com.momocoffe.app.network.data.GeneralResponse
 import com.momocoffe.app.network.dto.PedidoRequest
-import com.momocoffe.app.network.dto.Producto
-import com.momocoffe.app.network.dto.Size
-import com.momocoffe.app.network.dto.Sugar
-import com.momocoffe.app.network.dto.Temperature
-import com.momocoffe.app.network.dto.productosToString
 import com.momocoffe.app.network.repository.ApiService
 import com.momocoffe.app.network.repository.RetrofitHelper
 import kotlinx.coroutines.launch
@@ -22,7 +13,7 @@ import kotlinx.coroutines.launch
 class PedidoViewModel: ViewModel(){
     private val apiService: ApiService = RetrofitHelper.apiService()
     val loadingState = mutableStateOf(false)
-    val pedidoResultState = mutableStateOf<Result<CreatePedidoResponse>?>(null)
+    val pedidoResultState = mutableStateOf<Result<GeneralResponse>?>(null)
 
     fun create(pedidoData: PedidoRequest){
         loadingState.value = true
@@ -30,7 +21,7 @@ class PedidoViewModel: ViewModel(){
             try{
                 val response =  apiService.createPedido(pedidoData)
                 if(response.isSuccessful){
-                    val pedidoResponse: CreatePedidoResponse? = response.body()
+                    val pedidoResponse: GeneralResponse? = response.body()
                     if(pedidoResponse != null){
                         pedidoResultState.value = Result.success(pedidoResponse)
                     }else{

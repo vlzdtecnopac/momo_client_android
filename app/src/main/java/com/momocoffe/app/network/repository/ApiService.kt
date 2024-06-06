@@ -1,7 +1,7 @@
 package com.momocoffe.app.network.repository
 
-import com.momocoffe.app.network.data.CreatePedidoResponse
 import com.momocoffe.app.network.data.ExchangeRateResponse
+import com.momocoffe.app.network.data.GeneralResponse
 import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.ClientReceptorEmailRequest
@@ -12,6 +12,7 @@ import com.momocoffe.app.network.dto.ClientSessionPhoneRequest
 import com.momocoffe.app.network.dto.LoginRequest
 import com.momocoffe.app.network.dto.PedidoRequest
 import com.momocoffe.app.network.dto.RefreshToken
+import com.momocoffe.app.network.dto.UpdateBilingRequest
 import com.momocoffe.app.network.dto.VerifyKioskoRequest
 import com.momocoffe.app.network.response.BuildingResponse
 import com.momocoffe.app.network.response.CategoriesResponse
@@ -34,6 +35,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -109,9 +111,12 @@ interface ApiService {
     suspend fun getCuponMomo(@Query("name_cupon") cuponCode: String): Response<CuponesResponse>
 
     @POST("/pedido/create")
-    suspend fun createPedido(@Body requestBody: PedidoRequest): Response<CreatePedidoResponse>
+    suspend fun createPedido(@Body requestBody: PedidoRequest): Response<GeneralResponse>
 
     @POST("/payment/create")
     suspend fun createBuilding(@Body requestBody: BuildingRequest): Response<BuildingResponse>
+
+    @PUT("/payment/bilding/{bilding_id}")
+    suspend fun updateBilding( @Path("bilding_id") bildingId: String?, @Body() requestBody: UpdateBilingRequest ): Response<GeneralResponse>
 
 }
