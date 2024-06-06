@@ -5,13 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -61,15 +58,12 @@ import com.momocoffe.app.ui.chekout.components.ConfirmPayment
 import com.momocoffe.app.ui.chekout.components.OutTextField
 import com.momocoffe.app.ui.components.cart.parseItemModifiers
 import com.momocoffe.app.ui.theme.BlueDark
-import com.momocoffe.app.ui.theme.BlueDarkTransparent
 import com.momocoffe.app.ui.theme.BlueLight
 import com.momocoffe.app.ui.theme.OrangeDark
 import com.momocoffe.app.ui.theme.redhatFamily
 import com.momocoffe.app.viewmodel.BuildingViewModel
 import com.momocoffe.app.viewmodel.CartViewModel
 import com.momocoffe.app.viewmodel.ClientViewModel
-import com.momocoffe.app.viewmodel.ShoppingViewModel
-import com.spr.jetpack_loading.components.indicators.BallClipRotatePulseIndicator
 import io.socket.emitter.Emitter
 import org.json.JSONObject
 
@@ -84,7 +78,6 @@ fun ContentTypePayment(
     navController: NavController,
     cartViewModel: CartViewModel,
     clientViewModel: ClientViewModel = viewModel(),
-    shoppingViewModel: ShoppingViewModel = viewModel(),
     buildingViewModel: BuildingViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -102,7 +95,6 @@ fun ContentTypePayment(
     val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
 
     LaunchedEffect(Unit) {
-        shoppingViewModel.getShopping(shopping_id)
         if (client_id.isNotBlank()) {
             clientViewModel.getClient("", "", client_id)
         }
@@ -200,21 +192,6 @@ fun ContentTypePayment(
         productListString = productosToString(newProducts)
     }
 
-    LaunchedEffect(shoppingViewModel.shoppingResultState.value) {
-        shoppingViewModel.shoppingResultState.value?.let { result ->
-            when {
-                result.isSuccess -> {
-                    val shoppingResponse = result.getOrThrow()
-                }
-
-                result.isFailure -> {
-                    val exception = result.exceptionOrNull()
-                    Log.e("Result.BuildingViewModel", exception.toString())
-                }
-            }
-        }
-    }
-
 
     LaunchedEffect(clientViewModel.clientResultCheckEmailState.value) {
         clientViewModel.clientResultCheckEmailState.value?.let { result ->
@@ -256,7 +233,6 @@ fun ContentTypePayment(
         buildingViewModel.emailResultState.value?.let { result ->
             when {
                 result.isSuccess -> {
-                    val emailResponse = result.getOrThrow()
                     showModalConfirmEmail = false
                     cartViewModel.clearAllCart()
                     navController.navigate(Destination.OrderHere.route)
