@@ -260,7 +260,7 @@ fun OptionsModifier(productsItem: ProductsItem,
                 if (newsItems.size > 0) {
                     BoxOptions(
                         iconResource = R.drawable.sugar_icon,
-                        textResource = R.string.txt_sugar,
+                        textResource = R.string.txt_endulzante,
                         onSelectPrice = { id, price, name ->
                             selectedOptions = selectedOptions.copy(sugar = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()

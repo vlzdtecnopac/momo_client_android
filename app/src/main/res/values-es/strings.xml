@@ -71,6 +71,7 @@
     <string name="txt_sugar">Azúcar</string>
     <string name="txt_milk">Leche</string>
     <string name="txt_temp">Temperatura</string>
+    <string name="txt_endulzante">Endulzante</string>
     <string name="txt_sauces">Salsas</string>
     <string name="add_cart_payment">Agregar al carrito</string>
     <string name="txt_add">Agregar</string>
