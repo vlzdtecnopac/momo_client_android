@@ -130,4 +130,5 @@
     <string name="please_barista_go">Please go to your barista.</string>
     <string name="completed_transaccion">para completar la transacción"</string>
     <string name="txt_exit">Exit</string>
+    <string name="validate_products">There are no products to buy</string>
 </resources>

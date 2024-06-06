@@ -93,6 +93,7 @@ fun ContentTypePayment(
     var productListString by remember { mutableStateOf(value = "") }
     var validTypePayment by remember { mutableStateOf(value = 0) }
     val enterNameInvited = stringResource(id = R.string.enter_name_invitado)
+    val notFoundProducts = stringResource(id = R.string.validate_products)
 
     LaunchedEffect(Unit) {
         if (client_id.isNotBlank()) {
@@ -315,6 +316,16 @@ fun ContentTypePayment(
                                 ).show()
                             } else {
 
+                                if(valueTotal == 0f || valueTotal.isNaN()){
+                                    Toast.makeText(
+                                        context,
+                                        notFoundProducts,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    return@Button
+                                }
+
                                 buildingViewModel.payment(
                                     invoice = BuildingRequest(
                                         name = invite,
@@ -400,6 +411,16 @@ fun ContentTypePayment(
                                     Toast.LENGTH_SHORT
                                 ).show()
                             } else {
+                                if(valueTotal == 0f || valueTotal.isNaN()){
+                                    Toast.makeText(
+                                        context,
+                                        notFoundProducts,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                    return@Button
+                                }
+
                                 buildingViewModel.payment(
                                     invoice = BuildingRequest(
                                         name = invite,
