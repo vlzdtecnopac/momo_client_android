@@ -88,7 +88,7 @@ fun ContentTypePayment(
 
     var showModalConfirmPayment by remember { mutableStateOf(value = false) }
     var showModalConfirmEmail by remember { mutableStateOf(value = false) }
-    var invite by remember { mutableStateOf(value = "") }
+    var invite by remember { mutableStateOf(value = "Invitado") }
     var email by remember { mutableStateOf(value = "") }
     var productListString by remember { mutableStateOf(value = "") }
     var validTypePayment by remember { mutableStateOf(value = 0) }
