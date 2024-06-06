@@ -3,7 +3,6 @@ package com.momocoffe.app.ui.components
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,8 +45,6 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.momocoffe.app.App
 import com.momocoffe.app.R
-import com.momocoffe.app.navigation.Destination
-import com.momocoffe.app.network.dto.BuildingRequest
 import com.momocoffe.app.network.dto.ClientEmailInvoiceRequest
 import com.momocoffe.app.network.dto.Extra
 import com.momocoffe.app.network.dto.ExtraCoffee
@@ -60,6 +56,7 @@ import com.momocoffe.app.network.dto.Sauce
 import com.momocoffe.app.network.dto.Size
 import com.momocoffe.app.network.dto.Sugar
 import com.momocoffe.app.network.dto.Temperature
+import com.momocoffe.app.network.dto.UpdateBilingRequest
 import com.momocoffe.app.network.dto.productosToString
 import com.momocoffe.app.ui.chekout.components.ConfirmEmailModal
 import com.momocoffe.app.ui.components.cart.parseItemModifiers
@@ -80,7 +77,7 @@ fun AlertInvoiceState(stateInvoice: String, viewCartModel: CartViewModel, resetS
 
     when (stateInvoice) {
         "completed" -> SuccessPaymentModal(viewCartModel = viewCartModel, resetState)
-        "cancelled" -> CancelPaymentModal(viewCartModel = viewCartModel, resetState)
+        "cancelled" -> CancelPaymentModal(resetState, viewCartModel = viewCartModel)
         "failed" -> ErrorPaymentModal(resetState)
         else -> {}
     }
@@ -100,9 +97,10 @@ fun SuccessPaymentModal(
     val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
     val shoppingId = sharedPreferences.getString("shoppingId", null) ?: ""
     val kioskoId = sharedPreferences.getString("kioskoId", null) ?: ""
+    val bildingId = sharedPreferences.getString("bildingId", null) ?: ""
     val nameClient = sharedPreferences.getString("nameClient", null) ?: "MOMO"
 
-    var cart = viewCartModel.state
+    val cart = viewCartModel.state
 
     LaunchedEffect(Unit) {
         shoppingViewModel.getConfigShopping(shoppingId)
@@ -114,8 +112,18 @@ fun SuccessPaymentModal(
                 result.isSuccess -> {
                     val configResponse = result.getOrThrow()
                     optionsColumn = configResponse.typeColumn
+                    buildingViewModel.updatePayment(bildingId, UpdateBilingRequest(
+                        shoppingID = shoppingId,
+                        kioskoID = kioskoId,
+                        state = "completed",
+                        typePayment = "card",
+                        toteatCheck = true,
+                        status = "created",
+                        type="takeaway",
+                        channel = "pos",
+                        vendorName = "MOMO APP"
+                    ))
                 }
-
                 result.isFailure -> {
                     val exception = result.exceptionOrNull()
                     Log.e("Result.ShoppingModel", exception.toString())
@@ -252,7 +260,6 @@ fun SuccessPaymentModal(
                         resetState()
                     },
                     onSelect = { email ->
-                        val bildingId = sharedPreferences.getString("bildingId", null) ?: ""
                         buildingViewModel.sendClientEmailInvoice(
                             ClientEmailInvoiceRequest(
                                 from = "Nueva Factura - Momo Coffe <davidvalenzuela@tecnopac.com.co>",
@@ -395,8 +402,27 @@ fun SuccessPaymentModal(
 
 @Composable
 fun ErrorPaymentModal(
-    resetState: () -> Unit
+    resetState: () -> Unit,
+    buildingViewModel: BuildingViewModel = viewModel()
 ) {
+    val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val shoppingId = sharedPreferences.getString("shoppingId", null) ?: ""
+    val kioskoId = sharedPreferences.getString("kioskoId", null) ?: ""
+    val bildingId = sharedPreferences.getString("bildingId", null) ?: ""
+
+    LaunchedEffect(Unit){
+        buildingViewModel.updatePayment(bildingId, UpdateBilingRequest(
+            shoppingID = shoppingId,
+            kioskoID = kioskoId,
+            state = "failed",
+            typePayment = "card",
+            toteatCheck = false,
+            status = "created",
+            type="takeaway",
+            channel = "pos",
+            vendorName = "MOMO APP"
+        ))
+    }
     Dialog(
         onDismissRequest = {},
         DialogProperties(
@@ -541,11 +567,28 @@ fun ErrorPaymentModal(
 
 @Composable
 fun CancelPaymentModal(
+    resetState: () -> Unit,
     viewCartModel: CartViewModel,
-    resetState: () -> Unit
+    buildingViewModel: BuildingViewModel = viewModel()
+
 ) {
+    val sharedPreferences = App.instance.getSharedPreferences("momo_prefs", Context.MODE_PRIVATE)
+    val shoppingId = sharedPreferences.getString("shoppingId", null) ?: ""
+    val kioskoId = sharedPreferences.getString("kioskoId", null) ?: ""
+    val bildingId = sharedPreferences.getString("bildingId", null) ?: ""
 
     LaunchedEffect(Unit) {
+        buildingViewModel.updatePayment(bildingId, UpdateBilingRequest(
+            shoppingID = shoppingId,
+            kioskoID = kioskoId,
+            state = "canceled",
+            typePayment = "card",
+            toteatCheck = false,
+            status = "created",
+            type="takeaway",
+            channel = "pos",
+            vendorName = "MOMO APP"
+        ))
         viewCartModel.clearAllCart()
     }
 

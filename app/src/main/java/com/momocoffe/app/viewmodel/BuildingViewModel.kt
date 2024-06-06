@@ -19,7 +19,7 @@ class BuildingViewModel : ViewModel() {
     private val apiEmailSmsService: ApiService = RetrofitHelper.apiLambdaService()
     private val apiService: ApiService = RetrofitHelper.apiService()
     val buildingResultState = mutableStateOf<Result<BuildingResponse>?>(null)
-    val emailResultState =  mutableStateOf<Result<ClientEmailSMSResponse>?>(null)
+    val emailResultState = mutableStateOf<Result<ClientEmailSMSResponse>?>(null)
     val buildingUpdateResultState = mutableStateOf<Result<GeneralResponse>?>(null)
     fun payment(invoice: BuildingRequest) {
         loadingState.value = true
@@ -30,11 +30,12 @@ class BuildingViewModel : ViewModel() {
                     val buildingResponse: BuildingResponse? = response.body()
                     if (buildingResponse != null) {
                         buildingResultState.value = Result.success(buildingResponse)
-                    }else{
+                    } else {
                         buildingResultState.value = Result.failure(Exception("Empty response body"))
                     }
-                }else{
-                    buildingResultState.value = Result.failure(Exception(response.body().toString()))
+                } else {
+                    buildingResultState.value =
+                        Result.failure(Exception(response.body().toString()))
                 }
             } catch (e: Exception) {
                 Log.e("Result.BuildingViewModel", e.message.toString())
@@ -45,7 +46,7 @@ class BuildingViewModel : ViewModel() {
         }
     }
 
-    fun updatePayment(bildingId: String, invoice: UpdateBilingRequest){
+    fun updatePayment(bildingId: String, invoice: UpdateBilingRequest) {
         loadingState.value = true
         viewModelScope.launch {
             try {
@@ -54,11 +55,13 @@ class BuildingViewModel : ViewModel() {
                     val buildingResponse: GeneralResponse? = response.body()
                     if (buildingResponse != null) {
                         buildingUpdateResultState.value = Result.success(buildingResponse)
-                    }else{
-                        buildingUpdateResultState.value = Result.failure(Exception("Empty response body"))
+                    } else {
+                        buildingUpdateResultState.value =
+                            Result.failure(Exception("Empty response body"))
                     }
-                }else{
-                    buildingUpdateResultState.value = Result.failure(Exception(response.body().toString()))
+                } else {
+                    buildingUpdateResultState.value =
+                        Result.failure(Exception(response.body().toString()))
                 }
             } catch (e: Exception) {
                 Log.e("Result.BuildingViewModel", e.message.toString())
@@ -69,32 +72,32 @@ class BuildingViewModel : ViewModel() {
         }
     }
 
-    fun sendClientEmailInvoice(clientEmail: ClientEmailInvoiceRequest){
+    fun sendClientEmailInvoice(clientEmail: ClientEmailInvoiceRequest) {
         Log.d("Result.EmailSmsViewModel", clientEmail.toString());
-            viewModelScope.launch {
-                loadingState.value = true
-                try {
-                    val response = apiEmailSmsService.sendEmailInvoice(clientEmail)
+        viewModelScope.launch {
+            loadingState.value = true
+            try {
+                val response = apiEmailSmsService.sendEmailInvoice(clientEmail)
 
-                    if (response.isSuccessful) {
-                        val emailResponse: ClientEmailSMSResponse? = response.body()
-                        if (emailResponse != null) {
-                            emailResultState.value = Result.success(emailResponse)
-                        }else{
-                            emailResultState.value = Result.failure(Exception("Empty response body"))
-                        }
+                if (response.isSuccessful) {
+                    val emailResponse: ClientEmailSMSResponse? = response.body()
+                    if (emailResponse != null) {
+                        emailResultState.value = Result.success(emailResponse)
                     } else {
-                        emailResultState.value = Result.failure(Exception("Email send invoice failed"))
+                        emailResultState.value = Result.failure(Exception("Empty response body"))
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Log.e("Result.BuildingViewModel", e.message.toString())
-                } finally {
-                    loadingState.value = false
+                } else {
+                    emailResultState.value = Result.failure(Exception("Email send invoice failed"))
                 }
-
-                Log.d("Result.EmailSmsViewModel", emailResultState.value.toString());
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("Result.BuildingViewModel", e.message.toString())
+            } finally {
+                loadingState.value = false
             }
+
+            Log.d("Result.EmailSmsViewModel", emailResultState.value.toString());
+        }
 
     }
 }
