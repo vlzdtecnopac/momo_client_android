@@ -32,7 +32,7 @@ import com.momocoffe.app.R
 import com.momocoffe.app.ui.theme.redhatFamily
 import java.time.format.TextStyle
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun OutlineTextField(
     label: String,
