@@ -43,8 +43,6 @@ fun OptionsModifier(productsItem: ProductsItem,
     var optionsSizeItems: ProductOptionsSizeResponse? by remember { mutableStateOf(null) }
     var selectedOptions by remember { mutableStateOf(SelectedOptions()) }
 
-    Log.d("Result.ModifiersViewModel", selectedOptions.toString())
-
     LaunchedEffect(Unit) {
         productsViewModel.productOptions(product_id = productsItem.productID)
         productsViewModel.productOptionsSize(nameProduct = productsItem.nameProduct)
@@ -262,15 +260,16 @@ fun OptionsModifier(productsItem: ProductsItem,
                         iconResource = R.drawable.sugar_icon,
                         textResource = R.string.txt_endulzante,
                         onSelectPrice = { id, price, name ->
-                            selectedOptions = selectedOptions.copy(sugar = price)
+                            selectedOptions = selectedOptions.copy(endulzante = price)
                             val updatedMap = productsViewModel.selectModifiersOptions.toMutableMap()
                             updatedMap["endulzante"] = ItemModifier(name, price.toString())
                             productsViewModel.selectModifiersOptions = updatedMap
+                            Log.d("Result.ModifiersViewModel",  productsViewModel.selectModifiersOptions.toString())
                         },
                         items = newsItems.map { product ->
                             ItemBox(product.id, product.name, product.price)
                         },
-                        defaultSelect = "")
+                        defaultSelect = "Receta original")
                 }
             }
         }

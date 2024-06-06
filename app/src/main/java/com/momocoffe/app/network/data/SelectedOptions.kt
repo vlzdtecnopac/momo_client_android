@@ -5,12 +5,13 @@ data class SelectedOptions(
     var size: Int = 0,
     var milk: Int = 0,
     var sugar: Int = 0,
+    var endulzante: Int = 0,
     var extraShot: Int = 0,
     var tapLib: Int = 0,
     var temperatureDrink: Int = 0,
     var sauce: Int = 0
 ){
     fun calculatePrice(): Int {
-        return listOf(temperatureFood, size, milk, sugar, extraShot, tapLib, temperatureDrink, sauce).sum()
+        return listOf(temperatureFood, size, milk, sugar, extraShot, tapLib, temperatureDrink, sauce, endulzante).sum()
     }
 }
