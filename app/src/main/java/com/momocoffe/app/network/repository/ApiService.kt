@@ -46,7 +46,7 @@ interface ApiService {
         @Query("symbols") targetCurrency: String
     ): ExchangeRateResponse
 
-    @POST("/invoice")
+    @POST("/invoice/send")
     suspend fun sendEmailInvoice(@Body clientEmailDto: ClientEmailInvoiceRequest) : Response<ClientEmailSMSResponse>
 
     @POST("/users/update_token")
