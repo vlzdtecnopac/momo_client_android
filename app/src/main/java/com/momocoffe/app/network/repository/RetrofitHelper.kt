@@ -26,19 +26,13 @@ object RetrofitHelper {
         .client(okHttpClient)
         .build()
 
-    private val lambdaUrl: Retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.API_BASE_URL_LAMBDA)
-        .addConverterFactory(GsonConverterFactory.create())
-        .client(okHttpClient)
-        .build()
+
 
     fun apiService() : ApiService {
         return retrofit.create(ApiService::class.java)
     }
 
-    fun apiLambdaService() : ApiService {
-        return lambdaUrl.create(ApiService::class.java)
-    }
+
 }
 
 class TokenInterceptor: Interceptor {

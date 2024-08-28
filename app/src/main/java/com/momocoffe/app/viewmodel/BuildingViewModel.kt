@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class BuildingViewModel : ViewModel() {
     val loadingState = mutableStateOf(false)
-    private val apiEmailSmsService: ApiService = RetrofitHelper.apiLambdaService()
+    private val apiEmailSmsService: ApiService = RetrofitHelper.apiService()
     private val apiService: ApiService = RetrofitHelper.apiService()
     val buildingResultState = mutableStateOf<Result<BuildingResponse>?>(null)
     val emailResultState = mutableStateOf<Result<ClientEmailSMSResponse>?>(null)

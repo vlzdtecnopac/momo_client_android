@@ -12,7 +12,7 @@ import com.momocoffe.app.network.response.ClientEmailSMSResponse
 import kotlinx.coroutines.launch
 
 class EmailSmsViewModel: ViewModel()  {
-    private val apiService: ApiService = RetrofitHelper.apiLambdaService()
+    private val apiService: ApiService = RetrofitHelper.apiService()
     private val emailSmsResultState = mutableStateOf<Result<ClientEmailSMSResponse>?>(null)
     val loadingState = mutableStateOf(false)
 
